@@ -1,0 +1,3 @@
+[submodule "jellyseerr"]
+	path = jellyseerr
+	url = https://github.com/Fallenbagel/jellyseerr
