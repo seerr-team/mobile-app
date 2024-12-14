@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import ThemedText from '@/components/Common/ThemedText';
 import TextInput from '@/components/Common/TextInput';
 import Button from '@/components/Common/Button';
-import isServerReachable from '@/utils/serverReachable';
-import { setServerUrl, type RootState } from '@/store/appSettingsSlice';
+import { isServerReachable } from '@/utils/serverSettings';
+import { setServerUrl } from '@/store/appSettingsSlice';
 import { router } from 'expo-router';
+import type { RootState } from '@/store';
 
 enum ErrorType {
   NoServerUrl,
@@ -23,7 +24,10 @@ export default function Setup() {
   const [inputUrl, setInputUrl] = useState<string>('');
 
   useEffect(() => {
-    setInputUrl(serverUrl);
+    if (serverUrl) {
+      setInputUrl(serverUrl);
+    setError(ErrorType.ServerNotReachable);
+    }
   }, [serverUrl]);
 
   return (
@@ -52,18 +56,15 @@ export default function Setup() {
         <View className="mt-8 border-t border-gray-700 pt-5 flex">
           <Button
             onClick={async () => {
-              console.log('Connecting to server:', inputUrl);
               if (!inputUrl) return;
               setLoading(true);
               if (await isServerReachable(inputUrl)) {
-                console.log('Server reachable');
                 await AsyncStorage.setItem('server-url', inputUrl);
                 dispatch(setServerUrl(inputUrl));
                 setError(null);
-                router.push('home');
+                router.push('/login');
               }
               else {
-                console.log('Server not reachable');
                 setError(ErrorType.ServerNotReachable);
               }
               setLoading(false);

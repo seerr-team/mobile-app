@@ -2,15 +2,18 @@ import { useFonts } from 'expo-font';
 import { router, Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
+import { ScrollView, View } from 'react-native';
 import 'react-native-reanimated';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Provider, useDispatch } from 'react-redux';
+import { IntlProvider } from 'react-intl';
 import store from '@/store';
 import { setServerUrl } from '@/store/appSettingsSlice';
-import isServerReachable from '@/utils/serverReachable';
+import { setSettings } from '@/store/serverSettingsSlice';
+import { getServerSettings } from '@/utils/serverSettings';
+import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
 
 import '../jellyseerr/src/styles/globals.css';
-import { View } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,11 +27,12 @@ function RootLayout() {
   useEffect(() => {
     (async () => {
       const url = await AsyncStorage.getItem('server-url');
-      console.log('Server URL:', url);
       if (url) {
         dispatch(setServerUrl(url));
-        if (await isServerReachable(url)) {
-          router.replace('/home');
+        const serverSettings = await getServerSettings(url);
+        if (serverSettings !== null) {
+          setSettings(serverSettings);
+          router.replace('/login');
         }
         else {
           router.replace('/setup');
@@ -52,16 +56,23 @@ function RootLayout() {
   }
 
   return (
-    <View className="bg-gray-900 h-screen">
+    <ScrollView className="bg-gray-900 h-screen">
       <Slot />
-    </View>
+    </ScrollView>
   );
 }
 
 export default function RootLayoutWithProvider() {
+  const currentLocale = 'en';
   return (
     <Provider store={store}>
-      <RootLayout />
+      <IntlProvider
+        locale={currentLocale}
+        defaultLocale="en"
+        messages={enLocale}
+      >
+        <RootLayout />
+      </IntlProvider>
     </Provider>
   );
 }

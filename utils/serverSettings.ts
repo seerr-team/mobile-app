@@ -1,4 +1,6 @@
-export default async function isServerReachable(serverUrl: string) {
+import type { PublicSettingsResponse } from "@/jellyseerr/server/interfaces/api/settingsInterfaces";
+
+export async function getServerSettings(serverUrl: string): Promise<PublicSettingsResponse | null> {
   try {
     if (serverUrl.endsWith('/')) {
       serverUrl = serverUrl.slice(0, -1);
@@ -10,10 +12,12 @@ export default async function isServerReachable(serverUrl: string) {
     });
     if (!res.ok) throw new Error('Server not reachable');
     const data = await res.json();
-    return data.initialized === true;
+    return data;
   }
-  catch (e) {
-    console.error(e);
-  }
-  return false;
+  catch (e) {}
+  return null;
+}
+
+export async function isServerReachable(serverUrl: string) {
+  return (await getServerSettings(serverUrl)) !== null;
 }

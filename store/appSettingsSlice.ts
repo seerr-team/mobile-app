@@ -4,10 +4,6 @@ export interface AppSettingsState {
   serverUrl: string;
 }
 
-export interface RootState {
-  appSettings: AppSettingsState;
-}
-
 export const initialState: AppSettingsState = {
   serverUrl: '',
 };
