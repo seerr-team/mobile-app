@@ -1,6 +1,6 @@
 import { Text, type TextProps } from 'react-native';
 
-export function ThemedText({
+export default function ThemedText({
   style,
   className,
   ...rest
