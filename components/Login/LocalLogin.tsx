@@ -7,13 +7,12 @@ import { toast } from '@backpackapp-io/react-native-toast';
 import { Formik } from 'formik';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 const messages = getJellyseerrMessages('components.Login');
 
 const LocalLogin = () => {
-  const dispatch = useDispatch();
   const intl = useIntl();
   const serverUrl = useSelector(
     (state: RootState) => state.appSettings.serverUrl

@@ -38,7 +38,7 @@ export default function Login() {
     (async () => {
       const res = await fetch(`${serverUrl}/api/v1/auth/me`);
       if (res.ok) {
-        router.replace('/home');
+        router.replace('/(tabs)');
       } else {
         setLoaded(true);
       }
