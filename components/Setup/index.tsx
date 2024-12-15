@@ -47,7 +47,8 @@ export default function Setup() {
             value={inputUrl}
             onChangeText={setInputUrl}
             placeholder="https://example.com"
-            keyboardType='url'
+            keyboardType="url"
+            autoCapitalize="none"
           />
           {error === ErrorType.ServerNotReachable && (
             <ThemedText className="text-red-500 mt-1.5">Unable to connect to server</ThemedText>

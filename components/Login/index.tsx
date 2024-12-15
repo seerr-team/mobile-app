@@ -4,7 +4,7 @@ import JellyfinLogin from './JellyfinLogin';
 
 export default function Login() {
   return (
-    <View className="self-center">
+    <View>
       <View className="px-8">
         <Image
           className="h-64 max-w-full object-cover"

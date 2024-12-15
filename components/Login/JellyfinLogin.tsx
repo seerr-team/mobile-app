@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIntl } from "react-intl";
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { toast } from '@backpackapp-io/react-native-toast';
 import ThemedText from '@/components/Common/ThemedText';
 import TextInput from '@/components/Common/TextInput';
 import Button from '@/components/Common/Button';
@@ -47,19 +48,13 @@ export default function JellyfinLogin() {
             if (!res.ok) throw new Error();
             console.log('Login successful');
           } catch (e) {
-            // toasts.addToast(
-            //   intl.formatMessage(
-            //     e.message == 'Request failed with status code 401'
-            //       ? messages.credentialerror
-            //       : messages.loginerror
-            //   ),
-            //   {
-            //     autoDismiss: true,
-            //     appearance: 'error',
-            //   }
-            // );
-          } finally {
-            // revalidate();
+            toast.error(
+              intl.formatMessage(
+                (e as Error).message == 'Request failed with status code 401'
+                  ? messages.credentialerror
+                  : messages.loginerror
+              )
+            );
           }
         }}
       >
@@ -77,6 +72,7 @@ export default function JellyfinLogin() {
                       onBlur={handleBlur('username')}
                       value={values.username}
                       placeholder={intl.formatMessage(messages.username)}
+                      autoCapitalize="none"
                     />
                   </View>
                   {errors.username && touched.username && (
@@ -93,6 +89,7 @@ export default function JellyfinLogin() {
                       onBlur={handleBlur('password')}
                       value={values.password}
                       placeholder={intl.formatMessage(messages.password)}
+                      autoCapitalize="none"
                       secureTextEntry={true}
                     />
                   </View>

@@ -2,11 +2,14 @@ import { useFonts } from 'expo-font';
 import { router, Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import 'react-native-reanimated';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Provider, useDispatch } from 'react-redux';
 import { IntlProvider } from 'react-intl';
+import { Toasts } from '@backpackapp-io/react-native-toast';
 import store from '@/store';
 import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
@@ -56,9 +59,27 @@ function RootLayout() {
   }
 
   return (
-    <ScrollView className="bg-gray-900 h-screen">
-      <Slot />
-    </ScrollView>
+    <GestureHandlerRootView>
+      <SafeAreaProvider>
+        <ScrollView className="bg-gray-900 h-screen" contentContainerClassName="flex-grow justify-center">
+          <Slot />
+          <Toasts
+            overrideDarkMode
+            defaultStyle={{
+              view: {
+                backgroundColor: '#111827',
+                borderWidth: 1,
+                borderColor: '#6b7280',
+                borderRadius: 8,
+              },
+              text: {
+                color: '#ffffff',
+              }
+            }}
+          />
+        </ScrollView>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
