@@ -37,6 +37,7 @@
     "react-dom": "18.3.1",
     "react-intl": "^7.0.4",
     "react-native": "0.76.5",
+    "react-native-collapsible": "^1.6.1",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "4.12.0",

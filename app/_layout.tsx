@@ -17,6 +17,7 @@ import { getServerSettings } from '@/utils/serverSettings';
 import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
 
 import '../jellyseerr/src/styles/globals.css';
+import useSettings from '@/hooks/useSettings';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +26,7 @@ function RootLayout() {
   const [fontLoaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+  const settings = useSettings();
   const [loaded, setLoaded] = useState(true);
 
   useEffect(() => {
@@ -34,19 +36,25 @@ function RootLayout() {
         dispatch(setServerUrl(url));
         const serverSettings = await getServerSettings(url);
         if (serverSettings !== null) {
-          setSettings(serverSettings);
-          router.replace('/login');
+          dispatch(setSettings(serverSettings));
         }
         else {
           router.replace('/setup');
+          setLoaded(true);
         }
-        setLoaded(true);
       }
       else {
         router.replace('/setup');
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (settings.currentSettings) {
+      router.replace('/login');
+      setLoaded(true);
+    }
+  }, [settings]);
 
   useEffect(() => {
     if (fontLoaded && loaded) {
