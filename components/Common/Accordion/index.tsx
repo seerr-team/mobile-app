@@ -25,7 +25,11 @@ export const AccordionContent = ({
   isOpen,
   children,
 }: AccordionContentProps) => {
-  return <Collapsible collapsed={!isOpen} easing={Easing.ease}>{children}</Collapsible>;
+  return (
+    <Collapsible collapsed={!isOpen} easing={Easing.ease}>
+      {children}
+    </Collapsible>
+  );
 };
 
 const Accordion = ({

@@ -8,7 +8,10 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "format": "prettier --loglevel warn --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.13.0",
@@ -52,8 +55,21 @@
     "@babel/core": "^7.25.2",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "prettier": "^3.4.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.4.1",
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "**/*.{ts,tsx,js}": [
+      "prettier --write"
+    ],
+    "**/*.{json,md,css}": [
+      "prettier --write"
+    ]
+  }
 }

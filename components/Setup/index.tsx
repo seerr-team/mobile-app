@@ -1,14 +1,14 @@
-import { View, Image } from 'react-native';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
-import ThemedText from '@/components/Common/ThemedText';
-import TextInput from '@/components/Common/TextInput';
 import Button from '@/components/Common/Button';
-import { isServerReachable } from '@/utils/serverSettings';
-import { setServerUrl } from '@/store/appSettingsSlice';
-import { router } from 'expo-router';
+import TextInput from '@/components/Common/TextInput';
+import ThemedText from '@/components/Common/ThemedText';
 import type { RootState } from '@/store';
+import { setServerUrl } from '@/store/appSettingsSlice';
+import { isServerReachable } from '@/utils/serverSettings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Image, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 enum ErrorType {
   NoServerUrl,
@@ -17,7 +17,9 @@ enum ErrorType {
 }
 
 export default function Setup() {
-  const serverUrl = useSelector((state: RootState) => state.appSettings.serverUrl);
+  const serverUrl = useSelector(
+    (state: RootState) => state.appSettings.serverUrl
+  );
   const dispatch = useDispatch();
   const [error, setError] = useState<ErrorType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,12 +28,12 @@ export default function Setup() {
   useEffect(() => {
     if (serverUrl) {
       setInputUrl(serverUrl);
-    setError(ErrorType.ServerNotReachable);
+      setError(ErrorType.ServerNotReachable);
     }
   }, [serverUrl]);
 
   return (
-    <View className="flex flex-col h-full justify-center items-center">
+    <View className="flex h-full flex-col items-center justify-center">
       <View className="px-8">
         <Image
           className="h-64 max-w-full object-cover"
@@ -39,10 +41,14 @@ export default function Setup() {
           source={require('@/assets/images/logo-stacked.png')}
         />
       </View>
-      <ThemedText className="mt-12 text-3xl font-bold text-center">Enter the server address to continue.</ThemedText>
+      <ThemedText className="mt-12 text-center text-3xl font-bold">
+        Enter the server address to continue.
+      </ThemedText>
       <View className="mt-8 w-full bg-gray-800/50 px-10 py-8">
         <View className="">
-          <ThemedText className="font-bold text-gray-400 mb-1">Server address</ThemedText>
+          <ThemedText className="mb-1 font-bold text-gray-400">
+            Server address
+          </ThemedText>
           <TextInput
             value={inputUrl}
             onChangeText={setInputUrl}
@@ -51,10 +57,12 @@ export default function Setup() {
             autoCapitalize="none"
           />
           {error === ErrorType.ServerNotReachable && (
-            <ThemedText className="text-red-500 mt-1.5">Unable to connect to server</ThemedText>
+            <ThemedText className="mt-1.5 text-red-500">
+              Unable to connect to server
+            </ThemedText>
           )}
         </View>
-        <View className="mt-8 border-t border-gray-700 pt-5 flex">
+        <View className="mt-8 flex border-t border-gray-700 pt-5">
           <Button
             onClick={async () => {
               if (!inputUrl) return;
@@ -64,8 +72,7 @@ export default function Setup() {
                 dispatch(setServerUrl(inputUrl));
                 setError(null);
                 router.push('/login');
-              }
-              else {
+              } else {
                 setError(ErrorType.ServerNotReachable);
               }
               setLoading(false);

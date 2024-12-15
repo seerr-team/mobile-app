@@ -1,6 +1,8 @@
-import type { PublicSettingsResponse } from "@/jellyseerr/server/interfaces/api/settingsInterfaces";
+import type { PublicSettingsResponse } from '@/jellyseerr/server/interfaces/api/settingsInterfaces';
 
-export async function getServerSettings(serverUrl: string): Promise<PublicSettingsResponse | null> {
+export async function getServerSettings(
+  serverUrl: string
+): Promise<PublicSettingsResponse | null> {
   try {
     if (serverUrl.endsWith('/')) {
       serverUrl = serverUrl.slice(0, -1);
@@ -13,8 +15,7 @@ export async function getServerSettings(serverUrl: string): Promise<PublicSettin
     if (!res.ok) throw new Error('Server not reachable');
     const data = await res.json();
     return data;
-  }
-  catch (e) {}
+  } catch (e) {}
   return null;
 }
 

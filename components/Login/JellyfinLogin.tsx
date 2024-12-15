@@ -1,20 +1,22 @@
-import { View } from "react-native";
-import { useDispatch, useSelector } from 'react-redux';
-import { useIntl } from "react-intl";
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { toast } from '@backpackapp-io/react-native-toast';
-import ThemedText from '@/components/Common/ThemedText';
-import TextInput from '@/components/Common/TextInput';
 import Button from '@/components/Common/Button';
+import TextInput from '@/components/Common/TextInput';
+import ThemedText from '@/components/Common/ThemedText';
 import type { RootState } from '@/store';
-import getJellyseerrMessages from "@/utils/getJellyseerrMessages";
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { toast } from '@backpackapp-io/react-native-toast';
+import { Formik } from 'formik';
+import { useIntl } from 'react-intl';
+import { View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
 
 const messages = getJellyseerrMessages('components.Login');
 
 export default function JellyfinLogin() {
   const dispatch = useDispatch();
-  const serverUrl = useSelector((state: RootState) => state.appSettings.serverUrl);
+  const serverUrl = useSelector(
+    (state: RootState) => state.appSettings.serverUrl
+  );
   const intl = useIntl();
 
   const LoginSchema = Yup.object().shape({
@@ -57,14 +59,23 @@ export default function JellyfinLogin() {
         }
       }}
     >
-      {({ errors, touched, isSubmitting, isValid, values, handleChange, handleBlur, handleSubmit }) => {
+      {({
+        errors,
+        touched,
+        isSubmitting,
+        isValid,
+        values,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+      }) => {
         return (
           <View>
             <View className="sm:border-t sm:border-gray-800">
               <ThemedText className="font-bold text-gray-400">
                 {intl.formatMessage(messages.username)}
               </ThemedText>
-              <View className="mt-1 mb-2 sm:col-span-2 sm:mt-0">
+              <View className="mb-2 mt-1 sm:col-span-2 sm:mt-0">
                 <View className="flex max-w-lg rounded-md shadow-sm">
                   <TextInput
                     onChangeText={handleChange('username')}
@@ -75,13 +86,15 @@ export default function JellyfinLogin() {
                   />
                 </View>
                 {errors.username && touched.username && (
-                  <ThemedText className="text-red-500 mt-1.5">{errors.username}</ThemedText>
+                  <ThemedText className="mt-1.5 text-red-500">
+                    {errors.username}
+                  </ThemedText>
                 )}
               </View>
               <ThemedText className="font-bold text-gray-400">
                 {intl.formatMessage(messages.password)}
               </ThemedText>
-              <View className="mt-1 mb-2 sm:col-span-2 sm:mt-0">
+              <View className="mb-2 mt-1 sm:col-span-2 sm:mt-0">
                 <View className="flex max-w-lg rounded-md shadow-sm">
                   <TextInput
                     onChangeText={handleChange('password')}
@@ -93,7 +106,9 @@ export default function JellyfinLogin() {
                   />
                 </View>
                 {errors.password && touched.password && (
-                  <ThemedText className="text-red-500 mt-1.5">{errors.password}</ThemedText>
+                  <ThemedText className="mt-1.5 text-red-500">
+                    {errors.password}
+                  </ThemedText>
                 )}
               </View>
             </View>
@@ -117,7 +132,7 @@ export default function JellyfinLogin() {
                     {intl.formatMessage(messages.forgotpassword)}
                   </Button>
                 </View> */}
-                <View className="inline-flex rounded-md shadow-sm self-end">
+                <View className="inline-flex self-end rounded-md shadow-sm">
                   <Button
                     disabled={isSubmitting || !isValid}
                     onClick={() => handleSubmit()}

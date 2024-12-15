@@ -1,23 +1,23 @@
-import { useFonts } from 'expo-font';
-import { router, Slot } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
-import 'react-native-reanimated';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Provider, useDispatch } from 'react-redux';
-import { IntlProvider } from 'react-intl';
-import { Toasts } from '@backpackapp-io/react-native-toast';
+import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
 import store from '@/store';
 import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import { getServerSettings } from '@/utils/serverSettings';
-import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
+import { Toasts } from '@backpackapp-io/react-native-toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts } from 'expo-font';
+import { router, Slot } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState } from 'react';
+import { IntlProvider } from 'react-intl';
+import { ScrollView } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import 'react-native-reanimated';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider, useDispatch } from 'react-redux';
 
-import '../jellyseerr/src/styles/globals.css';
 import useSettings from '@/hooks/useSettings';
+import '../jellyseerr/src/styles/globals.css';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,13 +37,11 @@ function RootLayout() {
         const serverSettings = await getServerSettings(url);
         if (serverSettings !== null) {
           dispatch(setSettings(serverSettings));
-        }
-        else {
+        } else {
           router.replace('/setup');
           setLoaded(true);
         }
-      }
-      else {
+      } else {
         router.replace('/setup');
       }
     })();
@@ -69,7 +67,10 @@ function RootLayout() {
   return (
     <GestureHandlerRootView>
       <SafeAreaProvider>
-        <ScrollView className="bg-gray-900 h-screen" contentContainerClassName="flex-grow justify-center">
+        <ScrollView
+          className="h-screen bg-gray-900"
+          contentContainerClassName="flex-grow justify-center"
+        >
           <Slot />
           <Toasts
             overrideDarkMode
@@ -82,7 +83,7 @@ function RootLayout() {
               },
               text: {
                 color: '#ffffff',
-              }
+              },
             }}
           />
         </ScrollView>

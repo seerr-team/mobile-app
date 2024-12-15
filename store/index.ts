@@ -1,6 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appSettingsSlice, { type AppSettingsState } from './appSettingsSlice';
-import serverSettingsSlice, { type ServerSettingsState } from './serverSettingsSlice';
+import serverSettingsSlice, {
+  type ServerSettingsState,
+} from './serverSettingsSlice';
 
 export interface RootState {
   appSettings: AppSettingsState;

@@ -1,22 +1,24 @@
-import { View, Image, Pressable, Animated, Easing } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
-import { router } from 'expo-router';
-import { useIntl } from 'react-intl';
-import ThemedText from '@/components/Common/ThemedText';
 import Accordion from '@/components/Common/Accordion';
+import ThemedText from '@/components/Common/ThemedText';
+import useSettings from '@/hooks/useSettings';
+import { MediaServerType } from '@/jellyseerr/server/constants/server';
+import type { RootState } from '@/store';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { router } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { Animated, Easing, Image, Pressable, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import JellyfinLogin from './JellyfinLogin';
 import LocalLogin from './LocalLogin';
-import { MediaServerType } from '@/jellyseerr/server/constants/server';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
-import useSettings from '@/hooks/useSettings';
-import { useSelector } from 'react-redux';
-import type { RootState } from '@/store';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
 const messages = getJellyseerrMessages('components.Login');
 
 export default function Login() {
-  const serverUrl = useSelector((state: RootState) => state.appSettings.serverUrl);
+  const serverUrl = useSelector(
+    (state: RootState) => state.appSettings.serverUrl
+  );
   const settings = useSettings();
   const intl = useIntl();
   const [loaded, setLoaded] = useState(false);
@@ -28,8 +30,8 @@ export default function Login() {
       settings.currentSettings.mediaServerType === MediaServerType.JELLYFIN
         ? 'Jellyfin'
         : settings.currentSettings.mediaServerType === MediaServerType.EMBY
-        ? 'Emby'
-        : undefined,
+          ? 'Emby'
+          : undefined,
   };
 
   useEffect(() => {
@@ -37,8 +39,7 @@ export default function Login() {
       const res = await fetch(`${serverUrl}/api/v1/auth/me`);
       if (res.ok) {
         router.replace('/home');
-      }
-      else {
+      } else {
         setLoaded(true);
       }
     })();
@@ -64,7 +65,7 @@ export default function Login() {
 
   if (!loaded) {
     return (
-      <ThemedText className="mt-12 text-3xl font-bold text-center">
+      <ThemedText className="mt-12 text-center text-3xl font-bold">
         <Animated.View style={{ transform: [{ rotate: spin }] }}>
           <AntDesign name="loading1" size={32} color="white" />
         </Animated.View>
@@ -81,7 +82,9 @@ export default function Login() {
           source={require('@/assets/images/logo-stacked.png')}
         />
       </View>
-      <ThemedText className="mt-12 text-3xl font-bold text-center">Sign in to continue.</ThemedText>
+      <ThemedText className="mt-12 text-center text-3xl font-bold">
+        Sign in to continue.
+      </ThemedText>
       <View className="mt-8 w-full bg-gray-800/50">
         <Accordion single atLeastOne>
           {({ openIndexes, handleClick, AccordionContent }) => (
@@ -90,7 +93,9 @@ export default function Login() {
                 className="w-full cursor-default bg-gray-800 bg-opacity-70 py-2"
                 onPress={() => handleClick(0)}
               >
-                <ThemedText className={`text-center font-bold text-gray-400 ${openIndexes.includes(0) ? "text-indigo-500" : ""}`}>
+                <ThemedText
+                  className={`text-center font-bold text-gray-400 ${openIndexes.includes(0) ? 'text-indigo-500' : ''}`}
+                >
                   {settings.currentSettings.mediaServerType ==
                   MediaServerType.PLEX
                     ? intl.formatMessage(messages.signinwithplex)
@@ -120,7 +125,9 @@ export default function Login() {
                     className="w-full cursor-default bg-gray-800 bg-opacity-70 py-2"
                     onPress={() => handleClick(1)}
                   >
-                    <ThemedText className={`text-center font-bold text-gray-400 ${openIndexes.includes(1) ? "text-indigo-500" : ""}`}>
+                    <ThemedText
+                      className={`text-center font-bold text-gray-400 ${openIndexes.includes(1) ? 'text-indigo-500' : ''}`}
+                    >
                       {intl.formatMessage(messages.signinwithoverseerr, {
                         applicationTitle:
                           settings.currentSettings.applicationTitle,

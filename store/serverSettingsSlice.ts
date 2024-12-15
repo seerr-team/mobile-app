@@ -14,8 +14,8 @@ const serverSettingsSlice = createSlice({
   initialState,
   reducers: {
     setSettings(state, action: PayloadAction<PublicSettingsResponse>) {
-      state.settings = action.payload
-    }
+      state.settings = action.payload;
+    },
   },
 });
 
