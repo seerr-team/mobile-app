@@ -3,7 +3,8 @@ import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
 import type { RootState } from '@/store';
 import { setServerUrl } from '@/store/appSettingsSlice';
-import { isServerReachable } from '@/utils/serverSettings';
+import { setSettings } from '@/store/serverSettingsSlice';
+import { getServerSettings } from '@/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -67,9 +68,11 @@ export default function Setup() {
             onClick={async () => {
               if (!inputUrl) return;
               setLoading(true);
-              if (await isServerReachable(inputUrl)) {
+              const serverSettings = await getServerSettings(inputUrl);
+              if (serverSettings) {
                 await AsyncStorage.setItem('server-url', inputUrl);
                 dispatch(setServerUrl(inputUrl));
+                dispatch(setSettings(serverSettings));
                 setError(null);
                 router.push('/login');
               } else {

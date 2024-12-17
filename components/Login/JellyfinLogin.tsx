@@ -4,6 +4,7 @@ import ThemedText from '@/components/Common/ThemedText';
 import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
+import { router } from 'expo-router';
 import { Formik } from 'formik';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
@@ -46,7 +47,7 @@ export default function JellyfinLogin() {
             }),
           });
           if (!res.ok) throw new Error();
-          console.log('Login successful');
+          router.replace('/(tabs)');
         } catch (e) {
           toast.error(
             intl.formatMessage(

@@ -38,11 +38,11 @@ function RootLayout() {
         if (serverSettings !== null) {
           dispatch(setSettings(serverSettings));
         } else {
-          router.replace('/setup');
+          router.replace('/');
           setLoaded(true);
         }
       } else {
-        router.replace('/setup');
+        router.replace('/');
       }
     })();
   }, []);
