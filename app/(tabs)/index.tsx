@@ -1,5 +1,10 @@
-import { View } from 'react-native';
+import Discover from '@/components/Discover';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Home() {
-  return <View className="h-full"></View>;
+  return (
+    <ScrollView className="-mt-4 h-screen">
+      <Discover />
+    </ScrollView>
+  );
 }

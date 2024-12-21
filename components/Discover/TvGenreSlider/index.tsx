@@ -1,0 +1,79 @@
+import ThemedText from '@/components/Common/ThemedText';
+import { genreColorMap } from '@/components/Discover/constants';
+import GenreCard from '@/components/GenreCard';
+import Slider from '@/components/Slider';
+import type { GenreSliderItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
+import type { RootState } from '@/store';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
+import { Link } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { Pressable, View } from 'react-native';
+import { useSelector } from 'react-redux';
+
+const messages = getJellyseerrMessages('components.Discover.TvGenreSlider');
+
+const TvGenreSlider = () => {
+  const intl = useIntl();
+  const serverUrl = useSelector(
+    (state: RootState) => state.appSettings.serverUrl
+  );
+  const [data, setData] = useState<GenreSliderItem[] | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+
+  async function fetchData() {
+    try {
+      const response = await fetch(
+        serverUrl + '/api/v1/discover/genreslider/tv'
+      );
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const result = await response.json();
+      setData(result);
+    } catch (err) {
+      setError(err as Error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (
+    <>
+      <View className="slider-header px-4">
+        <Link href={'/discover/tv/genres' as any} className="slider-title">
+          <Pressable>
+            <View className="flex min-w-0 flex-row items-center gap-2 pr-16">
+              <ThemedText className="truncate text-2xl font-bold">
+                {intl.formatMessage(messages.tvgenres)}
+              </ThemedText>
+              <ArrowRightCircle color="#ffffff" />
+            </View>
+          </Pressable>
+        </Link>
+      </View>
+      <Slider
+        sliderKey="tv-genres"
+        isLoading={!data && !error}
+        isEmpty={false}
+        items={(data ?? []).map((genre, index) => (
+          <GenreCard
+            key={`genre-tv-${genre.id}-${index}`}
+            name={genre.name}
+            image={`https://image.tmdb.org/t/p/w1280_filter(duotone,${
+              genreColorMap[genre.id] ?? genreColorMap[0]
+            })${genre.backdrops[4]}`}
+            url={`/discover/tv?genre=${genre.id}`}
+          />
+        ))}
+        placeholder={<GenreCard.Placeholder />}
+        emptyMessage=""
+      />
+    </>
+  );
+};
+
+export default React.memo(TvGenreSlider);

@@ -16,7 +16,6 @@
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.13.0",
     "@expo/vector-icons": "^14.0.2",
-    "@heroicons/react": "^2.2.0",
     "@nandorojo/heroicons": "^0.3.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.0.0",
@@ -38,6 +37,7 @@
     "expo-system-ui": "~4.0.6",
     "expo-web-browser": "~14.0.1",
     "formik": "^2.4.6",
+    "intl-pluralrules": "^2.0.1",
     "nativewind": "^4.1.23",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -54,7 +54,8 @@
     "react-redux": "^9.2.0",
     "swr": "^2.2.5",
     "tailwindcss": "^3.4.16",
-    "yup": "^1.5.0"
+    "yup": "^1.5.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

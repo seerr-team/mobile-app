@@ -29,9 +29,8 @@ const UserDropdown = () => {
         style={{ width: 42, height: 42, borderRadius: 21 }}
         src={user ? user.avatar : ''}
         contentFit="cover"
-        transition={1000}
+        transition={200}
         alt=""
-        onError={(e) => console.log(e)}
       />
     </Pressable>
   );

@@ -1,3 +1,4 @@
+import useSettings from '@/hooks/useSettings';
 import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
 import store from '@/store';
 import { setServerUrl } from '@/store/appSettingsSlice';
@@ -8,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import { router, Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import 'intl-pluralrules';
 import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { ScrollView } from 'react-native';
@@ -16,7 +18,6 @@ import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider, useDispatch } from 'react-redux';
 
-import useSettings from '@/hooks/useSettings';
 import '../jellyseerr/src/styles/globals.css';
 
 SplashScreen.preventAutoHideAsync();

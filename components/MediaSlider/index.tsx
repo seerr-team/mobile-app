@@ -1,0 +1,231 @@
+// import ShowMoreCard from '@/components/MediaSlider/ShowMoreCard';
+import PersonCard from '@/components/PersonCard';
+import Slider from '@/components/Slider';
+import TitleCard from '@/components/TitleCard';
+import useSettings from '@/hooks/useSettings';
+import { useUser } from '@/hooks/useUser';
+import { MediaStatus } from '@/jellyseerr/server/constants/media';
+import { Permission } from '@/jellyseerr/server/lib/permissions';
+import type {
+  MovieResult,
+  PersonResult,
+  TvResult,
+} from '@/jellyseerr/server/models/Search';
+import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
+import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
+// import useSWRInfinite from 'swr/infinite';
+import ThemedText from '@/components/Common/ThemedText';
+import type { RootState } from '@/store';
+import { Pressable, View } from 'react-native';
+import { useSelector } from 'react-redux';
+
+interface MixedResult {
+  page: number;
+  totalResults: number;
+  totalPages: number;
+  results: (TvResult | MovieResult | PersonResult)[];
+}
+
+interface MediaSliderProps {
+  title: string;
+  url: string;
+  linkUrl?: string;
+  sliderKey: string;
+  hideWhenEmpty?: boolean;
+  extraParams?: string;
+  onNewTitles?: (titleCount: number) => void;
+}
+
+const MediaSlider = ({
+  title,
+  url,
+  linkUrl,
+  extraParams,
+  sliderKey,
+  hideWhenEmpty = false,
+  onNewTitles,
+}: MediaSliderProps) => {
+  const settings = useSettings();
+  const serverUrl = useSelector(
+    (state: RootState) => state.appSettings.serverUrl
+  );
+  const { hasPermission } = useUser();
+
+  // const { data, error, setSize, size } = useSWRInfinite<MixedResult>(
+  //   (pageIndex: number, previousPageData: MixedResult | null) => {
+  //     if (previousPageData && pageIndex + 1 > previousPageData.totalPages) {
+  //       return null;
+  //     }
+
+  //     return `${serverUrl}${url}?page=${pageIndex + 1}${
+  //       extraParams ? `&${extraParams}` : ''
+  //     }`;
+  //   },
+  //   {
+  //     initialSize: 2,
+  //   }
+  // );
+
+  const [data, setData] = useState<MixedResult[] | null>(null);
+  const [error, setError] = useState('');
+
+  const [size, setSize] = useState(2);
+
+  async function fetchDiscover() {
+    try {
+      const response = await fetch(
+        `${serverUrl}${url}?page=${size}${extraParams ? `&${extraParams}` : ''}`
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch discover data');
+      }
+      const newData = await response.json();
+      setData([...(data || []), newData]);
+    } catch (error) {
+      setError((error as Error).message);
+    }
+  }
+
+  let titles = (data ?? []).reduce(
+    (a, v) => [...a, ...v.results],
+    [] as (MovieResult | TvResult | PersonResult)[]
+  );
+
+  if (settings.currentSettings.hideAvailable) {
+    titles = titles.filter(
+      (i) =>
+        (i.mediaType === 'movie' || i.mediaType === 'tv') &&
+        i.mediaInfo?.status !== MediaStatus.AVAILABLE &&
+        i.mediaInfo?.status !== MediaStatus.PARTIALLY_AVAILABLE
+    );
+  }
+
+  useEffect(() => {
+    fetchDiscover();
+  }, []);
+
+  useEffect(() => {
+    if (
+      titles.length < 24 &&
+      size < 5 &&
+      (data?.[0]?.totalResults ?? 0) > size * 20
+    ) {
+      setSize(size + 1);
+    }
+
+    if (onNewTitles) {
+      // We aren't reporting all titles. We just want to know if there are any titles
+      // at all for our purposes.
+      onNewTitles(titles.length);
+    }
+  }, [titles, setSize, size, data, onNewTitles]);
+
+  if (hideWhenEmpty && (data?.[0].results ?? []).length === 0) {
+    return null;
+  }
+
+  const blacklistVisibility = hasPermission(
+    [Permission.MANAGE_BLACKLIST, Permission.VIEW_BLACKLIST],
+    { type: 'or' }
+  );
+
+  const finalTitles = titles
+    .slice(0, 20)
+    .filter((title) => {
+      if (!blacklistVisibility)
+        return (
+          (title as TvResult | MovieResult).mediaInfo?.status !==
+          MediaStatus.BLACKLISTED
+        );
+      return title;
+    })
+    .map((title) => {
+      switch (title.mediaType) {
+        case 'movie':
+          return (
+            <TitleCard
+              key={title.id}
+              id={title.id}
+              isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
+              image={title.posterPath}
+              status={title.mediaInfo?.status}
+              summary={title.overview}
+              title={title.title}
+              userScore={title.voteAverage}
+              year={title.releaseDate}
+              mediaType={title.mediaType}
+              inProgress={(title.mediaInfo?.downloadStatus ?? []).length > 0}
+            />
+          );
+        case 'tv':
+          return (
+            <TitleCard
+              key={title.id}
+              id={title.id}
+              isAddedToWatchlist={title.mediaInfo?.watchlists?.length ?? 0}
+              image={title.posterPath}
+              status={title.mediaInfo?.status}
+              summary={title.overview}
+              title={title.name}
+              userScore={title.voteAverage}
+              year={title.firstAirDate}
+              mediaType={title.mediaType}
+              inProgress={(title.mediaInfo?.downloadStatus ?? []).length > 0}
+            />
+          );
+        case 'person':
+          return (
+            <PersonCard
+              personId={title.id}
+              name={title.name}
+              profilePath={title.profilePath}
+            />
+          );
+      }
+    });
+
+  // if (linkUrl && titles.length > 20) {
+  //   finalTitles.push(
+  //     <ShowMoreCard
+  //       url={linkUrl}
+  //       posters={titles
+  //         .slice(20, 24)
+  //         .map((title) =>
+  //           title.mediaType !== 'person' ? title.posterPath : undefined
+  //         )}
+  //     />
+  //   );
+  // }
+
+  return (
+    <>
+      <View className="mb-4 mt-6 px-4">
+        {linkUrl ? (
+          <Link href={linkUrl as any}>
+            <Pressable>
+              <View className="flex min-w-0 flex-row items-center gap-2 pr-16">
+                <ThemedText className="truncate text-2xl font-bold">
+                  {title}
+                </ThemedText>
+                <ArrowRightCircle color="#ffffff" />
+              </View>
+            </Pressable>
+          </Link>
+        ) : (
+          <View>
+            <ThemedText>{title}</ThemedText>
+          </View>
+        )}
+      </View>
+      <Slider
+        sliderKey={sliderKey}
+        isLoading={!data && !error}
+        isEmpty={false}
+        items={finalTitles}
+      />
+    </>
+  );
+};
+
+export default MediaSlider;

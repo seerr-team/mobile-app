@@ -4,12 +4,12 @@ import useSettings from '@/hooks/useSettings';
 import { MediaServerType } from '@/jellyseerr/server/constants/server';
 import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { router } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Animated, Easing, Image, Pressable, View } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import LoadingSpinner from '../Common/LoadingSpinner';
 import JellyfinLogin from './JellyfinLogin';
 import LocalLogin from './LocalLogin';
 
@@ -22,8 +22,6 @@ export default function Login() {
   const settings = useSettings();
   const intl = useIntl();
   const [loaded, setLoaded] = useState(false);
-
-  const spinValue = useRef(new Animated.Value(0)).current;
 
   const mediaServerFormatValues = {
     mediaServerName:
@@ -45,32 +43,8 @@ export default function Login() {
     })();
   }, []);
 
-  useEffect(() => {
-    const spinAnimation = Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-        easing: Easing.linear,
-      })
-    );
-    spinAnimation.start();
-    return () => spinAnimation.stop();
-  }, [spinValue]);
-
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-
   if (!loaded) {
-    return (
-      <ThemedText className="mt-12 text-center text-3xl font-bold">
-        <Animated.View style={{ transform: [{ rotate: spin }] }}>
-          <AntDesign name="loading1" size={32} color="white" />
-        </Animated.View>
-      </ThemedText>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
