@@ -12,13 +12,19 @@ import * as SplashScreen from 'expo-splash-screen';
 import 'intl-pluralrules';
 import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
+import { configureReanimatedLogger } from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider, useDispatch } from 'react-redux';
+import { SWRConfig } from 'swr';
 
 import '../jellyseerr/src/styles/globals.css';
+
+configureReanimatedLogger({
+  strict: false,
+});
 
 SplashScreen.preventAutoHideAsync();
 
@@ -68,26 +74,36 @@ function RootLayout() {
   return (
     <GestureHandlerRootView>
       <SafeAreaProvider>
-        <ScrollView
-          className="h-screen bg-gray-900"
-          contentContainerClassName="flex-grow justify-center"
+        <SWRConfig
+          value={{
+            fetcher: async (resource, init) => {
+              const res = await fetch(resource, init);
+              if (!res.ok) throw new Error();
+              return await res.json();
+            },
+          }}
         >
-          <Slot />
-          <Toasts
-            overrideDarkMode
-            defaultStyle={{
-              view: {
-                backgroundColor: '#111827',
-                borderWidth: 1,
-                borderColor: '#6b7280',
-                borderRadius: 8,
-              },
-              text: {
-                color: '#ffffff',
-              },
-            }}
-          />
-        </ScrollView>
+          <View
+            className="h-screen bg-gray-900"
+            contentContainerClassName="flex-grow justify-center"
+          >
+            <Slot />
+            <Toasts
+              overrideDarkMode
+              defaultStyle={{
+                view: {
+                  backgroundColor: '#111827',
+                  borderWidth: 1,
+                  borderColor: '#6b7280',
+                  borderRadius: 8,
+                },
+                text: {
+                  color: '#ffffff',
+                },
+              }}
+            />
+          </View>
+        </SWRConfig>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

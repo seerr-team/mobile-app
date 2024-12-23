@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 // import ShowMoreCard from '@/components/MediaSlider/ShowMoreCard';
+import ThemedText from '@/components/Common/ThemedText';
 import PersonCard from '@/components/PersonCard';
 import Slider from '@/components/Slider';
 import TitleCard from '@/components/TitleCard';
@@ -11,14 +13,13 @@ import type {
   PersonResult,
   TvResult,
 } from '@/jellyseerr/server/models/Search';
+import type { RootState } from '@/store';
+import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
-import { useEffect, useState } from 'react';
-// import useSWRInfinite from 'swr/infinite';
-import ThemedText from '@/components/Common/ThemedText';
-import type { RootState } from '@/store';
 import { Pressable, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import useSWRInfinite from 'swr/infinite';
 
 interface MixedResult {
   page: number;
@@ -51,41 +52,32 @@ const MediaSlider = ({
     (state: RootState) => state.appSettings.serverUrl
   );
   const { hasPermission } = useUser();
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
-  // const { data, error, setSize, size } = useSWRInfinite<MixedResult>(
-  //   (pageIndex: number, previousPageData: MixedResult | null) => {
-  //     if (previousPageData && pageIndex + 1 > previousPageData.totalPages) {
-  //       return null;
-  //     }
-
-  //     return `${serverUrl}${url}?page=${pageIndex + 1}${
-  //       extraParams ? `&${extraParams}` : ''
-  //     }`;
-  //   },
-  //   {
-  //     initialSize: 2,
-  //   }
-  // );
-
-  const [data, setData] = useState<MixedResult[] | null>(null);
-  const [error, setError] = useState('');
-
-  const [size, setSize] = useState(2);
-
-  async function fetchDiscover() {
-    try {
-      const response = await fetch(
-        `${serverUrl}${url}?page=${size}${extraParams ? `&${extraParams}` : ''}`
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch discover data');
+  const { data, error, setSize, size } = useSWRInfinite<MixedResult>(
+    (pageIndex: number, previousPageData: MixedResult | null) => {
+      if (!isVisible && !hasBeenVisible) {
+        return null;
       }
-      const newData = await response.json();
-      setData([...(data || []), newData]);
-    } catch (error) {
-      setError((error as Error).message);
+      if (previousPageData && pageIndex + 1 > previousPageData.totalPages) {
+        return null;
+      }
+
+      return `${serverUrl}${url}?page=${pageIndex + 1}${
+        extraParams ? `&${extraParams}` : ''
+      }`;
+    },
+    {
+      initialSize: 2,
     }
-  }
+  );
+
+  useEffect(() => {
+    if (data && !hasBeenVisible) {
+      setHasBeenVisible(true);
+    }
+  }, [data]);
 
   let titles = (data ?? []).reduce(
     (a, v) => [...a, ...v.results],
@@ -100,26 +92,6 @@ const MediaSlider = ({
         i.mediaInfo?.status !== MediaStatus.PARTIALLY_AVAILABLE
     );
   }
-
-  useEffect(() => {
-    fetchDiscover();
-  }, []);
-
-  useEffect(() => {
-    if (
-      titles.length < 24 &&
-      size < 5 &&
-      (data?.[0]?.totalResults ?? 0) > size * 20
-    ) {
-      setSize(size + 1);
-    }
-
-    if (onNewTitles) {
-      // We aren't reporting all titles. We just want to know if there are any titles
-      // at all for our purposes.
-      onNewTitles(titles.length);
-    }
-  }, [titles, setSize, size, data, onNewTitles]);
 
   if (hideWhenEmpty && (data?.[0].results ?? []).length === 0) {
     return null;
@@ -199,7 +171,7 @@ const MediaSlider = ({
   // }
 
   return (
-    <>
+    <VisibilitySensor onChange={setIsVisible}>
       <View className="mb-4 mt-6 px-4">
         {linkUrl ? (
           <Link href={linkUrl as any}>
@@ -224,7 +196,7 @@ const MediaSlider = ({
         isEmpty={false}
         items={finalTitles}
       />
-    </>
+    </VisibilitySensor>
   );
 };
 

@@ -1,4 +1,6 @@
 import { MediaStatus } from '@/jellyseerr/server/constants/media';
+import type { RootState } from '@/store';
+import { useSelector } from 'react-redux';
 import useSWRInfinite from 'swr/infinite';
 import useSettings from './useSettings';
 
@@ -54,6 +56,9 @@ const useDiscover = <
   options?: O,
   { hideAvailable = true } = {}
 ): DiscoverResult<T, S> => {
+  const serverUrl = useSelector(
+    (state: RootState) => state.appSettings.serverUrl
+  );
   const settings = useSettings();
   const { data, error, size, setSize, isValidating, mutate } = useSWRInfinite<
     BaseSearchResult<T> & S
@@ -71,7 +76,7 @@ const useDiscover = <
       const finalQueryString = Object.keys(params)
         .map(
           (paramKey) =>
-            `${paramKey}=${encodeURIExtraParams(params[paramKey] as string)}`
+            `${serverUrl}${paramKey}=${encodeURIExtraParams(params[paramKey] as string)}`
         )
         .join('&');
 

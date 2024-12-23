@@ -1,4 +1,4 @@
-import CachedImage, { blurhash } from '@/components/Common/CachedImage';
+import CachedImage from '@/components/Common/CachedImage';
 import ThemedText from '@/components/Common/ThemedText';
 import StatusBadgeMini from '@/components/StatusBadgeMini';
 import ErrorCard from '@/components/TitleCard/ErrorCard';
@@ -92,13 +92,11 @@ const TitleCard = ({
             ? `https://image.tmdb.org/t/p/w300_and_h450_face${image}`
             : `/images/overseerr_poster_not_found_logo_top.png`
         }
-        placeholder={{ blurhash, width: 150, height: 225 }}
+        placeholder={null}
         placeholderContentFit="cover"
       />
     </View>
   );
 };
-
-export { Placeholder };
 
 export default withProperties(TitleCard, { Placeholder, ErrorCard });

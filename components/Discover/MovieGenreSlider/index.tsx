@@ -5,12 +5,14 @@ import Slider from '@/components/Slider';
 import type { GenreSliderItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
 import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.Discover.MovieGenreSlider');
 
@@ -19,30 +21,27 @@ const MovieGenreSlider = () => {
   const serverUrl = useSelector(
     (state: RootState) => state.appSettings.serverUrl
   );
-  const [data, setData] = useState<GenreSliderItem[] | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
-  async function fetchData() {
-    try {
-      const response = await fetch(
-        serverUrl + '/api/v1/discover/genreslider/movie'
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const result = await response.json();
-      setData(result);
-    } catch (err) {
-      setError(err as Error);
+  const { data, error } = useSWR<GenreSliderItem[]>(
+    isVisible || hasBeenVisible
+      ? serverUrl + `/api/v1/discover/genreslider/movie`
+      : null,
+    {
+      refreshInterval: 0,
+      revalidateOnFocus: false,
     }
-  }
+  );
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (data && !hasBeenVisible) {
+      setHasBeenVisible(true);
+    }
+  }, [data]);
 
   return (
-    <>
+    <VisibilitySensor onChange={setIsVisible}>
       <View className="slider-header px-4">
         <Link href={'/discover/movies/genres' as any} className="slider-title">
           <Pressable>
@@ -72,7 +71,7 @@ const MovieGenreSlider = () => {
         placeholder={<GenreCard.Placeholder />}
         emptyMessage=""
       />
-    </>
+    </VisibilitySensor>
   );
 };
 

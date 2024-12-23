@@ -5,12 +5,14 @@ import { useUser } from '@/hooks/useUser';
 import type { WatchlistItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
 import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 
 const messages = getJellyseerrMessages(
   'components.Discover.PlexWatchlistSlider'
@@ -22,31 +24,28 @@ const PlexWatchlistSlider = () => {
     (state: RootState) => state.appSettings.serverUrl
   );
   const { user } = useUser();
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
-  const [watchlistItems, setWatchlistItems] = useState<{
+  const { data: watchlistItems, error: watchlistError } = useSWR<{
     page: number;
     totalPages: number;
     totalResults: number;
     results: WatchlistItem[];
-  } | null>(null);
-  const [watchlistError, setWatchlistError] = useState<Error | null>(null);
-
-  async function fetchWatchlistItems() {
-    try {
-      const response = await fetch(serverUrl + '/api/v1/discover/watchlist');
-      if (!response.ok) {
-        throw new Error('Failed to fetch watchlist items');
-      }
-      const data = await response.json();
-      setWatchlistItems(data);
-    } catch (error) {
-      setWatchlistError(error as Error);
+  }>(
+    isVisible || hasBeenVisible
+      ? serverUrl + '/api/v1/discover/watchlist'
+      : null,
+    {
+      revalidateOnMount: true,
     }
-  }
+  );
 
   useEffect(() => {
-    fetchWatchlistItems();
-  }, []);
+    if (watchlistItems && !hasBeenVisible) {
+      setHasBeenVisible(true);
+    }
+  }, [watchlistItems]);
 
   if (
     (watchlistItems &&
@@ -59,7 +58,7 @@ const PlexWatchlistSlider = () => {
   }
 
   return (
-    <>
+    <VisibilitySensor onChange={setIsVisible}>
       <View className="slider-header px-4">
         <Link href={'/discover/watchlist' as any} className="slider-title">
           <Pressable>
@@ -101,7 +100,7 @@ const PlexWatchlistSlider = () => {
           />
         ))}
       />
-    </>
+    </VisibilitySensor>
   );
 };
 

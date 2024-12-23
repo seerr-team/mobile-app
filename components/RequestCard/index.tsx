@@ -4,6 +4,7 @@ import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 // import RequestModal from '@/components/RequestModal';
 import ThemedText from '@/components/Common/ThemedText';
 import StatusBadge from '@/components/StatusBadge';
+import { refreshIntervalHelper } from '@/hooks/refreshIntervalHelper';
 import useDeepLinks from '@/hooks/useDeepLinks';
 import { Permission, useUser } from '@/hooks/useUser';
 import { MediaRequestStatus } from '@/jellyseerr/server/constants/media';
@@ -14,10 +15,11 @@ import type { TvDetails } from '@/jellyseerr/server/models/Tv';
 import type { RootState } from '@/store';
 import globalMessages from '@/utils/globalMessages';
 import { Link } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.RequestCard');
 
@@ -52,7 +54,7 @@ const RequestCardError = ({ requestData }: RequestCardErrorProps) => {
 
   return (
     <View
-      className="relative flex w-72 flex-row overflow-hidden rounded-xl bg-gray-800 p-4 text-gray-400 shadow ring-1 ring-red-500 sm:w-96"
+      className="relative flex w-72 flex-row overflow-hidden rounded-xl bg-gray-700 p-4 text-gray-400 shadow ring-1 ring-red-500 sm:w-96"
       data-testid="request-card"
     >
       <View className="w-20 sm:w-28">
@@ -166,40 +168,26 @@ const RequestCard = ({ request, onTitleData }: RequestCardProps) => {
       ? `/api/v1/movie/${request.media.tmdbId}`
       : `/api/v1/tv/${request.media.tmdbId}`;
 
-  const [title, setTitle] = useState<MovieDetails | TvDetails | null>(null);
-  const [requestData, setRequestData] =
-    useState<NonFunctionProperties<MediaRequest> | null>(request);
-  const [error, setError] = useState<Error | null>(null);
-  const [requestError, setRequestError] = useState<Error | null>(null);
-
-  const fetchTitle = async () => {
-    try {
-      const response = await fetch(serverUrl + url);
-      if (!response.ok) throw new Error('Failed to fetch title');
-      const data = await response.json();
-      setTitle(data);
-    } catch (err) {
-      setError(err as Error);
+  const { data: title, error } = useSWR<MovieDetails | TvDetails>(
+    serverUrl + url
+  );
+  const {
+    data: requestData,
+    error: requestError,
+    mutate: revalidate,
+  } = useSWR<NonFunctionProperties<MediaRequest>>(
+    `/api/v1/request/${request.id}`,
+    {
+      fallbackData: request,
+      refreshInterval: refreshIntervalHelper(
+        {
+          downloadStatus: request.media.downloadStatus,
+          downloadStatus4k: request.media.downloadStatus4k,
+        },
+        15000
+      ),
     }
-  };
-
-  const fetchRequestData = async () => {
-    try {
-      const response = await fetch(serverUrl + `/api/v1/request/${request.id}`);
-      if (!response.ok) throw new Error('Failed to fetch request data');
-      const data = await response.json();
-      setRequestData(data);
-    } catch (err) {
-      setRequestError(err as Error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTitle();
-    fetchRequestData();
-    const interval = setInterval(fetchRequestData, 15000);
-    return () => clearInterval(interval);
-  }, []);
+  );
 
   const { mediaUrl: plexUrl, mediaUrl4k: plexUrl4k } = useDeepLinks({
     mediaUrl: requestData?.media?.mediaUrl,
@@ -241,7 +229,7 @@ const RequestCard = ({ request, onTitleData }: RequestCardProps) => {
         }}
       /> */}
       <View
-        className="relative flex w-72 flex-row overflow-hidden rounded-xl border border-gray-700 bg-gray-800 bg-cover bg-center pl-3 pr-1 pt-3 text-gray-400 shadow ring-1 sm:w-96"
+        className="relative flex w-72 flex-row overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center pl-3 pr-1 pt-3 text-gray-400 shadow ring-1 sm:w-96"
         data-testid="request-card"
       >
         {title.backdropPath && (

@@ -29,7 +29,7 @@ const PersonCard = ({
       <View
         className={`relative ${
           canExpand ? 'w-full' : 'w-36 sm:w-36 md:w-44'
-        } scale-100 transform-gpu cursor-pointer rounded-xl bg-gray-800 text-white shadow ring-1 ring-gray-700 transition duration-150 ease-in-out`}
+        } scale-100 transform-gpu cursor-pointer rounded-xl bg-gray-700 text-white shadow ring-1 ring-gray-700 transition duration-150 ease-in-out`}
       >
         <View style={{ paddingBottom: '150%' }}>
           <View className="absolute inset-0 flex h-full w-full flex-col items-center p-2">

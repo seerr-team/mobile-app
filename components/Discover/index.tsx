@@ -12,10 +12,11 @@ import { encodeURIExtraParams } from '@/hooks/useDiscover';
 import { DiscoverSliderType } from '@/jellyseerr/server/constants/discover';
 import type DiscoverSlider from '@/jellyseerr/server/entity/DiscoverSlider';
 import type { RootState } from '@/store';
-import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 
 const Discover = () => {
   const intl = useIntl();
@@ -23,27 +24,11 @@ const Discover = () => {
     (state: RootState) => state.appSettings.serverUrl
   );
 
-  const [discoverData, setDiscoverData] = useState<DiscoverSlider[] | null>(
-    null
-  );
-  const [discoverError, setDiscoverError] = useState('');
-
-  const fetchDiscover = async () => {
-    try {
-      const response = await fetch(serverUrl + '/api/v1/settings/discover');
-      if (!response.ok) {
-        throw new Error('Failed to fetch discover data');
-      }
-      const data = await response.json();
-      setDiscoverData(data);
-    } catch (error) {
-      setDiscoverError((error as Error).message);
-    }
-  };
-
-  useEffect(() => {
-    fetchDiscover();
-  }, [serverUrl]);
+  const {
+    data: discoverData,
+    error: discoverError,
+    mutate,
+  } = useSWR<DiscoverSlider[]>(serverUrl + '/api/v1/settings/discover');
 
   const now = new Date();
   const offset = now.getTimezoneOffset();
@@ -52,11 +37,15 @@ const Discover = () => {
     .split('T')[0];
 
   if (!discoverData && !discoverError) {
-    return <LoadingSpinner />;
+    return (
+      <View className="flex flex-1 flex-col justify-center">
+        <LoadingSpinner />
+      </View>
+    );
   }
 
   return (
-    <>
+    <ScrollView className="-mt-4 h-screen" contentContainerClassName="pb-6">
       {discoverData?.map((slider, index) => {
         let sliderComponent: React.ReactNode;
 
@@ -76,7 +65,7 @@ const Discover = () => {
                 sliderKey="trending"
                 title={intl.formatMessage(sliderTitles.trending)}
                 url="/api/v1/discover/trending"
-                linkUrl="/discover/trending"
+                linkUrl="(tabs)/discover_trending"
               />
             );
             break;
@@ -257,7 +246,7 @@ const Discover = () => {
           <View key={`discover-slider-${slider.id}`}>{sliderComponent}</View>
         );
       })}
-    </>
+    </ScrollView>
   );
 };
 

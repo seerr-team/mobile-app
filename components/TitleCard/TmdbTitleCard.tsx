@@ -3,9 +3,9 @@ import { Permission, useUser } from '@/hooks/useUser';
 import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
 import type { TvDetails } from '@/jellyseerr/server/models/Tv';
 import type { RootState } from '@/store';
-import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 
 export interface TmdbTitleCardProps {
   id: number;
@@ -34,28 +34,12 @@ const TmdbTitleCard = ({
     (state: RootState) => state.appSettings.serverUrl
   );
   const { hasPermission } = useUser();
-  const [title, setTitle] = useState<MovieDetails | TvDetails | null>(null);
-  const [error, setError] = useState<Error | null>(null);
 
   const url =
     type === 'movie' ? `/api/v1/movie/${tmdbId}` : `/api/v1/tv/${tmdbId}`;
-
-  async function fetchTitle() {
-    try {
-      const response = await fetch(serverUrl + url);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setTitle(data);
-    } catch (error) {
-      setError(error as Error);
-    }
-  }
-
-  useEffect(() => {
-    fetchTitle();
-  }, [serverUrl, url]);
+  const { data: title, error } = useSWR<MovieDetails | TvDetails>(
+    serverUrl + url
+  );
 
   if (!title && !error) {
     return (
