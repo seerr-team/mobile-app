@@ -76,11 +76,11 @@ const useDiscover = <
       const finalQueryString = Object.keys(params)
         .map(
           (paramKey) =>
-            `${serverUrl}${paramKey}=${encodeURIExtraParams(params[paramKey] as string)}`
+            `${paramKey}=${encodeURIExtraParams(params[paramKey] as string)}`
         )
         .join('&');
 
-      return `${endpoint}?${finalQueryString}`;
+      return `${serverUrl}${endpoint}?${finalQueryString}`;
     },
     {
       initialSize: 3,

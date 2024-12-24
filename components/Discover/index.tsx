@@ -45,7 +45,7 @@ const Discover = () => {
   }
 
   return (
-    <ScrollView className="-mt-4 h-screen" contentContainerClassName="pb-6">
+    <ScrollView className="mt-16 h-screen" contentContainerClassName="pb-6">
       {discoverData?.map((slider, index) => {
         let sliderComponent: React.ReactNode;
 

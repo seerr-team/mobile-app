@@ -1,19 +1,17 @@
-import Header from '@app/components/Common/Header';
-import ListView from '@app/components/Common/ListView';
-import PageTitle from '@app/components/Common/PageTitle';
-import useDiscover from '@app/hooks/useDiscover';
-import Error from '@app/pages/_error';
-import defineMessages from '@app/utils/defineMessages';
+import Header from '@/components/Common/Header';
+import ErrorPage from '@/components/ErrorPage';
+import ListView from '@/components/ListView';
+import useDiscover from '@/hooks/useDiscover';
 import type {
   MovieResult,
   PersonResult,
   TvResult,
-} from '@server/models/Search';
+} from '@/jellyseerr/server/models/Search';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 
-const messages = defineMessages('components.Discover', {
-  trending: 'Trending',
-});
+const messages = getJellyseerrMessages('components.Discover');
 
 const Trending = () => {
   const intl = useIntl();
@@ -30,15 +28,12 @@ const Trending = () => {
   );
 
   if (error) {
-    return <Error statusCode={500} />;
+    return <ErrorPage statusCode={500} />;
   }
 
   return (
-    <>
-      <PageTitle title={intl.formatMessage(messages.trending)} />
-      <div className="mb-5 mt-1">
-        <Header>{intl.formatMessage(messages.trending)}</Header>
-      </div>
+    <View className="mt-12 mb-16">
+      <Header>{intl.formatMessage(messages.trending)}</Header>
       <ListView
         items={titles}
         isEmpty={isEmpty}
@@ -48,7 +43,7 @@ const Trending = () => {
         isReachingEnd={isReachingEnd}
         onScrollBottom={fetchMore}
       />
-    </>
+    </View>
   );
 };
 

@@ -83,7 +83,7 @@ const RequestCardError = ({ requestData }: RequestCardErrorProps) => {
                   { type: 'or' }
                 ) && (
                   <View className="card-field !hidden sm:!block">
-                    <Link href={`/users/${requestData.requestedBy.id}` as any}>
+                    <Link href={`/users/${requestData.requestedBy.id}` as any} asChild>
                       <Pressable className="group flex flex-row items-center">
                         <CachedImage
                           type="avatar"

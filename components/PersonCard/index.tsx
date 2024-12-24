@@ -1,7 +1,7 @@
 import CachedImage from '@/components/Common/CachedImage';
-import { UserCircle } from '@nandorojo/heroicons/24/outline';
+import { UserCircle } from '@nandorojo/heroicons/24/solid';
 import { Link } from 'expo-router';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import ThemedText from '../Common/ThemedText';
 
 interface PersonCardProps {
@@ -22,54 +22,44 @@ const PersonCard = ({
   return (
     <Link
       href={`/person/${personId}` as any}
-      className={canExpand ? 'w-full' : 'w-36 sm:w-36 md:w-44'}
-      role="link"
-      tabIndex={0}
+      asChild
     >
-      <View
-        className={`relative ${
-          canExpand ? 'w-full' : 'w-36 sm:w-36 md:w-44'
-        } scale-100 transform-gpu cursor-pointer rounded-xl bg-gray-700 text-white shadow ring-1 ring-gray-700 transition duration-150 ease-in-out`}
+      <Pressable
+        className="overflow-hidden rounded-xl border border-gray-700 bg-gray-700 flex items-center"
+        style={!canExpand ? { width: 150, height: 225 } : { aspectRatio: '2 / 3' }}
       >
-        <View style={{ paddingBottom: '150%' }}>
-          <View className="absolute inset-0 flex h-full w-full flex-col items-center p-2">
-            <View className="relative mb-4 mt-2 flex h-1/2 w-full justify-center">
-              {profilePath ? (
-                <View className="relative h-full w-3/4 overflow-hidden rounded-full ring-1 ring-gray-700">
-                  <CachedImage
-                    type="tmdb"
-                    src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${profilePath}`}
-                    alt=""
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                </View>
-              ) : (
-                <UserCircle className="h-full" />
-              )}
-            </View>
-            <View className="w-full truncate text-center font-bold">
-              <ThemedText>{name}</ThemedText>
-            </View>
-            {subName && (
-              <View
-                className="overflow-hidden whitespace-normal text-center text-sm text-gray-300"
+        <View className="flex items-center mt-4 p-2 w-32 h-32">
+          {profilePath ? (
+            <View className="w-full overflow-hidden rounded-full border border-gray-700">
+              <CachedImage
+                type="tmdb"
+                src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${profilePath}`}
+                alt=""
                 style={{
-                  overflow: 'hidden',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
                 }}
-              >
-                <ThemedText>{subName}</ThemedText>
-              </View>
-            )}
-            <View
-              className={`absolute bottom-0 left-0 right-0 h-12 rounded-b-xl bg-gradient-to-t from-gray-900`}
-            />
-          </View>
+              />
+            </View>
+          ) : (
+            <UserCircle width={128} height={128} color="#ffffff" />
+          )}
         </View>
-      </View>
+        <View className="flex w-full justify-between mt-8 p-2">
+          <ThemedText className="truncate text-center font-bold">{name}</ThemedText>
+          {subName && (
+            <View
+              className="overflow-hidden"
+              style={{
+                overflow: 'hidden',
+              }}
+            >
+              <ThemedText className="whitespace-normal text-center text-sm text-gray-300">{subName}</ThemedText>
+            </View>
+          )}
+        </View>
+      </Pressable>
     </Link>
   );
 };

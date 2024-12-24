@@ -49,7 +49,7 @@ const TitleCard = ({
   return (
     <View
       className="overflow-hidden rounded-xl border border-gray-700 bg-gray-700"
-      style={{ width: 150, height: 225 }}
+      style={!canExpand ? { width: 150, height: 225 } : {}}
     >
       <View className="absolute flex w-full flex-row justify-between p-2">
         <View
@@ -83,9 +83,8 @@ const TitleCard = ({
       </View>
       <CachedImage
         type="tmdb"
-        style={{ width: 150, height: 225 }}
+        style={canExpand ? { width: '100%', aspectRatio: '2/3' } : { width: 150, height: 225 }}
         contentFit="cover"
-        transition={200}
         alt=""
         src={
           image

@@ -50,10 +50,10 @@ const RecentlyAddedSlider = () => {
 
   return (
     <VisibilitySensor onChange={setIsVisible}>
-      <View className="slider-header px-4">
-        <Link href="/requests?filter=all" className="slider-title">
+      <View className="mb-4 mt-6 px-4">
+        <Link href="/requests?filter=all" asChild>
           <Pressable>
-            <View className="flex min-w-0 flex-row items-center gap-2 pr-16">
+            <View className="flex min-w-0 flex-row items-center gap-2">
               <ThemedText className="truncate text-2xl font-bold">
                 {intl.formatMessage(messages.recentlyAdded)}
               </ThemedText>

@@ -44,7 +44,9 @@ export default function Login() {
   }, []);
 
   if (!loaded) {
-    return <LoadingSpinner />;
+    return <View className="h-screen flex justify-center items-center">
+      <LoadingSpinner />
+    </View>;
   }
 
   return (

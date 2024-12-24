@@ -42,6 +42,7 @@ export default function TabLayout() {
           },
           sceneStyle: {
             backgroundColor: '#111827',
+            marginTop: -64,
           },
         }}
       >
@@ -91,6 +92,12 @@ export default function TabLayout() {
                 )}
               </View>
             ),
+          }}
+        />
+        <Tabs.Screen
+          name="discover_trending"
+          options={{
+            href: null,
           }}
         />
         <Tabs.Screen
