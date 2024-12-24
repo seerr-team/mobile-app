@@ -9,26 +9,21 @@ import StudioSlider from '@/components/Discover/StudioSlider';
 import TvGenreSlider from '@/components/Discover/TvGenreSlider';
 import MediaSlider from '@/components/MediaSlider';
 import { encodeURIExtraParams } from '@/hooks/useDiscover';
+import useServerUrl from '@/hooks/useServerUrl';
 import { DiscoverSliderType } from '@/jellyseerr/server/constants/discover';
 import type DiscoverSlider from '@/jellyseerr/server/entity/DiscoverSlider';
-import type { RootState } from '@/store';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 const Discover = () => {
   const intl = useIntl();
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
 
-  const {
-    data: discoverData,
-    error: discoverError,
-    mutate,
-  } = useSWR<DiscoverSlider[]>(serverUrl + '/api/v1/settings/discover');
+  const { data: discoverData, error: discoverError } = useSWR<DiscoverSlider[]>(
+    serverUrl + '/api/v1/settings/discover'
+  );
 
   const now = new Date();
   const offset = now.getTimezoneOffset();

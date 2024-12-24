@@ -1,7 +1,6 @@
+import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
-import type { RootState } from '@/store';
 import { Image, type ImageProps } from 'expo-image';
-import { useSelector } from 'react-redux';
 
 export type CachedImageProps = ImageProps & {
   src: string;
@@ -16,9 +15,7 @@ export const blurhash =
  * we want to offer the option to locally cache images.
  **/
 const CachedImage = ({ src, type, ...props }: CachedImageProps) => {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const { currentSettings } = useSettings();
 
   let imageUrl: string;

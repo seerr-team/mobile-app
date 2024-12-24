@@ -1,22 +1,19 @@
 import Button from '@/components/Common/Button';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
-import type { RootState } from '@/store';
+import useServerUrl from '@/hooks/useServerUrl';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
 import { router } from 'expo-router';
 import { Formik } from 'formik';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
-import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 const messages = getJellyseerrMessages('components.Login');
 
 export default function JellyfinLogin() {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const intl = useIntl();
 
   const LoginSchema = Yup.object().shape({
@@ -51,7 +48,7 @@ export default function JellyfinLogin() {
         } catch (e) {
           toast.error(
             intl.formatMessage(
-              (e as Error).message == 'Request failed with status code 401'
+              (e as Error).message === 'Request failed with status code 401'
                 ? messages.credentialerror
                 : messages.loginerror
             )

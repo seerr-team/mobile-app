@@ -1,9 +1,9 @@
+import ThemedText from '@/components/Common/ThemedText';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
-import ThemedText from '../Common/ThemedText';
 
 interface ErrorProps {
   statusCode?: number;

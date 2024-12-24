@@ -20,7 +20,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider, useDispatch } from 'react-redux';
 import { SWRConfig } from 'swr';
 
-import '../jellyseerr/src/styles/globals.css';
+import '@/jellyseerr/src/styles/globals.css';
 
 configureReanimatedLogger({
   strict: false,
@@ -31,6 +31,7 @@ SplashScreen.preventAutoHideAsync();
 function RootLayout() {
   const dispatch = useDispatch();
   const [fontLoaded] = useFonts({
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
   const settings = useSettings();
@@ -52,7 +53,7 @@ function RootLayout() {
         router.replace('/');
       }
     })();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (settings.currentSettings) {

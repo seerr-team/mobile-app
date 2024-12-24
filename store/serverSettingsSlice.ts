@@ -1,5 +1,6 @@
-import { PublicSettingsResponse } from '@/jellyseerr/server/interfaces/api/settingsInterfaces';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { PublicSettingsResponse } from '@/jellyseerr/server/interfaces/api/settingsInterfaces';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface ServerSettingsState {
   settings: PublicSettingsResponse | null;

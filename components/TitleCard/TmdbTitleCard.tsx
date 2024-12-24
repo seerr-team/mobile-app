@@ -1,10 +1,9 @@
 import TitleCard from '@/components/TitleCard';
+import useServerUrl from '@/hooks/useServerUrl';
 import { Permission, useUser } from '@/hooks/useUser';
 import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
 import type { TvDetails } from '@/jellyseerr/server/models/Tv';
-import type { RootState } from '@/store';
 import { View } from 'react-native';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 export interface TmdbTitleCardProps {
@@ -30,9 +29,7 @@ const TmdbTitleCard = ({
   isAddedToWatchlist = false,
   mutateParent,
 }: TmdbTitleCardProps) => {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const { hasPermission } = useUser();
 
   const url =

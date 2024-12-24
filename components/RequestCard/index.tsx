@@ -6,19 +6,18 @@ import ThemedText from '@/components/Common/ThemedText';
 import StatusBadge from '@/components/StatusBadge';
 import { refreshIntervalHelper } from '@/hooks/refreshIntervalHelper';
 import useDeepLinks from '@/hooks/useDeepLinks';
+import useServerUrl from '@/hooks/useServerUrl';
 import { Permission, useUser } from '@/hooks/useUser';
 import { MediaRequestStatus } from '@/jellyseerr/server/constants/media';
 import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@/jellyseerr/server/interfaces/api/common';
 import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
 import type { TvDetails } from '@/jellyseerr/server/models/Tv';
-import type { RootState } from '@/store';
 import globalMessages from '@/utils/globalMessages';
 import { Link } from 'expo-router';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.RequestCard');
@@ -83,7 +82,10 @@ const RequestCardError = ({ requestData }: RequestCardErrorProps) => {
                   { type: 'or' }
                 ) && (
                   <View className="card-field !hidden sm:!block">
-                    <Link href={`/users/${requestData.requestedBy.id}` as any} asChild>
+                    <Link
+                      href={`/users/${requestData.requestedBy.id}` as any}
+                      asChild
+                    >
                       <Pressable className="group flex flex-row items-center">
                         <CachedImage
                           type="avatar"
@@ -157,9 +159,7 @@ interface RequestCardProps {
 }
 
 const RequestCard = ({ request, onTitleData }: RequestCardProps) => {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const intl = useIntl();
   const { hasPermission } = useUser();
   // const [showEditModal, setShowEditModal] = useState(false);
@@ -171,23 +171,18 @@ const RequestCard = ({ request, onTitleData }: RequestCardProps) => {
   const { data: title, error } = useSWR<MovieDetails | TvDetails>(
     serverUrl + url
   );
-  const {
-    data: requestData,
-    error: requestError,
-    mutate: revalidate,
-  } = useSWR<NonFunctionProperties<MediaRequest>>(
-    `/api/v1/request/${request.id}`,
-    {
-      fallbackData: request,
-      refreshInterval: refreshIntervalHelper(
-        {
-          downloadStatus: request.media.downloadStatus,
-          downloadStatus4k: request.media.downloadStatus4k,
-        },
-        15000
-      ),
-    }
-  );
+  const { data: requestData, error: requestError } = useSWR<
+    NonFunctionProperties<MediaRequest>
+  >(`${serverUrl}/api/v1/request/${request.id}`, {
+    fallbackData: request,
+    refreshInterval: refreshIntervalHelper(
+      {
+        downloadStatus: request.media.downloadStatus,
+        downloadStatus4k: request.media.downloadStatus4k,
+      },
+      15000
+    ),
+  });
 
   const { mediaUrl: plexUrl, mediaUrl4k: plexUrl4k } = useDeepLinks({
     mediaUrl: requestData?.media?.mediaUrl,

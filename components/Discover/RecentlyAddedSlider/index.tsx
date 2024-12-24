@@ -1,9 +1,9 @@
 import ThemedText from '@/components/Common/ThemedText';
 import Slider from '@/components/Slider';
 import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
+import useServerUrl from '@/hooks/useServerUrl';
 import { Permission, useUser } from '@/hooks/useUser';
 import type { MediaResultsResponse } from '@/jellyseerr/server/interfaces/api/mediaInterfaces';
-import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
@@ -11,7 +11,6 @@ import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages(
@@ -19,9 +18,7 @@ const messages = getJellyseerrMessages(
 );
 
 const RecentlyAddedSlider = () => {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const intl = useIntl();
   const { hasPermission } = useUser();
   const [isVisible, setIsVisible] = useState(false);
@@ -37,7 +34,7 @@ const RecentlyAddedSlider = () => {
     if (media && !hasBeenVisible) {
       setHasBeenVisible(true);
     }
-  }, [media]);
+  }, [media, hasBeenVisible]);
 
   if (
     (media && !media.results.length && !mediaError) ||

@@ -1,23 +1,20 @@
 import Button from '@/components/Common/Button';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
-import type { RootState } from '@/store';
+import useServerUrl from '@/hooks/useServerUrl';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
 import { router } from 'expo-router';
 import { Formik } from 'formik';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
-import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 const messages = getJellyseerrMessages('components.Login');
 
 const LocalLogin = () => {
   const intl = useIntl();
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required(
@@ -49,7 +46,7 @@ const LocalLogin = () => {
           });
           if (!res.ok) throw new Error();
           router.replace('/(tabs)');
-        } catch (e) {
+        } catch {
           toast.error(intl.formatMessage(messages.loginerror));
         }
       }}

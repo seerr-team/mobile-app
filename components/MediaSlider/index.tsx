@@ -4,6 +4,7 @@ import ThemedText from '@/components/Common/ThemedText';
 import PersonCard from '@/components/PersonCard';
 import Slider from '@/components/Slider';
 import TitleCard from '@/components/TitleCard';
+import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
 import { MediaStatus } from '@/jellyseerr/server/constants/media';
@@ -13,12 +14,10 @@ import type {
   PersonResult,
   TvResult,
 } from '@/jellyseerr/server/models/Search';
-import type { RootState } from '@/store';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
 import { Pressable, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import useSWRInfinite from 'swr/infinite';
 
 interface MixedResult {
@@ -48,14 +47,12 @@ const MediaSlider = ({
   onNewTitles,
 }: MediaSliderProps) => {
   const settings = useSettings();
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const { hasPermission } = useUser();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
-  const { data, error, setSize, size } = useSWRInfinite<MixedResult>(
+  const { data, error } = useSWRInfinite<MixedResult>(
     (pageIndex: number, previousPageData: MixedResult | null) => {
       if (!isVisible && !hasBeenVisible) {
         return null;
@@ -77,7 +74,7 @@ const MediaSlider = ({
     if (data && !hasBeenVisible) {
       setHasBeenVisible(true);
     }
-  }, [data]);
+  }, [data, hasBeenVisible]);
 
   let titles = (data ?? []).reduce(
     (a, v) => [...a, ...v.results],

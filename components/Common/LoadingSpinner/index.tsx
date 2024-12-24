@@ -1,7 +1,7 @@
+import ThemedText from '@/components/Common/ThemedText';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useEffect, useRef } from 'react';
 import { Animated, Easing } from 'react-native';
-import ThemedText from '../ThemedText';
 
 const LoadingSpinner = () => {
   const spinValue = useRef(new Animated.Value(0)).current;

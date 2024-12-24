@@ -1,7 +1,7 @@
 import Button from '@/components/Common/Button';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
-import type { RootState } from '@/store';
+import useServerUrl from '@/hooks/useServerUrl';
 import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import { getServerSettings } from '@/utils/serverSettings';
@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 enum ErrorType {
   NoServerUrl,
@@ -18,9 +18,7 @@ enum ErrorType {
 }
 
 export default function Setup() {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const dispatch = useDispatch();
   const [error, setError] = useState<ErrorType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,6 +37,7 @@ export default function Setup() {
         <Image
           className="h-64 max-w-full object-cover"
           style={{ resizeMode: 'contain' }}
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           source={require('@/assets/images/logo-stacked.png')}
         />
       </View>

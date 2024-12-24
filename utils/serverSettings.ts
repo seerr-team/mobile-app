@@ -15,7 +15,9 @@ export async function getServerSettings(
     if (!res.ok) throw new Error('Server not reachable');
     const data = await res.json();
     return data;
-  } catch (e) {}
+  } catch {
+    /* empty */
+  }
   return null;
 }
 

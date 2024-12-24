@@ -1,24 +1,21 @@
 import Accordion from '@/components/Common/Accordion';
+import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ThemedText from '@/components/Common/ThemedText';
+import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { MediaServerType } from '@/jellyseerr/server/constants/server';
-import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Image, Pressable, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import LoadingSpinner from '../Common/LoadingSpinner';
 import JellyfinLogin from './JellyfinLogin';
 import LocalLogin from './LocalLogin';
 
 const messages = getJellyseerrMessages('components.Login');
 
 export default function Login() {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const settings = useSettings();
   const intl = useIntl();
   const [loaded, setLoaded] = useState(false);
@@ -41,12 +38,14 @@ export default function Login() {
         setLoaded(true);
       }
     })();
-  }, []);
+  }, [serverUrl]);
 
   if (!loaded) {
-    return <View className="h-screen flex justify-center items-center">
-      <LoadingSpinner />
-    </View>;
+    return (
+      <View className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </View>
+    );
   }
 
   return (
@@ -55,6 +54,7 @@ export default function Login() {
         <Image
           className="h-64 max-w-full object-cover"
           style={{ resizeMode: 'contain' }}
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           source={require('@/assets/images/logo-stacked.png')}
         />
       </View>
@@ -72,7 +72,7 @@ export default function Login() {
                 <ThemedText
                   className={`text-center font-bold text-gray-400 ${openIndexes.includes(0) ? 'text-indigo-500' : ''}`}
                 >
-                  {settings.currentSettings.mediaServerType ==
+                  {settings.currentSettings.mediaServerType ===
                   MediaServerType.PLEX
                     ? intl.formatMessage(messages.signinwithplex)
                     : intl.formatMessage(

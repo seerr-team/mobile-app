@@ -1,3 +1,4 @@
+import ThemedText from '@/components/Common/ThemedText';
 import PersonCard from '@/components/PersonCard';
 import TitleCard from '@/components/TitleCard';
 import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
@@ -13,7 +14,6 @@ import type {
 import globalMessages from '@/utils/globalMessages';
 import { useIntl } from 'react-intl';
 import { FlatList, View } from 'react-native';
-import ThemedText from '../Common/ThemedText';
 
 type ListViewProps = {
   items?: (TvResult | MovieResult | PersonResult | CollectionResult)[];
@@ -158,15 +158,18 @@ const ListView = ({
               }
 
               return (
-                <View className="flex-1 m-2" key={`${title.id}-${index}`}>{titleCard}</View>
+                <View className="m-2 flex-1" key={`${title.id}-${index}`}>
+                  {titleCard}
+                </View>
               );
             }),
-          ...(isLoading && !isReachingEnd ?
-            [...Array(20)].map((_item, i) => (
-              <View key={`placeholder-${i}`}>
-                <TitleCard.Placeholder canExpand />
-              </View>
-            )) : [])
+          ...(isLoading && !isReachingEnd
+            ? [...Array(20)].map((_item, i) => (
+                <View key={`placeholder-${i}`}>
+                  <TitleCard.Placeholder canExpand />
+                </View>
+              ))
+            : []),
         ]}
       />
     </View>

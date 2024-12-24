@@ -1,9 +1,9 @@
 import ThemedText from '@/components/Common/ThemedText';
 import Slider from '@/components/Slider';
 import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
+import useServerUrl from '@/hooks/useServerUrl';
 import { useUser } from '@/hooks/useUser';
 import type { WatchlistItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
-import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
@@ -11,7 +11,6 @@ import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages(
@@ -20,9 +19,7 @@ const messages = getJellyseerrMessages(
 
 const PlexWatchlistSlider = () => {
   const intl = useIntl();
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const { user } = useUser();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
@@ -45,7 +42,7 @@ const PlexWatchlistSlider = () => {
     if (watchlistItems && !hasBeenVisible) {
       setHasBeenVisible(true);
     }
-  }, [watchlistItems]);
+  }, [watchlistItems, hasBeenVisible]);
 
   if (
     (watchlistItems &&

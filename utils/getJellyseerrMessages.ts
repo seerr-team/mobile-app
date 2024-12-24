@@ -1,4 +1,5 @@
 import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
+const localeValues: Record<string, string> = enLocale;
 
 export default function getJellyseerrMessages(prefix: string) {
   const keys = Object.keys(enLocale).filter((key) =>
@@ -8,7 +9,7 @@ export default function getJellyseerrMessages(prefix: string) {
   for (const key of keys) {
     messages[key.replace(prefix + '.', '')] = {
       id: key.replace(prefix + '.', ''),
-      defaultMessage: (enLocale as any)[key],
+      defaultMessage: localeValues[key],
     };
   }
   return messages;

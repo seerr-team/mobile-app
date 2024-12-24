@@ -4,27 +4,26 @@ import RequestCard, {
   Placeholder as RequestCardPlaceholder,
 } from '@/components/RequestCard';
 import Slider from '@/components/Slider';
+import useServerUrl from '@/hooks/useServerUrl';
 import type { RequestResultsResponse } from '@/jellyseerr/server/interfaces/api/requestInterfaces';
-import type { RootState } from '@/store';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 const RecentRequestsSlider = () => {
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const intl = useIntl();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
   const { data: requests, error: requestError } =
     useSWR<RequestResultsResponse>(
-      serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0',
+      isVisible || hasBeenVisible
+        ? serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+        : null,
       {
         revalidateOnMount: true,
       }
@@ -34,7 +33,7 @@ const RecentRequestsSlider = () => {
     if (requests && !hasBeenVisible) {
       setHasBeenVisible(true);
     }
-  }, [requests]);
+  }, [requests, hasBeenVisible]);
 
   if (requests && requests.results.length === 0 && !requestError) {
     return null;

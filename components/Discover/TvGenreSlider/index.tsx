@@ -2,8 +2,8 @@ import ThemedText from '@/components/Common/ThemedText';
 import { genreColorMap } from '@/components/Discover/constants';
 import GenreCard from '@/components/GenreCard';
 import Slider from '@/components/Slider';
+import useServerUrl from '@/hooks/useServerUrl';
 import type { GenreSliderItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
-import type { RootState } from '@/store';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
@@ -11,16 +11,13 @@ import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.Discover.TvGenreSlider');
 
 const TvGenreSlider = () => {
   const intl = useIntl();
-  const serverUrl = useSelector(
-    (state: RootState) => state.appSettings.serverUrl
-  );
+  const serverUrl = useServerUrl();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
@@ -38,7 +35,7 @@ const TvGenreSlider = () => {
     if (data && !hasBeenVisible) {
       setHasBeenVisible(true);
     }
-  }, [data]);
+  }, [data, hasBeenVisible]);
 
   return (
     <VisibilitySensor onChange={setIsVisible}>
