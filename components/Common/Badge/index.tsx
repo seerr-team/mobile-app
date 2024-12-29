@@ -95,7 +95,7 @@ const Badge = (
     );
   } else if (href) {
     return (
-      <Element href={href as any} className={badgeStyle.join(' ')}>
+      <Element href={href} className={badgeStyle.join(' ')}>
         {children}
       </Element>
     );

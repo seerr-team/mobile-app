@@ -23,6 +23,7 @@ type ListViewProps = {
   isReachingEnd?: boolean;
   onScrollBottom: () => void;
   mutateParent?: () => void;
+  header?: React.ReactElement;
 };
 
 const ListView = ({
@@ -33,6 +34,7 @@ const ListView = ({
   isReachingEnd,
   plexItems,
   mutateParent,
+  header,
 }: ListViewProps) => {
   const intl = useIntl();
   const { hasPermission } = useUser();
@@ -56,6 +58,18 @@ const ListView = ({
   return (
     <View className="p-2">
       <FlatList
+        ListHeaderComponent={
+          header
+            ? () => {
+                return (
+                  <>
+                    {header}
+                    <View />
+                  </>
+                );
+              }
+            : undefined
+        }
         renderItem={({ item, index }) => item}
         numColumns={2}
         horizontal={false}

@@ -13,7 +13,7 @@ interface GenreCardProps {
 
 const GenreCard = ({ image, url, name, canExpand = false }: GenreCardProps) => {
   return (
-    <Link href={url as any} asChild>
+    <Link href={url} asChild>
       <Pressable className="h-32 w-56 overflow-hidden rounded-xl border border-gray-700 bg-gray-700">
         <View className="absolute z-10 flex h-full w-full items-center justify-center">
           <ThemedText className="truncate whitespace-normal text-center text-2xl font-bold text-white">
@@ -37,7 +37,7 @@ const GenreCard = ({ image, url, name, canExpand = false }: GenreCardProps) => {
 const GenreCardPlaceholder = () => {
   return (
     <View
-      className={`relative h-32 w-56 animate-pulse rounded-xl bg-gray-700 sm:h-40 sm:w-72`}
+      className={`relative h-32 w-56 rounded-xl bg-gray-700 sm:h-40 sm:w-72`}
     ></View>
   );
 };

@@ -20,7 +20,7 @@ const PersonCard = ({
   canExpand = false,
 }: PersonCardProps) => {
   return (
-    <Link href={`/person/${personId}` as any} asChild>
+    <Link href={`/person/${personId}`} asChild>
       <Pressable
         className="flex items-center overflow-hidden rounded-xl border border-gray-700 bg-gray-700"
         style={

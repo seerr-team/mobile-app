@@ -1,22 +1,20 @@
-import Header from '@app/components/Common/Header';
-import ListView from '@app/components/Common/ListView';
-import PageTitle from '@app/components/Common/PageTitle';
-import useDiscover from '@app/hooks/useDiscover';
-import globalMessages from '@app/i18n/globalMessages';
-import Error from '@app/pages/_error';
-import defineMessages from '@app/utils/defineMessages';
-import type { ProductionCompany } from '@server/models/common';
-import type { MovieResult } from '@server/models/Search';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import CachedImage from '@/components/Common/CachedImage';
+import Header from '@/components/Common/Header';
+import ListView from '@/components/Common/ListView';
+import ErrorPage from '@/components/ErrorPage';
+import useDiscover from '@/hooks/useDiscover';
+import type { ProductionCompany } from '@/jellyseerr/server/models/common';
+import type { MovieResult } from '@/jellyseerr/server/models/Search';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import globalMessages from '@/utils/globalMessages';
+import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 
-const messages = defineMessages('components.Discover.DiscoverStudio', {
-  studioMovies: '{studio} Movies',
-});
+const messages = getJellyseerrMessages('components.Discover.DiscoverStudio');
 
 const DiscoverMovieStudio = () => {
-  const router = useRouter();
+  const searchParams = useLocalSearchParams();
   const intl = useIntl();
 
   const {
@@ -29,11 +27,11 @@ const DiscoverMovieStudio = () => {
     error,
     firstResultData,
   } = useDiscover<MovieResult, { studio: ProductionCompany }>(
-    `/api/v1/discover/movies/studio/${router.query.studioId}`
+    `/api/v1/discover/movies/studio/${searchParams.studioId}`
   );
 
   if (error) {
-    return <Error statusCode={500} />;
+    return <ErrorPage statusCode={500} />;
   }
 
   const title = isLoadingInitialData
@@ -44,32 +42,32 @@ const DiscoverMovieStudio = () => {
 
   return (
     <>
-      <PageTitle title={title} />
-      <div className="mb-5 mt-1">
-        <Header>
-          {firstResultData?.studio.logoPath ? (
-            <div className="relative mb-6 flex h-24 justify-center sm:h-32">
-              <Image
-                src={`https://image.tmdb.org/t/p/w780_filter(duotone,ffffff,bababa)${firstResultData.studio.logoPath}`}
-                alt={firstResultData.studio.name}
-                className="object-contain"
-                fill
-              />
-            </div>
-          ) : (
-            title
-          )}
-        </Header>
-      </div>
-      <ListView
-        items={titles}
-        isEmpty={isEmpty}
-        isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-        }
-        isReachingEnd={isReachingEnd}
-        onScrollBottom={fetchMore}
-      />
+      <View className="mt-8">
+        <ListView
+          header={
+            <Header>
+              {firstResultData?.studio.logoPath ? (
+                <CachedImage
+                  type="tmdb"
+                  src={`https://image.tmdb.org/t/p/w780_filter(duotone,ffffff,bababa)${firstResultData.studio.logoPath}`}
+                  alt={firstResultData.studio.name}
+                  style={{ height: 128 }}
+                  contentFit="contain"
+                />
+              ) : (
+                title
+              )}
+            </Header>
+          }
+          items={titles}
+          isEmpty={isEmpty}
+          isLoading={
+            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+          }
+          isReachingEnd={isReachingEnd}
+          onScrollBottom={fetchMore}
+        />
+      </View>
     </>
   );
 };

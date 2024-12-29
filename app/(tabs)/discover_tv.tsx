@@ -1,5 +1,5 @@
-import { View } from 'react-native';
+import DiscoverTv from '@/components/Discover/DiscoverTv';
 
-export default function DiscoverTv() {
-  return <View className="h-full bg-gray-900"></View>;
+export default function DiscoverTvPage() {
+  return <DiscoverTv />;
 }

@@ -1,55 +1,43 @@
-import Button from '@app/components/Common/Button';
-import Header from '@app/components/Common/Header';
-import ListView from '@app/components/Common/ListView';
-import PageTitle from '@app/components/Common/PageTitle';
-import type { FilterOptions } from '@app/components/Discover/constants';
+// import Button from '@/components/Common/Button';
+import Header from '@/components/Common/Header';
+import ListView from '@/components/Common/ListView';
+import type { FilterOptions } from '@/components/Discover/constants';
 import {
-  countActiveFilters,
+  // countActiveFilters,
   prepareFilterValues,
-} from '@app/components/Discover/constants';
-import FilterSlideover from '@app/components/Discover/FilterSlideover';
-import useDiscover from '@app/hooks/useDiscover';
-import { useUpdateQueryParams } from '@app/hooks/useUpdateQueryParams';
-import Error from '@app/pages/_error';
-import defineMessages from '@app/utils/defineMessages';
-import { BarsArrowDownIcon, FunnelIcon } from '@heroicons/react/24/solid';
-import type { SortOptions as TMDBSortOptions } from '@server/api/themoviedb';
-import type { TvResult } from '@server/models/Search';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+} from '@/components/Discover/constants';
+// import FilterSlideover from '@/components/Discover/FilterSlideover';
+import useDiscover from '@/hooks/useDiscover';
+// import { useUpdateQueryParams } from '@/hooks/useUpdateQueryParams';
+import ErrorPage from '@/components/ErrorPage';
+// import { BarsArrowDown, Funnel } from '@nandorojo/heroicons/24/solid';
+// import type { SortOptions as TMDBSortOptions } from '@/jellyseerr/server/api/themoviedb';
+import type { TvResult } from '@/jellyseerr/server/models/Search';
+// import { useState } from 'react';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 
-const messages = defineMessages('components.Discover.DiscoverTv', {
-  discovertv: 'Series',
-  activefilters:
-    '{count, plural, one {# Active Filter} other {# Active Filters}}',
-  sortPopularityAsc: 'Popularity Ascending',
-  sortPopularityDesc: 'Popularity Descending',
-  sortFirstAirDateAsc: 'First Air Date Ascending',
-  sortFirstAirDateDesc: 'First Air Date Descending',
-  sortTmdbRatingAsc: 'TMDB Rating Ascending',
-  sortTmdbRatingDesc: 'TMDB Rating Descending',
-  sortTitleAsc: 'Title (A-Z) Ascending',
-  sortTitleDesc: 'Title (Z-A) Descending',
-});
+const messages = getJellyseerrMessages('components.Discover.DiscoverTv');
 
-const SortOptions: Record<string, TMDBSortOptions> = {
-  PopularityAsc: 'popularity.asc',
-  PopularityDesc: 'popularity.desc',
-  FirstAirDateAsc: 'first_air_date.asc',
-  FirstAirDateDesc: 'first_air_date.desc',
-  TmdbRatingAsc: 'vote_average.asc',
-  TmdbRatingDesc: 'vote_average.desc',
-  TitleAsc: 'original_title.asc',
-  TitleDesc: 'original_title.desc',
-} as const;
+// const SortOptions: Record<string, TMDBSortOptions> = {
+//   PopularityAsc: 'popularity.asc',
+//   PopularityDesc: 'popularity.desc',
+//   FirstAirDateAsc: 'first_air_date.asc',
+//   FirstAirDateDesc: 'first_air_date.desc',
+//   TmdbRatingAsc: 'vote_average.asc',
+//   TmdbRatingDesc: 'vote_average.desc',
+//   TitleAsc: 'original_title.asc',
+//   TitleDesc: 'original_title.desc',
+// } as const;
 
 const DiscoverTv = () => {
   const intl = useIntl();
-  const router = useRouter();
-  const [showFilters, setShowFilters] = useState(false);
-  const preparedFilters = prepareFilterValues(router.query);
-  const updateQueryParams = useUpdateQueryParams({});
+  // const [showFilters, setShowFilters] = useState(false);
+  const searchParams = useLocalSearchParams();
+  const preparedFilters = prepareFilterValues(searchParams);
+  // const updateQueryParams = useUpdateQueryParams({});
 
   const {
     isLoadingInitialData,
@@ -64,20 +52,18 @@ const DiscoverTv = () => {
   });
 
   if (error) {
-    return <Error statusCode={500} />;
+    return <ErrorPage statusCode={500} />;
   }
 
   const title = intl.formatMessage(messages.discovertv);
 
   return (
     <>
-      <PageTitle title={title} />
-      <div className="mb-4 flex flex-col justify-between lg:flex-row lg:items-end">
-        <Header>{title}</Header>
-        <div className="mt-2 flex flex-grow flex-col sm:flex-row lg:flex-grow-0">
+      <View className="mt-8">
+        {/* <div className="mt-2 flex flex-grow flex-col sm:flex-row lg:flex-grow-0">
           <div className="mb-2 flex flex-grow sm:mb-0 sm:mr-2 lg:flex-grow-0">
             <span className="inline-flex cursor-default items-center rounded-l-md border border-r-0 border-gray-500 bg-gray-800 px-3 text-gray-100 sm:text-sm">
-              <BarsArrowDownIcon className="h-6 w-6" />
+              <BarsArrowDown className="h-6 w-6" />
             </span>
             <select
               id="sortBy"
@@ -120,7 +106,7 @@ const DiscoverTv = () => {
           />
           <div className="mb-2 flex flex-grow sm:mb-0 lg:flex-grow-0">
             <Button onClick={() => setShowFilters(true)} className="w-full">
-              <FunnelIcon />
+              <Funnel />
               <span>
                 {intl.formatMessage(messages.activefilters, {
                   count: countActiveFilters(preparedFilters),
@@ -128,17 +114,18 @@ const DiscoverTv = () => {
               </span>
             </Button>
           </div>
-        </div>
-      </div>
-      <ListView
-        items={titles}
-        isEmpty={isEmpty}
-        isReachingEnd={isReachingEnd}
-        isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-        }
-        onScrollBottom={fetchMore}
-      />
+        </div> */}
+        <ListView
+          header={<Header>{title}</Header>}
+          items={titles}
+          isEmpty={isEmpty}
+          isReachingEnd={isReachingEnd}
+          isLoading={
+            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+          }
+          onScrollBottom={fetchMore}
+        />
+      </View>
     </>
   );
 };

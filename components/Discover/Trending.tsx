@@ -1,6 +1,6 @@
 import Header from '@/components/Common/Header';
+import ListView from '@/components/Common/ListView';
 import ErrorPage from '@/components/ErrorPage';
-import ListView from '@/components/ListView';
 import useDiscover from '@/hooks/useDiscover';
 import type {
   MovieResult,
@@ -32,9 +32,9 @@ const Trending = () => {
   }
 
   return (
-    <View className="mt-12 mb-16">
-      <Header>{intl.formatMessage(messages.trending)}</Header>
+    <View className="mt-8">
       <ListView
+        header={<Header>{intl.formatMessage(messages.trending)}</Header>}
         items={titles}
         isEmpty={isEmpty}
         isLoading={

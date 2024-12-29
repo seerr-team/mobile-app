@@ -95,12 +95,6 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="discover_trending"
-          options={{
-            href: null,
-          }}
-        />
-        <Tabs.Screen
           name="requests"
           options={{
             tabBarLabel: () => null,
@@ -114,6 +108,30 @@ export default function TabLayout() {
                 )}
               </View>
             ),
+          }}
+        />
+        <Tabs.Screen
+          name="discover_trending"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="discover_movies/studio/[studioId]"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="discover_tv/network/[networkId]"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="discover_watchlist"
+          options={{
+            href: null,
           }}
         />
       </Tabs>

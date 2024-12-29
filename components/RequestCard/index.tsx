@@ -28,7 +28,7 @@ const isMovie = (movie: MovieDetails | TvDetails): movie is MovieDetails => {
 
 const RequestCardPlaceholder = () => {
   return (
-    <View className="relative w-72 animate-pulse rounded-xl bg-gray-700 p-4 sm:w-96">
+    <View className="relative w-72 rounded-xl bg-gray-700 p-4 sm:w-96">
       <View className="w-20 sm:w-28">
         <View className="w-full" style={{ paddingBottom: '160%' }} />
       </View>
@@ -82,10 +82,7 @@ const RequestCardError = ({ requestData }: RequestCardErrorProps) => {
                   { type: 'or' }
                 ) && (
                   <View className="card-field !hidden sm:!block">
-                    <Link
-                      href={`/users/${requestData.requestedBy.id}` as any}
-                      asChild
-                    >
+                    <Link href={`/users/${requestData.requestedBy.id}`} asChild>
                       <Pressable className="group flex flex-row items-center">
                         <CachedImage
                           type="avatar"
@@ -260,8 +257,8 @@ const RequestCard = ({ request, onTitleData }: RequestCardProps) => {
           <Link
             href={
               request.type === 'movie'
-                ? (`/movie/${requestData.media.tmdbId}` as any)
-                : (`/tv/${requestData.media.tmdbId}` as any)
+                ? `/movie/${requestData.media.tmdbId}`
+                : `/tv/${requestData.media.tmdbId}`
             }
             className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base font-bold text-white hover:underline sm:text-lg"
             numberOfLines={1}
@@ -274,7 +271,7 @@ const RequestCard = ({ request, onTitleData }: RequestCardProps) => {
           ) && (
             <View className="card-field">
               <Link
-                href={`/users/${requestData.requestedBy.id}` as any}
+                href={`/users/${requestData.requestedBy.id}`}
                 className="group flex items-center"
               >
                 <Pressable>
@@ -361,8 +358,8 @@ const RequestCard = ({ request, onTitleData }: RequestCardProps) => {
         <Link
           href={
             request.type === 'movie'
-              ? (`/movie/${requestData.media.tmdbId}` as any)
-              : (`/tv/${requestData.media.tmdbId}` as any)
+              ? `/movie/${requestData.media.tmdbId}`
+              : `/tv/${requestData.media.tmdbId}`
           }
           className="flex-shrink-0 scale-100"
         >

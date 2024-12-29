@@ -57,7 +57,7 @@ const PlexWatchlistSlider = () => {
   return (
     <VisibilitySensor onChange={setIsVisible}>
       <View className="slider-header px-4">
-        <Link href={'/discover/watchlist' as any} asChild>
+        <Link href={'/discover/watchlist'} asChild>
           <Pressable>
             <View className="flex min-w-0 flex-row items-center gap-2">
               <ThemedText className="truncate text-2xl font-bold">

@@ -34,7 +34,7 @@ const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
       data-testid="title-card"
     >
       <View
-        className="relative transform-gpu cursor-default overflow-hidden rounded-xl bg-gray-700 bg-cover shadow outline-none ring-1 ring-gray-700  transition duration-300"
+        className="relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover shadow outline-none"
         style={{
           paddingBottom: '150%',
         }}

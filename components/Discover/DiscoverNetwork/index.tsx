@@ -1,22 +1,20 @@
-import Header from '@app/components/Common/Header';
-import ListView from '@app/components/Common/ListView';
-import PageTitle from '@app/components/Common/PageTitle';
-import useDiscover from '@app/hooks/useDiscover';
-import globalMessages from '@app/i18n/globalMessages';
-import Error from '@app/pages/_error';
-import defineMessages from '@app/utils/defineMessages';
-import type { TvNetwork } from '@server/models/common';
-import type { TvResult } from '@server/models/Search';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import CachedImage from '@/components/Common/CachedImage';
+import Header from '@/components/Common/Header';
+import ListView from '@/components/Common/ListView';
+import ErrorPage from '@/components/ErrorPage';
+import useDiscover from '@/hooks/useDiscover';
+import type { TvNetwork } from '@/jellyseerr/server/models/common';
+import type { TvResult } from '@/jellyseerr/server/models/Search';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import globalMessages from '@/utils/globalMessages';
+import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 
-const messages = defineMessages('components.Discover.DiscoverNetwork', {
-  networkSeries: '{network} Series',
-});
+const messages = getJellyseerrMessages('components.Discover.DiscoverNetwork');
 
 const DiscoverTvNetwork = () => {
-  const router = useRouter();
+  const searchParams = useLocalSearchParams();
   const intl = useIntl();
 
   const {
@@ -29,11 +27,11 @@ const DiscoverTvNetwork = () => {
     error,
     firstResultData,
   } = useDiscover<TvResult, { network: TvNetwork }>(
-    `/api/v1/discover/tv/network/${router.query.networkId}`
+    `/api/v1/discover/tv/network/${searchParams.networkId}`
   );
 
   if (error) {
-    return <Error statusCode={500} />;
+    return <ErrorPage statusCode={500} />;
   }
 
   const title = isLoadingInitialData
@@ -44,32 +42,32 @@ const DiscoverTvNetwork = () => {
 
   return (
     <>
-      <PageTitle title={title} />
-      <div className="mb-5 mt-1">
-        <Header>
-          {firstResultData?.network.logoPath ? (
-            <div className="relative mb-6 flex h-24 justify-center sm:h-32">
-              <Image
-                src={`https://image.tmdb.org/t/p/w780_filter(duotone,ffffff,bababa)${firstResultData.network.logoPath}`}
-                alt={firstResultData.network.name}
-                className="object-contain"
-                fill
-              />
-            </div>
-          ) : (
-            title
-          )}
-        </Header>
-      </div>
-      <ListView
-        items={titles}
-        isEmpty={isEmpty}
-        isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-        }
-        isReachingEnd={isReachingEnd}
-        onScrollBottom={fetchMore}
-      />
+      <View className="mt-8">
+        <ListView
+          header={
+            <Header>
+              {firstResultData?.network.logoPath ? (
+                <CachedImage
+                  type="tmdb"
+                  src={`https://image.tmdb.org/t/p/w780_filter(duotone,ffffff,bababa)${firstResultData.network.logoPath}`}
+                  alt={firstResultData.network.name}
+                  style={{ height: 128 }}
+                  contentFit="contain"
+                />
+              ) : (
+                title
+              )}
+            </Header>
+          }
+          items={titles}
+          isEmpty={isEmpty}
+          isLoading={
+            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+          }
+          isReachingEnd={isReachingEnd}
+          onScrollBottom={fetchMore}
+        />
+      </View>
     </>
   );
 };

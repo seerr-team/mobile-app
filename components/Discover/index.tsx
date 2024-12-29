@@ -70,7 +70,7 @@ const Discover = () => {
                 sliderKey="popular-movies"
                 title={intl.formatMessage(sliderTitles.popularmovies)}
                 url="/api/v1/discover/movies"
-                linkUrl="/discover/movies"
+                linkUrl="(tabs)/discover_movies"
               />
             );
             break;
@@ -82,7 +82,7 @@ const Discover = () => {
               <MediaSlider
                 sliderKey="upcoming"
                 title={intl.formatMessage(sliderTitles.upcoming)}
-                linkUrl={`/discover/movies?primaryReleaseDateGte=${upcomingDate}`}
+                linkUrl={`(tabs)/discover_movies?primaryReleaseDateGte=${upcomingDate}`}
                 url="/api/v1/discover/movies"
                 extraParams={`primaryReleaseDateGte=${upcomingDate}`}
               />
@@ -97,7 +97,7 @@ const Discover = () => {
                 sliderKey="popular-tv"
                 title={intl.formatMessage(sliderTitles.populartv)}
                 url="/api/v1/discover/tv"
-                linkUrl="/discover/tv"
+                linkUrl="(tabs)/discover_tv"
               />
             );
             break;
@@ -109,7 +109,7 @@ const Discover = () => {
               <MediaSlider
                 sliderKey="upcoming-tv"
                 title={intl.formatMessage(sliderTitles.upcomingtv)}
-                linkUrl={`/discover/tv?firstAirDateGte=${upcomingDate}`}
+                linkUrl={`(tabs)/discover_tv?firstAirDateGte=${upcomingDate}`}
                 url="/api/v1/discover/tv"
                 extraParams={`firstAirDateGte=${upcomingDate}`}
               />
@@ -129,7 +129,7 @@ const Discover = () => {
                     ? `keywords=${encodeURIExtraParams(slider.data)}`
                     : ''
                 }
-                linkUrl={`/discover/movies?keywords=${slider.data}`}
+                linkUrl={`(tabs)/discover_movies?keywords=${slider.data}`}
               />
             );
             break;
@@ -144,7 +144,7 @@ const Discover = () => {
                     ? `keywords=${encodeURIExtraParams(slider.data)}`
                     : ''
                 }
-                linkUrl={`/discover/tv?keywords=${slider.data}`}
+                linkUrl={`(tabs)/discover_tv?keywords=${slider.data}`}
               />
             );
             break;
@@ -155,7 +155,7 @@ const Discover = () => {
                 title={slider.title ?? ''}
                 url={`/api/v1/discover/movies`}
                 extraParams={`genre=${slider.data}`}
-                linkUrl={`/discover/movies?genre=${slider.data}`}
+                linkUrl={`(tabs)/discover_movies?genre=${slider.data}`}
               />
             );
             break;
@@ -166,7 +166,7 @@ const Discover = () => {
                 title={slider.title ?? ''}
                 url={`/api/v1/discover/tv`}
                 extraParams={`genre=${slider.data}`}
-                linkUrl={`/discover/tv?genre=${slider.data}`}
+                linkUrl={`(tabs)/discover_tv?genre=${slider.data}`}
               />
             );
             break;
@@ -210,7 +210,7 @@ const Discover = () => {
                 extraParams={`watchRegion=${
                   slider.data?.split(',')[0]
                 }&watchProviders=${slider.data?.split(',')[1]}`}
-                linkUrl={`/discover/movies?watchRegion=${
+                linkUrl={`(tabs)/discover_movies?watchRegion=${
                   slider.data?.split(',')[0]
                 }&watchProviders=${slider.data?.split(',')[1]}`}
               />
@@ -225,7 +225,7 @@ const Discover = () => {
                 extraParams={`watchRegion=${
                   slider.data?.split(',')[0]
                 }&watchProviders=${slider.data?.split(',')[1]}`}
-                linkUrl={`/discover/tv?watchRegion=${
+                linkUrl={`(tabs)/discover_tv?watchRegion=${
                   slider.data?.split(',')[0]
                 }&watchProviders=${slider.data?.split(',')[1]}`}
               />

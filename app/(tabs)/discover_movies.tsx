@@ -1,5 +1,5 @@
-import { View } from 'react-native';
+import DiscoverMovies from '@/components/Discover/DiscoverMovies';
 
-export default function DiscoverMovies() {
-  return <View className="h-full bg-gray-900"></View>;
+export default function DiscoverMoviesPage() {
+  return <DiscoverMovies />;
 }
