@@ -16,6 +16,8 @@
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.13.0",
     "@expo/vector-icons": "^14.0.2",
+    "@formatjs/intl-locale": "^4.2.9",
+    "@formatjs/intl-relativetimeformat": "^11.4.9",
     "@futurejj/react-native-visibility-sensor": "^1.3.8",
     "@nandorojo/heroicons": "^0.3.0",
     "@react-native-async-storage/async-storage": "1.23.1",

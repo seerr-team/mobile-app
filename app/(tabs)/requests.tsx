@@ -1,5 +1,5 @@
-import { View } from 'react-native';
+import RequestList from '@/components/RequestList';
 
 export default function Requests() {
-  return <View className="h-full bg-gray-900"></View>;
+  return <RequestList />;
 }

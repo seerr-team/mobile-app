@@ -94,6 +94,7 @@ export default function TabLayout() {
         />
         <Tabs.Screen
           name="requests"
+          initialParams={{ filter: 'all' }}
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color }) => (
