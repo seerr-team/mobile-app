@@ -27,9 +27,7 @@ export default function TabLayout() {
           setIsOpen={setIsDropdownOpen}
           clear={() => setSearchValue('')}
         />
-        <View>
-          <UserDropdown />
-        </View>
+        <UserDropdown />
       </View>
       <Tabs
         screenOptions={{
