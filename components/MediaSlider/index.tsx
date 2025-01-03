@@ -54,7 +54,7 @@ const MediaSlider = ({
 
   const { data, error } = useSWRInfinite<MixedResult>(
     (pageIndex: number, previousPageData: MixedResult | null) => {
-      if (!isVisible && !hasBeenVisible) {
+      if (!isVisible && !hasBeenVisible && !hideWhenEmpty) {
         return null;
       }
       if (previousPageData && pageIndex + 1 > previousPageData.totalPages) {

@@ -4,7 +4,6 @@ import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 // import RequestModal from '@/components/RequestModal';
 import ThemedText from '@/components/Common/ThemedText';
 import StatusBadge from '@/components/StatusBadge';
-import { refreshIntervalHelper } from '@/hooks/refreshIntervalHelper';
 import useDeepLinks from '@/hooks/useDeepLinks';
 import useServerUrl from '@/hooks/useServerUrl';
 import { Permission, useUser } from '@/hooks/useUser';
@@ -14,6 +13,7 @@ import type { NonFunctionProperties } from '@/jellyseerr/server/interfaces/api/c
 import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
 import type { TvDetails } from '@/jellyseerr/server/models/Tv';
 import globalMessages from '@/utils/globalMessages';
+import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 import { Link } from 'expo-router';
 import { useEffect } from 'react';
 import { FormattedRelativeTime, useIntl } from 'react-intl';

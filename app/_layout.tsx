@@ -5,6 +5,8 @@ import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import { getServerSettings } from '@/utils/serverSettings';
 import { Toasts } from '@backpackapp-io/react-native-toast';
+import '@formatjs/intl-displaynames/locale-data/en';
+import '@formatjs/intl-displaynames/polyfill';
 import '@formatjs/intl-locale/polyfill';
 import '@formatjs/intl-relativetimeformat/locale-data/en';
 import '@formatjs/intl-relativetimeformat/polyfill';

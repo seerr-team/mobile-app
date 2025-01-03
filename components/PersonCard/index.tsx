@@ -46,7 +46,7 @@ const PersonCard = ({
           )}
         </View>
         <View className="mt-8 flex w-full justify-between p-2">
-          <ThemedText className="truncate text-center font-bold">
+          <ThemedText className="text-center font-bold" numberOfLines={1}>
             {name}
           </ThemedText>
           {subName && (

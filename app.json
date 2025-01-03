@@ -34,6 +34,19 @@
           "resizeMode": "cover",
           "backgroundColor": "#111827"
         }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": [
+            "./assets/services/rt_aud_fresh.png",
+            "./assets/services/rt_aud_rotten.png",
+            "./assets/services/rt_fresh.png",
+            "./assets/services/rt_rotten.png",
+            "./assets/services/imdb.png",
+            "./assets/services/tmdb_logo.png"
+          ]
+        }
       ]
     ]
   }

@@ -3,7 +3,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useEffect, useRef } from 'react';
 import { Animated, Easing } from 'react-native';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ size = 32 }) => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const LoadingSpinner = () => {
   return (
     <ThemedText className="text-center text-3xl">
       <Animated.View style={{ transform: [{ rotate: spin }] }}>
-        <AntDesign name="loading1" size={32} color="white" />
+        <AntDesign name="loading1" size={size} color="white" />
       </Animated.View>
     </ThemedText>
   );

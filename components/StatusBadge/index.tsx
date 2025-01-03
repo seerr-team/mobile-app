@@ -25,6 +25,7 @@ interface StatusBadgeProps {
   tmdbId?: number;
   mediaType?: 'movie' | 'tv';
   title?: string | string[];
+  fontSize?: string;
 }
 
 const StatusBadge = ({
@@ -37,6 +38,7 @@ const StatusBadge = ({
   tmdbId,
   mediaType,
   title,
+  fontSize = 'text-xs',
 }: StatusBadgeProps) => {
   const intl = useIntl();
   const { hasPermission } = useUser();
@@ -172,7 +174,7 @@ const StatusBadge = ({
                 inProgress && 'px-2'
               }`}
             >
-              <ThemedText className="text-xs">
+              <ThemedText className={fontSize}>
                 {intl.formatMessage(
                   is4k ? messages.status4k : messages.status,
                   {
