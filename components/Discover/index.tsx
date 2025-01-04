@@ -12,18 +12,20 @@ import { encodeURIExtraParams } from '@/hooks/useDiscover';
 import useServerUrl from '@/hooks/useServerUrl';
 import { DiscoverSliderType } from '@/jellyseerr/server/constants/discover';
 import type DiscoverSlider from '@/jellyseerr/server/entity/DiscoverSlider';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
 const Discover = () => {
   const intl = useIntl();
   const serverUrl = useServerUrl();
-
-  const { data: discoverData, error: discoverError } = useSWR<DiscoverSlider[]>(
-    serverUrl + '/api/v1/settings/discover'
-  );
+  const [lastRefresh, setLastRefresh] = useState(new Date());
+  const {
+    data: discoverData,
+    error: discoverError,
+    mutate,
+  } = useSWR<DiscoverSlider[]>(serverUrl + '/api/v1/settings/discover');
 
   const now = new Date();
   const offset = now.getTimezoneOffset();
@@ -40,19 +42,35 @@ const Discover = () => {
   }
 
   return (
-    <ScrollView className="mt-16 h-screen" contentContainerClassName="pb-6">
+    <ScrollView
+      className="mt-16"
+      contentContainerClassName="pb-6"
+      refreshControl={
+        <RefreshControl
+          refreshing={!discoverData && !discoverError}
+          onRefresh={() => {
+            mutate();
+            setLastRefresh(new Date());
+          }}
+          colors={['white']}
+          progressBackgroundColor={'black'}
+        />
+      }
+    >
       {discoverData?.map((slider, index) => {
-        let sliderComponent: React.ReactNode;
+        let sliderComponent: React.ReactElement = <></>;
 
         switch (slider.type) {
           case DiscoverSliderType.RECENTLY_ADDED:
-            sliderComponent = <RecentlyAddedSlider />;
+            sliderComponent = <RecentlyAddedSlider lastRefresh={lastRefresh} />;
             break;
           case DiscoverSliderType.RECENT_REQUESTS:
-            sliderComponent = <RecentRequestsSlider />;
+            sliderComponent = (
+              <RecentRequestsSlider lastRefresh={lastRefresh} />
+            );
             break;
           case DiscoverSliderType.PLEX_WATCHLIST:
-            sliderComponent = <PlexWatchlistSlider />;
+            sliderComponent = <PlexWatchlistSlider lastRefresh={lastRefresh} />;
             break;
           case DiscoverSliderType.TRENDING:
             sliderComponent = (
@@ -238,7 +256,9 @@ const Discover = () => {
         }
 
         return (
-          <View key={`discover-slider-${slider.id}`}>{sliderComponent}</View>
+          <View key={`discover-slider-${slider.id}`}>
+            {React.cloneElement(sliderComponent, { lastRefresh })}
+          </View>
         );
       })}
     </ScrollView>

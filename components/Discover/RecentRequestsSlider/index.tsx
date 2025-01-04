@@ -14,26 +14,37 @@ import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import useSWR from 'swr';
 
-const RecentRequestsSlider = () => {
+export interface RecentRequestsSliderProps {
+  lastRefresh?: Date;
+}
+
+const RecentRequestsSlider = ({ lastRefresh }: RecentRequestsSliderProps) => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
-  const { data: requests, error: requestError } =
-    useSWR<RequestResultsResponse>(
-      isVisible || hasBeenVisible
-        ? serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
-        : null,
-      {
-        revalidateOnMount: true,
-      }
-    );
+  const {
+    data: requests,
+    error: requestError,
+    mutate,
+  } = useSWR<RequestResultsResponse>(
+    isVisible || hasBeenVisible
+      ? serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+      : null,
+    {
+      revalidateOnMount: true,
+    }
+  );
 
   useEffect(() => {
     if (requests && !hasBeenVisible) {
       setHasBeenVisible(true);
     }
   }, [requests, hasBeenVisible]);
+
+  useEffect(() => {
+    mutate();
+  }, [lastRefresh, mutate]);
 
   if (requests && requests.results.length === 0 && !requestError) {
     return null;

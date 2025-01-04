@@ -17,14 +17,22 @@ const messages = getJellyseerrMessages(
   'components.Discover.PlexWatchlistSlider'
 );
 
-const PlexWatchlistSlider = () => {
+export interface PlexWatchlistSliderProps {
+  lastRefresh?: Date;
+}
+
+const PlexWatchlistSlider = ({ lastRefresh }: PlexWatchlistSliderProps) => {
   const intl = useIntl();
   const serverUrl = useServerUrl();
   const { user } = useUser();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
-  const { data: watchlistItems, error: watchlistError } = useSWR<{
+  const {
+    data: watchlistItems,
+    error: watchlistError,
+    mutate,
+  } = useSWR<{
     page: number;
     totalPages: number;
     totalResults: number;
@@ -43,6 +51,10 @@ const PlexWatchlistSlider = () => {
       setHasBeenVisible(true);
     }
   }, [watchlistItems, hasBeenVisible]);
+
+  useEffect(() => {
+    mutate();
+  }, [lastRefresh, mutate]);
 
   if (
     (watchlistItems &&

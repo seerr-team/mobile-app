@@ -34,6 +34,7 @@ interface MediaSliderProps {
   sliderKey: string;
   hideWhenEmpty?: boolean;
   extraParams?: string;
+  lastRefresh?: Date;
   onNewTitles?: (titleCount: number) => void;
 }
 
@@ -44,6 +45,7 @@ const MediaSlider = ({
   extraParams,
   sliderKey,
   hideWhenEmpty = false,
+  lastRefresh,
   onNewTitles,
 }: MediaSliderProps) => {
   const settings = useSettings();
@@ -52,7 +54,7 @@ const MediaSlider = ({
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
-  const { data, error } = useSWRInfinite<MixedResult>(
+  const { data, error, mutate } = useSWRInfinite<MixedResult>(
     (pageIndex: number, previousPageData: MixedResult | null) => {
       if (!isVisible && !hasBeenVisible && !hideWhenEmpty) {
         return null;
@@ -75,6 +77,10 @@ const MediaSlider = ({
       setHasBeenVisible(true);
     }
   }, [data, hasBeenVisible]);
+
+  useEffect(() => {
+    mutate();
+  }, [lastRefresh, mutate]);
 
   let titles = (data ?? []).reduce(
     (a, v) => [...a, ...v.results],

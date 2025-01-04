@@ -29,11 +29,16 @@ const isMovie = (movie: MovieDetails | TvDetails): movie is MovieDetails => {
   return (movie as MovieDetails).title !== undefined;
 };
 
-const RequestCardPlaceholder = () => {
+const RequestCardPlaceholder = ({ canExpend }: { canExpend?: boolean }) => {
   return (
-    <View className="relative w-72 rounded-xl bg-gray-700 p-4 sm:w-96">
+    <View
+      className={`relative ${canExpend ? 'w-full' : 'w-72'} rounded-xl bg-gray-700 p-4 sm:w-96`}
+    >
       <View className="w-20 sm:w-28">
-        <View className="w-full" style={{ paddingBottom: '160%' }} />
+        <View
+          className="w-full"
+          style={{ paddingBottom: canExpend ? '260%' : '160%' }}
+        />
       </View>
     </View>
   );
@@ -203,7 +208,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
   }, [title, onTitleData, request]);
 
   if (!title && !error) {
-    return <RequestCardPlaceholder />;
+    return <RequestCardPlaceholder canExpend />;
   }
 
   if (!requestData && !requestError) {

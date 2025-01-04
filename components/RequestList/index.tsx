@@ -19,7 +19,7 @@ import globalMessages from '@/utils/globalMessages';
 import { Link, useLocalSearchParams, usePathname } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { ScrollView, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.RequestList');
@@ -56,7 +56,7 @@ const RequestList = () => {
   const {
     data,
     error,
-    // mutate: revalidate,
+    mutate: revalidate,
   } = useSWR<RequestResultsResponse>(
     `${serverUrl}/api/v1/request?take=${currentPageSize}&skip=${
       pageIndex * currentPageSize
@@ -103,15 +103,21 @@ const RequestList = () => {
     return <LoadingSpinner />;
   }
 
-  if (!data) {
-    return <LoadingSpinner />;
-  }
-
   // const hasNextPage = data.pageInfo.pages > pageIndex + 1;
   // const hasPrevPage = pageIndex > 0;
 
   return (
-    <ScrollView className="mt-10 px-2">
+    <ScrollView
+      className="mt-10 px-2"
+      refreshControl={
+        <RefreshControl
+          refreshing={!data && !error}
+          onRefresh={() => revalidate()}
+          colors={['white']}
+          progressBackgroundColor={'black'}
+        />
+      }
+    >
       <View className="mb-4 flex flex-col justify-between lg:flex-row lg:items-end">
         <Header
           subtext={

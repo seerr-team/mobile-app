@@ -17,13 +17,21 @@ const messages = getJellyseerrMessages(
   'components.Discover.RecentlyAddedSlider'
 );
 
-const RecentlyAddedSlider = () => {
+export interface RecentlyAddedSliderProps {
+  lastRefresh?: Date;
+}
+
+const RecentlyAddedSlider = ({ lastRefresh }: RecentlyAddedSliderProps) => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const { hasPermission } = useUser();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
-  const { data: media, error: mediaError } = useSWR<MediaResultsResponse>(
+  const {
+    data: media,
+    error: mediaError,
+    mutate,
+  } = useSWR<MediaResultsResponse>(
     isVisible || hasBeenVisible
       ? serverUrl + '/api/v1/media?filter=allavailable&take=20&sort=mediaAdded'
       : null,
@@ -35,6 +43,10 @@ const RecentlyAddedSlider = () => {
       setHasBeenVisible(true);
     }
   }, [media, hasBeenVisible]);
+
+  useEffect(() => {
+    mutate();
+  }, [lastRefresh, mutate]);
 
   if (
     (media && !media.results.length && !mediaError) ||
