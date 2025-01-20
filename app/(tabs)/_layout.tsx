@@ -139,6 +139,12 @@ export default function TabLayout() {
             href: null,
           }}
         />
+        <Tabs.Screen
+          name="tv/[tvId]/index"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </View>
   );

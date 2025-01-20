@@ -962,13 +962,18 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                   <Link
                     href={`(tabs)/discover_movies/language/${data.originalLanguage}`}
                   >
-                    {intl.formatDisplayName(data.originalLanguage, {
+                    {/* {intl.formatDisplayName(data.originalLanguage, {
                       type: 'language',
                       fallback: 'none',
                     }) ??
                       data.spokenLanguages.find(
                         (lng) => lng.iso_639_1 === data.originalLanguage
-                      )?.name}
+                      )?.name} */}
+                    {
+                      data.spokenLanguages.find(
+                        (lng) => lng.iso_639_1 === data.originalLanguage
+                      )?.name
+                    }
                   </Link>
                 </ThemedText>
               </View>
@@ -993,10 +998,11 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                           />
                         )} */}
                         <ThemedText className="text-right text-sm font-normal text-gray-400">
-                          {intl.formatDisplayName(c.iso_3166_1, {
+                          {/* {intl.formatDisplayName(c.iso_3166_1, {
                             type: 'region',
                             fallback: 'none',
-                          }) ?? c.name}
+                          }) ?? c.name} */}
+                          {c.name}
                         </ThemedText>
                       </View>
                     );
