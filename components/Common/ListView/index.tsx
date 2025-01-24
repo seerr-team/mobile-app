@@ -78,7 +78,7 @@ const ListView = ({
         data={[
           ...(plexItems || []).map((title, index) => {
             return (
-              <li key={`${title.ratingKey}-${index}`}>
+              <View key={`${title.ratingKey}-${index}`}>
                 <TmdbTitleCard
                   id={title.tmdbId}
                   tmdbId={title.tmdbId}
@@ -87,7 +87,7 @@ const ListView = ({
                   canExpand
                   mutateParent={mutateParent}
                 />
-              </li>
+              </View>
             );
           }),
           ...(items || [])

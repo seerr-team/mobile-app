@@ -35,12 +35,12 @@ export default function TabLayout() {
           headerShown: false,
           tabBarBackground: () => <View className="border-t border-gray-600" />,
           tabBarStyle: {
-            height: 64,
+            height: 56,
             backgroundColor: '#1f2937',
           },
           sceneStyle: {
             backgroundColor: '#111827',
-            marginTop: -64,
+            marginTop: -56,
           },
         }}
       >
@@ -49,12 +49,12 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color }) => (
-              <View className="pt-8">
+              <View className="pt-6">
                 {color !== tintColor && (
-                  <Sparkles color={color} width={32} height={32} />
+                  <Sparkles color={color} width={24} height={24} />
                 )}
                 {color === tintColor && (
-                  <SparklesFilled color={color} width={32} height={32} />
+                  <SparklesFilled color={color} width={24} height={24} />
                 )}
               </View>
             ),
@@ -65,12 +65,12 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color }) => (
-              <View className="pt-8">
+              <View className="pt-6">
                 {color !== tintColor && (
-                  <Film color={color} width={32} height={32} />
+                  <Film color={color} width={24} height={24} />
                 )}
                 {color === tintColor && (
-                  <FilmFilled color={color} width={32} height={32} />
+                  <FilmFilled color={color} width={24} height={24} />
                 )}
               </View>
             ),
@@ -81,12 +81,12 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color }) => (
-              <View className="pt-8">
+              <View className="pt-6">
                 {color !== tintColor && (
-                  <Tv color={color} width={32} height={32} />
+                  <Tv color={color} width={24} height={24} />
                 )}
                 {color === tintColor && (
-                  <TvFilled color={color} width={32} height={32} />
+                  <TvFilled color={color} width={24} height={24} />
                 )}
               </View>
             ),
@@ -98,12 +98,12 @@ export default function TabLayout() {
           options={{
             tabBarLabel: () => null,
             tabBarIcon: ({ color }) => (
-              <View className="pt-8">
+              <View className="pt-6">
                 {color !== tintColor && (
-                  <Clock color={color} width={32} height={32} />
+                  <Clock color={color} width={24} height={24} />
                 )}
                 {color === tintColor && (
-                  <ClockFilled color={color} width={32} height={32} />
+                  <ClockFilled color={color} width={24} height={24} />
                 )}
               </View>
             ),

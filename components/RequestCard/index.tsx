@@ -14,6 +14,7 @@ import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
 import type { TvDetails } from '@/jellyseerr/server/models/Tv';
 import globalMessages from '@/utils/globalMessages';
 import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { useEffect } from 'react';
 import { FormattedRelativeTime, useIntl } from 'react-intl';
@@ -32,7 +33,7 @@ const isMovie = (movie: MovieDetails | TvDetails): movie is MovieDetails => {
 const RequestCardPlaceholder = ({ canExpend }: { canExpend?: boolean }) => {
   return (
     <View
-      className={`relative ${canExpend ? 'w-full' : 'w-72'} rounded-xl bg-gray-700 p-4 sm:w-96`}
+      className={`relative ${canExpend ? 'w-full' : 'w-80 sm:w-96'} rounded-xl bg-gray-700 p-4`}
     >
       <View className="w-20 sm:w-28">
         <View
@@ -65,7 +66,7 @@ const RequestCardError = ({
 
   return (
     <View
-      className={`relative flex ${canExpand ? 'w-full' : 'w-72 sm:w-96'} flex-row overflow-hidden rounded-xl bg-gray-700 p-4 text-gray-400 shadow ring-1 ring-red-500`}
+      className={`relative flex ${canExpand ? 'w-full' : 'w-80 sm:w-96'} flex-row overflow-hidden rounded-xl bg-gray-700 p-4 text-gray-400 shadow ring-1 ring-red-500`}
       data-testid="request-card"
     >
       <View className="w-20 sm:w-28">
@@ -208,15 +209,15 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
   }, [title, onTitleData, request]);
 
   if (!title && !error) {
-    return <RequestCardPlaceholder canExpend />;
+    return <RequestCardPlaceholder canExpend={canExpand} />;
   }
 
   if (!requestData && !requestError) {
-    return <RequestCardError />;
+    return <RequestCardError canExpand={canExpand} />;
   }
 
   if (!title || !requestData) {
-    return <RequestCardError requestData={requestData} />;
+    return <RequestCardError canExpand={canExpand} requestData={requestData} />;
   }
 
   const AvailabilityBadge = () => (
@@ -277,7 +278,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
         }}
       /> */}
       <View
-        className={`relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center pl-4 pr-1 pt-4 text-gray-400 shadow`}
+        className={`relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center py-4 pl-4 pr-1 text-gray-400 shadow ${canExpand ? 'w-full' : 'w-80 sm:w-96'}`}
         data-testid="request-card"
       >
         {title.backdropPath && (
@@ -288,12 +289,17 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
               src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${title.backdropPath}`}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-            <View
-              className="absolute inset-0"
+            <LinearGradient
+              colors={['rgba(31, 41, 55, 0.47)', 'rgba(31, 41, 55, 1)']}
+              start={[0, 0]}
+              end={[1, 0]}
+              locations={[0, 1]}
               style={{
-                // backgroundImage:
-                //   'linear-gradient(135deg, rgba(17, 24, 39, 0.47) 0%, rgba(17, 24, 39, 1) 75%)',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
+                height: '100%',
               }}
             />
           </View>
@@ -395,7 +401,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                 style={
                   canExpand
                     ? { width: 60, height: 90 }
-                    : { width: 84, height: 128 }
+                    : { width: 80, height: 120 }
                 }
               />
             </Pressable>

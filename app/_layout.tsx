@@ -88,10 +88,7 @@ function RootLayout() {
             },
           }}
         >
-          <View
-            className="h-screen bg-gray-900"
-            contentContainerClassName="flex-grow justify-center"
-          >
+          <View className="bg-gray-900">
             <Slot />
             <Toasts
               overrideDarkMode

@@ -43,7 +43,7 @@ const UserDropdown = () => {
         >
           <CachedImage
             type="avatar"
-            style={{ width: 40, height: 40 }}
+            style={{ width: 36, height: 36 }}
             src={user ? user.avatar : ''}
             contentFit="cover"
             placeholder={null}
