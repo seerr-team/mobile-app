@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "jsEngine": "hermes",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.jellyseerrexpo"
     },
     "android": {
       "adaptiveIcon": {
@@ -47,7 +48,8 @@
             "./assets/services/tmdb_logo.png"
           ]
         }
-      ]
+      ],
+      "@react-native-tvos/config-tv"
     ]
   }
 }

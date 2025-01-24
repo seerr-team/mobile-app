@@ -8,7 +8,13 @@ import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Image, Pressable, View } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Pressable,
+  ScrollView,
+  View,
+} from 'react-native';
 import JellyfinLogin from './JellyfinLogin';
 import LocalLogin from './LocalLogin';
 
@@ -49,78 +55,80 @@ export default function Login() {
   }
 
   return (
-    <View>
-      <View className="px-8">
-        <Image
-          className="h-64 max-w-full object-cover"
-          style={{ resizeMode: 'contain' }}
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
-          source={require('@/assets/images/logo-stacked.png')}
-        />
-      </View>
-      <ThemedText className="mt-12 text-center text-3xl font-bold">
-        Sign in to continue.
-      </ThemedText>
-      <View className="mt-8 w-full bg-gray-800/50">
-        <Accordion single atLeastOne>
-          {({ openIndexes, handleClick, AccordionContent }) => (
-            <>
-              <Pressable
-                className="w-full cursor-default bg-gray-800 bg-opacity-70 py-2"
-                onPress={() => handleClick(0)}
-              >
-                <ThemedText
-                  className={`text-center font-bold text-gray-400 ${openIndexes.includes(0) ? 'text-indigo-500' : ''}`}
+    <KeyboardAvoidingView behavior="padding" className="h-screen flex-1">
+      <ScrollView contentContainerClassName="flex-grow justify-center item-center">
+        <View className="px-8 py-2">
+          <Image
+            className="h-64 max-w-full object-cover md:h-48"
+            style={{ resizeMode: 'contain' }}
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            source={require('@/assets/images/logo-stacked.png')}
+          />
+        </View>
+        <ThemedText className="mt-12 text-center text-3xl font-bold">
+          Sign in to continue.
+        </ThemedText>
+        <View className="mt-8 w-full bg-gray-800/50">
+          <Accordion single atLeastOne>
+            {({ openIndexes, handleClick, AccordionContent }) => (
+              <>
+                <Pressable
+                  className="w-full cursor-default bg-gray-800 bg-opacity-70 py-2"
+                  onPress={() => handleClick(0)}
                 >
-                  {settings.currentSettings.mediaServerType ===
-                  MediaServerType.PLEX
-                    ? intl.formatMessage(messages.signinwithplex)
-                    : intl.formatMessage(
-                        messages.signinwithjellyfin,
-                        mediaServerFormatValues
-                      )}
-                </ThemedText>
-              </Pressable>
-              <AccordionContent isOpen={openIndexes.includes(0)}>
-                <View className="px-10 py-8">
-                  {/* {settings.currentSettings.mediaServerType ==
-                  MediaServerType.PLEX ? (
-                    <PlexLoginButton
-                      isProcessing={isProcessing}
-                      onAuthToken={(authToken) => setAuthToken(authToken)}
-                    />
-                  ) : (
-                    <JellyfinLogin revalidate={revalidate} />
-                  )} */}
-                  <JellyfinLogin />
-                </View>
-              </AccordionContent>
-              {settings.currentSettings.localLogin && (
-                <View>
-                  <Pressable
-                    className="w-full cursor-default bg-gray-800 bg-opacity-70 py-2"
-                    onPress={() => handleClick(1)}
+                  <ThemedText
+                    className={`text-center font-bold text-gray-400 ${openIndexes.includes(0) ? 'text-indigo-500' : ''}`}
                   >
-                    <ThemedText
-                      className={`text-center font-bold text-gray-400 ${openIndexes.includes(1) ? 'text-indigo-500' : ''}`}
+                    {settings.currentSettings.mediaServerType ===
+                    MediaServerType.PLEX
+                      ? intl.formatMessage(messages.signinwithplex)
+                      : intl.formatMessage(
+                          messages.signinwithjellyfin,
+                          mediaServerFormatValues
+                        )}
+                  </ThemedText>
+                </Pressable>
+                <AccordionContent isOpen={openIndexes.includes(0)}>
+                  <View className="px-10 py-8">
+                    {/* {settings.currentSettings.mediaServerType ==
+                    MediaServerType.PLEX ? (
+                      <PlexLoginButton
+                        isProcessing={isProcessing}
+                        onAuthToken={(authToken) => setAuthToken(authToken)}
+                      />
+                    ) : (
+                      <JellyfinLogin revalidate={revalidate} />
+                    )} */}
+                    <JellyfinLogin />
+                  </View>
+                </AccordionContent>
+                {settings.currentSettings.localLogin && (
+                  <View>
+                    <Pressable
+                      className="w-full cursor-default bg-gray-800 bg-opacity-70 py-2"
+                      onPress={() => handleClick(1)}
                     >
-                      {intl.formatMessage(messages.signinwithoverseerr, {
-                        applicationTitle:
-                          settings.currentSettings.applicationTitle,
-                      })}
-                    </ThemedText>
-                  </Pressable>
-                  <AccordionContent isOpen={openIndexes.includes(1)}>
-                    <View className="px-10 py-8">
-                      <LocalLogin />
-                    </View>
-                  </AccordionContent>
-                </View>
-              )}
-            </>
-          )}
-        </Accordion>
-      </View>
-    </View>
+                      <ThemedText
+                        className={`text-center font-bold text-gray-400 ${openIndexes.includes(1) ? 'text-indigo-500' : ''}`}
+                      >
+                        {intl.formatMessage(messages.signinwithoverseerr, {
+                          applicationTitle:
+                            settings.currentSettings.applicationTitle,
+                        })}
+                      </ThemedText>
+                    </Pressable>
+                    <AccordionContent isOpen={openIndexes.includes(1)}>
+                      <View className="px-10 py-8">
+                        <LocalLogin />
+                      </View>
+                    </AccordionContent>
+                  </View>
+                )}
+              </>
+            )}
+          </Accordion>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
