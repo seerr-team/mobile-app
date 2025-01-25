@@ -20,9 +20,9 @@ const PersonCard = ({
   canExpand = false,
 }: PersonCardProps) => {
   return (
-    <Link href={`/person/${personId}`} asChild>
+    <Link href={`(tabs)/person/${personId}`} asChild>
       <Pressable
-        className="flex items-center overflow-hidden rounded-xl border border-gray-700 bg-gray-700"
+        className="flex items-center overflow-hidden rounded-xl border border-gray-700 bg-gray-800"
         style={
           !canExpand ? { width: 150, height: 225 } : { aspectRatio: '2 / 3' }
         }
@@ -45,8 +45,11 @@ const PersonCard = ({
             <UserCircle width={128} height={128} color="#ffffff" />
           )}
         </View>
-        <View className="mt-8 flex w-full justify-between p-2">
-          <ThemedText className="text-center font-bold" numberOfLines={1}>
+        <View className="mt-2 flex w-full justify-between p-2">
+          <ThemedText
+            className="text-center text-lg font-bold"
+            numberOfLines={1}
+          >
             {name}
           </ThemedText>
           {subName && (
@@ -56,7 +59,7 @@ const PersonCard = ({
                 overflow: 'hidden',
               }}
             >
-              <ThemedText className="whitespace-normal text-center text-sm text-gray-300">
+              <ThemedText className="mt-1 whitespace-normal text-center text-gray-300">
                 {subName}
               </ThemedText>
             </View>

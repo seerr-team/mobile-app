@@ -682,7 +682,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                         {person.job}
                       </ThemedText>
                       <Link
-                        href={`/person/${person.id}`}
+                        href={`(tabs)/person/${person.id}`}
                         className="text-gray-400"
                       >
                         {person.name}
