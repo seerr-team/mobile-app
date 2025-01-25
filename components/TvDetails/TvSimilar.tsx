@@ -1,24 +1,25 @@
-import Header from '@app/components/Common/Header';
-import ListView from '@app/components/Common/ListView';
-import PageTitle from '@app/components/Common/PageTitle';
-import useDiscover from '@app/hooks/useDiscover';
-import Error from '@app/pages/_error';
-import defineMessages from '@app/utils/defineMessages';
-import type { TvResult } from '@server/models/Search';
-import type { TvDetails } from '@server/models/Tv';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Header from '@/components/Common/Header';
+import ListView from '@/components/Common/ListView';
+import ErrorPage from '@/components/ErrorPage';
+import useDiscover from '@/hooks/useDiscover';
+import useServerUrl from '@/hooks/useServerUrl';
+import type { TvResult } from '@/jellyseerr/server/models/Search';
+import type { TvDetails } from '@/jellyseerr/server/models/Tv';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = defineMessages('components.TvDetails', {
-  similar: 'Similar Series',
-});
+const messages = getJellyseerrMessages('components.TvDetails');
 
 const TvSimilar = () => {
-  const router = useRouter();
+  const serverUrl = useServerUrl();
+  const searchParams = useLocalSearchParams();
   const intl = useIntl();
-  const { data: tvData } = useSWR<TvDetails>(`/api/v1/tv/${router.query.tvId}`);
+  const { data: tvData } = useSWR<TvDetails>(
+    `${serverUrl}/api/v1/tv/${searchParams.tvId}`
+  );
   const {
     isLoadingInitialData,
     isEmpty,
@@ -27,35 +28,39 @@ const TvSimilar = () => {
     titles,
     fetchMore,
     error,
-  } = useDiscover<TvResult>(`/api/v1/tv/${router.query.tvId}/similar`);
+  } = useDiscover<TvResult>(`/api/v1/tv/${searchParams.tvId}/similar`);
 
   if (error) {
-    return <Error statusCode={500} />;
+    return <ErrorPage statusCode={500} />;
   }
 
   return (
     <>
-      <PageTitle title={[intl.formatMessage(messages.similar), tvData?.name]} />
-      <div className="mb-5 mt-1">
-        <Header
-          subtext={
-            <Link href={`/tv/${tvData?.id}`} className="hover:underline">
-              {tvData?.name}
-            </Link>
+      <View className="mt-8">
+        <ListView
+          header={
+            <Header
+              subtext={
+                <Link
+                  href={`(tabs)/tv/${tvData?.id}`}
+                  className="text-lg text-gray-400 hover:underline"
+                >
+                  {tvData?.name}
+                </Link>
+              }
+            >
+              {intl.formatMessage(messages.similar)}
+            </Header>
           }
-        >
-          {intl.formatMessage(messages.similar)}
-        </Header>
-      </div>
-      <ListView
-        items={titles}
-        isEmpty={isEmpty}
-        isReachingEnd={isReachingEnd}
-        isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-        }
-        onScrollBottom={fetchMore}
-      />
+          items={titles}
+          isEmpty={isEmpty}
+          isReachingEnd={isReachingEnd}
+          isLoading={
+            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+          }
+          onScrollBottom={fetchMore}
+        />
+      </View>
     </>
   );
 };

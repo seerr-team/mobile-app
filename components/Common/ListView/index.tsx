@@ -78,7 +78,7 @@ const ListView = ({
         data={[
           ...(plexItems || []).map((title, index) => {
             return (
-              <View key={`${title.ratingKey}-${index}`}>
+              <View className="m-2 flex-1" key={`${title.ratingKey}-${index}`}>
                 <TmdbTitleCard
                   id={title.tmdbId}
                   tmdbId={title.tmdbId}

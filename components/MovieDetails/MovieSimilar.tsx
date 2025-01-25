@@ -1,25 +1,24 @@
-import Header from '@app/components/Common/Header';
-import ListView from '@app/components/Common/ListView';
-import PageTitle from '@app/components/Common/PageTitle';
-import useDiscover from '@app/hooks/useDiscover';
-import Error from '@app/pages/_error';
-import defineMessages from '@app/utils/defineMessages';
-import type { MovieDetails } from '@server/models/Movie';
-import type { MovieResult } from '@server/models/Search';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Header from '@/components/Common/Header';
+import ListView from '@/components/Common/ListView';
+import Error from '@/components/ErrorPage';
+import useDiscover from '@/hooks/useDiscover';
+import useServerUrl from '@/hooks/useServerUrl';
+import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
+import type { MovieResult } from '@/jellyseerr/server/models/Search';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = defineMessages('components.MovieDetails', {
-  similar: 'Similar Titles',
-});
+const messages = getJellyseerrMessages('components.MovieDetails');
 
 const MovieSimilar = () => {
-  const router = useRouter();
+  const serverUrl = useServerUrl();
+  const searchParams = useLocalSearchParams();
   const intl = useIntl();
   const { data: movieData } = useSWR<MovieDetails>(
-    `/api/v1/movie/${router.query.movieId}`
+    `${serverUrl}/api/v1/movie/${searchParams.movieId}`
   );
   const {
     isLoadingInitialData,
@@ -29,7 +28,7 @@ const MovieSimilar = () => {
     titles,
     fetchMore,
     error,
-  } = useDiscover<MovieResult>(`/api/v1/movie/${router.query.movieId}/similar`);
+  } = useDiscover<MovieResult>(`/api/v1/movie/${searchParams.movieId}/similar`);
 
   if (error) {
     return <Error statusCode={500} />;
@@ -37,29 +36,31 @@ const MovieSimilar = () => {
 
   return (
     <>
-      <PageTitle
-        title={[intl.formatMessage(messages.similar), movieData?.title]}
-      />
-      <div className="mb-5 mt-1">
-        <Header
-          subtext={
-            <Link href={`/movie/${movieData?.id}`} className="hover:underline">
-              {movieData?.title}
-            </Link>
+      <View className="mt-8">
+        <ListView
+          header={
+            <Header
+              subtext={
+                <Link
+                  href={`(tabs)/movie/${movieData?.id}`}
+                  className="text-lg text-gray-400 hover:underline"
+                >
+                  {movieData?.title}
+                </Link>
+              }
+            >
+              {intl.formatMessage(messages.similar)}
+            </Header>
           }
-        >
-          {intl.formatMessage(messages.similar)}
-        </Header>
-      </div>
-      <ListView
-        items={titles}
-        isEmpty={isEmpty}
-        isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-        }
-        isReachingEnd={isReachingEnd}
-        onScrollBottom={fetchMore}
-      />
+          items={titles}
+          isEmpty={isEmpty}
+          isLoading={
+            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+          }
+          isReachingEnd={isReachingEnd}
+          onScrollBottom={fetchMore}
+        />
+      </View>
     </>
   );
 };

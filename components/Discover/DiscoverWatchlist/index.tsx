@@ -1,26 +1,20 @@
-import Header from '@app/components/Common/Header';
-import ListView from '@app/components/Common/ListView';
-import PageTitle from '@app/components/Common/PageTitle';
-import useDiscover from '@app/hooks/useDiscover';
-import { useUser } from '@app/hooks/useUser';
-import Error from '@app/pages/_error';
-import defineMessages from '@app/utils/defineMessages';
-import type { WatchlistItem } from '@server/interfaces/api/discoverInterfaces';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Header from '@/components/Common/Header';
+import ListView from '@/components/Common/ListView';
+import ErrorPage from '@/components/ErrorPage';
+import useDiscover from '@/hooks/useDiscover';
+import { useUser } from '@/hooks/useUser';
+import type { WatchlistItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 
-const messages = defineMessages('components.Discover.DiscoverWatchlist', {
-  discoverwatchlist: 'Your Watchlist',
-  watchlist: 'Plex Watchlist',
-});
+const messages = getJellyseerrMessages('components.Discover.DiscoverWatchlist');
 
 const DiscoverWatchlist = () => {
   const intl = useIntl();
-  const router = useRouter();
-  const { user } = useUser({
-    id: Number(router.query.userId),
-  });
+  // const { user } = useUser({
+  //   id: Number(router.query.userId),
+  // });
   const { user: currentUser } = useUser();
 
   const {
@@ -33,53 +27,54 @@ const DiscoverWatchlist = () => {
     error,
     mutate,
   } = useDiscover<WatchlistItem>(
-    `/api/v1/${
-      router.pathname.startsWith('/profile')
-        ? `user/${currentUser?.id}`
-        : router.query.userId
-          ? `user/${router.query.userId}`
-          : 'discover'
-    }/watchlist`
+    // `/api/v1/${
+    //   router.pathname.startsWith('/profile')
+    //     ? `user/${currentUser?.id}`
+    //     : router.query.userId
+    //       ? `user/${router.query.userId}`
+    //       : 'discover'
+    // }/watchlist`
+    `/api/v1/user/${currentUser?.id}/watchlist`
   );
 
   if (error) {
-    return <Error statusCode={500} />;
+    return <ErrorPage statusCode={500} />;
   }
 
   const title = intl.formatMessage(
-    router.query.userId ? messages.watchlist : messages.discoverwatchlist
+    // router.query.userId ? messages.watchlist : messages.discoverwatchlist
+    messages.discoverwatchlist
   );
 
   return (
     <>
-      <PageTitle
-        title={[title, router.query.userId ? user?.displayName : '']}
-      />
-      <div className="mb-5 mt-1">
-        <Header
-          subtext={
-            router.query.userId ? (
-              <Link href={`/users/${user?.id}`} className="hover:underline">
-                {user?.displayName}
-              </Link>
-            ) : (
-              ''
-            )
+      <View className="mt-8">
+        <ListView
+          header={
+            <Header
+            // subtext={
+            //   router.query.userId ? (
+            //     <Link href={`/users/${user?.id}`} className="hover:underline">
+            //       {user?.displayName}
+            //     </Link>
+            //   ) : (
+            //     ''
+            //   )
+            // }
+            >
+              {title}
+            </Header>
           }
-        >
-          {title}
-        </Header>
-      </div>
-      <ListView
-        plexItems={titles}
-        isEmpty={isEmpty}
-        isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-        }
-        isReachingEnd={isReachingEnd}
-        onScrollBottom={fetchMore}
-        mutateParent={mutate}
-      />
+          plexItems={titles}
+          isEmpty={isEmpty}
+          isLoading={
+            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+          }
+          isReachingEnd={isReachingEnd}
+          onScrollBottom={fetchMore}
+          mutateParent={mutate}
+        />
+      </View>
     </>
   );
 };

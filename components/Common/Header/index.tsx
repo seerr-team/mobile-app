@@ -16,6 +16,7 @@ const Header = ({ children, extraMargin = 0, subtext }: HeaderProps) => {
         </ThemedText>
       )}
       {typeof children !== 'string' && <View className="mb-6">{children}</View>}
+      {subtext && <View className="my-2">{subtext}</View>}
     </View>
   );
 };

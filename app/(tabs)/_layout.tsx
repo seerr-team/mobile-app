@@ -140,7 +140,31 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
+          name="movie/[movieId]/recommendations"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="movie/[movieId]/similar"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
           name="tv/[tvId]/index"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="tv/[tvId]/recommendations"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="tv/[tvId]/similar"
           options={{
             href: null,
           }}

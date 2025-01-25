@@ -1,5 +1,5 @@
-import Trending from '@/components/Discover/Trending';
+import DiscoverWatchlist from '@/components/Discover/DiscoverWatchlist';
 
-export default function DiscoverTrending() {
-  return <Trending />;
+export default function DiscoverWatchlistPage() {
+  return <DiscoverWatchlist />;
 }
