@@ -18,7 +18,7 @@ export default function TabLayout() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <View className="h-full">
+    <View className="h-full bg-gray-900">
       <View className="fixed left-0 right-0 top-0 flex flex-row gap-4 px-6 py-4">
         <SearchInput
           searchValue={searchValue}

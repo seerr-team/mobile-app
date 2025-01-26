@@ -48,14 +48,17 @@ export default function Login() {
 
   if (!loaded) {
     return (
-      <View className="flex h-screen items-center justify-center">
+      <View className="flex min-h-screen items-center justify-center bg-gray-900">
         <LoadingSpinner />
       </View>
     );
   }
 
   return (
-    <KeyboardAvoidingView behavior="padding" className="h-screen flex-1">
+    <KeyboardAvoidingView
+      behavior="padding"
+      className="min-h-screen bg-gray-900"
+    >
       <ScrollView contentContainerClassName="flex-grow justify-center item-center">
         <View className="px-8 py-2">
           <Image

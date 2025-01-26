@@ -17,8 +17,8 @@ import ExternalLinkBlock from '@/components/ExternalLinkBlock';
 // import ManageSlideOver from '@/components/ManageSlideOver';
 import MediaSlider from '@/components/MediaSlider';
 import PersonCard from '@/components/PersonCard';
-// import RequestButton from '@/components/RequestButton';
-// import RequestModal from '@/components/RequestModal';
+import RequestButton from '@/components/RequestButton';
+import RequestModal from '@/components/RequestModal';
 import Slider from '@/components/Slider';
 import StatusBadge from '@/components/StatusBadge';
 // import Season from '@/components/TvDetails/Season';
@@ -48,7 +48,7 @@ import {
 } from '@nandorojo/heroicons/24/solid';
 // import { IssueStatus } from '@/jellyseerr/server/constants/issue';
 import {
-  // MediaRequestStatus,
+  MediaRequestStatus,
   MediaStatus,
   MediaType,
 } from '@/jellyseerr/server/constants/media';
@@ -81,7 +81,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
   const { locale } = useLocale();
-  // const [showRequestModal, setShowRequestModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
   // const [showManager, setShowManager] = useState(
   //   router.query.manage === '1' ? true : false
   // );
@@ -97,7 +97,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   const {
     data,
     error,
-    // mutate: revalidate,
+    mutate: revalidate,
   } = useSWR<TvDetailsType>(`${serverUrl}/api/v1/tv/${searchParams.tvId}`, {
     fallbackData: tv,
     refreshInterval: refreshIntervalHelper(
@@ -233,45 +233,45 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
     );
   }
 
-  // const getAllRequestedSeasons = (is4k: boolean): number[] => {
-  //   const requestedSeasons = (data?.mediaInfo?.requests ?? [])
-  //     .filter(
-  //       (request) =>
-  //         request.is4k === is4k &&
-  //         request.status !== MediaRequestStatus.DECLINED
-  //     )
-  //     .reduce((requestedSeasons, request) => {
-  //       return [
-  //         ...requestedSeasons,
-  //         ...request.seasons.map((sr) => sr.seasonNumber),
-  //       ];
-  //     }, [] as number[]);
+  const getAllRequestedSeasons = (is4k: boolean): number[] => {
+    const requestedSeasons = (data?.mediaInfo?.requests ?? [])
+      .filter(
+        (request) =>
+          request.is4k === is4k &&
+          request.status !== MediaRequestStatus.DECLINED
+      )
+      .reduce((requestedSeasons, request) => {
+        return [
+          ...requestedSeasons,
+          ...request.seasons.map((sr) => sr.seasonNumber),
+        ];
+      }, [] as number[]);
 
-  //   const availableSeasons = (data?.mediaInfo?.seasons ?? [])
-  //     .filter(
-  //       (season) =>
-  //         (season[is4k ? 'status4k' : 'status'] === MediaStatus.AVAILABLE ||
-  //           season[is4k ? 'status4k' : 'status'] ===
-  //             MediaStatus.PARTIALLY_AVAILABLE ||
-  //           season[is4k ? 'status4k' : 'status'] === MediaStatus.PROCESSING) &&
-  //         !requestedSeasons.includes(season.seasonNumber)
-  //     )
-  //     .map((season) => season.seasonNumber);
+    const availableSeasons = (data?.mediaInfo?.seasons ?? [])
+      .filter(
+        (season) =>
+          (season[is4k ? 'status4k' : 'status'] === MediaStatus.AVAILABLE ||
+            season[is4k ? 'status4k' : 'status'] ===
+              MediaStatus.PARTIALLY_AVAILABLE ||
+            season[is4k ? 'status4k' : 'status'] === MediaStatus.PROCESSING) &&
+          !requestedSeasons.includes(season.seasonNumber)
+      )
+      .map((season) => season.seasonNumber);
 
-  //   return [...requestedSeasons, ...availableSeasons];
-  // };
+    return [...requestedSeasons, ...availableSeasons];
+  };
 
-  // const showHasSpecials = data.seasons.some(
-  //   (season) => season.seasonNumber === 0
-  // );
+  const showHasSpecials = data.seasons.some(
+    (season) => season.seasonNumber === 0
+  );
 
-  // const isComplete =
-  //   (showHasSpecials ? seasonCount + 1 : seasonCount) <=
-  //   getAllRequestedSeasons(false).length;
+  const isComplete =
+    (showHasSpecials ? seasonCount + 1 : seasonCount) <=
+    getAllRequestedSeasons(false).length;
 
-  // const is4kComplete =
-  //   (showHasSpecials ? seasonCount + 1 : seasonCount) <=
-  //   getAllRequestedSeasons(true).length;
+  const is4kComplete =
+    (showHasSpecials ? seasonCount + 1 : seasonCount) <=
+    getAllRequestedSeasons(true).length;
 
   const streamingRegion = user?.settings?.streamingRegion
     ? user.settings.streamingRegion
@@ -398,7 +398,6 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             }}
           /> */}
           <LinearGradient
-            // Background Linear Gradient
             colors={['rgba(17, 24, 39, 0.47)', 'rgba(17, 24, 39, 1)']}
             style={{
               position: 'absolute',
@@ -424,7 +423,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
         mediaType="tv"
         tmdbId={data.id}
       /> */}
-      {/* <RequestModal
+      <RequestModal
         tmdbId={data.id}
         show={showRequestModal}
         type="tv"
@@ -433,7 +432,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           setShowRequestModal(false);
         }}
         onCancel={() => setShowRequestModal(false)}
-      /> */}
+      />
       {/* <ManageSlideOver
         data={data}
         mediaType="tv"
@@ -567,14 +566,14 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             </>
           )}
           <PlayButton links={mediaLinks} />
-          {/* <RequestButton
+          <RequestButton
             mediaType="tv"
             onUpdate={() => revalidate()}
             tmdbId={data?.id}
             media={data?.mediaInfo}
             isShowComplete={isComplete}
             is4kShowComplete={is4kComplete}
-          /> */}
+          />
           {/* {(data.mediaInfo?.status === MediaStatus.AVAILABLE ||
             data.mediaInfo?.status === MediaStatus.PARTIALLY_AVAILABLE ||
             (settings.currentSettings.series4kEnabled &&

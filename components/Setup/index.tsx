@@ -32,7 +32,10 @@ export default function Setup() {
   }, [serverUrl]);
 
   return (
-    <KeyboardAvoidingView behavior="padding" className="h-screen flex-1">
+    <KeyboardAvoidingView
+      behavior="padding"
+      className="min-h-screen bg-gray-900"
+    >
       <ScrollView contentContainerClassName="flex-grow justify-center item-center">
         <View className="px-8 py-2">
           <Image

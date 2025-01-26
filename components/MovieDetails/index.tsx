@@ -15,10 +15,10 @@ import Tooltip from '@/components/Common/Tooltip';
 import ExternalLinkBlock from '@/components/ExternalLinkBlock';
 // import IssueModal from '@/components/IssueModal';
 // import ManageSlideOver from '@/components/ManageSlideOver';
+import ErrorPage from '@/components/ErrorPage';
 import MediaSlider from '@/components/MediaSlider';
 import PersonCard from '@/components/PersonCard';
-// import RequestButton from '@/components/RequestButton';
-import ErrorPage from '@/components/ErrorPage';
+import RequestButton from '@/components/RequestButton';
 import Slider from '@/components/Slider';
 import StatusBadge from '@/components/StatusBadge';
 import useDeepLinks from '@/hooks/useDeepLinks';
@@ -96,7 +96,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   const {
     data,
     error,
-    // mutate: revalidate,
+    mutate: revalidate,
   } = useSWR<MovieDetailsType>(
     `${serverUrl}/api/v1/movie/${searchParams.movieId}`,
     {
@@ -422,7 +422,6 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             }}
           /> */}
           <LinearGradient
-            // Background Linear Gradient
             colors={['rgba(17, 24, 39, 0.47)', 'rgba(17, 24, 39, 1)']}
             style={{
               position: 'absolute',
@@ -588,12 +587,12 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             </>
           )}
           <PlayButton links={mediaLinks} />
-          {/* <RequestButton
+          <RequestButton
             mediaType="movie"
             media={data.mediaInfo}
             tmdbId={data.id}
             onUpdate={() => revalidate()}
-          /> */}
+          />
           {/* {(data.mediaInfo?.status === MediaStatus.AVAILABLE ||
             (settings.currentSettings.movie4kEnabled &&
               hasPermission(

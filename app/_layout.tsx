@@ -88,7 +88,7 @@ function RootLayout() {
             },
           }}
         >
-          <View className="bg-gray-900">
+          <View>
             <Slot />
             <Toasts
               overrideDarkMode

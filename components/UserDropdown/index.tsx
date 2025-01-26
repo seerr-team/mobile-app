@@ -60,6 +60,7 @@ const UserDropdown = () => {
         <View className="flex flex-1">
           <Pressable
             className="absolute inset-0"
+            android_disableSound
             onPress={() => setIsOpen(false)}
           />
         </View>

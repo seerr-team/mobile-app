@@ -96,14 +96,13 @@ const ButtonWithDropdown = ({
           </Pressable>
         </Link>
       ) : (
-        <Pressable {...(props as PressableProps)}>
-          <View
-            className={`relative z-10 inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out hover:z-20 focus:z-20 focus:outline-none ${
-              styleClasses.mainButtonClasses
-            } ${children ? 'rounded-l-md' : 'rounded-md'} ${className}`}
-          >
-            {text}
-          </View>
+        <Pressable
+          {...(props as PressableProps)}
+          className={`relative z-10 inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out hover:z-20 focus:z-20 focus:outline-none ${
+            styleClasses.mainButtonClasses
+          } ${children ? 'rounded-l-md' : 'rounded-md'} ${className}`}
+        >
+          {text}
         </Pressable>
       )}
       {children && (
