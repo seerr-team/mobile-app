@@ -22,10 +22,9 @@ import type { TvDetails } from '@/jellyseerr/server/models/Tv';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
-import Checkbox from 'expo-checkbox';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
+import { Switch, View } from 'react-native';
 import useSWR, { mutate } from 'swr';
 
 const messages = getJellyseerrMessages('components.RequestModal');
@@ -378,8 +377,7 @@ const TvRequestModal = ({
   return data &&
     !error &&
     !data.externalIds.tvdbId &&
-    searchModal.show ? //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
-  //   closeModal={() => setSearchModal({ show: false })}
+    searchModal.show ? //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
   //   onCancel={onCancel}
   //   modalTitle={intl.formatMessage(
   //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle
@@ -522,57 +520,33 @@ const TvRequestModal = ({
               <View className="min-w-full">
                 <View className="flex flex-row">
                   <View
-                    className={`w-16 bg-gray-700/80 px-4 py-3 ${
+                    className={`w-16 bg-gray-700/80 py-3 ${
                       !settings.currentSettings.partialRequestsEnabled &&
                       'hidden'
                     }`}
                   >
-                    {/* <ThemedText
-                      role="checkbox"
-                      tabIndex={0}
-                      aria-checked={isAllSeasons()}
-                      onClick={() => toggleAllSeasons()}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === 'Space') {
-                          toggleAllSeasons();
-                        }
-                      }}
-                      className={`relative inline-flex h-5 w-10 flex-shrink-0 cursor-pointer items-center justify-center pt-2 focus:outline-none ${
-                        quota?.tv.remaining &&
-                        quota.tv.limit &&
-                        quota.tv.remaining < unrequestedSeasons.length
-                          ? 'opacity-50'
-                          : ''
-                      }`}
-                    >
-                      <ThemedText
-                        aria-hidden="true"
-                        className={`${
-                          isAllSeasons() ? 'bg-indigo-500' : 'bg-gray-800'
-                        } absolute mx-auto h-4 w-9 rounded-full transition-colors duration-200 ease-in-out`}
-                      ></ThemedText>
-                      <ThemedText
-                        aria-hidden="true"
-                        className={`${
-                          isAllSeasons() ? 'translate-x-5' : 'translate-x-0'
-                        } absolute left-0 inline-block h-5 w-5 rounded-full border border-gray-200 bg-white shadow transition-transform duration-200 ease-in-out group-focus:border-blue-300 group-focus:ring`}
-                      ></ThemedText>
-                    </ThemedText> */}
-                    <Checkbox
+                    <Switch
                       value={isAllSeasons()}
                       onValueChange={() => toggleAllSeasons()}
-                      color={isAllSeasons() ? '#6366f1' : '#e5e7eb'}
+                      trackColor={{ false: '#1f2937', true: '#6366f1' }}
+                      thumbColor="#ffffff"
                     />
                   </View>
-                  <ThemedText className="flex-1 bg-gray-700/80 px-1 py-4 text-left text-sm font-medium uppercase leading-4 tracking-wider text-gray-200 md:px-6">
-                    {intl.formatMessage(messages.season)}
-                  </ThemedText>
-                  <ThemedText className="flex-1 bg-gray-700/80 px-5 py-4 text-left text-sm font-medium uppercase leading-4 tracking-wider text-gray-200 md:px-6">
-                    {intl.formatMessage(messages.numberofepisodes)}
-                  </ThemedText>
-                  <ThemedText className="flex-1 bg-gray-700/80 px-2 py-4 text-left text-sm font-medium uppercase leading-4 tracking-wider text-gray-200 md:px-6">
-                    {intl.formatMessage(globalMessages.status)}
-                  </ThemedText>
+                  <View className="flex flex-1 justify-center bg-gray-700/80 px-1 py-4 md:px-6">
+                    <ThemedText className="text-left text-sm font-medium uppercase leading-4 tracking-wider text-gray-200">
+                      {intl.formatMessage(messages.season)}
+                    </ThemedText>
+                  </View>
+                  <View className="flex flex-1 justify-center bg-gray-700/80 px-5 py-4 md:px-6">
+                    <ThemedText className="text-left text-sm font-medium uppercase leading-4 tracking-wider text-gray-200">
+                      {intl.formatMessage(messages.numberofepisodes)}
+                    </ThemedText>
+                  </View>
+                  <View className="flex flex-1 justify-center bg-gray-700/80 px-2 py-4 md:px-6">
+                    <ThemedText className="text-left text-sm font-medium uppercase leading-4 tracking-wider text-gray-200">
+                      {intl.formatMessage(globalMessages.status)}
+                    </ThemedText>
+                  </View>
                 </View>
                 <View className="divide-y divide-gray-700">
                   {data?.seasons
@@ -598,67 +572,12 @@ const TvRequestModal = ({
                           className="flex flex-row"
                         >
                           <View
-                            className={`w-16 px-4 py-3 ${
+                            className={`w-16 py-3 ${
                               !settings.currentSettings
                                 .partialRequestsEnabled && 'hidden'
                             }`}
                           >
-                            {/* <ThemedText
-                              role="checkbox"
-                              tabIndex={0}
-                              aria-checked={
-                                !!mediaSeason ||
-                                (!!seasonRequest &&
-                                  !editingSeasons.includes(
-                                    season.seasonNumber
-                                  )) ||
-                                isSelectedSeason(season.seasonNumber)
-                              }
-                              onClick={() => toggleSeason(season.seasonNumber)}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === 'Space') {
-                                  toggleSeason(season.seasonNumber);
-                                }
-                              }}
-                              className={`relative inline-flex h-5 w-10 flex-shrink-0 cursor-pointer items-center justify-center pt-2 focus:outline-none ${
-                                mediaSeason ||
-                                (quota?.tv.limit &&
-                                  currentlyRemaining <= 0 &&
-                                  !isSelectedSeason(season.seasonNumber)) ||
-                                (!!seasonRequest &&
-                                  !editingSeasons.includes(season.seasonNumber))
-                                  ? 'opacity-50'
-                                  : ''
-                              }`}
-                            >
-                              <ThemedText
-                                aria-hidden="true"
-                                className={`${
-                                  !!mediaSeason ||
-                                  (!!seasonRequest &&
-                                    !editingSeasons.includes(
-                                      season.seasonNumber
-                                    )) ||
-                                  isSelectedSeason(season.seasonNumber)
-                                    ? 'bg-indigo-500'
-                                    : 'bg-gray-700'
-                                } absolute mx-auto h-4 w-9 rounded-full transition-colors duration-200 ease-in-out`}
-                              ></ThemedText>
-                              <ThemedText
-                                aria-hidden="true"
-                                className={`${
-                                  !!mediaSeason ||
-                                  (!!seasonRequest &&
-                                    !editingSeasons.includes(
-                                      season.seasonNumber
-                                    )) ||
-                                  isSelectedSeason(season.seasonNumber)
-                                    ? 'translate-x-5'
-                                    : 'translate-x-0'
-                                } absolute left-0 inline-block h-5 w-5 rounded-full border border-gray-200 bg-white shadow transition-transform duration-200 ease-in-out group-focus:border-blue-300 group-focus:ring`}
-                              ></ThemedText>
-                            </ThemedText> */}
-                            <Checkbox
+                            <Switch
                               value={
                                 !!mediaSeason ||
                                 (!!seasonRequest &&
@@ -670,16 +589,8 @@ const TvRequestModal = ({
                               onValueChange={() =>
                                 toggleSeason(season.seasonNumber)
                               }
-                              color={
-                                !!mediaSeason ||
-                                (!!seasonRequest &&
-                                  !editingSeasons.includes(
-                                    season.seasonNumber
-                                  )) ||
-                                isSelectedSeason(season.seasonNumber)
-                                  ? '#6366f1'
-                                  : '#e5e7eb'
-                              }
+                              trackColor={{ false: '#374151', true: '#6366f1' }}
+                              thumbColor="#ffffff"
                             />
                           </View>
                           <ThemedText className="flex-1 whitespace-nowrap px-1 py-4 text-sm font-medium leading-5 text-gray-100 md:px-6">
