@@ -2,6 +2,7 @@ import Button from '@/components/Common/Button';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
+import { ApiErrorCode } from '@/jellyseerr/server/constants/error';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
 import { router } from 'expo-router';
@@ -43,15 +44,36 @@ export default function JellyfinLogin() {
               email: values.username,
             }),
           });
-          if (!res.ok) throw new Error();
+          if (!res.ok) throw new Error(res.statusText, { cause: res });
           router.replace('/(tabs)');
         } catch (e) {
+          let errorData;
+          try {
+            errorData = await e.cause?.text();
+            errorData = JSON.parse(errorData);
+          } catch {
+            /* empty */
+          }
+          let errorMessage = null;
+          switch (errorData?.message) {
+            case ApiErrorCode.InvalidUrl:
+              errorMessage = messages.invalidurlerror;
+              break;
+            case ApiErrorCode.InvalidCredentials:
+              errorMessage = messages.credentialerror;
+              break;
+            case ApiErrorCode.NotAdmin:
+              errorMessage = messages.adminerror;
+              break;
+            case ApiErrorCode.NoAdminUser:
+              errorMessage = messages.noadminerror;
+              break;
+            default:
+              errorMessage = messages.loginerror;
+              break;
+          }
           toast.error(
-            intl.formatMessage(
-              (e as Error).message === 'Request failed with status code 401'
-                ? messages.credentialerror
-                : messages.loginerror
-            )
+            intl.formatMessage(errorMessage, mediaServerFormatValues)
           );
         }
       }}

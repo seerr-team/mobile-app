@@ -1,4 +1,3 @@
-import useServerUrl from '@/hooks/useServerUrl';
 import { MediaStatus } from '@/jellyseerr/server/constants/media';
 import useSWRInfinite from 'swr/infinite';
 import useSettings from './useSettings';
@@ -11,6 +10,7 @@ export interface BaseSearchResult<T> {
 }
 
 interface BaseMedia {
+  id: number;
   mediaType: string;
   mediaInfo?: {
     status: MediaStatus;
@@ -55,7 +55,6 @@ const useDiscover = <
   options?: O,
   { hideAvailable = true } = {}
 ): DiscoverResult<T, S> => {
-  const serverUrl = useServerUrl();
   const settings = useSettings();
   const { data, error, size, setSize, isValidating, mutate } = useSWRInfinite<
     BaseSearchResult<T> & S
@@ -77,12 +76,14 @@ const useDiscover = <
         )
         .join('&');
 
-      return `${serverUrl}${endpoint}?${finalQueryString}`;
+      return `${endpoint}?${finalQueryString}`;
     },
     {
       initialSize: 3,
     }
   );
+
+  const resultIds: Set<number> = new Set<number>();
 
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
@@ -96,7 +97,18 @@ const useDiscover = <
     setSize(size + 1);
   };
 
-  let titles = (data ?? []).reduce((a, v) => [...a, ...v.results], [] as T[]);
+  let titles = (data ?? []).reduce((a, v) => {
+    const results: T[] = [];
+
+    for (const result of v.results) {
+      if (!resultIds.has(result.id)) {
+        resultIds.add(result.id);
+        results.push(result);
+      }
+    }
+
+    return [...a, ...results];
+  }, [] as T[]);
 
   if (settings.currentSettings.hideAvailable && hideAvailable) {
     titles = titles.filter(

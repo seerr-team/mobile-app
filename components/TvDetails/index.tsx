@@ -35,17 +35,15 @@ import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 import type { RTRating } from '@/jellyseerr/server/api/rating/rottentomatoes';
 import { ANIME_KEYWORD_ID } from '@/jellyseerr/server/api/themoviedb/constants';
 import {
+  Film,
   // ArrowRightCircle,
   // Cog,
   // ExclamationTriangle,
-  Film,
-  Play,
-} from '@nandorojo/heroicons/24/outline';
-import {
-  // ChevronDown,
   MinusCircle,
+  Play,
   Star,
-} from '@nandorojo/heroicons/24/solid';
+} from '@nandorojo/heroicons/24/outline';
+// import { ChevronDown } from '@nandorojo/heroicons/24/solid';
 // import { IssueStatus } from '@/jellyseerr/server/constants/issue';
 import {
   MediaRequestStatus,
@@ -262,7 +260,9 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   };
 
   const showHasSpecials = data.seasons.some(
-    (season) => season.seasonNumber === 0
+    (season) =>
+      season.seasonNumber === 0 &&
+      settings.currentSettings.enableSpecialEpisodes
   );
 
   const isComplete =
@@ -711,6 +711,11 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             {data.seasons
               .slice()
               .reverse()
+              .filter(
+                (season) =>
+                  settings.currentSettings.enableSpecialEpisodes ||
+                  season.seasonNumber !== 0
+              )
               .map((season) => {
                 const show4k =
                   settings.currentSettings.series4kEnabled &&
@@ -1192,15 +1197,16 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                 <ThemedText className="shrink">
                   {intl.formatMessage(messages.streamingproviders)}
                 </ThemedText>
-                <View className="ml-2">
+                <View className="ml-2 flex shrink flex-row flex-wrap justify-end gap-2 text-right text-sm font-normal text-gray-400">
                   {streamingProviders.map((p) => {
                     return (
-                      <ThemedText
-                        className="text-right text-sm font-normal text-gray-400"
-                        key={`provider-${p.id}`}
-                      >
-                        {p.name}
-                      </ThemedText>
+                      <CachedImage
+                        type="tmdb"
+                        key={`streaming-provider-${p.id}`}
+                        src={'https://image.tmdb.org/t/p/w45/' + p.logoPath}
+                        alt={p.name}
+                        style={{ width: 32, height: 32, borderRadius: 6 }}
+                      />
                     );
                   })}
                 </View>

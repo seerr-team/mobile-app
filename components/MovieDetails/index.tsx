@@ -35,16 +35,13 @@ import {
   // ExclamationTriangle,
   // EyeSlash,
   Film,
+  MinusCircle,
   Play,
   Server,
+  Star,
   Ticket,
 } from '@nandorojo/heroicons/24/outline';
-import {
-  // ChevronDoubleDown,
-  // ChevronDoubleUp,
-  MinusCircle,
-  Star,
-} from '@nandorojo/heroicons/24/solid';
+import {} from '@nandorojo/heroicons/24/solid';
 // import { IssueStatus } from '@/jellyseerr/server/constants/issue';
 import { MediaStatus, MediaType } from '@/jellyseerr/server/constants/media';
 import { MediaServerType } from '@/jellyseerr/server/constants/server';
@@ -756,13 +753,13 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           <View className="rounded-lg border border-gray-700 bg-gray-900 text-sm font-bold text-gray-300 shadow">
             {(!!data.voteCount ||
               (ratingData?.rt?.criticsRating &&
-                !!ratingData?.rt?.criticsScore) ||
+                typeof ratingData?.rt?.criticsScore === 'number') ||
               (ratingData?.rt?.audienceRating &&
                 !!ratingData?.rt?.audienceScore) ||
               ratingData?.imdb?.criticsScore) && (
               <View className="flex flex-row items-center justify-center gap-4 space-x-5 border-b border-gray-700 px-4 py-2 font-medium">
                 {ratingData?.rt?.criticsRating &&
-                  !!ratingData?.rt?.criticsScore && (
+                  typeof ratingData?.rt?.criticsScore === 'number' && (
                     <Tooltip
                       content={intl.formatMessage(messages.rtcriticsscore)}
                     >
@@ -1068,15 +1065,19 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                 <ThemedText className="shrink">
                   {intl.formatMessage(messages.streamingproviders)}
                 </ThemedText>
-                <ThemedText className="ml-2 shrink text-right text-sm font-normal text-gray-400">
+                <View className="flex shrink flex-row flex-wrap justify-end gap-2 text-right text-sm font-normal text-gray-400">
                   {streamingProviders.map((p) => {
                     return (
-                      <ThemedText className="block" key={`provider-${p.id}`}>
-                        {p.name}
-                      </ThemedText>
+                      <CachedImage
+                        key={`streaming-provider-${p.id}`}
+                        type="tmdb"
+                        src={'https://image.tmdb.org/t/p/w45/' + p.logoPath}
+                        alt={p.name}
+                        style={{ width: 32, height: 32, borderRadius: 6 }}
+                      />
                     );
                   })}
-                </ThemedText>
+                </View>
               </View>
             )}
             <View className="flex flex-row justify-between px-4 py-2">

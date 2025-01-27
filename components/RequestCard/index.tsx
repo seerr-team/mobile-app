@@ -6,6 +6,7 @@ import ThemedText from '@/components/Common/ThemedText';
 import StatusBadge from '@/components/StatusBadge';
 import useDeepLinks from '@/hooks/useDeepLinks';
 import useServerUrl from '@/hooks/useServerUrl';
+import useSettings from '@/hooks/useSettings';
 import { Permission, useUser } from '@/hooks/useUser';
 import { MediaRequestStatus } from '@/jellyseerr/server/constants/media';
 import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
@@ -171,6 +172,7 @@ interface RequestCardProps {
 
 const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
   const serverUrl = useServerUrl();
+  const settings = useSettings();
   const intl = useIntl();
   const { hasPermission } = useUser();
   // const [showEditModal, setShowEditModal] = useState(false);
@@ -336,20 +338,17 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
               [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
               { type: 'or' }
             ) && (
-              <View className="card-field">
-                <Link
-                  href={`/users/${requestData.requestedBy.id}`}
-                  className="group flex items-center"
-                >
-                  <Pressable>
+              <View className="flex flex-row items-center truncate py-0.5 text-sm sm:py-1">
+                <Link href={`/users/${requestData.requestedBy.id}`}>
+                  <Pressable className="group flex flex-row items-center gap-2">
                     <CachedImage
                       type="avatar"
                       src={requestData.requestedBy.avatar}
                       alt=""
                       className="avatar-sm object-cover"
-                      style={{ width: 20, height: 20 }}
+                      style={{ width: 20, height: 20, borderRadius: 10 }}
                     />
-                    <ThemedText className="truncate font-semibold group-hover:text-white group-hover:underline">
+                    <ThemedText className="truncate font-semibold text-gray-300">
                       {requestData.requestedBy.displayName}
                     </ThemedText>
                   </Pressable>
@@ -361,7 +360,11 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                 <ThemedText className="mr-2 text-sm font-bold text-gray-400">
                   {intl.formatMessage(messages.seasons, {
                     seasonCount:
-                      title.seasons.length === request.seasons.length
+                      (settings.currentSettings.enableSpecialEpisodes
+                        ? title.seasons.length
+                        : title.seasons.filter(
+                            (season) => season.seasonNumber !== 0
+                          ).length) === request.seasons.length
                         ? 0
                         : request.seasons.length,
                   })}

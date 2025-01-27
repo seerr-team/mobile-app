@@ -244,9 +244,13 @@ const TvRequestModal = ({
   };
 
   const getAllSeasons = (): number[] => {
-    return (data?.seasons ?? [])
-      .filter((season) => season.episodeCount !== 0)
-      .map((season) => season.seasonNumber);
+    let allSeasons = (data?.seasons ?? []).filter(
+      (season) => season.episodeCount !== 0
+    );
+    if (!settings.currentSettings.enableSpecialEpisodes) {
+      allSeasons = allSeasons.filter((season) => season.seasonNumber !== 0);
+    }
+    return allSeasons.map((season) => season.seasonNumber);
   };
 
   const getAllRequestedSeasons = (): number[] => {
@@ -374,8 +378,7 @@ const TvRequestModal = ({
   return data &&
     !error &&
     !data.externalIds.tvdbId &&
-    searchModal.show ? //   tvdbId={tvdbId} // <SearchByNameModal
-  //   setTvdbId={setTvdbId}
+    searchModal.show ? //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
   //   closeModal={() => setSearchModal({ show: false })}
   //   onCancel={onCancel}
   //   modalTitle={intl.formatMessage(
@@ -573,7 +576,12 @@ const TvRequestModal = ({
                 </View>
                 <View className="divide-y divide-gray-700">
                   {data?.seasons
-                    .filter((season) => season.episodeCount !== 0)
+                    .filter(
+                      (season) =>
+                        (!settings.currentSettings.enableSpecialEpisodes
+                          ? season.seasonNumber !== 0
+                          : true) && season.episodeCount !== 0
+                    )
                     .map((season) => {
                       const seasonRequest = getSeasonRequest(
                         season.seasonNumber
