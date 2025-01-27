@@ -8,25 +8,15 @@ import {
   Tv as TvFilled,
 } from '@nandorojo/heroicons/24/solid';
 import { Tabs } from 'expo-router';
-import { useState } from 'react';
 import { View } from 'react-native';
 
 const tintColor = '#6366f1';
 
 export default function TabLayout() {
-  const [searchValue, setSearchValue] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   return (
     <View className="h-full bg-gray-900">
       <View className="fixed left-0 right-0 top-0 flex flex-row gap-4 px-6 py-4">
-        <SearchInput
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          isOpen={isDropdownOpen}
-          setIsOpen={setIsDropdownOpen}
-          clear={() => setSearchValue('')}
-        />
+        <SearchInput />
         <UserDropdown />
       </View>
       <Tabs
@@ -107,6 +97,12 @@ export default function TabLayout() {
                 )}
               </View>
             ),
+          }}
+        />
+        <Tabs.Screen
+          name="search"
+          options={{
+            href: null,
           }}
         />
         <Tabs.Screen

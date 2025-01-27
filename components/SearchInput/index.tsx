@@ -1,27 +1,26 @@
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { MagnifyingGlass } from '@nandorojo/heroicons/24/solid';
-import type { Dispatch, SetStateAction } from 'react';
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { TextInput, View } from 'react-native';
 
 const messages = getJellyseerrMessages('components.Layout.SearchInput');
 
-export interface SearchInputProps {
-  searchValue: string;
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  setSearchValue: Dispatch<SetStateAction<string>>;
-  clear: () => void;
-}
-
-const SearchInput = ({
-  searchValue,
-  setSearchValue,
-  isOpen,
-  setIsOpen,
-  clear,
-}: SearchInputProps) => {
+const SearchInput = () => {
   const intl = useIntl();
+  const [searchValue, setSearchValue] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (searchValue !== '') {
+      router.replace({
+        pathname: '(tabs)/search',
+        params: { query: searchValue },
+      });
+    }
+  }, [searchValue]);
+
   return (
     <View
       className={`flex flex-1 flex-row items-center gap-2 rounded-full border bg-gray-900 bg-opacity-80 pl-4 pr-2 hover:border-gray-500 ${isOpen ? 'border-gray-500' : 'border-gray-600'}`}
@@ -40,6 +39,7 @@ const SearchInput = ({
         onBlur={() => {
           if (searchValue === '') {
             setIsOpen(false);
+            router.replace('(tabs)');
           }
         }}
       />
