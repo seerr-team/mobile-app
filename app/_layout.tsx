@@ -5,10 +5,6 @@ import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import { getServerSettings } from '@/utils/serverSettings';
 import { Toasts } from '@backpackapp-io/react-native-toast';
-import '@formatjs/intl-displaynames/polyfill-force';
-import '@formatjs/intl-locale/polyfill';
-import '@formatjs/intl-relativetimeformat/locale-data/en';
-import '@formatjs/intl-relativetimeformat/polyfill';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import { router, Slot } from 'expo-router';
@@ -22,9 +18,13 @@ import 'react-native-reanimated';
 import { configureReanimatedLogger } from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider, useDispatch } from 'react-redux';
+import RelativeTimeFormat from 'relative-time-format';
+import en from 'relative-time-format/locale/en';
 import { SWRConfig } from 'swr';
 
 import '@/jellyseerr/src/styles/globals.css';
+
+RelativeTimeFormat.addLocale(en);
 
 configureReanimatedLogger({
   strict: false,

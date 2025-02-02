@@ -211,7 +211,7 @@ const RequestList = () => {
           </div>
         </div> */}
       </View>
-      {data.results.map((request) => {
+      {data?.results.map((request) => {
         return (
           <View className="py-2" key={`request-list-${request.id}`}>
             {/* <RequestItem
@@ -223,7 +223,7 @@ const RequestList = () => {
         );
       })}
 
-      {data.results.length === 0 && (
+      {data?.results.length === 0 && (
         <View className="flex w-full flex-col items-center justify-center py-24 text-white">
           <ThemedText className="text-2xl text-gray-400">
             {intl.formatMessage(globalMessages.noresults)}

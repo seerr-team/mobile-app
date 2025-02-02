@@ -4,7 +4,6 @@ import useServerUrl from '@/hooks/useServerUrl';
 import { useUser } from '@/hooks/useUser';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { ArrowRightOnRectangle, Clock } from '@nandorojo/heroicons/24/outline';
-import { User } from '@nandorojo/heroicons/24/solid';
 import { BlurView } from 'expo-blur';
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
@@ -95,7 +94,7 @@ const UserDropdown = () => {
               </View>
             </View>
             <View className="flex flex-col border-t border-gray-600 py-2">
-              <Link href="(tabs)/profile" asChild>
+              {/* <Link href="(tabs)/profile" asChild>
                 <Pressable onPress={() => setIsOpen(false)}>
                   <View className="flex flex-row items-center gap-2 px-4 py-2">
                     <User
@@ -109,7 +108,7 @@ const UserDropdown = () => {
                     </ThemedText>
                   </View>
                 </Pressable>
-              </Link>
+              </Link> */}
               <Link href="(tabs)/requests?filter=all" asChild>
                 <Pressable onPress={() => setIsOpen(false)}>
                   <View className="flex flex-row items-center gap-2 px-4 py-2">

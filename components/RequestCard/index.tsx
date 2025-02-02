@@ -2,6 +2,7 @@ import Badge from '@/components/Common/Badge';
 import CachedImage from '@/components/Common/CachedImage';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 // import RequestModal from '@/components/RequestModal';
+import FormattedRelativeTime from '@/components/Common/FormattedRelativeTime';
 import ThemedText from '@/components/Common/ThemedText';
 import StatusBadge from '@/components/StatusBadge';
 import useDeepLinks from '@/hooks/useDeepLinks';
@@ -18,7 +19,7 @@ import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { useEffect } from 'react';
-import { FormattedRelativeTime, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import useSWR from 'swr';
 
@@ -323,17 +324,17 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                 )?.slice(0, 4)}
               </ThemedText>
             </View>
-            <ThemedText
-              // href={
-              //   request.type === 'movie'
-              //     ? `/movie/${requestData.media.tmdbId}`
-              //     : `/tv/${requestData.media.tmdbId}`
-              // }
+            <Link
+              href={
+                request.type === 'movie'
+                  ? `(tabs)/movie/${requestData.media.tmdbId}`
+                  : `(tabs)/tv/${requestData.media.tmdbId}`
+              }
               className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${canExpand ? 'mb-1 text-2xl' : 'text-lg'} font-bold text-white hover:underline`}
               numberOfLines={1}
             >
               {isMovie(title) ? title.title : title.name}
-            </ThemedText>
+            </Link>
             {hasPermission(
               [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
               { type: 'or' }
@@ -387,8 +388,8 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
           <Link
             href={
               request.type === 'movie'
-                ? `/movie/${requestData.media.tmdbId}`
-                : `/tv/${requestData.media.tmdbId}`
+                ? `(tabs)/movie/${requestData.media.tmdbId}`
+                : `(tabs)/tv/${requestData.media.tmdbId}`
             }
             className="flex-shrink-0 scale-100"
           >
@@ -424,10 +425,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
               </ThemedText>
               <ThemedText className="mt-2 text-gray-300 sm:mt-1">
                 <FormattedRelativeTime
-                  value={Math.floor(
-                    (new Date(requestData.createdAt).getTime() - Date.now()) /
-                      1000
-                  )}
+                  value={new Date(requestData.createdAt)}
                   updateIntervalInSeconds={1}
                   numeric="auto"
                 />
@@ -441,11 +439,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                 {intl.formatMessage(messagesRequestList.modifieduserdate, {
                   date: (
                     <FormattedRelativeTime
-                      value={Math.floor(
-                        (new Date(requestData.createdAt).getTime() -
-                          Date.now()) /
-                          1000
-                      )}
+                      value={new Date(requestData.createdAt)}
                       updateIntervalInSeconds={1}
                       numeric="auto"
                     />

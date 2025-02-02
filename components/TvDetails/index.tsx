@@ -128,7 +128,11 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   });
 
   if (!data && !error) {
-    return <LoadingSpinner />;
+    return (
+      <View className="flex h-full items-center justify-center">
+        <LoadingSpinner />
+      </View>
+    );
   }
 
   if (!data) {

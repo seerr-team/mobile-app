@@ -36,7 +36,7 @@ export default function Setup() {
       behavior="padding"
       className="min-h-screen bg-gray-900"
     >
-      <ScrollView contentContainerClassName="flex-grow justify-center item-center">
+      <ScrollView contentContainerClassName="flex-grow justify-center item-center pb-8">
         <View className="px-8 py-2">
           <Image
             className="h-64 max-w-full object-cover md:h-48"
@@ -59,6 +59,7 @@ export default function Setup() {
               placeholder="https://example.com"
               keyboardType="url"
               autoCapitalize="none"
+              autoComplete="url"
             />
             {error === ErrorType.ServerNotReachable && (
               <ThemedText className="mt-1.5 text-red-500">

@@ -7,7 +7,7 @@ import TitleCard from '@/components/TitleCard';
 import type { PersonCombinedCreditsResponse } from '@/jellyseerr/server/interfaces/api/personInterfaces';
 import type { PersonDetails as PersonDetailsType } from '@/jellyseerr/server/models/Person';
 import { groupBy } from 'lodash';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 // import TruncateMarkup from 'react-truncate-markup';
 import ThemedText from '@/components/Common/ThemedText';
@@ -15,7 +15,7 @@ import useServerUrl from '@/hooks/useServerUrl';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { useLocalSearchParams } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.PersonDetails');
@@ -27,7 +27,7 @@ const PersonDetails = () => {
   const { data, error } = useSWR<PersonDetailsType>(
     `${serverUrl}/api/v1/person/${searchParams.personId}`
   );
-  // const [showBio, setShowBio] = useState(false);
+  const [showBio, setShowBio] = useState(false);
 
   const { data: combinedCredits, error: errorCombinedCredits } =
     useSWR<PersonCombinedCreditsResponse>(
@@ -221,7 +221,7 @@ const PersonDetails = () => {
         </View>
       )} */}
       <View
-        className={`relative z-10 mb-8 mt-4 flex flex-col items-center lg:flex-row ${
+        className={`relative z-10 my-4 flex flex-col items-center lg:flex-row ${
           data.biography ? 'lg:items-start' : ''
         }`}
       >
@@ -258,29 +258,34 @@ const PersonDetails = () => {
           </View>
           {data.biography && (
             <View className="relative text-left">
-              <View
+              <Pressable
                 className="group outline-none ring-0"
-                // onClick={() => setShowBio((show) => !show)}
+                onPress={() => setShowBio((show) => !show)}
                 role="button"
                 tabIndex={-1}
               >
-                {/* <TruncateMarkup
-                  lines={showBio ? 200 : 6}
-                  ellipsis={
-                    <Ellipsis className="relative -top-0.5 ml-2 inline-block opacity-70 transition duration-300 group-hover:opacity-100" />
-                  }
+                <ThemedText
+                  className="pt-2 text-gray-300"
+                  numberOfLines={showBio ? 200 : 6}
                 >
-                  <p className="pt-2 text-sm lg:text-base">{data.biography}</p>
-                </TruncateMarkup> */}
-                <ThemedText className="pt-2 text-gray-300" numberOfLines={6}>
                   {data.biography}
                 </ThemedText>
-              </View>
+              </Pressable>
             </View>
           )}
         </View>
       </View>
-      {data.knownForDepartment === 'Acting' ? [cast, crew] : [crew, cast]}
+      {data.knownForDepartment === 'Acting' ? (
+        <>
+          {cast}
+          {crew}
+        </>
+      ) : (
+        <>
+          {crew}
+          {cast}
+        </>
+      )}
       {isLoading && <LoadingSpinner />}
     </ScrollView>
   );

@@ -179,7 +179,7 @@ const ListView = ({
             }),
           ...(isLoading && !isReachingEnd
             ? [...Array(20)].map((_item, i) => (
-                <View key={`placeholder-${i}`}>
+                <View className="m-2 flex-1" key={`placeholder-${i}`}>
                   <TitleCard.Placeholder canExpand />
                 </View>
               ))

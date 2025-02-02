@@ -1,7 +1,7 @@
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { MagnifyingGlass } from '@nandorojo/heroicons/24/solid';
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, usePathname } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { TextInput, View } from 'react-native';
 
@@ -9,8 +9,10 @@ const messages = getJellyseerrMessages('components.Layout.SearchInput');
 
 const SearchInput = () => {
   const intl = useIntl();
+  const inputRef = useRef<TextInput>(null);
   const [searchValue, setSearchValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (searchValue !== '') {
@@ -18,8 +20,16 @@ const SearchInput = () => {
         pathname: '(tabs)/search',
         params: { query: searchValue },
       });
+    } else {
+      inputRef.current?.blur();
     }
   }, [searchValue]);
+
+  useEffect(() => {
+    if (pathname !== '/search') {
+      setSearchValue('');
+    }
+  }, [pathname]);
 
   return (
     <View
@@ -29,6 +39,7 @@ const SearchInput = () => {
         <MagnifyingGlass width={20} height={20} color="#ffffff" />
       </View>
       <TextInput
+        ref={inputRef}
         className="block h-12 flex-1 py-2 text-lg text-white placeholder:text-lg placeholder:text-gray-300 focus-within:text-gray-200 focus:placeholder:text-gray-400"
         style={{ borderRadius: 24 }}
         placeholder={intl.formatMessage(messages.searchPlaceholder)}

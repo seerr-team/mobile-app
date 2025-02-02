@@ -178,10 +178,7 @@ const MediaSlider = ({
       <View className="mb-4 mt-6 px-4">
         {linkUrl ? (
           <Link href={linkUrl} asChild>
-            <Pressable
-              onFocus={() => console.log('Focused')}
-              onBlur={() => console.log('Blurred')}
-            >
+            <Pressable>
               <View className="flex min-w-0 flex-row items-center gap-2">
                 <ThemedText className="truncate text-2xl font-bold">
                   {title}

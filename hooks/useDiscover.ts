@@ -1,6 +1,7 @@
+import useServerUrl from '@/hooks/useServerUrl';
+import useSettings from '@/hooks/useSettings';
 import { MediaStatus } from '@/jellyseerr/server/constants/media';
 import useSWRInfinite from 'swr/infinite';
-import useSettings from './useSettings';
 
 export interface BaseSearchResult<T> {
   page: number;
@@ -55,6 +56,7 @@ const useDiscover = <
   options?: O,
   { hideAvailable = true } = {}
 ): DiscoverResult<T, S> => {
+  const serverUrl = useServerUrl();
   const settings = useSettings();
   const { data, error, size, setSize, isValidating, mutate } = useSWRInfinite<
     BaseSearchResult<T> & S
@@ -76,7 +78,7 @@ const useDiscover = <
         )
         .join('&');
 
-      return `${endpoint}?${finalQueryString}`;
+      return `${serverUrl}${endpoint}?${finalQueryString}`;
     },
     {
       initialSize: 3,

@@ -29,7 +29,7 @@ const Search = () => {
     fetchMore,
     error,
   } = useDiscover<MovieResult | TvResult | PersonResult>(
-    `${serverUrl}/api/v1/search`,
+    `/api/v1/search`,
     {
       query: searchParams.query,
     },

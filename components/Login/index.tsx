@@ -1,9 +1,13 @@
 import Accordion from '@/components/Common/Accordion';
+import Button from '@/components/Common/Button';
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ThemedText from '@/components/Common/ThemedText';
+import JellyfinLogin from '@/components/Login/JellyfinLogin';
+import LocalLogin from '@/components/Login/LocalLogin';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { MediaServerType } from '@/jellyseerr/server/constants/server';
+import { setServerUrl } from '@/store/appSettingsSlice';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -15,12 +19,12 @@ import {
   ScrollView,
   View,
 } from 'react-native';
-import JellyfinLogin from './JellyfinLogin';
-import LocalLogin from './LocalLogin';
+import { useDispatch } from 'react-redux';
 
 const messages = getJellyseerrMessages('components.Login');
 
 export default function Login() {
+  const dispatch = useDispatch();
   const serverUrl = useServerUrl();
   const settings = useSettings();
   const intl = useIntl();
@@ -59,7 +63,7 @@ export default function Login() {
       behavior="padding"
       className="min-h-screen bg-gray-900"
     >
-      <ScrollView contentContainerClassName="flex-grow justify-center item-center">
+      <ScrollView contentContainerClassName="flex-grow justify-center item-center pb-8">
         <View className="px-8 py-2">
           <Image
             className="h-64 max-w-full object-cover md:h-48"
@@ -130,6 +134,18 @@ export default function Login() {
               </>
             )}
           </Accordion>
+        </View>
+        <View className="flex flex-row justify-center">
+          <Button
+            buttonType="ghost"
+            onClick={() => {
+              dispatch(setServerUrl(''));
+              router.push('/');
+            }}
+            className="mt-4"
+          >
+            Use another server
+          </Button>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
