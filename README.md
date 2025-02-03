@@ -24,6 +24,26 @@ This project contains the source code of the Jellyseerr mobile app. This app is 
    npm start
    ```
 
+## Todo
+
+- [ ] i18n support
+- [ ] Tags and user override in advanced request modal
+- [ ] TV shows seasons details
+- [ ] Filters in discover pages
+- [ ] Add movie collections
+- [ ] Support for iOS
+- [ ] Support for TV devices
+
+## Screenshots
+
+| Select Server                                  | Homepage                                | Movie Details                                     |
+| ---------------------------------------------- | --------------------------------------- | ------------------------------------------------- |
+| ![Select Server](./screenshots/server-url.png) | ![Homepage](./screenshots/homepage.png) | ![Movie Details](./screenshots/movie-details.png) |
+
+| Search                              | Request Modal                                     | Request List                                    |
+| ----------------------------------- | ------------------------------------------------- | ----------------------------------------------- |
+| ![Search](./screenshots/search.png) | ![Request Modal](./screenshots/request-modal.png) | ![Request List](./screenshots/request-list.png) |
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
