@@ -31,6 +31,7 @@ This project contains the source code of the Jellyseerr mobile app. This app is 
 - [ ] TV shows seasons details
 - [ ] Filters in discover pages
 - [ ] Add movie collections
+- [ ] Support for Plex
 - [ ] Support for iOS
 - [ ] Support for TV devices
 
