@@ -48,7 +48,7 @@ const SearchInput = () => {
         onChangeText={(e) => setSearchValue(e)}
         onFocus={() => setIsOpen(true)}
         onBlur={() => {
-          if (searchValue === '') {
+          if (searchValue === '' && pathname === '/search') {
             setIsOpen(false);
             router.replace('(tabs)');
           }

@@ -56,7 +56,7 @@ import globalMessages from '@/utils/globalMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import uniqBy from 'lodash.uniqby';
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -724,31 +724,31 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           {data.collection && (
             <View className="mb-6">
               <Link href={`(tabs)/collection/${data.collection.id}`} asChild>
-                <Pressable>
-                  <View className="group relative z-0 cursor-pointer overflow-hidden rounded-lg border border-gray-700 bg-gray-800 bg-cover bg-center transition duration-300 hover:border-gray-500">
-                    <View className="absolute inset-0 z-0 opacity-30">
-                      <CachedImage
-                        type="tmdb"
-                        src={`https://image.tmdb.org/t/p/w1440_and_h320_multi_faces/${data.collection.backdropPath}`}
-                        alt=""
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      />
-                    </View>
-                    <View className="relative z-10 flex flex-row items-center justify-between p-4 text-gray-200 transition duration-300 group-hover:text-white">
-                      <ThemedText className="text-lg">
-                        {data.collection.name}
-                      </ThemedText>
-                      <Button
-                        onClick={() => {}}
-                        buttonType="ghost"
-                        className="!bg-gray-700"
-                      >
-                        {intl.formatMessage(globalMessages.view)}
-                      </Button>
-                    </View>
+                <Pressable className="group relative z-0 cursor-pointer overflow-hidden rounded-lg border border-gray-700 bg-gray-800 bg-cover bg-center transition duration-300 hover:border-gray-500">
+                  <View className="absolute inset-0 z-0 opacity-30">
+                    <CachedImage
+                      type="tmdb"
+                      src={`https://image.tmdb.org/t/p/w1440_and_h320_multi_faces/${data.collection.backdropPath}`}
+                      alt=""
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                  </View>
+                  <View className="relative z-10 flex flex-row items-center justify-between p-4 text-gray-200 transition duration-300 group-hover:text-white">
+                    <ThemedText className="text-lg">
+                      {data.collection.name}
+                    </ThemedText>
+                    <Button
+                      onClick={() =>
+                        router.push(`(tabs)/collection/${data.collection?.id}`)
+                      }
+                      buttonType="ghost"
+                      className="!bg-gray-700"
+                    >
+                      {intl.formatMessage(globalMessages.view)}
+                    </Button>
                   </View>
                 </Pressable>
               </Link>

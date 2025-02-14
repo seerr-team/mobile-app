@@ -54,6 +54,7 @@ const Discover = () => {
           }}
           colors={['white']}
           progressBackgroundColor={'black'}
+          progressViewOffset={32}
         />
       }
     >

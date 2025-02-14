@@ -1,9 +1,8 @@
 import Badge from '@/components/Common/Badge';
 import CachedImage from '@/components/Common/CachedImage';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
-// import RequestModal from '@/components/RequestModal';
 import FormattedRelativeTime from '@/components/Common/FormattedRelativeTime';
 import ThemedText from '@/components/Common/ThemedText';
+import RequestModal from '@/components/RequestModal';
 import StatusBadge from '@/components/StatusBadge';
 import useDeepLinks from '@/hooks/useDeepLinks';
 import useServerUrl from '@/hooks/useServerUrl';
@@ -14,11 +13,12 @@ import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@/jellyseerr/server/interfaces/api/common';
 import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
 import type { TvDetails } from '@/jellyseerr/server/models/Tv';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import useSWR from 'swr';
@@ -176,7 +176,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
   const settings = useSettings();
   const intl = useIntl();
   const { hasPermission } = useUser();
-  // const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const url =
     request.type === 'movie'
       ? `/api/v1/movie/${request.media.tmdbId}`
@@ -185,18 +185,23 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
   const { data: title, error } = useSWR<MovieDetails | TvDetails>(
     serverUrl + url
   );
-  const { data: requestData, error: requestError } = useSWR<
-    NonFunctionProperties<MediaRequest>
-  >(`${serverUrl}/api/v1/request/${request.id}`, {
-    fallbackData: request,
-    refreshInterval: refreshIntervalHelper(
-      {
-        downloadStatus: request.media.downloadStatus,
-        downloadStatus4k: request.media.downloadStatus4k,
-      },
-      15000
-    ),
-  });
+  const {
+    data: requestData,
+    error: requestError,
+    mutate: revalidate,
+  } = useSWR<NonFunctionProperties<MediaRequest>>(
+    `${serverUrl}/api/v1/request/${request.id}`,
+    {
+      fallbackData: request,
+      refreshInterval: refreshIntervalHelper(
+        {
+          downloadStatus: request.media.downloadStatus,
+          downloadStatus4k: request.media.downloadStatus4k,
+        },
+        15000
+      ),
+    }
+  );
 
   const { mediaUrl: plexUrl, mediaUrl4k: plexUrl4k } = useDeepLinks({
     mediaUrl: requestData?.media?.mediaUrl,
@@ -268,7 +273,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
 
   return (
     <>
-      {/* <RequestModal
+      <RequestModal
         show={showEditModal}
         tmdbId={request.media.tmdbId}
         type={request.type}
@@ -279,7 +284,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
           revalidate();
           setShowEditModal(false);
         }}
-      /> */}
+      />
       <View
         className={`relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center py-4 pl-4 pr-1 text-gray-400 shadow ${canExpand ? 'w-full' : 'w-80 sm:w-96'}`}
         data-testid="request-card"
@@ -370,7 +375,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                         : request.seasons.length,
                   })}
                 </ThemedText>
-                <View className="hide-scrollbar overflow-x-scroll">
+                <View className="hide-scrollbar flex flex-row overflow-x-scroll">
                   {request.seasons.map((season) => (
                     <View key={`season-${season.id}`} className="mr-2">
                       <Badge>

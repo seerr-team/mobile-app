@@ -171,6 +171,12 @@ export default function TabLayout() {
             href: null,
           }}
         />
+        <Tabs.Screen
+          name="collection/[collectionId]/index"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </View>
   );

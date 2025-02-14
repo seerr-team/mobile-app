@@ -1,4 +1,4 @@
-// import CollectionRequestModal from '@/components/RequestModal/CollectionRequestModal';
+import CollectionRequestModal from '@/components/RequestModal/CollectionRequestModal';
 import MovieRequestModal from '@/components/RequestModal/MovieRequestModal';
 import TvRequestModal from '@/components/RequestModal/TvRequestModal';
 import type { MediaStatus } from '@/jellyseerr/server/constants/media';
@@ -46,15 +46,16 @@ const RequestModal = ({
       is4k={is4k}
       editRequest={editRequest}
     />
-  ) : // <CollectionRequestModal
-  //   show={show}
-  //   onComplete={onComplete}
-  //   onCancel={onCancel}
-  //   tmdbId={tmdbId}
-  //   onUpdating={onUpdating}
-  //   is4k={is4k}
-  // />
-  null;
+  ) : (
+    <CollectionRequestModal
+      show={show}
+      onComplete={onComplete}
+      onCancel={onCancel}
+      tmdbId={tmdbId}
+      onUpdating={onUpdating}
+      is4k={is4k}
+    />
+  );
 };
 
 export default RequestModal;
