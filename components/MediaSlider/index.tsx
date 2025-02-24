@@ -69,6 +69,7 @@ const MediaSlider = ({
     },
     {
       initialSize: 2,
+      revalidateFirstPage: false,
     }
   );
 
