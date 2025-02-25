@@ -63,7 +63,7 @@ export const useUser = ({
     error,
     mutate: revalidate,
   } = useSWR<User>(
-    serverUrl + (id ? `/api/v1/user/${id}` : `/api/v1/auth/me`),
+    id ? `${serverUrl}/api/v1/user/${id}` : `${serverUrl}/api/v1/auth/me`,
     {
       fallbackData: initialData,
       refreshInterval: 30000,

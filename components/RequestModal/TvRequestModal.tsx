@@ -377,9 +377,7 @@ const TvRequestModal = ({
   return data &&
     !error &&
     !data.externalIds.tvdbId &&
-    searchModal.show ? //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
-  //   onCancel={onCancel}
-  //   modalTitle={intl.formatMessage(
+    searchModal.show ? //   modalTitle={intl.formatMessage( //   onCancel={onCancel} //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
   //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle
   //   )}
   //   modalSubTitle={data.name}

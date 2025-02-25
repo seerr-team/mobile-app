@@ -1,3 +1,4 @@
+import LogoStacked from '@/assets/images/logo-stacked.png';
 import Button from '@/components/Common/Button';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
@@ -6,9 +7,10 @@ import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import { getServerSettings } from '@/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 enum ErrorType {
@@ -40,9 +42,8 @@ export default function Setup() {
         <View className="px-8 py-2">
           <Image
             className="h-64 max-w-full object-cover md:h-48"
-            style={{ resizeMode: 'contain' }}
-            // eslint-disable-next-line @typescript-eslint/no-require-imports
-            source={require('@/assets/images/logo-stacked.png')}
+            contentFit="contain"
+            source={LogoStacked}
           />
         </View>
         <ThemedText className="mt-12 text-center text-3xl font-bold">

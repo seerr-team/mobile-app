@@ -1,20 +1,29 @@
 import Button from '@/components/Common/Button';
+import useServerUrl from '@/hooks/useServerUrl';
+// import SensitiveInput from '@/components/Common/SensitiveInput';
+import useSettings from '@/hooks/useSettings';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
+import { Formik } from 'formik';
+// import Link from 'next/link';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
-import { toast } from '@backpackapp-io/react-native-toast';
-import { router } from 'expo-router';
-import { Formik } from 'formik';
+import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import * as Yup from 'yup';
 
 const messages = getJellyseerrMessages('components.Login');
 
-const LocalLogin = () => {
-  const intl = useIntl();
+interface LocalLoginProps {
+  revalidate: () => void;
+}
+
+const LocalLogin = ({ revalidate }: LocalLoginProps) => {
   const serverUrl = useServerUrl();
+  const intl = useIntl();
+  const settings = useSettings();
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required(
@@ -25,6 +34,10 @@ const LocalLogin = () => {
     ),
   });
 
+  // const passwordResetEnabled =
+  //   settings.currentSettings.applicationUrl &&
+  //   settings.currentSettings.emailEnabled;
+
   return (
     <Formik
       initialValues={{
@@ -32,9 +45,10 @@ const LocalLogin = () => {
         password: '',
       }}
       validationSchema={LoginSchema}
+      validateOnBlur={false}
       onSubmit={async (values) => {
         try {
-          const res = await fetch(`${serverUrl}/api/v1/auth/local`, {
+          const res = await fetch(serverUrl + '/api/v1/auth/local', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -45,18 +59,19 @@ const LocalLogin = () => {
             }),
           });
           if (!res.ok) throw new Error();
-          router.replace('/(tabs)');
-        } catch {
-          toast.error(intl.formatMessage(messages.loginerror));
+        } catch (e) {
+          setLoginError(intl.formatMessage(messages.loginerror));
+        } finally {
+          revalidate();
         }
       }}
     >
       {({
+        values,
         errors,
         touched,
         isSubmitting,
         isValid,
-        values,
         handleChange,
         handleBlur,
         handleSubmit,
@@ -64,12 +79,13 @@ const LocalLogin = () => {
         return (
           <View>
             <View>
-              <ThemedText className="font-bold text-gray-400">
-                {intl.formatMessage(messages.email) +
-                  ' / ' +
-                  intl.formatMessage(messages.username)}
+              <ThemedText className="-mt-1 mb-6 text-center text-lg font-bold text-neutral-200">
+                {intl.formatMessage(messages.loginwithapp, {
+                  appName: settings.currentSettings.applicationTitle,
+                })}
               </ThemedText>
-              <View className="mb-2 mt-1 sm:col-span-2 sm:mt-0">
+
+              <View className="mb-4 mt-1">
                 <View className="form-input-field">
                   <TextInput
                     onChangeText={handleChange('email')}
@@ -77,6 +93,9 @@ const LocalLogin = () => {
                     value={values.email}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    placeholder={`${intl.formatMessage(
+                      messages.email
+                    )} / ${intl.formatMessage(messages.username)}`}
                   />
                 </View>
                 {errors.email &&
@@ -87,10 +106,7 @@ const LocalLogin = () => {
                     </ThemedText>
                   )}
               </View>
-              <ThemedText className="font-bold text-gray-400">
-                {intl.formatMessage(messages.password)}
-              </ThemedText>
-              <View className="mb-2 mt-1 sm:col-span-2 sm:mt-0">
+              <View className="mb-2 mt-1">
                 <View className="form-input-field">
                   <TextInput
                     onChangeText={handleChange('password')}
@@ -98,43 +114,50 @@ const LocalLogin = () => {
                     value={values.password}
                     autoCapitalize="none"
                     secureTextEntry={true}
+                    placeholder={intl.formatMessage(messages.password)}
                   />
                 </View>
-                {errors.password &&
-                  touched.password &&
-                  typeof errors.password === 'string' && (
-                    <ThemedText className="mt-1.5 text-red-500">
-                      {errors.password}
-                    </ThemedText>
-                  )}
-              </View>
-            </View>
-            <View className="mt-8 border-t border-gray-700 pt-5">
-              <View className="flex flex-row-reverse justify-between">
-                <View className="inline-flex rounded-md shadow-sm">
-                  <Button
-                    disabled={isSubmitting || !isValid}
-                    onClick={handleSubmit}
-                  >
-                    {isSubmitting
-                      ? intl.formatMessage(messages.signingin)
-                      : intl.formatMessage(messages.signin)}
-                  </Button>
+                <View className="flex flex-row">
+                  {errors.password &&
+                    touched.password &&
+                    typeof errors.password === 'string' && (
+                      <ThemedText className="mt-1.5 text-red-500">
+                        {errors.password}
+                      </ThemedText>
+                    )}
+                  <View className="flex-grow"></View>
+                  {/* {passwordResetEnabled && (
+                    <Link
+                      href="/resetpassword"
+                      className="pt-2 text-sm text-indigo-500 hover:text-indigo-400"
+                    >
+                      {intl.formatMessage(messages.forgotpassword)}
+                    </Link>
+                  )} */}
                 </View>
-                {/* {passwordResetEnabled && (
-                <span className="inline-flex rounded-md shadow-sm">
-                  <Link href="/resetpassword" passHref legacyBehavior>
-                    <Button as="a" buttonType="ghost">
-                      <LifebuoyIcon />
-                      <span>
-                        {intl.formatMessage(messages.forgotpassword)}
-                      </span>
-                    </Button>
-                  </Link>
-                </span>
-              )} */}
               </View>
+              {loginError && (
+                <View className="mb-2 mt-1 sm:col-span-2 sm:mt-0">
+                  <ThemedText className="mt-1.5 text-red-500">
+                    {loginError}
+                  </ThemedText>
+                </View>
+              )}
             </View>
+
+            <Button
+              buttonType="primary"
+              disabled={isSubmitting || !isValid}
+              className="mt-2 flex w-full flex-row items-center justify-center gap-2"
+              onClick={handleSubmit}
+            >
+              <ArrowLeftOnRectangle color="#ffffff" />
+              <ThemedText>
+                {isSubmitting
+                  ? intl.formatMessage(messages.signingin)
+                  : intl.formatMessage(messages.signin)}
+              </ThemedText>
+            </Button>
           </View>
         );
       }}

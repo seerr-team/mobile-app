@@ -9,27 +9,26 @@ import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Modal, Pressable, View } from 'react-native';
-// import { useDispatch } from 'react-redux';
 
 const messages = getJellyseerrMessages('components.Layout.UserDropdown');
 
 const UserDropdown = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
-  const { user } = useUser();
+  const { user, revalidate } = useUser();
   const [isOpen, setIsOpen] = useState(false);
-  // const dispatch = useDispatch();
 
   const logout = async () => {
     const res = await fetch(serverUrl + '/api/v1/auth/logout', {
       method: 'POST',
     });
     if (!res.ok) throw new Error();
-    // const data = await res.json();
+    const data = await res.json();
 
-    // if (data?.status === 'ok') {
-    //   dispatch(logoutUser());
-    // }
+    if (data?.status === 'ok') {
+      await revalidate();
+    }
+
     router.replace('/login');
   };
 

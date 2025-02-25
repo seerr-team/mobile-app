@@ -10,33 +10,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: 🏗 Setup repo
-      uses: actions/checkout@v4
-      with:
-        submodules: 'true'
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
-    - name: 🏗 Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22.x
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
 
-    - name: 🏗 Setup Expo and EAS
-      uses: expo/expo-github-action@v8
-      with:
-        token: ${{ secrets.EXPO_TOKEN }}
-        expo-version: latest
-        eas-version: latest
-        packager: npm
+      - name: 🏗 Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          token: ${{ secrets.EXPO_TOKEN }}
+          expo-version: latest
+          eas-version: latest
+          packager: npm
 
-    - name: 📦 Install dependencies
-      run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-    - name: 👷 Build expo app
-      run: |
-        eas build --local --non-interactive --output ./jellyseerr.apk --platform android --profile preview
+      - name: 👷 Build expo app
+        run: |
+          eas build --local --non-interactive --output ./jellyseerr.apk --platform android --profile preview
 
-    - name: 📦 Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: jellyseerr.apk
-        path: ./jellyseerr.apk
+      - name: 📦 Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jellyseerr.apk
+          path: ./jellyseerr.apk
