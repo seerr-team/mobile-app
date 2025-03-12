@@ -26,7 +26,7 @@ import ErrorPage from '@/components/ErrorPage';
 import useDeepLinks from '@/hooks/useDeepLinks';
 import useLocale from '@/hooks/useLocale';
 import useSettings from '@/hooks/useSettings';
-import { Permission, useUser } from '@/hooks/useUser';
+import { Permission, UserType, useUser } from '@/hooks/useUser';
 import { sortCrewPriority } from '@/utils/creditHelpers';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
@@ -457,7 +457,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             src={
               data.posterPath
                 ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.posterPath}`
-                : '/images/overseerr_poster_not_found.png'
+                : '/images/jellyseerr_poster_not_found.png'
             }
             alt=""
             style={{ width: 150, height: 225 }}
@@ -540,35 +540,36 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                 </Button>
               </Tooltip>
             )} */}
-          {data?.mediaInfo?.status !== MediaStatus.BLACKLISTED && (
-            <>
-              {toggleWatchlist ? (
-                <Button
-                  buttonType={'ghost'}
-                  className="z-40 flex flex-row items-center gap-2"
-                  onClick={onClickWatchlistBtn}
-                >
-                  {isUpdating ? (
-                    <LoadingSpinner size={21} />
-                  ) : (
-                    <Star color="#fcd34d" />
-                  )}
-                </Button>
-              ) : (
-                <Button
-                  buttonType={'ghost'}
-                  className="z-40 flex flex-row items-center gap-2"
-                  onClick={onClickDeleteWatchlistBtn}
-                >
-                  {isUpdating ? (
-                    <LoadingSpinner size={21} />
-                  ) : (
-                    <MinusCircle color="#ffffff" />
-                  )}
-                </Button>
-              )}
-            </>
-          )}
+          {data?.mediaInfo?.status !== MediaStatus.BLACKLISTED &&
+            user?.userType !== UserType.PLEX && (
+              <>
+                {toggleWatchlist ? (
+                  <Button
+                    buttonType={'ghost'}
+                    className="z-40 flex flex-row items-center gap-2"
+                    onClick={onClickWatchlistBtn}
+                  >
+                    {isUpdating ? (
+                      <LoadingSpinner size={21} />
+                    ) : (
+                      <Star color="#fcd34d" />
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    buttonType={'ghost'}
+                    className="z-40 flex flex-row items-center gap-2"
+                    onClick={onClickDeleteWatchlistBtn}
+                  >
+                    {isUpdating ? (
+                      <LoadingSpinner size={21} />
+                    ) : (
+                      <MinusCircle color="#ffffff" />
+                    )}
+                  </Button>
+                )}
+              </>
+            )}
           <PlayButton links={mediaLinks} />
           <RequestButton
             mediaType="tv"

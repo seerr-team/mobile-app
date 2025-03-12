@@ -238,7 +238,7 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
             src={
               data.posterPath
                 ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.posterPath}`
-                : '/images/overseerr_poster_not_found.png'
+                : '/images/jellyseerr_poster_not_found.png'
             }
             alt=""
             style={{ width: 150, height: 225 }}
