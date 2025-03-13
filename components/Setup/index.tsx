@@ -13,7 +13,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -24,12 +24,35 @@ export default function Setup() {
   const [loading, setLoading] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
 
+  const checkServer = useCallback(
+    async (url: string) => {
+      if (!url) return;
+      setLoading(true);
+      try {
+        const serverSettings = await getServerSettings(url);
+        await AsyncStorage.setItem('server-url', url);
+        dispatch(setServerUrl(url));
+        dispatch(setSettings(serverSettings));
+        setError(null);
+        router.push('/login');
+      } catch (e) {
+        if (e instanceof Error) {
+          setError(e.message as ConnectionErrorType);
+        } else {
+          setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
+        }
+      }
+      setLoading(false);
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     if (serverUrl) {
       setInputUrl(serverUrl);
-      setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
+      checkServer(serverUrl);
     }
-  }, [serverUrl]);
+  }, [serverUrl, checkServer]);
 
   return (
     <KeyboardAvoidingView
@@ -84,25 +107,7 @@ export default function Setup() {
           </View>
           <View className="mt-8 flex border-t border-gray-700 pt-5">
             <Button
-              onClick={async () => {
-                if (!inputUrl) return;
-                setLoading(true);
-                try {
-                  const serverSettings = await getServerSettings(inputUrl);
-                  await AsyncStorage.setItem('server-url', inputUrl);
-                  dispatch(setServerUrl(inputUrl));
-                  dispatch(setSettings(serverSettings));
-                  setError(null);
-                  router.push('/login');
-                } catch (e) {
-                  if (e instanceof Error) {
-                    setError(e.message as ConnectionErrorType);
-                  } else {
-                    setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
-                  }
-                }
-                setLoading(false);
-              }}
+              onClick={() => checkServer(inputUrl)}
               className="self-end"
               disabled={loading}
             >
