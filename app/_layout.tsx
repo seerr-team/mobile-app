@@ -46,10 +46,10 @@ function RootLayout() {
       const url = await AsyncStorage.getItem('server-url');
       if (url) {
         dispatch(setServerUrl(url));
-        const serverSettings = await getServerSettings(url);
-        if (serverSettings !== null) {
+        try {
+          const serverSettings = await getServerSettings(url);
           dispatch(setSettings(serverSettings));
-        } else {
+        } catch {
           router.replace('/');
           setLoaded(true);
         }

@@ -5,7 +5,11 @@ import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
 import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
-import { getServerSettings } from '@/utils/serverSettings';
+import {
+  ConnectionErrorType,
+  getServerSettings,
+  minimumServerVersion,
+} from '@/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
@@ -13,23 +17,17 @@ import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-enum ErrorType {
-  NoServerUrl,
-  ServerNotInitialized,
-  ServerNotReachable,
-}
-
 export default function Setup() {
   const serverUrl = useServerUrl();
   const dispatch = useDispatch();
-  const [error, setError] = useState<ErrorType | null>(null);
+  const [error, setError] = useState<ConnectionErrorType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
 
   useEffect(() => {
     if (serverUrl) {
       setInputUrl(serverUrl);
-      setError(ErrorType.ServerNotReachable);
+      setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
     }
   }, [serverUrl]);
 
@@ -62,9 +60,25 @@ export default function Setup() {
               autoCapitalize="none"
               autoComplete="url"
             />
-            {error === ErrorType.ServerNotReachable && (
+            {error === ConnectionErrorType.SERVER_NOT_REACHABLE && (
               <ThemedText className="mt-1.5 text-red-500">
                 Unable to connect to server
+              </ThemedText>
+            )}
+            {error === ConnectionErrorType.SERVER_NOT_INITIALIZED && (
+              <ThemedText className="mt-1.5 text-red-500">
+                Server not initialized
+              </ThemedText>
+            )}
+            {error === ConnectionErrorType.SERVER_NOT_JELLYSEERR && (
+              <ThemedText className="mt-1.5 text-red-500">
+                Specified server is not a Jellyseerr server
+              </ThemedText>
+            )}
+            {error === ConnectionErrorType.SERVER_NOT_UPTODATE && (
+              <ThemedText className="mt-1.5 text-red-500">
+                Server is not up-to-date. Minimum version required:{' '}
+                {minimumServerVersion}
               </ThemedText>
             )}
           </View>
@@ -73,15 +87,19 @@ export default function Setup() {
               onClick={async () => {
                 if (!inputUrl) return;
                 setLoading(true);
-                const serverSettings = await getServerSettings(inputUrl);
-                if (serverSettings) {
+                try {
+                  const serverSettings = await getServerSettings(inputUrl);
                   await AsyncStorage.setItem('server-url', inputUrl);
                   dispatch(setServerUrl(inputUrl));
                   dispatch(setSettings(serverSettings));
                   setError(null);
                   router.push('/login');
-                } else {
-                  setError(ErrorType.ServerNotReachable);
+                } catch (e) {
+                  if (e instanceof Error) {
+                    setError(e.message as ConnectionErrorType);
+                  } else {
+                    setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
+                  }
                 }
                 setLoading(false);
               }}
