@@ -1,13 +1,19 @@
 import useSettings from '@/hooks/useSettings';
 import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
-import store from '@/store';
-import { setServerUrl } from '@/store/appSettingsSlice';
+import store, { type RootState } from '@/store';
+import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
+import {
+  disableSentry,
+  initSentry,
+  navigationIntegration,
+} from '@/utils/sentry';
 import { getServerSettings } from '@/utils/serverSettings';
 import { Toasts } from '@backpackapp-io/react-native-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sentry from '@sentry/react-native';
 import { useFonts } from 'expo-font';
-import { router, Slot } from 'expo-router';
+import { router, Slot, useNavigationContainerRef } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import 'intl-pluralrules';
 import { useEffect, useState } from 'react';
@@ -17,7 +23,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { configureReanimatedLogger } from 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import RelativeTimeFormat from 'relative-time-format';
 import en from 'relative-time-format/locale/en';
 import { SWRConfig } from 'swr';
@@ -33,6 +39,7 @@ configureReanimatedLogger({
 SplashScreen.preventAutoHideAsync();
 
 function RootLayout() {
+  const ref = useNavigationContainerRef();
   const dispatch = useDispatch();
   const [fontLoaded] = useFonts({
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -40,6 +47,41 @@ function RootLayout() {
   });
   const settings = useSettings();
   const [loaded, setLoaded] = useState(true);
+  const sendAnonymousData = useSelector(
+    (state: RootState) => state.appSettings.sendAnonymousData
+  );
+
+  useEffect(() => {
+    (async () => {
+      dispatch(
+        setSendAnonymousData(
+          JSON.parse(
+            (await AsyncStorage.getItem('send-anonymous-data')) || 'false'
+          )
+        )
+      );
+    })();
+  }, [dispatch]);
+
+  useEffect(() => {
+    (async () => {
+      await AsyncStorage.setItem(
+        'send-anonymous-data',
+        JSON.stringify(sendAnonymousData)
+      );
+      if (sendAnonymousData) {
+        initSentry();
+      } else {
+        disableSentry();
+      }
+    })();
+  }, [sendAnonymousData]);
+
+  useEffect(() => {
+    if (ref?.current) {
+      navigationIntegration.registerNavigationContainer(ref);
+    }
+  }, [ref]);
 
   useEffect(() => {
     (async () => {
@@ -88,7 +130,7 @@ function RootLayout() {
             },
           }}
         >
-          <View>
+          <View className="bg-gray-900">
             <Slot />
             <Toasts
               overrideDarkMode
@@ -111,7 +153,7 @@ function RootLayout() {
   );
 }
 
-export default function RootLayoutWithProvider() {
+function RootLayoutWithProvider() {
   const currentLocale = 'en';
   return (
     <Provider store={store}>
@@ -125,3 +167,5 @@ export default function RootLayoutWithProvider() {
     </Provider>
   );
 }
+
+export default Sentry.wrap(RootLayoutWithProvider);

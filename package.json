@@ -27,6 +27,7 @@
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
     "@reduxjs/toolkit": "^2.5.0",
+    "@sentry/react-native": "^6.9.1",
     "@types/lodash.uniqby": "^4.7.9",
     "bowser": "^2.11.0",
     "expo": "~52.0.28",

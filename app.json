@@ -49,7 +49,15 @@
           ]
         }
       ],
-      "@react-native-tvos/config-tv"
+      "@react-native-tvos/config-tv",
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "jellyseerr",
+          "project": "mobile-app",
+          "url": "https://sentry.jellyseerr.dev/"
+        }
+      ]
     ],
     "extra": {
       "router": {
