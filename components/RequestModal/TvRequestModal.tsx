@@ -377,8 +377,7 @@ const TvRequestModal = ({
   return data &&
     !error &&
     !data.externalIds.tvdbId &&
-    searchModal.show ? //   modalTitle={intl.formatMessage( //   onCancel={onCancel} //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
-  //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle
+    searchModal.show ? //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle //   modalTitle={intl.formatMessage( //   onCancel={onCancel} //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
   //   )}
   //   modalSubTitle={data.name}
   //   tmdbId={tmdbId}
@@ -586,6 +585,11 @@ const TvRequestModal = ({
                               }
                               onValueChange={() =>
                                 toggleSeason(season.seasonNumber)
+                              }
+                              disabled={
+                                !!mediaSeason ||
+                                !!seasonRequest ||
+                                editingSeasons.includes(season.seasonNumber)
                               }
                               trackColor={{ false: '#374151', true: '#6366f1' }}
                               thumbColor="#ffffff"
