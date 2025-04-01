@@ -35,39 +35,29 @@ const StatusBadgeMini = ({
   switch (status) {
     case MediaStatus.PROCESSING:
       badgeStyle.push('bg-indigo-500 border-indigo-400 ring-indigo-400');
-      indicatorIcon = (
-        <Clock style={{ width: 20, height: 20 }} color="#e0e7ff" />
-      );
+      indicatorIcon = <Clock color="#e0e7ff" />;
       break;
     case MediaStatus.AVAILABLE:
       badgeStyle.push(
         'bg-green-500 border-green-400 ring-green-400 text-green-100'
       );
-      indicatorIcon = (
-        <CheckCircle style={{ width: 20, height: 20 }} color="#dcfce7" />
-      );
+      indicatorIcon = <CheckCircle color="#dcfce7" />;
       break;
     case MediaStatus.PENDING:
       badgeStyle.push(
         'bg-yellow-500 border-yellow-400 ring-yellow-400 text-yellow-100'
       );
-      indicatorIcon = (
-        <Bell style={{ width: 20, height: 20 }} color="#fef9c3" />
-      );
+      indicatorIcon = <Bell color="#fef9c3" />;
       break;
     case MediaStatus.BLACKLISTED:
       badgeStyle.push('bg-red-500 border-white-400 ring-white-400 text-white');
-      indicatorIcon = (
-        <EyeSlash style={{ width: 20, height: 20 }} color="#ffffff" />
-      );
+      indicatorIcon = <EyeSlash color="#ffffff" />;
       break;
     case MediaStatus.PARTIALLY_AVAILABLE:
       badgeStyle.push(
         'bg-green-500 border-green-400 ring-green-400 text-green-100'
       );
-      indicatorIcon = (
-        <MinusSmall style={{ width: 20, height: 20 }} color="#dcfce7" />
-      );
+      indicatorIcon = <MinusSmall width={20} height={20} color="#dcfce7" />;
       break;
   }
 
