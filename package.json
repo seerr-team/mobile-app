@@ -72,7 +72,8 @@
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^3.4.16",
     "yup": "^1.5.0",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "expo-build-properties": "~0.13.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

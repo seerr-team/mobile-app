@@ -11,7 +11,12 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.jellyseerrexpo"
+      "bundleIdentifier": "com.anonymous.jellyseerrexpo",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -56,6 +61,14 @@
           "organization": "jellyseerr",
           "project": "mobile-app",
           "url": "https://sentry.jellyseerr.dev/"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
       ]
     ],
