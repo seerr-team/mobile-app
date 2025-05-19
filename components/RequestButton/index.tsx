@@ -1,6 +1,7 @@
 import ButtonWithDropdown from '@/components/Common/ButtonWithDropdown';
 import ThemedText from '@/components/Common/ThemedText';
 import RequestModal from '@/components/RequestModal';
+import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { Permission, useUser } from '@/hooks/useUser';
 import {
@@ -13,9 +14,11 @@ import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { ArrowDownTray } from '@nandorojo/heroicons/24/outline';
 import { Check, InformationCircle, XMark } from '@nandorojo/heroicons/24/solid';
+import axios from 'axios';
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
+import { mutate } from 'swr';
 
 const messages = getJellyseerrMessages('components.RequestButton');
 
@@ -43,6 +46,7 @@ const RequestButton = ({
   isShowComplete = false,
   is4kShowComplete = false,
 }: RequestButtonProps) => {
+  const serverUrl = useServerUrl();
   const intl = useIntl();
   const settings = useSettings();
   const { user, hasPermission } = useUser();
@@ -78,14 +82,13 @@ const RequestButton = ({
     request: MediaRequest,
     type: 'approve' | 'decline'
   ) => {
-    const res = await fetch(`/api/v1/request/${request.id}/${type}`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error();
-    const data = await res.json();
+    const response = await axios.post(
+      `${serverUrl}/api/v1/request/${request.id}/${type}`
+    );
 
-    if (data) {
+    if (response) {
       onUpdate();
+      mutate('/api/v1/request/count');
     }
   };
 
@@ -99,15 +102,12 @@ const RequestButton = ({
 
     await Promise.all(
       requests.map(async (request) => {
-        const res = await fetch(`/api/v1/request/${request.id}/${type}`, {
-          method: 'POST',
-        });
-        if (!res.ok) throw new Error();
-        return res.json();
+        return axios.post(`${serverUrl}/api/v1/request/${request.id}/${type}`);
       })
     );
 
     onUpdate();
+    mutate('/api/v1/request/count');
   };
 
   const buttons: ButtonOption[] = [];
@@ -257,7 +257,9 @@ const RequestButton = ({
 
   // Standard request button
   if (
-    (!media || media.status === MediaStatus.UNKNOWN) &&
+    (!media ||
+      media.status === MediaStatus.UNKNOWN ||
+      (media.status === MediaStatus.DELETED && !activeRequest)) &&
     hasPermission(
       [
         Permission.REQUEST,
@@ -284,7 +286,6 @@ const RequestButton = ({
       type: 'or',
     }) &&
     media &&
-    media.status !== MediaStatus.AVAILABLE &&
     media.status !== MediaStatus.BLACKLISTED &&
     !isShowComplete
   ) {
@@ -301,7 +302,9 @@ const RequestButton = ({
 
   // 4K request button
   if (
-    (!media || media.status4k === MediaStatus.UNKNOWN) &&
+    (!media ||
+      media.status4k === MediaStatus.UNKNOWN ||
+      (media.status4k === MediaStatus.DELETED && !active4kRequest)) &&
     hasPermission(
       [
         Permission.REQUEST_4K,
@@ -330,8 +333,7 @@ const RequestButton = ({
       type: 'or',
     }) &&
     media &&
-    media.status4k !== MediaStatus.AVAILABLE &&
-    media.status !== MediaStatus.BLACKLISTED &&
+    media.status4k !== MediaStatus.BLACKLISTED &&
     !is4kShowComplete &&
     settings.currentSettings.series4kEnabled
   ) {

@@ -4,6 +4,7 @@ import useServerUrl from '@/hooks/useServerUrl';
 import { useUser } from '@/hooks/useUser';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { ArrowRightOnRectangle, Clock } from '@nandorojo/heroicons/24/outline';
+import axios from 'axios';
 import { BlurView } from 'expo-blur';
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
@@ -19,17 +20,13 @@ const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const logout = async () => {
-    const res = await fetch(serverUrl + '/api/v1/auth/logout', {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error();
-    const data = await res.json();
+    const response = await axios.post(serverUrl + '/api/v1/auth/logout');
 
-    if (data?.status === 'ok') {
-      await revalidate();
+    if (response.data?.status === 'ok') {
+      revalidate();
+
+      router.replace('/login');
     }
-
-    router.replace('/login');
   };
 
   return (

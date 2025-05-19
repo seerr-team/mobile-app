@@ -1,10 +1,13 @@
 import Button from '@/components/Common/Button';
 import ThemedText from '@/components/Common/ThemedText';
+import useServerUrl from '@/hooks/useServerUrl';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { Check, Trash } from '@nandorojo/heroicons/24/solid';
+import axios from 'axios';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
+import { mutate } from 'swr';
 
 interface ErrorCardProps {
   id: number;
@@ -18,14 +21,16 @@ const messages = getJellyseerrMessages('components.TitleCard');
 
 const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
   const intl = useIntl();
+  const serverUrl = useServerUrl();
 
   const deleteMedia = async () => {
-    const res = await fetch(`/api/v1/media/${id}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) throw new Error();
-    // mutate('/api/v1/media?filter=allavailable&take=20&sort=mediaAdded');
-    // mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
+    await axios.delete(`${serverUrl}/api/v1/media/${id}`);
+    mutate(
+      serverUrl + '/api/v1/media?filter=allavailable&take=20&sort=mediaAdded'
+    );
+    mutate(
+      serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+    );
   };
 
   return (

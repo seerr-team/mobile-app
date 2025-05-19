@@ -26,6 +26,7 @@ import { setServerUrl } from '@/store/appSettingsSlice';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 // import { BlurView } from 'expo-blur';
+import axios from 'axios';
 
 const messages = getJellyseerrMessages('components.Login');
 
@@ -46,10 +47,10 @@ const Login = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`${serverUrl}/api/v1/auth/me`);
-      if (res.ok) {
+      try {
+        await axios(`${serverUrl}/api/v1/auth/me`);
         router.replace('/(tabs)');
-      } else {
+      } catch {
         setLoaded(true);
       }
     })();
@@ -62,28 +63,15 @@ const Login = () => {
     const login = async () => {
       setProcessing(true);
       try {
-        const res = await fetch(serverUrl + '/api/v1/auth/plex', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ authToken }),
+        const response = await axios.post(serverUrl + '/api/v1/auth/plex', {
+          authToken,
         });
-        if (!res.ok) throw new Error(res.statusText, { cause: res });
-        const data = await res.json();
 
-        if (data?.id) {
+        if (response.data?.id) {
           revalidate();
         }
       } catch (e) {
-        let errorData;
-        try {
-          errorData = await e.cause?.text();
-          errorData = JSON.parse(errorData);
-        } catch {
-          /* empty */
-        }
-        setError(errorData?.message);
+        setError(e.response?.data?.message);
         setAuthToken(undefined);
         setProcessing(false);
       }
@@ -91,7 +79,7 @@ const Login = () => {
     if (authToken) {
       login();
     }
-  }, [authToken, revalidate, serverUrl]);
+  }, [authToken, intl, revalidate, serverUrl]);
 
   // Effect that is triggered whenever `useUser`'s user changes. If we get a new
   // valid user, we redirect the user to the home page as the login was successful.

@@ -8,7 +8,10 @@ import useDeepLinks from '@/hooks/useDeepLinks';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { Permission, useUser } from '@/hooks/useUser';
-import { MediaRequestStatus } from '@/jellyseerr/server/constants/media';
+import {
+  MediaRequestStatus,
+  MediaStatus,
+} from '@/jellyseerr/server/constants/media';
 import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@/jellyseerr/server/interfaces/api/common';
 import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
@@ -240,6 +243,15 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
           href={`/${requestData.type}/${requestData.media.tmdbId}?manage=1`}
         >
           {intl.formatMessage(globalMessages.failed)}
+        </Badge>
+      ) : requestData.status === MediaRequestStatus.PENDING &&
+        requestData.media[requestData.is4k ? 'status4k' : 'status'] ===
+          MediaStatus.DELETED ? (
+        <Badge
+          badgeType="warning"
+          href={`/${requestData.type}/${requestData.media.tmdbId}?manage=1`}
+        >
+          {intl.formatMessage(globalMessages.pending)}
         </Badge>
       ) : (
         <StatusBadge

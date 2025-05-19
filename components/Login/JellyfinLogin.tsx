@@ -11,6 +11,7 @@ import {
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
 import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
+import axios from 'axios';
 import { Formik } from 'formik';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
@@ -63,28 +64,14 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
         validateOnBlur={false}
         onSubmit={async (values) => {
           try {
-            const res = await fetch(serverUrl + '/api/v1/auth/jellyfin', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                username: values.username,
-                password: values.password,
-                email: values.username,
-              }),
+            await axios.post(serverUrl + '/api/v1/auth/jellyfin', {
+              username: values.username,
+              password: values.password,
+              email: values.username,
             });
-            if (!res.ok) throw new Error(res.statusText, { cause: res });
           } catch (e) {
-            let errorData;
-            try {
-              errorData = await e.cause?.text();
-              errorData = JSON.parse(errorData);
-            } catch {
-              /* empty */
-            }
             let errorMessage = null;
-            switch (errorData?.message) {
+            switch (e?.response?.data?.message) {
               case ApiErrorCode.InvalidUrl:
                 errorMessage = messages.invalidurlerror;
                 break;

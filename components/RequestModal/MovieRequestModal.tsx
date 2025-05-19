@@ -15,6 +15,7 @@ import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
+import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
@@ -80,25 +81,21 @@ const MovieRequestModal = ({
           tags: requestOverrides.tags,
         };
       }
-      const res = await fetch(`${serverUrl}/api/v1/request`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await axios.post<MediaRequest>(
+        serverUrl + '/api/v1/request',
+        {
           mediaId: data?.id,
           mediaType: 'movie',
           is4k,
           ...overrideParams,
-        }),
-      });
-      if (!res.ok) throw new Error();
-      const mediaRequest: MediaRequest = await res.json();
-      mutate(
-        `${serverUrl}/api/v1/request?filter=all&take=10&sort=modified&skip=0`
+        }
       );
+      mutate(
+        serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+      );
+      mutate(serverUrl + '/api/v1/request/count');
 
-      if (mediaRequest) {
+      if (response.data) {
         if (onComplete) {
           onComplete(
             hasPermission(
@@ -144,19 +141,15 @@ const MovieRequestModal = ({
     setIsUpdating(true);
 
     try {
-      const res = await fetch(
-        `${serverUrl}/api/v1/request/${editRequest?.id}`,
-        {
-          method: 'DELETE',
-        }
+      const response = await axios.delete<MediaRequest>(
+        `${serverUrl}/api/v1/request/${editRequest?.id}`
       );
-      if (!res.ok) throw new Error();
-
       mutate(
-        `${serverUrl}/api/v1/request?filter=all&take=10&sort=modified&skip=0`
+        serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
       );
+      mutate(serverUrl + '/api/v1/request/count');
 
-      if (res.status === 204) {
+      if (response.status === 204) {
         if (onComplete) {
           onComplete(MediaStatus.UNKNOWN);
         }
@@ -180,37 +173,24 @@ const MovieRequestModal = ({
     setIsUpdating(true);
 
     try {
-      const res = await fetch(
-        `${serverUrl}/api/v1/request/${editRequest?.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            mediaType: 'movie',
-            serverId: requestOverrides?.server,
-            profileId: requestOverrides?.profile,
-            rootFolder: requestOverrides?.folder,
-            userId: requestOverrides?.user?.id,
-            tags: requestOverrides?.tags,
-          }),
-        }
-      );
-      if (!res.ok) throw new Error();
+      await axios.put(`${serverUrl}/api/v1/request/${editRequest?.id}`, {
+        mediaType: 'movie',
+        serverId: requestOverrides?.server,
+        profileId: requestOverrides?.profile,
+        rootFolder: requestOverrides?.folder,
+        userId: requestOverrides?.user?.id,
+        tags: requestOverrides?.tags,
+      });
 
       if (alsoApproveRequest) {
-        const res = await fetch(
-          `${serverUrl}/api/v1/request/${editRequest?.id}/approve`,
-          {
-            method: 'POST',
-          }
+        await axios.post(
+          `${serverUrl}/api/v1/request/${editRequest?.id}/approve`
         );
-        if (!res.ok) throw new Error();
       }
       mutate(
-        `${serverUrl}/api/v1/request?filter=all&take=10&sort=modified&skip=0`
+        serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
       );
+      mutate(serverUrl + '/api/v1/request/count');
 
       toast.success(
         <ThemedText>

@@ -54,6 +54,7 @@ import type { TmdbRelease } from '@/jellyseerr/server/api/themoviedb/interfaces'
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
+import axios from 'axios';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router, useLocalSearchParams } from 'expo-router';
@@ -174,10 +175,16 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       svg: <Play color="#ffffff" />,
     });
   }
-  const trailerUrl = data.relatedVideos
+
+  const trailerVideo = data.relatedVideos
     ?.filter((r) => r.type === 'Trailer')
     .sort((a, b) => a.size - b.size)
-    .pop()?.url;
+    .pop();
+  const trailerUrl =
+    trailerVideo?.site === 'YouTube' &&
+    settings.currentSettings.youtubeUrl != ''
+      ? `${settings.currentSettings.youtubeUrl}${trailerVideo?.key}`
+      : trailerVideo?.url;
 
   if (trailerUrl) {
     mediaLinks.push({
@@ -288,39 +295,27 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   const onClickWatchlistBtn = async (): Promise<void> => {
     setIsUpdating(true);
 
-    const res = await fetch(serverUrl + '/api/v1/watchlist', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    try {
+      const response = await axios.post(serverUrl + '/api/v1/watchlist', {
         tmdbId: movie?.id,
         mediaType: MediaType.MOVIE,
         title: movie?.title,
-      }),
-    });
+      });
 
-    if (!res.ok) {
+      if (response.data) {
+        toast.success(
+          <ThemedText>
+            {intl.formatMessage(messages.watchlistSuccess, {
+              title: movie?.title,
+              strong: (msg: React.ReactNode) => (
+                <ThemedText className="font-bold">{msg}</ThemedText>
+              ),
+            })}
+          </ThemedText>
+        );
+      }
+    } catch (e) {
       toast.error(intl.formatMessage(messages.watchlistError));
-
-      setIsUpdating(false);
-      return;
-    }
-
-    const data = await res.json();
-
-    if (data) {
-      toast.success(
-        <ThemedText>
-          {intl.formatMessage(messages.watchlistSuccess, {
-            title: movie?.title,
-            strong: (msg: React.ReactNode) => (
-              <ThemedText className="font-bold">{msg}</ThemedText>
-            ),
-          })}
-        </ThemedText>
-      );
     }
 
     setIsUpdating(false);
@@ -330,23 +325,18 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   const onClickDeleteWatchlistBtn = async (): Promise<void> => {
     setIsUpdating(true);
     try {
-      const res = await fetch(serverUrl + `/api/v1/watchlist/${movie?.id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) throw new Error();
+      await axios.delete(`${serverUrl}/api/v1/watchlist/${movie?.id}`);
 
-      if (res.status === 204) {
-        toast(
-          <ThemedText>
-            {intl.formatMessage(messages.watchlistDeleted, {
-              title: movie?.title,
-              strong: (msg: React.ReactNode) => (
-                <ThemedText className="font-bold">{msg}</ThemedText>
-              ),
-            })}
-          </ThemedText>
-        );
-      }
+      toast(
+        <ThemedText>
+          {intl.formatMessage(messages.watchlistDeleted, {
+            title: movie?.title,
+            strong: (msg: React.ReactNode) => (
+              <ThemedText className="font-bold">{msg}</ThemedText>
+            ),
+          })}
+        </ThemedText>
+      );
     } catch {
       toast.error(intl.formatMessage(messages.watchlistError));
     } finally {
@@ -358,42 +348,42 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   // const onClickHideItemBtn = async (): Promise<void> => {
   //   setIsBlacklistUpdating(true);
 
-  //   const res = await fetch(serverUrl + '/api/v1/blacklist', {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
+  //   try {
+  //     await axios.post(serverUrl + '/api/v1/blacklist', {
   //       tmdbId: movie?.id,
   //       mediaType: 'movie',
   //       title: movie?.title,
   //       user: user?.id,
-  //     }),
-  //   });
+  //     });
 
-  //   if (res.status === 201) {
-  //     toast.success(
-  //       <ThemedText>
+  //     addToast(
+  //       <span>
   //         {intl.formatMessage(globalMessages.blacklistSuccess, {
   //           title: movie?.title,
   //           strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
   //         })}
-  //       </ThemedText>
+  //       </span>,
+  //       { appearance: 'success', autoDismiss: true }
   //     );
 
   //     revalidate();
-  //   } else if (res.status === 412) {
-  //     toast(
-  //       <ThemedText>
-  //         {intl.formatMessage(globalMessages.blacklistDuplicateError, {
-  //           title: movie?.title,
-  //           strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
-  //         })}
-  //       </ThemedText>
-  //     );
-  //   } else {
-  //     toast.error(intl.formatMessage(globalMessages.blacklistError));
+  //   } catch (e) {
+  //     if (e?.response?.status === 412) {
+  //       addToast(
+  //         <span>
+  //           {intl.formatMessage(globalMessages.blacklistDuplicateError, {
+  //             title: movie?.title,
+  //             strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+  //           })}
+  //         </span>,
+  //         { appearance: 'info', autoDismiss: true }
+  //       );
+  //     } else {
+  //       addToast(intl.formatMessage(globalMessages.blacklistError), {
+  //         appearance: 'error',
+  //         autoDismiss: true,
+  //       });
+  //     }
   //   }
 
   //   setIsBlacklistUpdating(false);

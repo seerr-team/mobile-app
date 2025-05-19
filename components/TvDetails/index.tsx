@@ -58,6 +58,7 @@ import type { TvDetails as TvDetailsType } from '@/jellyseerr/server/models/Tv';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
 import { toast } from '@backpackapp-io/react-native-toast';
+import axios from 'axios';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams } from 'expo-router';
@@ -168,10 +169,15 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
     });
   }
 
-  const trailerUrl = data.relatedVideos
+  const trailerVideo = data.relatedVideos
     ?.filter((r) => r.type === 'Trailer')
     .sort((a, b) => a.size - b.size)
-    .pop()?.url;
+    .pop();
+  const trailerUrl =
+    trailerVideo?.site === 'YouTube' &&
+    settings.currentSettings.youtubeUrl != ''
+      ? `${settings.currentSettings.youtubeUrl}${trailerVideo?.key}`
+      : trailerVideo?.url;
 
   if (trailerUrl) {
     mediaLinks.push({
@@ -240,7 +246,8 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
       .filter(
         (request) =>
           request.is4k === is4k &&
-          request.status !== MediaRequestStatus.DECLINED
+          request.status !== MediaRequestStatus.DECLINED &&
+          request.status !== MediaRequestStatus.COMPLETED
       )
       .reduce((requestedSeasons, request) => {
         return [
@@ -314,29 +321,12 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   const onClickWatchlistBtn = async (): Promise<void> => {
     setIsUpdating(true);
 
-    const res = await fetch(serverUrl + '/api/v1/watchlist', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    try {
+      await axios.post(serverUrl + '/api/v1/watchlist', {
         tmdbId: tv?.id,
         mediaType: MediaType.TV,
         title: tv?.name,
-      }),
-    });
-
-    if (!res.ok) {
-      toast.error(intl.formatMessage(messages.watchlistError));
-
-      setIsUpdating(false);
-      return;
-    }
-
-    const data = await res.json();
-
-    if (data) {
+      });
       toast.success(
         <ThemedText>
           {intl.formatMessage(messages.watchlistSuccess, {
@@ -347,27 +337,22 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           })}
         </ThemedText>
       );
-    }
 
-    setIsUpdating(false);
-    setToggleWatchlist((prevState) => !prevState);
+      setIsUpdating(false);
+      setToggleWatchlist((prevState) => !prevState);
+    } catch {
+      toast.error(intl.formatMessage(messages.watchlistError));
+
+      setIsUpdating(false);
+    }
   };
 
   const onClickDeleteWatchlistBtn = async (): Promise<void> => {
     setIsUpdating(true);
 
-    const res = await fetch(serverUrl + '/api/v1/watchlist/' + tv?.id, {
-      method: 'DELETE',
-    });
+    try {
+      await axios.delete(serverUrl + '/api/v1/watchlist/' + tv?.id);
 
-    if (!res.ok) {
-      toast.error(intl.formatMessage(messages.watchlistError));
-
-      setIsUpdating(false);
-      return;
-    }
-
-    if (res.status === 204) {
       toast(
         <ThemedText>
           {intl.formatMessage(messages.watchlistDeleted, {
@@ -378,8 +363,13 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           })}
         </ThemedText>
       );
+
       setIsUpdating(false);
       setToggleWatchlist((prevState) => !prevState);
+    } catch {
+      toast.error(intl.formatMessage(messages.watchlistError));
+
+      setIsUpdating(false);
     }
   };
 
@@ -788,7 +778,9 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                           </div>
                           {((!mSeason &&
                             request?.status === MediaRequestStatus.APPROVED) ||
-                            mSeason?.status === MediaStatus.PROCESSING) && (
+                            mSeason?.status === MediaStatus.PROCESSING ||
+                            (request?.status === MediaRequestStatus.APPROVED &&
+                              mSeason?.status === MediaStatus.DELETED)) && (
                             <>
                               <div className="hidden md:flex">
                                 <Badge badgeType="primary">
@@ -847,10 +839,28 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                               </div>
                             </>
                           )}
+                          {mSeason?.status === MediaStatus.DELETED &&
+                            request?.status !== MediaRequestStatus.APPROVED && (
+                              <>
+                                <div className="hidden md:flex">
+                                  <Badge badgeType="danger">
+                                    {intl.formatMessage(globalMessages.deleted)}
+                                  </Badge>
+                                </div>
+                                <div className="flex md:hidden">
+                                  <StatusBadgeMini
+                                    status={MediaStatus.DELETED}
+                                  />
+                                </div>
+                              </>
+                            )}
                           {((!mSeason4k &&
                             request4k?.status ===
                               MediaRequestStatus.APPROVED) ||
-                            mSeason4k?.status4k === MediaStatus.PROCESSING) &&
+                            mSeason4k?.status4k === MediaStatus.PROCESSING ||
+                            (request4k?.status ===
+                              MediaRequestStatus.APPROVED &&
+                              mSeason4k?.status4k === MediaStatus.DELETED)) &&
                             show4k && (
                               <>
                                 <div className="hidden md:flex">
@@ -928,6 +938,27 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                                 <div className="flex md:hidden">
                                   <StatusBadgeMini
                                     status={MediaStatus.AVAILABLE}
+                                    is4k={true}
+                                  />
+                                </div>
+                              </>
+                            )}
+                          {mSeason4k?.status4k === MediaStatus.DELETED &&
+                            request4k?.status !== MediaRequestStatus.APPROVED &&
+                            show4k && (
+                              <>
+                                <div className="hidden md:flex">
+                                  <Badge badgeType="danger">
+                                    {intl.formatMessage(messages.status4k, {
+                                      status: intl.formatMessage(
+                                        globalMessages.deleted
+                                      ),
+                                    })}
+                                  </Badge>
+                                </div>
+                                <div className="flex md:hidden">
+                                  <StatusBadgeMini
+                                    status={MediaStatus.DELETED}
                                     is4k={true}
                                   />
                                 </div>

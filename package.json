@@ -1,7 +1,7 @@
 {
   "name": "jellyseerr-expo",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "0.6.0",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -29,6 +29,7 @@
     "@reduxjs/toolkit": "^2.5.0",
     "@sentry/react-native": "^6.9.1",
     "@types/lodash.uniqby": "^4.7.9",
+    "axios": "^1.9.0",
     "bowser": "^2.11.0",
     "expo": "~52.0.28",
     "expo-asset": "~11.0.3",

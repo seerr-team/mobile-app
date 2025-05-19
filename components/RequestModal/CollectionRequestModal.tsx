@@ -19,6 +19,7 @@ import type { Collection } from '@/jellyseerr/server/models/Collection';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { toast } from '@backpackapp-io/react-native-toast';
+import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Switch, View } from 'react-native';
@@ -81,7 +82,8 @@ const CollectionRequestModal = ({
             .filter(
               (request) =>
                 request.is4k === is4k &&
-                request.status !== MediaRequestStatus.DECLINED
+                request.status !== MediaRequestStatus.DECLINED &&
+                request.status !== MediaRequestStatus.COMPLETED
             )
             .map((part) => part.id),
         ];
@@ -170,7 +172,9 @@ const CollectionRequestModal = ({
 
     return (part?.mediaInfo?.requests ?? []).find(
       (request) =>
-        request.is4k === is4k && request.status !== MediaRequestStatus.DECLINED
+        request.is4k === is4k &&
+        request.status !== MediaRequestStatus.DECLINED &&
+        request.status !== MediaRequestStatus.COMPLETED
     );
   };
 
@@ -199,19 +203,12 @@ const CollectionRequestModal = ({
         (
           data?.parts.filter((part) => selectedParts.includes(part.id)) ?? []
         ).map(async (part) => {
-          const res = await fetch(`${serverUrl}/api/v1/request`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              mediaId: part.id,
-              mediaType: 'movie',
-              is4k,
-              ...overrideParams,
-            }),
+          await axios.post<MediaRequest>(serverUrl + '/api/v1/request', {
+            mediaId: part.id,
+            mediaType: 'movie',
+            is4k,
+            ...overrideParams,
           });
-          if (!res.ok) throw new Error();
         })
       );
 
@@ -340,7 +337,9 @@ const CollectionRequestModal = ({
                       const partMedia =
                         part.mediaInfo &&
                         part.mediaInfo[is4k ? 'status4k' : 'status'] !==
-                          MediaStatus.UNKNOWN
+                          MediaStatus.UNKNOWN &&
+                        part.mediaInfo[is4k ? 'status4k' : 'status'] !==
+                          MediaStatus.DELETED
                           ? part.mediaInfo
                           : undefined;
 

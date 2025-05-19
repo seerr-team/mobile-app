@@ -73,17 +73,19 @@ const TitleCard = ({
               </ThemedText>
             </View>
           </View>
-          {currentStatus && currentStatus !== MediaStatus.UNKNOWN && (
-            <View className="flex flex-col items-center gap-1">
-              <View className="pointer-events-none z-40 flex">
-                <StatusBadgeMini
-                  status={currentStatus}
-                  inProgress={inProgress}
-                  shrink
-                />
+          {currentStatus &&
+            currentStatus !== MediaStatus.UNKNOWN &&
+            currentStatus !== MediaStatus.DELETED && (
+              <View className="flex flex-col items-center gap-1">
+                <View className="pointer-events-none z-40 flex">
+                  <StatusBadgeMini
+                    status={currentStatus}
+                    inProgress={inProgress}
+                    shrink
+                  />
+                </View>
               </View>
-            </View>
-          )}
+            )}
         </View>
         <CachedImage
           type="tmdb"

@@ -2,6 +2,8 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "strictPropertyInitialization": false,
+    "useUnknownInCatchVariables": false,
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["./*"]

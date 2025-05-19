@@ -4,7 +4,7 @@ import { Image, type ImageProps } from 'expo-image';
 
 export type CachedImageProps = ImageProps & {
   src: string;
-  type: 'tmdb' | 'avatar';
+  type: 'tmdb' | 'avatar' | 'tvdb';
 };
 
 export const blurhash =
@@ -24,7 +24,15 @@ const CachedImage = ({ src, type, ...props }: CachedImageProps) => {
     // tmdb stuff
     imageUrl =
       currentSettings.cacheImages && !src.startsWith('/')
-        ? src.replace(/^https:\/\/image\.tmdb\.org\//, '/imageproxy/')
+        ? src.replace(/^https:\/\/image\.tmdb\.org\//, '/imageproxy/tmdb/')
+        : src;
+  } else if (type === 'tvdb') {
+    imageUrl =
+      currentSettings.cacheImages && !src.startsWith('/')
+        ? src.replace(
+            /^https:\/\/artworks\.thetvdb\.com\//,
+            '/imageproxy/tvdb/'
+          )
         : src;
   } else if (type === 'avatar') {
     // jellyfin avatar (if any)

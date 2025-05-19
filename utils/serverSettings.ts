@@ -2,6 +2,7 @@ import type {
   PublicSettingsResponse,
   StatusResponse,
 } from '@/jellyseerr/server/interfaces/api/settingsInterfaces';
+import axios from 'axios';
 
 export const minimumServerVersion = '2.4.0';
 
@@ -15,30 +16,39 @@ export enum ConnectionErrorType {
 export async function getServerSettings(
   serverUrl: string
 ): Promise<PublicSettingsResponse> {
-  let res: Response;
+  let data: PublicSettingsResponse;
 
   try {
     if (serverUrl.endsWith('/')) {
       serverUrl = serverUrl.slice(0, -1);
     }
-    const abortController = new AbortController();
-    setTimeout(() => abortController.abort(), 5000);
-    res = await fetch(`${serverUrl}/api/v1/settings/public`, {
-      signal: abortController.signal,
-    });
-  } catch {
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+    const response = await axios.get<PublicSettingsResponse>(
+      `${serverUrl}/api/v1/settings/public`,
+      {
+        signal: controller.signal,
+      }
+    );
+
+    clearTimeout(timeoutId);
+    data = response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (
+        error.code === 'ERR_CANCELED' ||
+        error.code === 'ECONNABORTED' ||
+        !error.response
+      ) {
+        throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
+      }
+      if (error.response.status !== 200) {
+        throw new Error(ConnectionErrorType.SERVER_NOT_JELLYSEERR);
+      }
+    }
     throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
-  }
-
-  if (!res.ok) throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
-  if (res.status !== 200)
-    throw new Error(ConnectionErrorType.SERVER_NOT_JELLYSEERR);
-
-  let data: PublicSettingsResponse;
-  try {
-    data = await res.json();
-  } catch {
-    throw new Error(ConnectionErrorType.SERVER_NOT_JELLYSEERR);
   }
 
   if (typeof data?.mediaServerType !== 'number') {
@@ -58,13 +68,30 @@ export async function isServerUpToDate(serverUrl: string): Promise<boolean> {
   if (serverUrl.endsWith('/')) {
     serverUrl = serverUrl.slice(0, -1);
   }
-  const abortController = new AbortController();
-  setTimeout(() => abortController.abort(), 5000);
-  const res = await fetch(`${serverUrl}/api/v1/status`, {
-    signal: abortController.signal,
-  });
-  if (!res.ok) throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
-  const data: StatusResponse = await res.json();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+  let data: StatusResponse;
+  try {
+    const response = await axios.get<StatusResponse>(
+      `${serverUrl}/api/v1/status`,
+      {
+        signal: controller.signal,
+      }
+    );
+    clearTimeout(timeoutId);
+    data = response.data;
+  } catch (error) {
+    if (
+      axios.isAxiosError(error) &&
+      (error.code === 'ERR_CANCELED' ||
+        error.code === 'ECONNABORTED' ||
+        !error.response)
+    ) {
+      throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
+    }
+    throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
+  }
 
   if (data.version === 'develop-local') return true;
 

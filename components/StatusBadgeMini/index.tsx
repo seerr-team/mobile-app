@@ -7,6 +7,7 @@ import {
   Clock,
   EyeSlash,
   MinusSmall,
+  Trash,
 } from '@nandorojo/heroicons/24/solid';
 import { View } from 'react-native';
 
@@ -58,6 +59,10 @@ const StatusBadgeMini = ({
         'bg-green-500 border-green-400 ring-green-400 text-green-100'
       );
       indicatorIcon = <MinusSmall width={20} height={20} color="#dcfce7" />;
+      break;
+    case MediaStatus.DELETED:
+      badgeStyle.push('bg-red-500 border-red-400 ring-red-400 text-red-100');
+      indicatorIcon = <Trash />;
       break;
   }
 
