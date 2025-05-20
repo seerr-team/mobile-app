@@ -1,5 +1,6 @@
 import LogoStacked from '@/assets/images/logo-stacked.png';
 import Button from '@/components/Common/Button';
+import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
@@ -16,12 +17,13 @@ import Checkbox from 'expo-checkbox';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function Setup() {
   const serverUrl = useServerUrl();
   const dispatch = useDispatch();
+  const [initialized, setInitialized] = useState(false);
   const [error, setError] = useState<ConnectionErrorType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
@@ -47,6 +49,7 @@ export default function Setup() {
           setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
         }
       }
+      setInitialized(true);
       setLoading(false);
     },
     [dispatch]
@@ -56,101 +59,115 @@ export default function Setup() {
     if (serverUrl) {
       setInputUrl(serverUrl);
       checkServer(serverUrl);
+    } else {
+      setInitialized(true);
     }
   }, [serverUrl, checkServer]);
 
+  useEffect(() => {
+    (async () => {
+      const url = await AsyncStorage.getItem('server-url');
+      if (url) {
+        setInputUrl(url);
+      }
+    })();
+  }, []);
+
+  if (!initialized) {
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <LoadingSpinner />
+      </View>
+    );
+  }
+
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      className="min-h-screen bg-gray-900"
-    >
-      <ScrollView contentContainerClassName="flex-grow justify-center item-center py-8">
-        <View className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
-          <View className="relative w-full max-w-full">
-            <Image
-              className="max-w-full"
-              style={{ height: 192, objectFit: 'contain' }}
-              source={LogoStacked}
+    <View className="relative flex flex-1 flex-col justify-center">
+      <View className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
+        <View className="relative w-full max-w-full">
+          <Image
+            className="max-w-full"
+            style={{ height: 192, objectFit: 'contain' }}
+            source={LogoStacked}
+          />
+        </View>
+      </View>
+      <View className="relative z-50 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <ThemedText className="mt-12 text-center text-3xl font-bold">
+          Enter the server address to continue.
+        </ThemedText>
+        <View className="mt-8 w-full bg-gray-800/50 px-10 py-8">
+          <View className="">
+            <ThemedText className="mb-1 text-lg font-bold text-white">
+              Server address
+            </ThemedText>
+            <TextInput
+              value={inputUrl}
+              onChangeText={setInputUrl}
+              placeholder="https://example.com"
+              keyboardType="url"
+              autoCapitalize="none"
+              autoComplete="url"
             />
-          </View>
-        </View>
-        <View className="relative z-50 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <ThemedText className="mt-12 text-center text-3xl font-bold">
-            Enter the server address to continue.
-          </ThemedText>
-          <View className="mt-8 w-full bg-gray-800/50 px-10 py-8">
-            <View className="">
-              <ThemedText className="mb-1 text-lg font-bold text-white">
-                Server address
+            {error === ConnectionErrorType.SERVER_NOT_REACHABLE && (
+              <ThemedText className="mt-1.5 text-red-500">
+                Unable to connect to server
               </ThemedText>
-              <TextInput
-                value={inputUrl}
-                onChangeText={setInputUrl}
-                placeholder="https://example.com"
-                keyboardType="url"
-                autoCapitalize="none"
-                autoComplete="url"
+            )}
+            {error === ConnectionErrorType.SERVER_NOT_INITIALIZED && (
+              <ThemedText className="mt-1.5 text-red-500">
+                Server not initialized
+              </ThemedText>
+            )}
+            {error === ConnectionErrorType.SERVER_NOT_JELLYSEERR && (
+              <ThemedText className="mt-1.5 text-red-500">
+                Specified server is not a Jellyseerr server
+              </ThemedText>
+            )}
+            {error === ConnectionErrorType.SERVER_NOT_UPTODATE && (
+              <ThemedText className="mt-1.5 text-red-500">
+                Server is not up-to-date. Minimum version required:{' '}
+                {minimumServerVersion}
+              </ThemedText>
+            )}
+          </View>
+          <View className="mt-4">
+            <View className="flex flex-row items-center gap-2">
+              <Checkbox
+                className="h-5 w-5 rounded-sm"
+                value={sendAnonymousData}
+                onValueChange={() =>
+                  dispatch(setSendAnonymousData(!sendAnonymousData))
+                }
+                color={sendAnonymousData ? '#4f46e5' : '#ffffff'}
               />
-              {error === ConnectionErrorType.SERVER_NOT_REACHABLE && (
-                <ThemedText className="mt-1.5 text-red-500">
-                  Unable to connect to server
-                </ThemedText>
-              )}
-              {error === ConnectionErrorType.SERVER_NOT_INITIALIZED && (
-                <ThemedText className="mt-1.5 text-red-500">
-                  Server not initialized
-                </ThemedText>
-              )}
-              {error === ConnectionErrorType.SERVER_NOT_JELLYSEERR && (
-                <ThemedText className="mt-1.5 text-red-500">
-                  Specified server is not a Jellyseerr server
-                </ThemedText>
-              )}
-              {error === ConnectionErrorType.SERVER_NOT_UPTODATE && (
-                <ThemedText className="mt-1.5 text-red-500">
-                  Server is not up-to-date. Minimum version required:{' '}
-                  {minimumServerVersion}
-                </ThemedText>
-              )}
-            </View>
-            <View className="mt-4">
-              <View className="flex flex-row items-center gap-2">
-                <Checkbox
-                  className="h-5 w-5 rounded-sm"
-                  value={sendAnonymousData}
-                  onValueChange={() =>
-                    dispatch(setSendAnonymousData(!sendAnonymousData))
-                  }
-                  color={sendAnonymousData ? '#4f46e5' : '#ffffff'}
-                />
-                <ThemedText
-                  onPress={() =>
-                    dispatch(setSendAnonymousData(!sendAnonymousData))
-                  }
-                  className="mb-1 text-lg font-bold text-white"
-                >
-                  Send Anonymous Usage Data
-                </ThemedText>
-              </View>
-              <ThemedText className="text-sm">
-                Help us improve the app by sending anonymous usage data to
-                Jellyseerr. This data is not shared with any third parties and
-                is only used to improve the app. You can opt-out at any time in
-                the settings.
+              <ThemedText
+                onPress={() =>
+                  dispatch(setSendAnonymousData(!sendAnonymousData))
+                }
+                className="mb-1 text-lg font-bold text-white"
+              >
+                Send Anonymous Usage Data
               </ThemedText>
             </View>
-            <View className="mt-8 flex border-t border-gray-700 pt-5">
-              <Button
-                onClick={() => checkServer(inputUrl)}
-                className="self-end"
-                disabled={loading}
-              >
-                {loading ? 'Connecting...' : 'Connect'}
-              </Button>
-            </View>
+            <ThemedText className="text-sm">
+              Help us improve the app by sending anonymous usage data to
+              Jellyseerr. This data is not shared with any third parties and is
+              only used to fix bugs and improve the app. You can opt-out at any
+              time in the settings.
+            </ThemedText>
+          </View>
+          <View className="mt-8 flex border-t border-gray-700 pt-5">
+            <Button
+              onClick={() => checkServer(inputUrl)}
+              className="self-end"
+              disabled={loading}
+            >
+              {loading ? 'Connecting...' : 'Connect'}
+            </Button>
           </View>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </View>
+    </View>
   );
 }

@@ -173,14 +173,14 @@ const Login = () => {
 
   if (!loaded) {
     return (
-      <View className="flex min-h-screen items-center justify-center bg-gray-900">
+      <View className="flex flex-1 items-center justify-center">
         <LoadingSpinner />
       </View>
     );
   }
 
   return (
-    <View className="relative flex min-h-screen flex-col bg-gray-900 py-14">
+    <View className="relative flex flex-1 flex-col justify-center">
       <ImageFader
         backgroundImages={
           backdrops?.map(

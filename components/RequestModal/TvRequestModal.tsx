@@ -348,7 +348,8 @@ const TvRequestModal = ({
         .forEach((request) => {
           if (!seasonRequest) {
             seasonRequest = request.seasons.find(
-              season.seasonNumber === seasonNumber &&
+              (season) =>
+                season.seasonNumber === seasonNumber &&
                 season.status !== MediaRequestStatus.COMPLETED
             );
           }
@@ -363,8 +364,7 @@ const TvRequestModal = ({
   return data &&
     !error &&
     !data.externalIds.tvdbId &&
-    searchModal.show ? //   )} //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle //   modalTitle={intl.formatMessage( //   onCancel={onCancel} //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
-  //   modalSubTitle={data.name}
+    searchModal.show ? //   modalSubTitle={data.name} //   )} //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle //   modalTitle={intl.formatMessage( //   onCancel={onCancel} //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
   //   tmdbId={tmdbId}
   //   backdrop={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data?.backdropPath}`}
   // />

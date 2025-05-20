@@ -62,7 +62,7 @@ const ImageFader = ({
 
   return (
     <View
-      className={`absolute-top-shift absolute inset-0 h-screen w-screen`}
+      className={`absolute-top-shift absolute inset-0 w-screen flex-1`}
       {...props}
     >
       <CrossfadeImage
