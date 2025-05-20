@@ -23,7 +23,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#111827"
       },
-      "package": "com.anonymous.jellyseerrexpo"
+      "package": "com.anonymous.jellyseerrexpo",
+      "networkSecurityConfig": {
+        "cleartextTrafficPermitted": true
+      }
     },
     "web": {
       "bundler": "metro",

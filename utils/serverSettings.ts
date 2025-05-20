@@ -2,14 +2,14 @@ import type {
   PublicSettingsResponse,
   StatusResponse,
 } from '@/jellyseerr/server/interfaces/api/settingsInterfaces';
-import axios from 'axios';
+import axiosInstance from './axios';
 
 export const minimumServerVersion = '2.4.0';
 
 export enum ConnectionErrorType {
   SERVER_NOT_REACHABLE = 'SERVER_NOT_REACHABLE',
-  SERVER_NOT_INITIALIZED = 'SERVER_NOT_INITIALIZED',
   SERVER_NOT_JELLYSEERR = 'SERVER_NOT_JELLYSEERR',
+  SERVER_NOT_INITIALIZED = 'SERVER_NOT_INITIALIZED',
   SERVER_NOT_UPTODATE = 'SERVER_NOT_UPTODATE',
 }
 
@@ -26,7 +26,7 @@ export async function getServerSettings(
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    const response = await axios.get<PublicSettingsResponse>(
+    const response = await axiosInstance.get<PublicSettingsResponse>(
       `${serverUrl}/api/v1/settings/public`,
       {
         signal: controller.signal,
@@ -36,7 +36,7 @@ export async function getServerSettings(
     clearTimeout(timeoutId);
     data = response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    if (axiosInstance.isAxiosError(error)) {
       if (
         error.code === 'ERR_CANCELED' ||
         error.code === 'ECONNABORTED' ||
@@ -73,7 +73,7 @@ export async function isServerUpToDate(serverUrl: string): Promise<boolean> {
 
   let data: StatusResponse;
   try {
-    const response = await axios.get<StatusResponse>(
+    const response = await axiosInstance.get<StatusResponse>(
       `${serverUrl}/api/v1/status`,
       {
         signal: controller.signal,
@@ -83,7 +83,7 @@ export async function isServerUpToDate(serverUrl: string): Promise<boolean> {
     data = response.data;
   } catch (error) {
     if (
-      axios.isAxiosError(error) &&
+      axiosInstance.isAxiosError(error) &&
       (error.code === 'ERR_CANCELED' ||
         error.code === 'ECONNABORTED' ||
         !error.response)

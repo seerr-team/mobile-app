@@ -5,6 +5,7 @@
     "strictPropertyInitialization": false,
     "useUnknownInCatchVariables": false,
     "jsx": "react-jsx",
+    "lib": ["ES2015", "DOM"],
     "paths": {
       "@/*": ["./*"]
     }

@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 // import Link from 'next/link';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
-import axios from 'axios';
+import axiosInstance from '@/utils/axios';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
@@ -49,7 +49,7 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
       validateOnBlur={false}
       onSubmit={async (values) => {
         try {
-          await axios.post(serverUrl + '/api/v1/auth/local', {
+          await axiosInstance.post(serverUrl + '/api/v1/auth/local', {
             email: values.email,
             password: values.password,
           });

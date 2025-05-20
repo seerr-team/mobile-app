@@ -26,7 +26,7 @@ import { setServerUrl } from '@/store/appSettingsSlice';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 // import { BlurView } from 'expo-blur';
-import axios from 'axios';
+import axiosInstance from '@/utils/axios';
 
 const messages = getJellyseerrMessages('components.Login');
 
@@ -48,7 +48,7 @@ const Login = () => {
   useEffect(() => {
     (async () => {
       try {
-        await axios(`${serverUrl}/api/v1/auth/me`);
+        await axiosInstance(`${serverUrl}/api/v1/auth/me`);
         router.replace('/(tabs)');
       } catch {
         setLoaded(true);
@@ -63,9 +63,12 @@ const Login = () => {
     const login = async () => {
       setProcessing(true);
       try {
-        const response = await axios.post(serverUrl + '/api/v1/auth/plex', {
-          authToken,
-        });
+        const response = await axiosInstance.post(
+          serverUrl + '/api/v1/auth/plex',
+          {
+            authToken,
+          }
+        );
 
         if (response.data?.id) {
           revalidate();
