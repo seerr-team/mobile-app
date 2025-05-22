@@ -113,7 +113,7 @@ const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
               className="h-7 w-full"
             >
               <Trash />
-              <span>{intl.formatMessage(messages.cleardata)}</span>
+              <ThemedText>{intl.formatMessage(messages.cleardata)}</ThemedText>
             </Button>
           </View>
         </View>
