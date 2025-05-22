@@ -2,7 +2,7 @@
   "expo": {
     "name": "Jellyseerr",
     "slug": "jellyseerr-expo",
-    "version": "0.6.0",
+    "version": "v0.6.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
