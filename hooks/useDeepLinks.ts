@@ -20,11 +20,7 @@ const useDeepLinks = ({
   const settings = useSettings();
 
   useEffect(() => {
-    if (
-      settings.currentSettings.mediaServerType === MediaServerType.PLEX &&
-      (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
-        (navigator.userAgent.includes('Mac') && navigator.maxTouchPoints > 1))
-    ) {
+    if (settings.currentSettings.mediaServerType === MediaServerType.PLEX) {
       setReturnedMediaUrl(iOSPlexUrl);
       setReturnedMediaUrl4k(iOSPlexUrl4k);
     } else {
