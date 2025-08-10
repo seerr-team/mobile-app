@@ -97,6 +97,14 @@ const MediaSlider = ({
     );
   }
 
+  if (settings.currentSettings.hideBlacklisted) {
+    titles = titles.filter(
+      (i) =>
+        (i.mediaType === 'movie' || i.mediaType === 'tv') &&
+        i.mediaInfo?.status !== MediaStatus.BLACKLISTED
+    );
+  }
+
   if (hideWhenEmpty && (data?.[0].results ?? []).length === 0) {
     return null;
   }

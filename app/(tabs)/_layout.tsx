@@ -1,5 +1,5 @@
+import UserDropdown from '@/components/Layout/UserDropdown';
 import SearchInput from '@/components/SearchInput';
-import UserDropdown from '@/components/UserDropdown';
 import { Clock, Film, Sparkles, Tv } from '@nandorojo/heroicons/24/outline';
 import {
   Clock as ClockFilled,
