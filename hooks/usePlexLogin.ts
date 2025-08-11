@@ -12,23 +12,20 @@ function usePlexLogin({
 }) {
   const [loading, setLoading] = useState(false);
 
-  const getPlexLogin = async () => {
+  const login = async () => {
     setLoading(true);
     try {
-      const authToken = await plexOAuth.login();
+      const authToken = await plexOAuth.login(); // handles WebBrowser internally
       setLoading(false);
       onAuthToken(authToken);
-    } catch (e) {
-      if (onError) {
-        onError(e.message);
+    } catch (err) {
+      if (onError && err instanceof Error) {
+        onError(err.message);
+      } else if (onError) {
+        onError('An unknown error occurred.');
       }
       setLoading(false);
     }
-  };
-
-  const login = () => {
-    plexOAuth.preparePopup();
-    setTimeout(() => getPlexLogin(), 1500);
   };
 
   return { loading, login };
