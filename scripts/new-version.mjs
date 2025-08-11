@@ -27,9 +27,16 @@ fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
 
 // package-lock.json
 const packageLockJsonPath = path.join(__dirname, '../package-lock.json');
-const packageLockJson = JSON.parse(fs.readFileSync(packageLockJsonPath, 'utf8'));
+const packageLockJson = JSON.parse(
+  fs.readFileSync(packageLockJsonPath, 'utf8')
+);
 packageLockJson.version = version;
 packageLockJson.packages[''].version = version;
-fs.writeFileSync(packageLockJsonPath, JSON.stringify(packageLockJson, null, 2) + '\n');
+fs.writeFileSync(
+  packageLockJsonPath,
+  JSON.stringify(packageLockJson, null, 2) + '\n'
+);
 
-console.log(`Version updated to ${version} in app.json, package.json, and package-lock.json`);
+console.log(
+  `Version updated to ${version} in app.json, package.json, and package-lock.json`
+);

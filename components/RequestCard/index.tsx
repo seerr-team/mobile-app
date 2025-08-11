@@ -464,7 +464,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                   user: (
                     <View
                       // href={`/users/${requestData.requestedBy.id}`}
-                      className="group flex translate-y-2 flex-row items-center gap-1.5 truncate pl-1"
+                      className="group flex translate-y-1.5 flex-row items-center gap-1.5 truncate pl-1"
                     >
                       <View className="avatar-sm overflow-hidden rounded-full">
                         <CachedImage

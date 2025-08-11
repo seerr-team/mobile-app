@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// import CachedImage from '@/components/Common/CachedImage';
+import CachedImage from '@/components/Common/CachedImage';
+import { Listbox } from '@/components/Common/Listbox';
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
@@ -14,7 +15,7 @@ import { hasPermission } from '@/jellyseerr/server/lib/permissions';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { formatBytes } from '@/utils/numberHelpers';
-// import { Check, ChevronDown } from '@nandorojo/heroicons/24/solid';
+import { Check, ChevronDown } from '@nandorojo/heroicons/24/solid';
 import { Picker } from '@react-native-picker/picker';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -533,116 +534,102 @@ const AdvancedRequester = ({
               />
             </View>
           )} */}
-        {/* {currentHasPermission([
+        {currentHasPermission([
           Permission.MANAGE_REQUESTS,
           Permission.MANAGE_USERS,
         ]) &&
           selectedUser &&
           (filteredUserData ?? []).length > 1 && (
             <Listbox
-              as="div"
               value={selectedUser}
               onChange={(value) => setSelectedUser(value)}
-              className="space-y-1"
             >
               {({ open }) => (
                 <>
-                  <Listbox.Label>
+                  <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                     {intl.formatMessage(messages.requestas)}
-                  </Listbox.Label>
-                  <View className="relative">
-                    <ThemedText className="inline-block w-full rounded-md shadow-sm">
-                      <Listbox.Button className="focus:shadow-outline-blue relative w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-2 pl-3 pr-10 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5">
-                        <ThemedText className="flex items-center">
-                          <CachedImage
-                            type="avatar"
-                            src={selectedUser.avatar}
-                            alt=""
-                            className="flex-shrink-0 rounded-full object-cover"
-                            style={{ width: 24, height: 24 }}
-                          />
-                          <ThemedText className="ml-3 block">
+                  </ThemedText>
+                  <View className="relative w-full">
+                    <Listbox.Button className="focus:shadow-outline-blue relative w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-0.5 pl-2 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5">
+                      <View className="relative">
+                        <View
+                          className="group mb-3 flex translate-y-1.5 flex-row items-center gap-1.5 truncate pl-1 pr-10"
+                          pointerEvents="none"
+                        >
+                          <View className="avatar-sm overflow-hidden rounded-full">
+                            <CachedImage
+                              type="avatar"
+                              src={selectedUser.avatar}
+                              alt=""
+                              style={{ width: 20, height: 20 }}
+                            />
+                          </View>
+                          <ThemedText className="truncate font-bold text-gray-300 group-hover:underline">
                             {selectedUser.displayName}
                           </ThemedText>
                           {selectedUser.displayName.toLowerCase() !==
                             selectedUser.email && (
-                            <ThemedText className="ml-1 truncate text-gray-400">
+                            <ThemedText className="truncate text-gray-400">
                               ({selectedUser.email})
                             </ThemedText>
                           )}
-                        </ThemedText>
-                        <ThemedText className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-500">
-                          <ChevronDown className="h-5 w-5" />
-                        </ThemedText>
-                      </Listbox.Button>
-                    </ThemedText>
+                        </View>
+                        <View className="absolute inset-y-0 right-0 flex flex-row items-center pr-2">
+                          <ChevronDown color="#6b7280" width={20} height={20} />
+                        </View>
+                      </View>
+                    </Listbox.Button>
 
-                    <Transition
-                      show={open}
-                      enter="transition-opacity ease-in duration-300"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="transition-opacity ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                      className="mt-1 w-full rounded-md border border-gray-700 bg-gray-800 shadow-lg"
-                    >
-                      <Listbox.Options
-                        static
-                        className="shadow-xs max-h-60 overflow-auto rounded-md py-1 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5"
-                      >
-                        {filteredUserData?.map((user) => (
-                          <Listbox.Option key={user.id} value={user}>
-                            {({ selected, active }) => (
-                              <View
-                                className={`${
-                                  active
-                                    ? 'bg-indigo-600 text-white'
-                                    : 'text-gray-300'
-                                } relative cursor-default select-none py-2 pl-8 pr-4`}
-                              >
-                                <ThemedText
-                                  className={`${
-                                    selected ? 'font-semibold' : 'font-normal'
-                                  } flex items-center`}
-                                >
+                    <Listbox.Options>
+                      {filteredUserData?.map((user) => (
+                        <Listbox.Option key={user.id} value={user}>
+                          {({ selected, active }) => (
+                            <View
+                              className={`${
+                                active
+                                  ? 'bg-indigo-600 text-white'
+                                  : 'text-gray-300'
+                              } relative cursor-default select-none py-2 pl-8 pr-4`}
+                              pointerEvents="none"
+                            >
+                              <View className="group flex flex-row items-center gap-1.5 truncate pl-1">
+                                <View className="avatar-sm overflow-hidden rounded-full">
                                   <CachedImage
                                     type="avatar"
                                     src={user.avatar}
                                     alt=""
-                                    className="flex-shrink-0 rounded-full object-cover"
-                                    style={{ width: 24, height: 24 }}
+                                    style={{ width: 20, height: 20 }}
                                   />
-                                  <ThemedText className="ml-3 block flex-shrink-0">
-                                    {user.displayName}
-                                  </ThemedText>
-                                  {user.displayName.toLowerCase() !==
-                                    user.email && (
-                                    <ThemedText className="ml-1 truncate text-gray-400">
-                                      ({user.email})
-                                    </ThemedText>
-                                  )}
+                                </View>
+                                <ThemedText className="truncate font-bold text-gray-300 group-hover:underline">
+                                  {user.displayName}
                                 </ThemedText>
-                                {selected && (
-                                  <ThemedText
-                                    className={`${
-                                      active ? 'text-white' : 'text-indigo-600'
-                                    } absolute inset-y-0 left-0 flex items-center pl-1.5`}
-                                  >
-                                    <Check className="h-5 w-5" />
+                                {user.displayName.toLowerCase() !==
+                                  user.email && (
+                                  <ThemedText className="ml-1 truncate text-gray-400">
+                                    ({user.email})
                                   </ThemedText>
                                 )}
                               </View>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
+                              {selected && (
+                                <View className="absolute inset-y-0 left-0 flex flex-row items-center pl-1.5">
+                                  <Check
+                                    width={20}
+                                    height={20}
+                                    color={active ? '#ffffff' : '#4f46e5'}
+                                  />
+                                </View>
+                              )}
+                            </View>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
                   </View>
                 </>
               )}
             </Listbox>
-          )} */}
+          )}
         {isAnime && (
           <ThemedText className="mt-4 italic">
             {intl.formatMessage(messages.animenote)}

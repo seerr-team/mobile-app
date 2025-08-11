@@ -364,9 +364,7 @@ const TvRequestModal = ({
   return data &&
     !error &&
     !data.externalIds.tvdbId &&
-    searchModal.show ? //   modalSubTitle={data.name} //   )} //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle //   modalTitle={intl.formatMessage( //   onCancel={onCancel} //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
-  //   tmdbId={tmdbId}
-  //   backdrop={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data?.backdropPath}`}
+    searchModal.show ? //   backdrop={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data?.backdropPath}`} //   tmdbId={tmdbId} //   modalSubTitle={data.name} //   )} //     is4k ? messages.requestseries4ktitle : messages.requestseriestitle //   modalTitle={intl.formatMessage( //   onCancel={onCancel} //   closeModal={() => setSearchModal({ show: false })} //   setTvdbId={setTvdbId} //   tvdbId={tvdbId} // <SearchByNameModal
   // />
   null : (
     <Modal
