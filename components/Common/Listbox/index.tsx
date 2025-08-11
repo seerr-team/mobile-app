@@ -44,11 +44,13 @@ type ButtonProps = {
   children: ReactNode;
   className?: string;
   style?: any;
+  disabled?: boolean;
 };
 Listbox.Button = function ListboxButton({
   children,
   className,
   style,
+  disabled,
 }: ButtonProps) {
   const { setOpen } = useListboxContext<any>();
 
@@ -57,6 +59,7 @@ Listbox.Button = function ListboxButton({
       onPress={() => setOpen(true)}
       className={className}
       style={style}
+      disabled={disabled}
     >
       {children}
     </Pressable>
@@ -85,8 +88,13 @@ Listbox.Options = function ListboxOptions({ children }: OptionsProps) {
         />
       </View>
       <View className="absolute inset-12 z-50 flex flex-row items-center justify-center">
+        <Pressable
+          className="absolute inset-0 z-40"
+          android_disableSound
+          onPress={() => setOpen(false)}
+        />
         <ScrollView
-          className="shadow-xs overflow-auto rounded-md border border-gray-700 bg-gray-800 py-1 shadow-lg"
+          className="shadow-xs z-50 overflow-auto rounded-md border border-gray-700 bg-gray-800 py-1 shadow-lg"
           contentContainerClassName="flex flex-col justify-center items-stretch"
         >
           {children}

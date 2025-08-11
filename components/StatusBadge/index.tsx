@@ -207,7 +207,9 @@ const StatusBadge = ({
                         })}
                       </ThemedText>
                     ))}
-                  <LoadingSpinner />
+                  <View className="ml-1">
+                    <LoadingSpinner size={12} />
+                  </View>
                 </>
               )}
             </View>
@@ -274,7 +276,9 @@ const StatusBadge = ({
                         })}
                       </ThemedText>
                     ))}
-                  <LoadingSpinner />
+                  <View className="ml-1">
+                    <LoadingSpinner size={12} />
+                  </View>
                 </>
               )}
             </View>
@@ -341,7 +345,9 @@ const StatusBadge = ({
                         })}
                       </ThemedText>
                     ))}
-                  <LoadingSpinner />
+                  <View className="ml-1">
+                    <LoadingSpinner size={12} />
+                  </View>
                 </>
               )}
             </View>

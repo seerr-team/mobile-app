@@ -27,7 +27,7 @@ This project contains the source code of the Jellyseerr mobile app. This app is 
 ## Todo
 
 - [ ] i18n support
-- [ ] Tags and user override in advanced request modal
+- [x] Tags and user override in advanced request modal
 - [ ] TV shows seasons details
 - [ ] Filters in discover pages
 - [x] Add movie collections

@@ -16,11 +16,11 @@ import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { formatBytes } from '@/utils/numberHelpers';
 import { Check, ChevronDown } from '@nandorojo/heroicons/24/solid';
-import { Picker } from '@react-native-picker/picker';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
+import { MultiSelect } from 'react-native-element-dropdown';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages(
@@ -307,27 +307,74 @@ const AdvancedRequester = ({
                 <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                   {intl.formatMessage(messages.destinationserver)}
                 </ThemedText>
-                <Picker
-                  selectedValue={selectedServer}
-                  onValueChange={(v) => setSelectedServer(v)}
-                  className="border-gray-700 bg-gray-800"
+                <Listbox
+                  value={selectedServer}
+                  onChange={(value) => setSelectedServer(value)}
                 >
-                  {data
-                    .filter((server) => server.is4k === is4k)
-                    .map((server) => (
-                      <Picker.Item
-                        key={`server-list-${server.id}`}
-                        label={
-                          server.isDefault
-                            ? intl.formatMessage(messages.default, {
-                                name: server.name,
-                              })
-                            : server.name
-                        }
-                        value={server.id}
-                      />
-                    ))}
-                </Picker>
+                  {({ open }) => (
+                    <>
+                      <View className="relative w-full">
+                        <Listbox.Button className="focus:shadow-outline-blue relative h-12 w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-1 pl-3 pr-2 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5">
+                          <View className="flex h-full flex-row items-center justify-between">
+                            <ThemedText className="block truncate">
+                              {data
+                                .filter((server) => server.is4k === is4k)
+                                .find((server) => server.id === selectedServer)
+                                ?.name || ''}
+                            </ThemedText>
+                            <ChevronDown
+                              color="#6b7280"
+                              width={20}
+                              height={20}
+                            />
+                          </View>
+                        </Listbox.Button>
+
+                        <Listbox.Options>
+                          {data
+                            .filter((server) => server.is4k === is4k)
+                            .map((server) => (
+                              <Listbox.Option
+                                key={`server-list-${server.id}`}
+                                value={server.id}
+                              >
+                                {({ selected, active }) => (
+                                  <View
+                                    className={`${
+                                      active
+                                        ? 'bg-indigo-600 text-white'
+                                        : 'text-gray-300'
+                                    } relative cursor-default select-none py-2 pl-8 pr-4`}
+                                  >
+                                    <ThemedText
+                                      className={`${
+                                        selected ? 'font-medium' : 'font-normal'
+                                      } block truncate`}
+                                    >
+                                      {server.isDefault
+                                        ? intl.formatMessage(messages.default, {
+                                            name: server.name,
+                                          })
+                                        : server.name}
+                                    </ThemedText>
+                                    {selected && (
+                                      <View className="absolute inset-y-0 left-0 flex flex-row items-center pl-1.5">
+                                        <Check
+                                          width={20}
+                                          height={20}
+                                          color={active ? '#ffffff' : '#4f46e5'}
+                                        />
+                                      </View>
+                                    )}
+                                  </View>
+                                )}
+                              </Listbox.Option>
+                            ))}
+                        </Listbox.Options>
+                      </View>
+                    </>
+                  )}
+                </Listbox>
               </View>
             )}
             {(isValidating ||
@@ -337,45 +384,90 @@ const AdvancedRequester = ({
                 <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                   {intl.formatMessage(messages.qualityprofile)}
                 </ThemedText>
-                <View className="rounded border border-gray-700 bg-gray-800">
-                  <Picker
-                    selectedValue={selectedProfile}
-                    onValueChange={(v) => setSelectedProfile(v)}
-                    enabled={!(isValidating || !serverData)}
-                    style={{ color: 'white' }}
-                    dropdownIconColor="white"
-                  >
-                    {(isValidating || !serverData) && (
-                      <Picker.Item
-                        label={intl.formatMessage(globalMessages.loading)}
-                        value=""
-                      />
-                    )}
-                    {!isValidating &&
-                      serverData &&
-                      serverData.profiles.map((profile) => (
-                        <Picker.Item
-                          key={`profile-list${profile.id}`}
-                          label={
-                            isAnime &&
-                            serverData.server.activeAnimeProfileId ===
-                              profile.id
-                              ? intl.formatMessage(messages.default, {
-                                  name: profile.name,
-                                })
-                              : !isAnime &&
-                                  serverData.server.activeProfileId ===
-                                    profile.id
-                                ? intl.formatMessage(messages.default, {
-                                    name: profile.name,
-                                  })
-                                : profile.name
-                          }
-                          value={profile.id}
-                        />
-                      ))}
-                  </Picker>
-                </View>
+                <Listbox
+                  value={selectedProfile}
+                  onChange={(value) => setSelectedProfile(value)}
+                  // disabled={isValidating || !serverData}
+                >
+                  {({ open }) => (
+                    <>
+                      <View className="relative w-full">
+                        <Listbox.Button
+                          className="focus:shadow-outline-blue relative h-12 w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-1 pl-3 pr-2 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
+                          disabled={isValidating || !serverData}
+                        >
+                          <View className="flex h-full flex-row items-center justify-between">
+                            <ThemedText className="block truncate">
+                              {isValidating || !serverData
+                                ? intl.formatMessage(globalMessages.loading)
+                                : serverData.profiles.find(
+                                    (profile) => profile.id === selectedProfile
+                                  )?.name || ''}
+                            </ThemedText>
+                            <ChevronDown
+                              color="#6b7280"
+                              width={20}
+                              height={20}
+                            />
+                          </View>
+                        </Listbox.Button>
+
+                        <Listbox.Options>
+                          {!isValidating &&
+                            serverData &&
+                            serverData.profiles.map((profile) => (
+                              <Listbox.Option
+                                key={`profile-list-${profile.id}`}
+                                value={profile.id}
+                              >
+                                {({ selected, active }) => (
+                                  <View
+                                    className={`${
+                                      active
+                                        ? 'bg-indigo-600 text-white'
+                                        : 'text-gray-300'
+                                    } relative cursor-default select-none py-2 pl-8 pr-4`}
+                                  >
+                                    <ThemedText
+                                      className={`${
+                                        selected ? 'font-medium' : 'font-normal'
+                                      } block truncate`}
+                                    >
+                                      {isAnime &&
+                                      serverData.server.activeAnimeProfileId ===
+                                        profile.id
+                                        ? intl.formatMessage(messages.default, {
+                                            name: profile.name,
+                                          })
+                                        : !isAnime &&
+                                            serverData.server
+                                              .activeProfileId === profile.id
+                                          ? intl.formatMessage(
+                                              messages.default,
+                                              {
+                                                name: profile.name,
+                                              }
+                                            )
+                                          : profile.name}
+                                    </ThemedText>
+                                    {selected && (
+                                      <View className="absolute inset-y-0 left-0 flex flex-row items-center pl-1.5">
+                                        <Check
+                                          width={20}
+                                          height={20}
+                                          color={active ? '#ffffff' : '#4f46e5'}
+                                        />
+                                      </View>
+                                    )}
+                                  </View>
+                                )}
+                              </Listbox.Option>
+                            ))}
+                        </Listbox.Options>
+                      </View>
+                    </>
+                  )}
+                </Listbox>
               </View>
             )}
             {(isValidating ||
@@ -385,54 +477,162 @@ const AdvancedRequester = ({
                 <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                   {intl.formatMessage(messages.rootfolder)}
                 </ThemedText>
-                <View className="rounded border border-gray-700 bg-gray-800">
-                  <Picker
-                    selectedValue={selectedFolder}
-                    onValueChange={(v) => setSelectedFolder(v)}
-                    className="border-gray-700 bg-gray-800"
-                    style={{ color: 'white' }}
-                    enabled={!(isValidating || !serverData)}
-                  >
-                    {(isValidating || !serverData) && (
-                      <Picker.Item
-                        label={intl.formatMessage(globalMessages.loading)}
-                        value=""
-                      />
-                    )}
-                    {!isValidating &&
-                      serverData &&
-                      serverData.rootFolders.map((folder) => (
-                        <Picker.Item
-                          key={`folder-list${folder.id}`}
-                          label={
-                            isAnime &&
-                            serverData.server.activeAnimeDirectory ===
-                              folder.path
-                              ? intl.formatMessage(messages.default, {
-                                  name: intl.formatMessage(messages.folder, {
-                                    path: folder.path,
-                                    space: formatBytes(folder.freeSpace ?? 0),
-                                  }),
-                                })
-                              : !isAnime &&
-                                  serverData.server.activeDirectory ===
-                                    folder.path
-                                ? intl.formatMessage(messages.default, {
-                                    name: intl.formatMessage(messages.folder, {
-                                      path: folder.path,
-                                      space: formatBytes(folder.freeSpace ?? 0),
-                                    }),
-                                  })
-                                : intl.formatMessage(messages.folder, {
-                                    path: folder.path,
-                                    space: formatBytes(folder.freeSpace ?? 0),
-                                  })
-                          }
-                          value={folder.path}
-                        />
-                      ))}
-                  </Picker>
-                </View>
+                <Listbox
+                  value={selectedFolder}
+                  onChange={(value) => setSelectedFolder(value)}
+                  // disabled={isValidating || !serverData}
+                >
+                  {({ open }) => (
+                    <>
+                      <View className="relative w-full">
+                        <Listbox.Button
+                          className="focus:shadow-outline-blue relative h-12 w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-1 pl-3 pr-2 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
+                          disabled={isValidating || !serverData}
+                        >
+                          <View className="flex h-full flex-row items-center justify-between">
+                            <ThemedText className="block truncate">
+                              {isValidating || !serverData
+                                ? intl.formatMessage(globalMessages.loading)
+                                : selectedFolder
+                                  ? serverData.rootFolders.find(
+                                      (folder) => folder.path === selectedFolder
+                                    )
+                                    ? isAnime &&
+                                      serverData.server.activeAnimeDirectory ===
+                                        selectedFolder
+                                      ? intl.formatMessage(messages.default, {
+                                          name: intl.formatMessage(
+                                            messages.folder,
+                                            {
+                                              path: selectedFolder,
+                                              space: formatBytes(
+                                                serverData.rootFolders.find(
+                                                  (folder) =>
+                                                    folder.path ===
+                                                    selectedFolder
+                                                )?.freeSpace ?? 0
+                                              ),
+                                            }
+                                          ),
+                                        })
+                                      : !isAnime &&
+                                          serverData.server.activeDirectory ===
+                                            selectedFolder
+                                        ? intl.formatMessage(messages.default, {
+                                            name: intl.formatMessage(
+                                              messages.folder,
+                                              {
+                                                path: selectedFolder,
+                                                space: formatBytes(
+                                                  serverData.rootFolders.find(
+                                                    (folder) =>
+                                                      folder.path ===
+                                                      selectedFolder
+                                                  )?.freeSpace ?? 0
+                                                ),
+                                              }
+                                            ),
+                                          })
+                                        : intl.formatMessage(messages.folder, {
+                                            path: selectedFolder,
+                                            space: formatBytes(
+                                              serverData.rootFolders.find(
+                                                (folder) =>
+                                                  folder.path === selectedFolder
+                                              )?.freeSpace ?? 0
+                                            ),
+                                          })
+                                    : selectedFolder
+                                  : ''}
+                            </ThemedText>
+                            <ChevronDown
+                              color="#6b7280"
+                              width={20}
+                              height={20}
+                            />
+                          </View>
+                        </Listbox.Button>
+
+                        <Listbox.Options>
+                          {!isValidating &&
+                            serverData &&
+                            serverData.rootFolders.map((folder) => (
+                              <Listbox.Option
+                                key={`folder-list-${folder.id}`}
+                                value={folder.path}
+                              >
+                                {({ selected, active }) => (
+                                  <View
+                                    className={`${
+                                      active
+                                        ? 'bg-indigo-600 text-white'
+                                        : 'text-gray-300'
+                                    } relative cursor-default select-none py-2 pl-8 pr-4`}
+                                  >
+                                    <ThemedText
+                                      className={`${
+                                        selected ? 'font-medium' : 'font-normal'
+                                      } block truncate`}
+                                    >
+                                      {isAnime &&
+                                      serverData.server.activeAnimeDirectory ===
+                                        folder.path
+                                        ? intl.formatMessage(messages.default, {
+                                            name: intl.formatMessage(
+                                              messages.folder,
+                                              {
+                                                path: folder.path,
+                                                space: formatBytes(
+                                                  folder.freeSpace ?? 0
+                                                ),
+                                              }
+                                            ),
+                                          })
+                                        : !isAnime &&
+                                            serverData.server
+                                              .activeDirectory === folder.path
+                                          ? intl.formatMessage(
+                                              messages.default,
+                                              {
+                                                name: intl.formatMessage(
+                                                  messages.folder,
+                                                  {
+                                                    path: folder.path,
+                                                    space: formatBytes(
+                                                      folder.freeSpace ?? 0
+                                                    ),
+                                                  }
+                                                ),
+                                              }
+                                            )
+                                          : intl.formatMessage(
+                                              messages.folder,
+                                              {
+                                                path: folder.path,
+                                                space: formatBytes(
+                                                  folder.freeSpace ?? 0
+                                                ),
+                                              }
+                                            )}
+                                    </ThemedText>
+                                    {selected && (
+                                      <View className="absolute inset-y-0 left-0 flex flex-row items-center pl-1.5">
+                                        <Check
+                                          width={20}
+                                          height={20}
+                                          color={active ? '#ffffff' : '#4f46e5'}
+                                        />
+                                      </View>
+                                    )}
+                                  </View>
+                                )}
+                              </Listbox.Option>
+                            ))}
+                        </Listbox.Options>
+                      </View>
+                    </>
+                  )}
+                </Listbox>
               </View>
             )}
             {type === 'tv' &&
@@ -443,97 +643,187 @@ const AdvancedRequester = ({
                   <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                     {intl.formatMessage(messages.languageprofile)}
                   </ThemedText>
-                  <View className="rounded border border-gray-700 bg-gray-800">
-                    <Picker
-                      selectedValue={selectedLanguage}
-                      onValueChange={(v) => setSelectedLanguage(v)}
-                      className="border-gray-700 bg-gray-800"
-                      style={{ color: 'white' }}
-                      enabled={!(isValidating || !serverData)}
-                    >
-                      {(isValidating || !serverData) && (
-                        <Picker.Item
-                          label={intl.formatMessage(globalMessages.loading)}
-                          value=""
-                        />
-                      )}
-                      {!isValidating &&
-                        serverData &&
-                        serverData.languageProfiles?.map((language) => (
-                          <Picker.Item
-                            key={`folder-list${language.id}`}
-                            label={
-                              isAnime &&
-                              serverData.server.activeAnimeLanguageProfileId ===
-                                language.id
-                                ? intl.formatMessage(messages.default, {
-                                    name: language.name,
-                                  })
-                                : !isAnime &&
-                                    serverData.server
-                                      .activeLanguageProfileId === language.id
-                                  ? intl.formatMessage(messages.default, {
-                                      name: language.name,
-                                    })
-                                  : language.name
-                            }
-                            value={language.id}
-                          />
-                        ))}
-                    </Picker>
-                  </View>
+                  <Listbox
+                    value={selectedLanguage}
+                    onChange={(value) => setSelectedLanguage(value)}
+                    // disabled={isValidating || !serverData}
+                  >
+                    {({ open }) => (
+                      <>
+                        <View className="relative w-full">
+                          <Listbox.Button
+                            className="focus:shadow-outline-blue relative h-12 w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-1 pl-3 pr-2 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5"
+                            disabled={isValidating || !serverData}
+                          >
+                            <View className="flex h-full flex-row items-center justify-between">
+                              <ThemedText className="block truncate">
+                                {isValidating || !serverData
+                                  ? intl.formatMessage(globalMessages.loading)
+                                  : serverData.languageProfiles?.find(
+                                      (language) =>
+                                        language.id === selectedLanguage
+                                    )?.name || ''}
+                              </ThemedText>
+                              <ChevronDown
+                                color="#6b7280"
+                                width={20}
+                                height={20}
+                              />
+                            </View>
+                          </Listbox.Button>
+
+                          <Listbox.Options>
+                            {!isValidating &&
+                              serverData &&
+                              serverData.languageProfiles?.map((language) => (
+                                <Listbox.Option
+                                  key={`language-list-${language.id}`}
+                                  value={language.id}
+                                >
+                                  {({ selected, active }) => (
+                                    <View
+                                      className={`${
+                                        active
+                                          ? 'bg-indigo-600 text-white'
+                                          : 'text-gray-300'
+                                      } relative cursor-default select-none py-2 pl-8 pr-4`}
+                                    >
+                                      <ThemedText
+                                        className={`${
+                                          selected
+                                            ? 'font-medium'
+                                            : 'font-normal'
+                                        } block truncate`}
+                                      >
+                                        {isAnime &&
+                                        serverData.server
+                                          .activeAnimeLanguageProfileId ===
+                                          language.id
+                                          ? intl.formatMessage(
+                                              messages.default,
+                                              {
+                                                name: language.name,
+                                              }
+                                            )
+                                          : !isAnime &&
+                                              serverData.server
+                                                .activeLanguageProfileId ===
+                                                language.id
+                                            ? intl.formatMessage(
+                                                messages.default,
+                                                {
+                                                  name: language.name,
+                                                }
+                                              )
+                                            : language.name}
+                                      </ThemedText>
+                                      {selected && (
+                                        <View className="absolute inset-y-0 left-0 flex flex-row items-center pl-1.5">
+                                          <Check
+                                            width={20}
+                                            height={20}
+                                            color={
+                                              active ? '#ffffff' : '#4f46e5'
+                                            }
+                                          />
+                                        </View>
+                                      )}
+                                    </View>
+                                  )}
+                                </Listbox.Option>
+                              ))}
+                          </Listbox.Options>
+                        </View>
+                      </>
+                    )}
+                  </Listbox>
                 </View>
               )}
           </View>
         )}
-        {/* {selectedServer !== null &&
+        {selectedServer !== null &&
           (isValidating || !serverData || !!serverData?.tags?.length) && (
             <View className="mb-2">
               <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                 {intl.formatMessage(messages.tags)}
               </ThemedText>
-              <Select<OptionType, true>
-                name="tags"
-                options={(serverData?.tags ?? []).map((tag) => ({
+              <MultiSelect
+                data={(serverData?.tags ?? []).map((tag) => ({
                   label: tag.label,
-                  value: tag.id,
+                  value: tag.id.toString(),
                 }))}
-                isMulti
-                isDisabled={isValidating || !serverData}
+                disable={isValidating || !serverData}
                 placeholder={
                   isValidating || !serverData
                     ? intl.formatMessage(globalMessages.loading)
                     : intl.formatMessage(messages.selecttags)
                 }
-                className="react-select-container react-select-container-dark"
-                classNamePrefix="react-select"
-                value={
-                  selectedTags
-                    .map((tagId) => {
-                      const foundTag = serverData?.tags.find(
-                        (tag) => tag.id === tagId
-                      );
+                value={selectedTags
+                  .map((tagId) => {
+                    const foundTag = serverData?.tags.find(
+                      (tag) => tag.id === tagId
+                    );
 
-                      if (!foundTag) {
-                        return undefined;
-                      }
+                    if (!foundTag) {
+                      return undefined;
+                    }
 
-                      return {
-                        value: foundTag.id,
-                        label: foundTag.label,
-                      };
-                    })
-                    .filter((option) => option !== undefined) as OptionType[]
-                }
-                onChange={(value) => {
-                  setSelectedTags(value.map((option) => option.value));
+                    return foundTag.id.toString();
+                  })
+                  .filter((option) => option !== undefined)}
+                onChange={(values) => {
+                  setSelectedTags(values.map((v) => Number(v)));
                 }}
-                noOptionsMessage={() =>
-                  intl.formatMessage(messages.notagoptions)
-                }
+                searchPlaceholder={intl.formatMessage(messages.notagoptions)}
+                labelField="label"
+                valueField="value"
+                renderRightIcon={() => (
+                  <ChevronDown color="#6b7280" width={20} height={20} />
+                )}
+                style={{
+                  backgroundColor: '#1f2937',
+                  borderWidth: 1,
+                  borderRadius: 6,
+                  borderColor: '#374151',
+                  paddingLeft: 12,
+                  paddingRight: 8,
+                  paddingVertical: 4,
+                  height: 40,
+                }}
+                placeholderStyle={{
+                  color: '#9ca3af',
+                  fontSize: 14,
+                }}
+                containerStyle={{
+                  marginTop: 24,
+                  backgroundColor: '#1f2937',
+                  borderWidth: 1,
+                  borderRadius: 6,
+                  borderColor: '#374151',
+                }}
+                activeColor=""
+                itemContainerStyle={{}}
+                itemTextStyle={{}}
+                selectedStyle={{
+                  borderRadius: 6,
+                  padding: 2,
+                }}
+                selectedTextStyle={{
+                  color: '#ffffff',
+                }}
+                renderItem={(item) => (
+                  <View className="flex flex-row items-center gap-2 p-2">
+                    <View className="w-6">
+                      {selectedTags.includes(Number(item.value)) && (
+                        <Check color="#4ade80" width={20} height={20} />
+                      )}
+                    </View>
+                    <ThemedText>{item.label}</ThemedText>
+                  </View>
+                )}
               />
             </View>
-          )} */}
+          )}
         {currentHasPermission([
           Permission.MANAGE_REQUESTS,
           Permission.MANAGE_USERS,
@@ -550,7 +840,7 @@ const AdvancedRequester = ({
                     {intl.formatMessage(messages.requestas)}
                   </ThemedText>
                   <View className="relative w-full">
-                    <Listbox.Button className="focus:shadow-outline-blue relative w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-0.5 pl-2 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5">
+                    <Listbox.Button className="focus:shadow-outline-blue relative h-12 w-full cursor-default rounded-md border border-gray-700 bg-gray-800 py-1 pl-2 text-left text-white transition duration-150 ease-in-out focus:border-blue-300 focus:outline-none sm:text-sm sm:leading-5">
                       <View className="relative">
                         <View
                           className="group mb-3 flex translate-y-1.5 flex-row items-center gap-1.5 truncate pl-1 pr-10"
