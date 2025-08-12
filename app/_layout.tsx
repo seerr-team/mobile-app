@@ -1,5 +1,6 @@
 import useSettings from '@/hooks/useSettings';
-import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
+import { useUser } from '@/hooks/useUser';
+import enMessages from '@/jellyseerr/src/i18n/locale/en.json';
 import store, { type RootState } from '@/store';
 import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
@@ -28,7 +29,85 @@ import RelativeTimeFormat from 'relative-time-format';
 import en from 'relative-time-format/locale/en';
 import { SWRConfig } from 'swr';
 
+import type { AvailableLocale } from '@/jellyseerr/src/context/LanguageContext';
 import '@/jellyseerr/src/styles/globals.css';
+
+type MessagesType = Record<string, string>;
+
+const loadLocaleData = async (locale: string): Promise<MessagesType> => {
+  switch (locale) {
+    case 'ar':
+      return (await import('../jellyseerr/src/i18n/locale/ar.json')).default;
+    case 'bg':
+      return (await import('../jellyseerr/src/i18n/locale/bg.json')).default;
+    case 'ca':
+      return (await import('../jellyseerr/src/i18n/locale/ca.json')).default;
+    case 'cs':
+      return (await import('../jellyseerr/src/i18n/locale/cs.json')).default;
+    case 'da':
+      return (await import('../jellyseerr/src/i18n/locale/da.json')).default;
+    case 'de':
+      return (await import('../jellyseerr/src/i18n/locale/de.json')).default;
+    case 'el':
+      return (await import('../jellyseerr/src/i18n/locale/el.json')).default;
+    case 'es':
+      return (await import('../jellyseerr/src/i18n/locale/es.json')).default;
+    case 'es-MX':
+      return (await import('../jellyseerr/src/i18n/locale/es_MX.json')).default;
+    case 'fi':
+      return (await import('../jellyseerr/src/i18n/locale/fi.json')).default;
+    case 'fr':
+      return (await import('../jellyseerr/src/i18n/locale/fr.json')).default;
+    case 'he':
+      return (await import('../jellyseerr/src/i18n/locale/he.json')).default;
+    case 'hi':
+      return (await import('../jellyseerr/src/i18n/locale/hi.json')).default;
+    case 'hr':
+      return (await import('../jellyseerr/src/i18n/locale/hr.json')).default;
+    case 'hu':
+      return (await import('../jellyseerr/src/i18n/locale/hu.json')).default;
+    case 'it':
+      return (await import('../jellyseerr/src/i18n/locale/it.json')).default;
+    case 'ja':
+      return (await import('../jellyseerr/src/i18n/locale/ja.json')).default;
+    case 'ko':
+      return (await import('../jellyseerr/src/i18n/locale/ko.json')).default;
+    case 'lt':
+      return (await import('../jellyseerr/src/i18n/locale/lt.json')).default;
+    case 'nb-NO':
+      return (await import('../jellyseerr/src/i18n/locale/nb_NO.json')).default;
+    case 'nl':
+      return (await import('../jellyseerr/src/i18n/locale/nl.json')).default;
+    case 'pl':
+      return (await import('../jellyseerr/src/i18n/locale/pl.json')).default;
+    case 'pt-BR':
+      return (await import('../jellyseerr/src/i18n/locale/pt_BR.json')).default;
+    case 'pt-PT':
+      return (await import('../jellyseerr/src/i18n/locale/pt_PT.json')).default;
+    case 'ro':
+      return (await import('../jellyseerr/src/i18n/locale/ro.json')).default;
+    case 'ru':
+      return (await import('../jellyseerr/src/i18n/locale/ru.json')).default;
+    case 'sq':
+      return (await import('../jellyseerr/src/i18n/locale/sq.json')).default;
+    case 'sr':
+      return (await import('../jellyseerr/src/i18n/locale/sr.json')).default;
+    case 'sv':
+      return (await import('../jellyseerr/src/i18n/locale/sv.json')).default;
+    case 'tr':
+      return (await import('../jellyseerr/src/i18n/locale/tr.json')).default;
+    case 'uk':
+      return (await import('../jellyseerr/src/i18n/locale/uk.json')).default;
+    case 'zh-CN':
+      return (await import('../jellyseerr/src/i18n/locale/zh_Hans.json'))
+        .default;
+    case 'zh-TW':
+      return (await import('../jellyseerr/src/i18n/locale/zh_Hant.json'))
+        .default;
+    default:
+      return (await import('../jellyseerr/src/i18n/locale/en.json')).default;
+  }
+};
 
 RelativeTimeFormat.addLocale(en);
 
@@ -158,17 +237,42 @@ function RootLayout() {
   );
 }
 
+function RootLayoutWithIntl() {
+  const { user } = useUser();
+  const settings = useSettings();
+
+  const [loadedMessages, setMessages] = useState<MessagesType>(enMessages);
+  const [currentLocale, setLocale] = useState<AvailableLocale>('en');
+
+  useEffect(() => {
+    if (setLocale) {
+      setLocale(
+        (user?.settings?.locale
+          ? user.settings.locale
+          : settings.currentSettings?.locale) as AvailableLocale
+      );
+    }
+  }, [setLocale, settings.currentSettings?.locale, user]);
+
+  useEffect(() => {
+    loadLocaleData(currentLocale).then(setMessages);
+  }, [currentLocale]);
+
+  return (
+    <IntlProvider
+      locale={currentLocale}
+      defaultLocale="en"
+      messages={loadedMessages}
+    >
+      <RootLayout />
+    </IntlProvider>
+  );
+}
+
 function RootLayoutWithProvider() {
-  const currentLocale = 'en';
   return (
     <Provider store={store}>
-      <IntlProvider
-        locale={currentLocale}
-        defaultLocale="en"
-        messages={enLocale}
-      >
-        <RootLayout />
-      </IntlProvider>
+      <RootLayoutWithIntl />
     </Provider>
   );
 }
