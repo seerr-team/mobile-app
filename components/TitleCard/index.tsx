@@ -1,6 +1,6 @@
 import CachedImage from '@/components/Common/CachedImage';
+import StatusBadgeMini from '@/components/Common/StatusBadgeMini';
 import ThemedText from '@/components/Common/ThemedText';
-import StatusBadgeMini from '@/components/StatusBadgeMini';
 import ErrorCard from '@/components/TitleCard/ErrorCard';
 import Placeholder from '@/components/TitleCard/Placeholder';
 import { MediaStatus } from '@/jellyseerr/server/constants/media';

@@ -28,7 +28,7 @@ This project contains the source code of the Jellyseerr mobile app. This app is 
 
 - [x] i18n support
 - [x] More settings in advanced request modal
-- [ ] TV shows seasons details
+- [x] TV shows seasons details
 - [ ] Filters in discover pages
 - [x] Add movie collections
 - [x] Support for Plex

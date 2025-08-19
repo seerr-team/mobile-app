@@ -1,15 +1,15 @@
-import AirDateBadge from '@app/components/AirDateBadge';
-import CachedImage from '@app/components/Common/CachedImage';
-import LoadingSpinner from '@app/components/Common/LoadingSpinner';
-import defineMessages from '@app/utils/defineMessages';
-import type { SeasonWithEpisodes } from '@server/models/Tv';
+import AirDateBadge from '@/components/AirDateBadge';
+import CachedImage from '@/components/Common/CachedImage';
+import LoadingSpinner from '@/components/Common/LoadingSpinner';
+import ThemedText from '@/components/Common/ThemedText';
+import useServerUrl from '@/hooks/useServerUrl';
+import type { SeasonWithEpisodes } from '@/jellyseerr/server/models/Tv';
+import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = defineMessages('components.TvDetails.Season', {
-  somethingwentwrong: 'Something went wrong while retrieving season data.',
-  noepisodes: 'Episode list unavailable.',
-});
+const messages = getJellyseerrMessages('components.TvDetails.Season');
 
 type SeasonProps = {
   seasonNumber: number;
@@ -18,59 +18,67 @@ type SeasonProps = {
 
 const Season = ({ seasonNumber, tvId }: SeasonProps) => {
   const intl = useIntl();
+  const serverUrl = useServerUrl();
   const { data, error } = useSWR<SeasonWithEpisodes>(
-    `/api/v1/tv/${tvId}/season/${seasonNumber}`
+    `${serverUrl}/api/v1/tv/${tvId}/season/${seasonNumber}`
   );
 
   if (!data && !error) {
-    return <LoadingSpinner />;
+    return (
+      <View className="mt-2">
+        <LoadingSpinner size={24} />
+      </View>
+    );
   }
 
   if (!data) {
-    return <div>{intl.formatMessage(messages.somethingwentwrong)}</div>;
+    return (
+      <ThemedText>{intl.formatMessage(messages.somethingwentwrong)}</ThemedText>
+    );
   }
 
   return (
-    <div className="flex flex-col justify-center divide-y divide-gray-700">
+    <View className="flex flex-col justify-center">
       {data.episodes.length === 0 ? (
-        <p>{intl.formatMessage(messages.noepisodes)}</p>
+        <ThemedText>{intl.formatMessage(messages.noepisodes)}</ThemedText>
       ) : (
         data.episodes
           .slice()
           .reverse()
-          .map((episode) => {
+          .map((episode, idx) => {
             return (
-              <div
-                className="flex flex-col space-y-4 py-4 xl:flex-row xl:space-x-4 xl:space-y-4"
+              <View
+                className={`flex flex-col space-y-4 border-gray-700 py-4 xl:flex-row xl:space-x-4 xl:space-y-4 ${idx !== 0 ? 'border-t' : ''}`}
                 key={`season-${seasonNumber}-episode-${episode.episodeNumber}`}
               >
-                <div className="flex-1">
-                  <div className="flex flex-col space-y-2 xl:flex-row xl:items-center xl:space-x-2 xl:space-y-0">
-                    <h3 className="text-lg">
+                <View className={`flex-1 ${episode.stillPath ? 'mb-2' : ''}`}>
+                  <View className="flex flex-col space-y-2 xl:flex-row xl:items-center xl:space-x-2 xl:space-y-0">
+                    <ThemedText className="text-lg">
                       {episode.episodeNumber} - {episode.name}
-                    </h3>
+                    </ThemedText>
                     {episode.airDate && (
                       <AirDateBadge airDate={episode.airDate} />
                     )}
-                  </div>
-                  {episode.overview && <p>{episode.overview}</p>}
-                </div>
+                  </View>
+                  {episode.overview && (
+                    <ThemedText>{episode.overview}</ThemedText>
+                  )}
+                </View>
                 {episode.stillPath && (
-                  <div className="relative aspect-video xl:h-32">
+                  <View className="relative aspect-video overflow-hidden rounded-lg xl:h-32">
                     <CachedImage
                       type="tmdb"
-                      className="rounded-lg object-contain"
                       src={`https://image.tmdb.org/t/p/original/${episode.stillPath}`}
+                      style={{ width: '100%', height: '100%' }}
                       alt=""
-                      fill
                     />
-                  </div>
+                  </View>
                 )}
-              </div>
+              </View>
             );
           })
       )}
-    </div>
+    </View>
   );
 };
 
