@@ -40,7 +40,7 @@ const SearchInput = () => {
       </View>
       <TextInput
         ref={inputRef}
-        className="block h-12 flex-1 py-2 text-lg text-white placeholder:text-lg placeholder:text-gray-300 focus-within:text-gray-200 focus:placeholder:text-gray-400"
+        className="block flex-1 py-2 text-lg text-white placeholder:text-lg placeholder:text-gray-300 focus-within:text-gray-200 focus:placeholder:text-gray-400"
         style={{ borderRadius: 24 }}
         placeholder={intl.formatMessage(messages.searchPlaceholder)}
         autoComplete="off"

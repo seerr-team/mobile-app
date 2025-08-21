@@ -9,7 +9,6 @@ import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
 
 const messages = getJellyseerrMessages('components.Discover.DiscoverStudio');
 
@@ -42,32 +41,30 @@ const DiscoverMovieStudio = () => {
 
   return (
     <>
-      <View className="mt-8">
-        <ListView
-          header={
-            <Header>
-              {firstResultData?.studio.logoPath ? (
-                <CachedImage
-                  type="tmdb"
-                  src={`https://image.tmdb.org/t/p/w780_filter(duotone,ffffff,bababa)${firstResultData.studio.logoPath}`}
-                  alt={firstResultData.studio.name}
-                  style={{ height: 128 }}
-                  contentFit="contain"
-                />
-              ) : (
-                title
-              )}
-            </Header>
-          }
-          items={titles}
-          isEmpty={isEmpty}
-          isLoading={
-            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-          }
-          isReachingEnd={isReachingEnd}
-          onScrollBottom={fetchMore}
-        />
-      </View>
+      <ListView
+        header={
+          <Header>
+            {firstResultData?.studio.logoPath ? (
+              <CachedImage
+                type="tmdb"
+                src={`https://image.tmdb.org/t/p/w780_filter(duotone,ffffff,bababa)${firstResultData.studio.logoPath}`}
+                alt={firstResultData.studio.name}
+                style={{ height: 128 }}
+                contentFit="contain"
+              />
+            ) : (
+              title
+            )}
+          </Header>
+        }
+        items={titles}
+        isEmpty={isEmpty}
+        isLoading={
+          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+        }
+        isReachingEnd={isReachingEnd}
+        onScrollBottom={fetchMore}
+      />
     </>
   );
 };

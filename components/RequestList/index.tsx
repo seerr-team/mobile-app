@@ -117,7 +117,8 @@ const RequestList = () => {
 
   return (
     <ScrollView
-      className="mt-10 px-2"
+      contentContainerClassName="pb-4"
+      className="px-2"
       refreshControl={
         <RefreshControl
           refreshing={!data && !error}

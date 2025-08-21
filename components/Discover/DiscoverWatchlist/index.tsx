@@ -6,7 +6,6 @@ import { useUser } from '@/hooks/useUser';
 import type { WatchlistItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
 
 const messages = getJellyseerrMessages('components.Discover.DiscoverWatchlist');
 
@@ -48,33 +47,31 @@ const DiscoverWatchlist = () => {
 
   return (
     <>
-      <View className="mt-8">
-        <ListView
-          header={
-            <Header
-            // subtext={
-            //   router.query.userId ? (
-            //     <Link href={`/users/${user?.id}`} className="hover:underline">
-            //       {user?.displayName}
-            //     </Link>
-            //   ) : (
-            //     ''
-            //   )
-            // }
-            >
-              {title}
-            </Header>
-          }
-          plexItems={titles}
-          isEmpty={isEmpty}
-          isLoading={
-            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-          }
-          isReachingEnd={isReachingEnd}
-          onScrollBottom={fetchMore}
-          mutateParent={mutate}
-        />
-      </View>
+      <ListView
+        header={
+          <Header
+          // subtext={
+          //   router.query.userId ? (
+          //     <Link href={`/users/${user?.id}`} className="hover:underline">
+          //       {user?.displayName}
+          //     </Link>
+          //   ) : (
+          //     ''
+          //   )
+          // }
+          >
+            {title}
+          </Header>
+        }
+        plexItems={titles}
+        isEmpty={isEmpty}
+        isLoading={
+          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+        }
+        isReachingEnd={isReachingEnd}
+        onScrollBottom={fetchMore}
+        mutateParent={mutate}
+      />
     </>
   );
 };

@@ -56,7 +56,7 @@ const ListView = ({
   }
 
   return (
-    <View className="p-2">
+    <View className="px-2">
       <FlatList
         ListHeaderComponent={
           header

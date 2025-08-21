@@ -1,183 +1,139 @@
+import BottomNavigation from '@/components/Layout/BottomNavigation';
 import UserDropdown from '@/components/Layout/UserDropdown';
 import SearchInput from '@/components/SearchInput';
-import { Clock, Film, Sparkles, Tv } from '@nandorojo/heroicons/24/outline';
-import {
-  Clock as ClockFilled,
-  Film as FilmFilled,
-  Sparkles as SparklesFilled,
-  Tv as TvFilled,
-} from '@nandorojo/heroicons/24/solid';
-import { Tabs } from 'expo-router';
+import { Stack } from 'expo-router';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const tintColor = '#6366f1';
+export default function StackLayout() {
+  const insets = useSafeAreaInsets();
+  const contentStyle = {
+    backgroundColor: '#111827',
+    paddingTop: insets.top + 67,
+    paddingBottom: 56 + insets.bottom,
+  };
 
-export default function TabLayout() {
   return (
-    <View className="h-full bg-gray-900">
-      <View className="fixed left-0 right-0 top-0 flex flex-row gap-4 px-6 py-4">
+    <View className="flex-1">
+      <View
+        className="h-18 absolute left-0 right-0 top-0 z-50 flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
+        style={{ paddingTop: insets.top + 16 }}
+      >
         <SearchInput />
         <UserDropdown />
       </View>
-      <Tabs
+      <Stack
         screenOptions={{
-          tabBarActiveTintColor: tintColor,
           headerShown: false,
-          tabBarBackground: () => <View className="border-t border-gray-600" />,
-          tabBarStyle: {
-            height: 56,
-            backgroundColor: '#1f2937',
-          },
-          sceneStyle: {
-            backgroundColor: '#111827',
-            marginTop: -56,
-          },
+          contentStyle,
+          animation: 'slide_from_right',
+          animationDuration: 100,
         }}
       >
-        <Tabs.Screen
+        <Stack.Screen
           name="index"
           options={{
-            tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <View className="pt-6">
-                {color !== tintColor && (
-                  <Sparkles color={color} width={24} height={24} />
-                )}
-                {color === tintColor && (
-                  <SparklesFilled color={color} width={24} height={24} />
-                )}
-              </View>
-            ),
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="discover_movies"
           options={{
-            tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <View className="pt-6">
-                {color !== tintColor && (
-                  <Film color={color} width={24} height={24} />
-                )}
-                {color === tintColor && (
-                  <FilmFilled color={color} width={24} height={24} />
-                )}
-              </View>
-            ),
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="discover_tv"
           options={{
-            tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <View className="pt-6">
-                {color !== tintColor && (
-                  <Tv color={color} width={24} height={24} />
-                )}
-                {color === tintColor && (
-                  <TvFilled color={color} width={24} height={24} />
-                )}
-              </View>
-            ),
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="requests"
-          initialParams={{ filter: 'all' }}
           options={{
-            tabBarLabel: () => null,
-            tabBarIcon: ({ color }) => (
-              <View className="pt-6">
-                {color !== tintColor && (
-                  <Clock color={color} width={24} height={24} />
-                )}
-                {color === tintColor && (
-                  <ClockFilled color={color} width={24} height={24} />
-                )}
-              </View>
-            ),
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="search"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="discover_trending"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="discover_movies/studio/[studioId]"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="discover_tv/network/[networkId]"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="discover_watchlist"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="movie/[movieId]/index"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="movie/[movieId]/recommendations"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="movie/[movieId]/similar"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="tv/[tvId]/index"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="tv/[tvId]/recommendations"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="tv/[tvId]/similar"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="person/[personId]/index"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-        <Tabs.Screen
+        <Stack.Screen
           name="collection/[collectionId]/index"
           options={{
-            href: null,
+            contentStyle,
           }}
         />
-      </Tabs>
+      </Stack>
+      <BottomNavigation />
     </View>
   );
 }

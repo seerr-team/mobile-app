@@ -379,7 +379,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   };
 
   return (
-    <ScrollView className="mt-16" contentContainerClassName="pb-6">
+    <ScrollView contentContainerClassName="pb-4">
       {data.backdropPath && (
         <View className="absolute inset-0 -z-10 h-full w-full">
           <CachedImage

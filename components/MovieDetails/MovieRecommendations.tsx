@@ -8,7 +8,6 @@ import type { MovieResult } from '@/jellyseerr/server/models/Search';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.MovieDetails');
@@ -38,31 +37,29 @@ const MovieRecommendations = () => {
 
   return (
     <>
-      <View className="mt-8">
-        <ListView
-          header={
-            <Header
-              subtext={
-                <Link
-                  href={`(tabs)/movie/${movieData?.id}`}
-                  className="text-lg text-gray-400 hover:underline"
-                >
-                  {movieData?.title}
-                </Link>
-              }
-            >
-              {intl.formatMessage(messages.recommendations)}
-            </Header>
-          }
-          items={titles}
-          isEmpty={isEmpty}
-          isReachingEnd={isReachingEnd}
-          isLoading={
-            isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-          }
-          onScrollBottom={fetchMore}
-        />
-      </View>
+      <ListView
+        header={
+          <Header
+            subtext={
+              <Link
+                href={`(tabs)/movie/${movieData?.id}`}
+                className="text-lg text-gray-400 hover:underline"
+              >
+                {movieData?.title}
+              </Link>
+            }
+          >
+            {intl.formatMessage(messages.recommendations)}
+          </Header>
+        }
+        items={titles}
+        isEmpty={isEmpty}
+        isReachingEnd={isReachingEnd}
+        isLoading={
+          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+        }
+        onScrollBottom={fetchMore}
+      />
     </>
   );
 };

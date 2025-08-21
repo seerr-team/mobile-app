@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header = ({ children, extraMargin = 0, subtext }: HeaderProps) => {
   return (
-    <View className="mx-4 mt-12">
+    <View className="mx-4 mb-4 mt-8">
       {typeof children === 'string' && (
         <ThemedText className=" text-4xl font-bold text-indigo-400">
           {children}

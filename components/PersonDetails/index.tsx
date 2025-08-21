@@ -205,7 +205,7 @@ const PersonDetails = () => {
   );
 
   return (
-    <ScrollView className="mt-16">
+    <ScrollView contentContainerClassName="pb-4">
       {/* {(sortedCrew || sortedCast) && (
         <View className="absolute top-0 left-0 right-0 z-0 h-96">
           <ImageFader

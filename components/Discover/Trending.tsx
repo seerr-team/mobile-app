@@ -9,7 +9,6 @@ import type {
 } from '@/jellyseerr/server/models/Search';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
 
 const messages = getJellyseerrMessages('components.Discover');
 
@@ -32,18 +31,16 @@ const Trending = () => {
   }
 
   return (
-    <View className="mt-8">
-      <ListView
-        header={<Header>{intl.formatMessage(messages.trending)}</Header>}
-        items={titles}
-        isEmpty={isEmpty}
-        isLoading={
-          isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
-        }
-        isReachingEnd={isReachingEnd}
-        onScrollBottom={fetchMore}
-      />
-    </View>
+    <ListView
+      header={<Header>{intl.formatMessage(messages.trending)}</Header>}
+      items={titles}
+      isEmpty={isEmpty}
+      isLoading={
+        isLoadingInitialData || (isLoadingMore && (titles?.length ?? 0) > 0)
+      }
+      isReachingEnd={isReachingEnd}
+      onScrollBottom={fetchMore}
+    />
   );
 };
 

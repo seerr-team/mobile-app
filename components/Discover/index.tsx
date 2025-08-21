@@ -43,8 +43,7 @@ const Discover = () => {
 
   return (
     <ScrollView
-      className=""
-      contentContainerClassName="pt-16 pb-6"
+      contentContainerClassName="pb-4"
       refreshControl={
         <RefreshControl
           refreshing={!discoverData && !discoverError}
