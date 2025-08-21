@@ -20,7 +20,7 @@ import { XCircle } from '@nandorojo/heroicons/24/solid';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Image, View } from 'react-native';
+import { Image, ScrollView, View } from 'react-native';
 // import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { setServerUrl } from '@/store/appSettingsSlice';
 import { useDispatch } from 'react-redux';
@@ -180,7 +180,8 @@ const Login = () => {
   }
 
   return (
-    <View className="relative flex flex-1 flex-col justify-center">
+    // <View className="relative flex flex-1 flex-col justify-center">
+    <View className="flex-1">
       <ImageFader
         backgroundImages={
           backdrops?.map(
@@ -188,101 +189,85 @@ const Login = () => {
           ) ?? []
         }
       />
-      {/* <View className="absolute top-4 right-4 z-50">
-        <LanguagePicker />
-      </View> */}
-      <View className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
-        <View className="relative w-full max-w-full">
+      <ScrollView contentContainerClassName="flex-grow justify-center py-4">
+        {/* <View className="absolute top-4 right-4 z-50">
+          <LanguagePicker />
+        </View> */}
+        <View className="mx-4 h-48">
           <Image
-            className="max-w-full"
-            style={{ height: 192, objectFit: 'contain' }}
+            className="h-48 max-w-full"
+            style={{ objectFit: 'contain' }}
             source={LogoStacked}
           />
         </View>
-      </View>
-      <View className="relative z-50 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        {/* <BlurView
-          className="absolute h-full w-full overflow-hidden rounded-md"
-          intensity={10}
-          tint="regular"
-          experimentalBlurMethod="dimezisBlurView"
-        /> */}
-        <View className="bg-gray-800/80">
-          {/* <Transition
-            as="div"
-            show={!!error}
-            enter="transition-opacity duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          > */}
-          {!!error && (
-            <View className="mb-4 rounded-md bg-red-600 p-4">
-              <View className="flex flex-row">
-                <View className="flex-shrink-0">
-                  <XCircle width={20} height={20} color="#fca5a5" />
-                </View>
-                <View className="ml-3">
-                  <ThemedText className="text-sm font-medium text-red-300">
-                    {error}
-                  </ThemedText>
+        <View className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <View className="bg-gray-800/80">
+            {!!error && (
+              <View className="mb-4 rounded-md bg-red-600 p-4">
+                <View className="flex flex-row">
+                  <View className="flex-shrink-0">
+                    <XCircle width={20} height={20} color="#fca5a5" />
+                  </View>
+                  <View className="ml-3">
+                    <ThemedText className="text-sm font-medium text-red-300">
+                      {error}
+                    </ThemedText>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
-          <View className="px-10 py-8">
-            <View className="button-container">
-              {isJellyfin &&
-              (mediaServerLogin || !settings.currentSettings.localLogin) ? (
-                <JellyfinLogin
-                  serverType={settings.currentSettings.mediaServerType}
-                  revalidate={revalidate}
-                />
-              ) : (
-                settings.currentSettings.localLogin && (
-                  <LocalLogin revalidate={revalidate} />
-                )
-              )}
-            </View>
-            {additionalLoginOptions.length > 0 &&
-              (loginFormVisible ? (
-                <View className="flex flex-row items-center py-5">
-                  <View className="flex-grow border-t border-gray-600"></View>
-                  <ThemedText className="mx-2 flex-shrink text-sm text-gray-400">
-                    {intl.formatMessage(messages.orsigninwith)}
+            )}
+            <View className="px-10 py-8">
+              <View className="button-container">
+                {isJellyfin &&
+                (mediaServerLogin || !settings.currentSettings.localLogin) ? (
+                  <JellyfinLogin
+                    serverType={settings.currentSettings.mediaServerType}
+                    revalidate={revalidate}
+                  />
+                ) : (
+                  settings.currentSettings.localLogin && (
+                    <LocalLogin revalidate={revalidate} />
+                  )
+                )}
+              </View>
+              {additionalLoginOptions.length > 0 &&
+                (loginFormVisible ? (
+                  <View className="flex flex-row items-center py-5">
+                    <View className="flex-grow border-t border-gray-600"></View>
+                    <ThemedText className="mx-2 flex-shrink text-sm text-gray-400">
+                      {intl.formatMessage(messages.orsigninwith)}
+                    </ThemedText>
+                    <View className="flex-grow border-t border-gray-600"></View>
+                  </View>
+                ) : (
+                  <ThemedText className="mb-6 text-center text-lg font-bold text-neutral-200">
+                    {intl.formatMessage(messages.signinheader)}
                   </ThemedText>
-                  <View className="flex-grow border-t border-gray-600"></View>
-                </View>
-              ) : (
-                <ThemedText className="mb-6 text-center text-lg font-bold text-neutral-200">
-                  {intl.formatMessage(messages.signinheader)}
-                </ThemedText>
-              ))}
+                ))}
 
-            <View
-              className={`flew-row flex w-full flex-wrap gap-2 ${
-                !loginFormVisible ? 'flex-col' : ''
-              }`}
-            >
-              {additionalLoginOptions}
+              <View
+                className={`flew-row flex w-full flex-wrap gap-2 ${
+                  !loginFormVisible ? 'flex-col' : ''
+                }`}
+              >
+                {additionalLoginOptions}
+              </View>
             </View>
           </View>
         </View>
-      </View>
-      <View className="mt-4 flex flex-row justify-center">
-        <Button
-          buttonType="ghost"
-          onClick={() => {
-            dispatch(setServerUrl(''));
-            router.push('/');
-          }}
-          className="mt-4"
-        >
-          Use another server
-        </Button>
-      </View>
+        <View className="mt-4 flex flex-row justify-center">
+          <Button
+            buttonType="ghost"
+            onClick={() => {
+              dispatch(setServerUrl(''));
+              router.push('/');
+            }}
+            className="mt-4"
+          >
+            Use another server
+          </Button>
+        </View>
+      </ScrollView>
     </View>
   );
 };

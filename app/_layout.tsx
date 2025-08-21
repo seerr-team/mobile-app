@@ -19,7 +19,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import 'intl-pluralrules';
 import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
-import { KeyboardAvoidingView, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { configureReanimatedLogger } from 'react-native-reanimated';
@@ -247,7 +247,8 @@ function RootLayout() {
             behavior="padding"
             className="flex-1 bg-gray-900"
           >
-            <ScrollView contentContainerClassName="flex-grow justify-center item-center">
+            {/* <ScrollView contentContainerClassName="flex-grow justify-center item-center"> */}
+            <View className="flex-1">
               <Slot />
               <Toasts
                 overrideDarkMode
@@ -263,7 +264,7 @@ function RootLayout() {
                   },
                 }}
               />
-            </ScrollView>
+            </View>
           </KeyboardAvoidingView>
         </SWRConfig>
       </SafeAreaProvider>

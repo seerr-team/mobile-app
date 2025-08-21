@@ -17,7 +17,7 @@ import Checkbox from 'expo-checkbox';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function Setup() {
@@ -82,7 +82,7 @@ export default function Setup() {
   }
 
   return (
-    <View className="relative flex flex-1 flex-col justify-center">
+    <ScrollView contentContainerClassName="flex-grow justify-center">
       <View className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
         <View className="relative w-full max-w-full">
           <Image
@@ -168,6 +168,6 @@ export default function Setup() {
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }

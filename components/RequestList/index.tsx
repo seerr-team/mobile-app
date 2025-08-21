@@ -109,7 +109,11 @@ const RequestList = () => {
   // }, [currentFilter, currentSort, currentPageSize]);
 
   if (!data && !error) {
-    return <LoadingSpinner />;
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <LoadingSpinner />
+      </View>
+    );
   }
 
   // const hasNextPage = data.pageInfo.pages > pageIndex + 1;

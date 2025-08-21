@@ -58,6 +58,7 @@ export default function StackLayout() {
           name="search"
           options={{
             contentStyle,
+            animation: 'none',
           }}
         />
         <Stack.Screen

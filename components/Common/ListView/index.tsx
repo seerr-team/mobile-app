@@ -47,7 +47,7 @@ const ListView = ({
 
   if (isEmpty && !isLoading) {
     return (
-      <View className="mt-64 w-full">
+      <View className="flex w-full flex-1 items-center justify-center">
         <ThemedText className="text-center text-2xl text-gray-400">
           {intl.formatMessage(globalMessages.noresults)}
         </ThemedText>
