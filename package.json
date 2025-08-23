@@ -1,7 +1,7 @@
 {
   "name": "jellyseerr-expo",
   "main": "expo-router/entry",
-  "version": "v0.7.0",
+  "version": "v0.7.1",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
