@@ -43,6 +43,9 @@ const Slider = ({
           </View>
         ) : null
       }
+      initialNumToRender={5}
+      maxToRenderPerBatch={3}
+      windowSize={5}
     />
   );
 };
