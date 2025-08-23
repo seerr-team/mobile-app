@@ -10,7 +10,6 @@ import {
   navigationIntegration,
 } from '@/utils/sentry';
 import { getServerSettings } from '@/utils/serverSettings';
-import { Toasts } from '@backpackapp-io/react-native-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
 import { useFonts } from 'expo-font';
@@ -29,6 +28,7 @@ import RelativeTimeFormat from 'relative-time-format';
 import en from 'relative-time-format/locale/en';
 import { SWRConfig } from 'swr';
 
+import ToastContainer from '@/components/ToastContainer';
 import type { AvailableLocale } from '@/jellyseerr/src/context/LanguageContext';
 import '@/jellyseerr/src/styles/globals.css';
 
@@ -250,22 +250,9 @@ function RootLayout() {
             {/* <ScrollView contentContainerClassName="flex-grow justify-center item-center"> */}
             <View className="flex-1">
               <Slot />
-              <Toasts
-                overrideDarkMode
-                defaultStyle={{
-                  view: {
-                    backgroundColor: '#111827',
-                    borderWidth: 1,
-                    borderColor: '#6b7280',
-                    borderRadius: 8,
-                  },
-                  text: {
-                    color: '#ffffff',
-                  },
-                }}
-              />
             </View>
           </KeyboardAvoidingView>
+          <ToastContainer />
         </SWRConfig>
       </SafeAreaProvider>
     </GestureHandlerRootView>

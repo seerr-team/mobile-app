@@ -62,12 +62,12 @@ import {
 } from '@/components/Common/Disclosure';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
-import { toast } from '@backpackapp-io/react-native-toast';
 import axios from 'axios';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
+import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';

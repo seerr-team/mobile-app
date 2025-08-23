@@ -9,10 +9,10 @@ import {
   ServerType,
 } from '@/jellyseerr/server/constants/server';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
-import { toast } from '@backpackapp-io/react-native-toast';
 import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
 import axios from 'axios';
 import { Formik } from 'formik';
+import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
 import * as Yup from 'yup';
