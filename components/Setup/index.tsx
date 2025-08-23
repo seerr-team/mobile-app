@@ -48,9 +48,9 @@ export default function Setup() {
         } else {
           setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
         }
+        setInitialized(true);
+        setLoading(false);
       }
-      setInitialized(true);
-      setLoading(false);
     },
     [dispatch]
   );

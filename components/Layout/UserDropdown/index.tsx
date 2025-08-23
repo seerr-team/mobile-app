@@ -23,8 +23,7 @@ const UserDropdown = () => {
     const response = await axios.post(serverUrl + '/api/v1/auth/logout');
 
     if (response.data?.status === 'ok') {
-      revalidate();
-
+      await revalidate();
       router.replace('/login');
     }
   };

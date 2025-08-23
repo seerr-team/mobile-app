@@ -18,7 +18,7 @@ import { useUser } from '@/hooks/useUser';
 import { MediaServerType } from '@/jellyseerr/server/constants/server';
 import { XCircle } from '@nandorojo/heroicons/24/solid';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Image, ScrollView, View } from 'react-native';
 // import { CSSTransition, SwitchTransition } from 'react-transition-group';
@@ -35,8 +35,7 @@ const Login = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const settings = useSettings();
-  const { user, error: userError, revalidate } = useUser();
-
+  const { revalidate } = useUser();
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
   const [isProcessing, setProcessing] = useState(false);
@@ -45,16 +44,22 @@ const Login = () => {
     settings.currentSettings.mediaServerLogin
   );
 
+  const revalidateWithRedirect = useCallback(async () => {
+    await revalidate();
+    router.replace('/(tabs)');
+  }, [revalidate]);
+
   useEffect(() => {
     (async () => {
       try {
         await axios(`${serverUrl}/api/v1/auth/me`);
-        router.replace('/(tabs)');
+        console.log('User is authenticated');
+        revalidateWithRedirect();
       } catch {
         setLoaded(true);
       }
     })();
-  }, [serverUrl]);
+  }, [revalidateWithRedirect, serverUrl]);
 
   // Effect that is triggered when the `authToken` comes back from the Plex OAuth
   // We take the token and attempt to sign in. If we get a success message, we will
@@ -68,7 +73,7 @@ const Login = () => {
         });
 
         if (response.data?.id) {
-          revalidate();
+          revalidateWithRedirect();
         }
       } catch (e) {
         setError(e.response?.data?.message);
@@ -79,15 +84,15 @@ const Login = () => {
     if (authToken) {
       login();
     }
-  }, [authToken, intl, revalidate, serverUrl]);
+  }, [authToken, intl, revalidateWithRedirect, serverUrl]);
 
   // Effect that is triggered whenever `useUser`'s user changes. If we get a new
   // valid user, we redirect the user to the home page as the login was successful.
-  useEffect(() => {
-    if (user && !userError) {
-      router.replace('/(tabs)');
-    }
-  }, [user, userError]);
+  // useEffect(() => {
+  //   if (user) {
+  //     router.replace('/(tabs)');
+  //   }
+  // }, [user]);
 
   const { data: backdrops } = useSWR<string[]>(
     serverUrl + '/api/v1/backdrops',
@@ -222,11 +227,11 @@ const Login = () => {
                 (mediaServerLogin || !settings.currentSettings.localLogin) ? (
                   <JellyfinLogin
                     serverType={settings.currentSettings.mediaServerType}
-                    revalidate={revalidate}
+                    revalidate={revalidateWithRedirect}
                   />
                 ) : (
                   settings.currentSettings.localLogin && (
-                    <LocalLogin revalidate={revalidate} />
+                    <LocalLogin revalidate={revalidateWithRedirect} />
                   )
                 )}
               </View>

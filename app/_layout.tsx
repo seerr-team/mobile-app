@@ -31,6 +31,7 @@ import { SWRConfig } from 'swr';
 import ToastContainer from '@/components/ToastContainer';
 import type { AvailableLocale } from '@/jellyseerr/src/context/LanguageContext';
 import '@/jellyseerr/src/styles/globals.css';
+import axios from 'axios';
 
 type MessagesType = Record<string, string>;
 
@@ -236,18 +237,13 @@ function RootLayout() {
       <SafeAreaProvider>
         <SWRConfig
           value={{
-            fetcher: async (resource, init) => {
-              const res = await fetch(resource, init);
-              if (!res.ok) throw new Error();
-              return await res.json();
-            },
+            fetcher: (url) => axios.get(url).then((res) => res.data),
           }}
         >
           <KeyboardAvoidingView
             behavior="padding"
             className="flex-1 bg-gray-900"
           >
-            {/* <ScrollView contentContainerClassName="flex-grow justify-center item-center"> */}
             <View className="flex-1">
               <Slot />
             </View>
