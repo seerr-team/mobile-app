@@ -24,22 +24,22 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   {
-    path: '//',
+    path: '/',
     icon: Sparkles,
     activeIcon: SparklesFilled,
   },
   {
-    path: '//discover_movies',
+    path: '/discover_movies',
     icon: Film,
     activeIcon: FilmFilled,
   },
   {
-    path: '//discover_tv',
+    path: '/discover_tv',
     icon: Tv,
     activeIcon: TvFilled,
   },
   {
-    path: '//requests',
+    path: '/requests',
     icon: Clock,
     activeIcon: ClockFilled,
   },

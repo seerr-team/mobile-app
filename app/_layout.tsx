@@ -48,42 +48,6 @@ type MessagesType = Record<string, string>;
 
 axios.defaults.withCredentials = true;
 
-// // Axios interceptors for cookie management
-// const setupAxiosInterceptors = () => {
-//   // Response interceptor to store cookies
-//   axios.interceptors.response.use(
-//     async (response) => {
-//       const setCookieHeader = response.headers['set-cookie'];
-//       if (setCookieHeader && Array.isArray(setCookieHeader)) {
-//         // Extract and store cookies
-//         const cookies = setCookieHeader.map(cookie => cookie.split(';')[0]).join('; ');
-//         await AsyncStorage.setItem('auth-cookies', cookies);
-//       }
-//       return response;
-//     },
-//     (error) => {
-//       return Promise.reject(error);
-//     }
-//   );
-
-//   // Request interceptor to inject cookies
-//   axios.interceptors.request.use(
-//     async (config) => {
-//       const storedCookies = await AsyncStorage.getItem('auth-cookies');
-//       if (storedCookies) {
-//         config.headers.Cookie = storedCookies;
-//       }
-//       return config;
-//     },
-//     (error) => {
-//       return Promise.reject(error);
-//     }
-//   );
-// };
-
-// // Initialize interceptors
-// setupAxiosInterceptors();
-
 const loadLocaleData = async (locale: string): Promise<MessagesType> => {
   switch (locale) {
     case 'ar':
