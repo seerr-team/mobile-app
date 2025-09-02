@@ -70,7 +70,7 @@ const RequestList = () => {
     `${serverUrl}/api/v1/request?take=${currentPageSize}&skip=${
       pageIndex * currentPageSize
     }&filter=${currentFilter}&sort=${currentSort}${
-      pathname.startsWith('(tabs)/profile')
+      pathname.startsWith('/profile')
         ? `&requestedBy=${currentUser?.id}`
         : searchParams.userId
           ? `&requestedBy=${searchParams.userId}`
@@ -135,15 +135,12 @@ const RequestList = () => {
       <View className="mb-4 flex flex-col justify-between lg:flex-row lg:items-end">
         <Header
           subtext={
-            pathname.startsWith('(tabs)/profile') ? (
-              <Link href={`(tabs)/profile`} className="hover:underline">
+            pathname.startsWith('/profile') ? (
+              <Link href={`/profile`} className="hover:underline">
                 <ThemedText>{currentUser?.displayName}</ThemedText>
               </Link>
             ) : searchParams.userId ? (
-              <Link
-                href={`(tabs)/users/${user?.id}`}
-                className="hover:underline"
-              >
+              <Link href={`/users/${user?.id}`} className="hover:underline">
                 <ThemedText>{user?.displayName}</ThemedText>
               </Link>
             ) : (

@@ -24,22 +24,22 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   {
-    path: '/(tabs)/',
+    path: '//',
     icon: Sparkles,
     activeIcon: SparklesFilled,
   },
   {
-    path: '/(tabs)/discover_movies',
+    path: '//discover_movies',
     icon: Film,
     activeIcon: FilmFilled,
   },
   {
-    path: '/(tabs)/discover_tv',
+    path: '//discover_tv',
     icon: Tv,
     activeIcon: TvFilled,
   },
   {
-    path: '/(tabs)/requests',
+    path: '//requests',
     icon: Clock,
     activeIcon: ClockFilled,
   },
@@ -55,7 +55,7 @@ export default function BottomNavigation() {
       style={{ paddingBottom: insets.bottom, height: 56 + insets.bottom }}
     >
       {navigationItems.map((item) => {
-        const active = `/(tabs)${pathname}` === item.path;
+        const active = `/${pathname}` === item.path;
         const IconComponent = active ? item.activeIcon : item.icon;
         const iconColor = active ? tintColor : inactiveColor;
 

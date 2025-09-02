@@ -6,10 +6,11 @@ import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 import { ArrowRightOnRectangle, Clock } from '@nandorojo/heroicons/24/outline';
 import axios from 'axios';
 import { BlurView } from 'expo-blur';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Modal, Pressable, View } from 'react-native';
+import { mutate } from 'swr';
 
 const messages = getJellyseerrMessages('components.Layout.UserDropdown');
 
@@ -23,8 +24,8 @@ const UserDropdown = () => {
     const response = await axios.post(serverUrl + '/api/v1/auth/logout');
 
     if (response.data?.status === 'ok') {
+      await mutate(`${serverUrl}/api/v1/auth/me`, null, false);
       await revalidate();
-      router.replace('/login');
     }
   };
 
@@ -89,7 +90,7 @@ const UserDropdown = () => {
               </View>
             </View>
             <View className="flex flex-col border-t border-gray-600 py-2">
-              {/* <Link href="(tabs)/profile" asChild>
+              {/* <Link href="/profile" asChild>
                 <Pressable onPress={() => setIsOpen(false)}>
                   <View className="flex flex-row items-center gap-2 px-4 py-2">
                     <User
@@ -104,7 +105,7 @@ const UserDropdown = () => {
                   </View>
                 </Pressable>
               </Link> */}
-              <Link href="(tabs)/requests?filter=all" asChild>
+              <Link href="/requests?filter=all" asChild>
                 <Pressable onPress={() => setIsOpen(false)}>
                   <View className="flex flex-row items-center gap-2 px-4 py-2">
                     <Clock
@@ -119,7 +120,7 @@ const UserDropdown = () => {
                   </View>
                 </Pressable>
               </Link>
-              {/* <Link href="(tabs)/profile/settings" asChild>
+              {/* <Link href="/profile/settings" asChild>
                 <Pressable onPress={() => setIsOpen(false)}>
                 <View className="flex flex-row items-center px-4 py-2 gap-2">
                   <Cog className="mr-2" width={20} height={20} color="#e5e7eb" />

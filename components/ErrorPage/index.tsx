@@ -38,7 +38,7 @@ const Error = ({ statusCode }: ErrorProps) => {
             : getErrorMessage(statusCode)}
         </ThemedText>
       </View>
-      <Link href="/(tabs)" asChild>
+      <Link href="/" asChild>
         <Pressable className="flex flex-row items-center gap-2">
           <ThemedText>{intl.formatMessage(messages.returnHome)}</ThemedText>
           <ArrowRightCircle width={24} height={24} color="#ffffff" />

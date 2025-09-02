@@ -344,8 +344,8 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
             <Link
               href={
                 request.type === 'movie'
-                  ? `(tabs)/movie/${requestData.media.tmdbId}`
-                  : `(tabs)/tv/${requestData.media.tmdbId}`
+                  ? `/movie/${requestData.media.tmdbId}`
+                  : `/tv/${requestData.media.tmdbId}`
               }
               className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${canExpand ? 'mb-1 text-2xl' : 'text-lg'} font-bold text-white hover:underline`}
               numberOfLines={1}
@@ -405,8 +405,8 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
           <Link
             href={
               request.type === 'movie'
-                ? `(tabs)/movie/${requestData.media.tmdbId}`
-                : `(tabs)/tv/${requestData.media.tmdbId}`
+                ? `/movie/${requestData.media.tmdbId}`
+                : `/tv/${requestData.media.tmdbId}`
             }
             className="flex-shrink-0 scale-100"
           >

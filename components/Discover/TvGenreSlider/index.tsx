@@ -56,7 +56,7 @@ const TvGenreSlider = () => {
             image={`https://image.tmdb.org/t/p/w1280_filter(duotone,${
               genreColorMap[genre.id] ?? genreColorMap[0]
             })${genre.backdrops[4]}`}
-            url={`(tabs)/discover_tv?genre=${genre.id}`}
+            url={`/discover_tv?genre=${genre.id}`}
           />
         ))}
         placeholder={<GenreCard.Placeholder />}

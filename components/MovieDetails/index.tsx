@@ -240,7 +240,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       data.genres
         .map((g) => (
           <Link
-            href={`(tabs)/discover_movies?genre=${g.id}`}
+            href={`/discover_movies?genre=${g.id}`}
             key={`genre-${g.id}`}
             className="text-gray-300 hover:underline"
           >
@@ -673,7 +673,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                         {person.job}
                       </ThemedText>
                       <Link
-                        href={`(tabs)/person/${person.id}`}
+                        href={`/person/${person.id}`}
                         className="text-gray-400"
                       >
                         {person.name}
@@ -684,7 +684,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
               </View>
               {/* <View className="mt-4 flex flex-row justify-end">
                 <Link
-                  href={`(tabs)/movie/${data.id}/crew`}
+                  href={`/movie/${data.id}/crew`}
                   asChild
                 >
                   <Pressable className="flex flex-row items-center transition duration-300 hover:text-gray-100 gap-1.5">
@@ -699,7 +699,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             <View className="mt-6 flex flex-row flex-wrap gap-x-2">
               {data.keywords.map((keyword) => (
                 <Link
-                  href={`(tabs)/discover_movies?keywords=${keyword.id}`}
+                  href={`/discover_movies?keywords=${keyword.id}`}
                   key={`keyword-id-${keyword.id}`}
                   asChild
                 >
@@ -714,7 +714,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         <View className="mt-8 w-full lg:mt-0 lg:w-80">
           {data.collection && (
             <View className="mb-6">
-              <Link href={`(tabs)/collection/${data.collection.id}`} asChild>
+              <Link href={`/collection/${data.collection.id}`} asChild>
                 <Pressable className="group relative z-0 cursor-pointer overflow-hidden rounded-lg border border-gray-700 bg-gray-800 bg-cover bg-center transition duration-300 hover:border-gray-500">
                   <View className="absolute inset-0 z-0 opacity-30">
                     <CachedImage
@@ -733,7 +733,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                     </ThemedText>
                     <Button
                       onClick={() =>
-                        router.push(`(tabs)/collection/${data.collection?.id}`)
+                        router.push(`/collection/${data.collection?.id}`)
                       }
                       buttonType="ghost"
                       className="!bg-gray-700"
@@ -951,7 +951,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                 </ThemedText>
                 <ThemedText className="ml-2 shrink text-right text-sm font-normal text-gray-400">
                   <Link
-                    href={`(tabs)/discover_movies/language/${data.originalLanguage}`}
+                    href={`/discover_movies/language/${data.originalLanguage}`}
                   >
                     {/* {intl.formatDisplayName(data.originalLanguage, {
                       type: 'language',
@@ -1019,7 +1019,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                     .map((s) => {
                       return (
                         <Link
-                          href={`(tabs)/discover_movies/studio/${s.id}`}
+                          href={`/discover_movies/studio/${s.id}`}
                           key={`studio-${s.id}`}
                           className="text-right text-sm font-normal text-gray-400"
                         >
@@ -1093,7 +1093,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       {data.credits.cast.length > 0 && (
         <>
           <View className="slider-header px-2">
-            {/* <Link href={`(tabs)movieId/${data.id}/cast`} asChild>
+            {/* <Link href={`movieId/${data.id}/cast`} asChild>
               <Pressable> */}
             <View className="flex min-w-0 flex-row items-center gap-2">
               <ThemedText className="truncate text-2xl font-bold">
@@ -1124,14 +1124,14 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         sliderKey="recommendations"
         title={intl.formatMessage(messages.recommendations)}
         url={`/api/v1/movie/${searchParams.movieId}/recommendations`}
-        linkUrl={`(tabs)/movie/${data.id}/recommendations`}
+        linkUrl={`/movie/${data.id}/recommendations`}
         // hideWhenEmpty
       />
       <MediaSlider
         sliderKey="similar"
         title={intl.formatMessage(messages.similar)}
         url={`/api/v1/movie/${searchParams.movieId}/similar`}
-        linkUrl={`(tabs)/movie/${data.id}/similar`}
+        linkUrl={`/movie/${data.id}/similar`}
         // hideWhenEmpty
       />
     </ScrollView>

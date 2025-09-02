@@ -1,5 +1,5 @@
-import Setup from '@/components/Setup';
+import Discover from '@/components/Discover';
 
-export default function IndexScreen() {
-  return <Setup />;
+export default function Home() {
+  return <Discover />;
 }

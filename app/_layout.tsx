@@ -1,7 +1,14 @@
+import BottomNavigation from '@/components/Layout/BottomNavigation';
+import UserDropdown from '@/components/Layout/UserDropdown';
+import SearchInput from '@/components/SearchInput';
+import ToastContainer from '@/components/ToastContainer';
+import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
+import type { AvailableLocale } from '@/jellyseerr/src/context/LanguageContext';
 import enMessages from '@/jellyseerr/src/i18n/locale/en.json';
-import store, { type RootState } from '@/store';
+import '@/jellyseerr/src/styles/globals.css';
+import store from '@/store';
 import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import {
@@ -12,9 +19,15 @@ import {
 import { getServerSettings } from '@/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
+import axios from 'axios';
 import { useFonts } from 'expo-font';
-import { router, Slot, useNavigationContainerRef } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+import {
+  router,
+  SplashScreen,
+  Stack,
+  useNavigationContainerRef,
+  usePathname,
+} from 'expo-router';
 import 'intl-pluralrules';
 import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
@@ -22,18 +35,54 @@ import { KeyboardAvoidingView, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { configureReanimatedLogger } from 'react-native-reanimated';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import { Provider, useDispatch } from 'react-redux';
 import RelativeTimeFormat from 'relative-time-format';
 import en from 'relative-time-format/locale/en';
-import { SWRConfig } from 'swr';
-
-import ToastContainer from '@/components/ToastContainer';
-import type { AvailableLocale } from '@/jellyseerr/src/context/LanguageContext';
-import '@/jellyseerr/src/styles/globals.css';
-import axios from 'axios';
+import { mutate, SWRConfig } from 'swr';
 
 type MessagesType = Record<string, string>;
+
+axios.defaults.withCredentials = true;
+
+// // Axios interceptors for cookie management
+// const setupAxiosInterceptors = () => {
+//   // Response interceptor to store cookies
+//   axios.interceptors.response.use(
+//     async (response) => {
+//       const setCookieHeader = response.headers['set-cookie'];
+//       if (setCookieHeader && Array.isArray(setCookieHeader)) {
+//         // Extract and store cookies
+//         const cookies = setCookieHeader.map(cookie => cookie.split(';')[0]).join('; ');
+//         await AsyncStorage.setItem('auth-cookies', cookies);
+//       }
+//       return response;
+//     },
+//     (error) => {
+//       return Promise.reject(error);
+//     }
+//   );
+
+//   // Request interceptor to inject cookies
+//   axios.interceptors.request.use(
+//     async (config) => {
+//       const storedCookies = await AsyncStorage.getItem('auth-cookies');
+//       if (storedCookies) {
+//         config.headers.Cookie = storedCookies;
+//       }
+//       return config;
+//     },
+//     (error) => {
+//       return Promise.reject(error);
+//     }
+//   );
+// };
+
+// // Initialize interceptors
+// setupAxiosInterceptors();
 
 const loadLocaleData = async (locale: string): Promise<MessagesType> => {
   switch (locale) {
@@ -153,84 +202,66 @@ configureReanimatedLogger({
 SplashScreen.preventAutoHideAsync();
 
 function RootLayout() {
-  const ref = useNavigationContainerRef();
-  const dispatch = useDispatch();
-  const [fontLoaded] = useFonts({
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  const pathname = usePathname();
   const settings = useSettings();
-  const [loaded, setLoaded] = useState(true);
-  const sendAnonymousData = useSelector(
-    (state: RootState) => state.appSettings.sendAnonymousData
-  );
+  const serverUrl = useServerUrl();
+  const { user, revalidate } = useUser();
+  const [loaded, setLoaded] = useState(false);
+
+  const insets = useSafeAreaInsets();
+  const contentStyle = {
+    backgroundColor: '#111827',
+    paddingTop: insets.top + 67,
+    paddingBottom: 56 + insets.bottom,
+  };
 
   useEffect(() => {
-    (async () => {
-      dispatch(
-        setSendAnonymousData(
-          JSON.parse(
-            (await AsyncStorage.getItem('send-anonymous-data')) || 'false'
-          )
-        )
-      );
-    })();
-  }, [dispatch]);
-
-  useEffect(() => {
-    (async () => {
-      await AsyncStorage.setItem(
-        'send-anonymous-data',
-        JSON.stringify(sendAnonymousData)
-      );
-      if (sendAnonymousData) {
-        initSentry();
-      } else {
-        disableSentry();
+    if (serverUrl && settings.currentSettings && !user) {
+      if (pathname !== '/login') {
+        router.replace('/login');
       }
-    })();
-  }, [sendAnonymousData]);
-
-  useEffect(() => {
-    if (ref?.current) {
-      navigationIntegration.registerNavigationContainer(ref);
+    } else if (!serverUrl || !settings.currentSettings || !user) {
+      if (pathname !== '/setup') {
+        router.replace('/setup');
+      }
     }
-  }, [ref]);
+  }, [pathname, serverUrl, settings.currentSettings, user]);
 
   useEffect(() => {
-    (async () => {
-      const url = await AsyncStorage.getItem('server-url');
-      if (url) {
-        dispatch(setServerUrl(url));
-        try {
-          const serverSettings = await getServerSettings(url);
-          dispatch(setSettings(serverSettings));
-        } catch {
-          router.replace('/');
+    if (serverUrl) {
+      getServerSettings(serverUrl)
+        .then(async (serverSettings) => {
+          try {
+            await mutate(
+              `${serverUrl}/api/v1/auth/me`,
+              axios.get(`${serverUrl}/api/v1/auth/me`),
+              true
+            );
+            await revalidate();
+          } catch {
+            /* empty */
+          }
+          if (
+            JSON.stringify(serverSettings) !==
+            JSON.stringify(settings.currentSettings)
+          ) {
+            store.dispatch(setSettings(serverSettings));
+          }
           setLoaded(true);
-        }
-      } else {
-        router.replace('/');
-      }
-    })();
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (settings.currentSettings) {
-      router.replace('/login');
+        })
+        .catch(() => {
+          setLoaded(true);
+        });
+    } else {
       setLoaded(true);
     }
-  }, [settings]);
+  }, [serverUrl, revalidate, settings.currentSettings]);
 
   useEffect(() => {
-    if (fontLoaded && loaded) {
-      SplashScreen.hideAsync();
+    if (loaded) {
+      SplashScreen.hide();
     }
-  }, [fontLoaded, loaded]);
-
-  if (!fontLoaded || !loaded) {
-    return null;
-  }
+  }, [loaded]);
 
   return (
     <GestureHandlerRootView>
@@ -245,7 +276,137 @@ function RootLayout() {
             className="flex-1 bg-gray-900"
           >
             <View className="flex-1">
-              <Slot />
+              {user && (
+                <View
+                  className="h-18 absolute left-0 right-0 top-0 z-50 flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
+                  style={{ paddingTop: insets.top + 16 }}
+                >
+                  <SearchInput />
+                  <UserDropdown />
+                </View>
+              )}
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle:
+                    pathname === '/setup' || pathname === '/login'
+                      ? {
+                          backgroundColor: '#111827',
+                          // paddingTop: 0,
+                          // paddingBottom: 0,
+                        }
+                      : contentStyle,
+                  animation: 'slide_from_right',
+                  animationDuration: 100,
+                }}
+              >
+                <Stack.Screen
+                  name="index"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen name="setup" />
+                <Stack.Screen name="login" />
+                <Stack.Screen
+                  name="discover_movies"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="discover_tv"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="requests"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="search"
+                  options={{
+                    contentStyle,
+                    animation: 'none',
+                  }}
+                />
+                <Stack.Screen
+                  name="discover_trending"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="discover_movies/studio/[studioId]"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="discover_tv/network/[networkId]"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="discover_watchlist"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="movie/[movieId]/index"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="movie/[movieId]/recommendations"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="movie/[movieId]/similar"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="tv/[tvId]/index"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="tv/[tvId]/recommendations"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="tv/[tvId]/similar"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="person/[personId]/index"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+                <Stack.Screen
+                  name="collection/[collectionId]/index"
+                  options={{
+                    contentStyle,
+                  }}
+                />
+              </Stack>
+              {user && <BottomNavigation />}
             </View>
           </KeyboardAvoidingView>
           <ToastContainer />
@@ -258,23 +419,59 @@ function RootLayout() {
 function RootLayoutWithIntl() {
   const { user } = useUser();
   const settings = useSettings();
+  const dispatch = useDispatch();
+  const ref = useNavigationContainerRef();
+  const [fontLoaded] = useFonts({
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  });
 
   const [loadedMessages, setMessages] = useState<MessagesType>(enMessages);
   const [currentLocale, setLocale] = useState<AvailableLocale>('en');
+  const [asyncStorageLoaded, setAsyncStorageLoaded] = useState(false);
 
   useEffect(() => {
-    if (setLocale) {
-      setLocale(
-        (user?.settings?.locale
-          ? user.settings.locale
-          : settings.currentSettings?.locale) as AvailableLocale
-      );
+    if (ref?.current) {
+      navigationIntegration.registerNavigationContainer(ref);
+    }
+  }, [ref]);
+
+  useEffect(() => {
+    Promise.all([
+      AsyncStorage.getItem('server-url'),
+      AsyncStorage.getItem('send-anonymous-data'),
+    ]).then(([serverUrl, sendAnonymousData]) => {
+      if (serverUrl) {
+        dispatch(setServerUrl(serverUrl));
+      }
+      if (sendAnonymousData) {
+        dispatch(setSendAnonymousData(sendAnonymousData === 'true'));
+        if (sendAnonymousData === 'true') {
+          initSentry();
+        } else {
+          disableSentry();
+        }
+      }
+      setAsyncStorageLoaded(true);
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const newLocale = user?.settings?.locale
+      ? user.settings.locale
+      : settings.currentSettings?.locale;
+    if (setLocale && newLocale) {
+      setLocale(newLocale as AvailableLocale);
     }
   }, [setLocale, settings.currentSettings?.locale, user]);
 
   useEffect(() => {
     loadLocaleData(currentLocale).then(setMessages);
   }, [currentLocale]);
+
+  if (!asyncStorageLoaded || !fontLoaded) {
+    return null;
+  }
 
   return (
     <IntlProvider

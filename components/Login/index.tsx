@@ -5,7 +5,6 @@ import JellyfinLogo from '@/assets/services/jellyfin-icon.png';
 import PlexLogo from '@/assets/services/plex.png';
 import Button from '@/components/Common/Button';
 import ImageFader from '@/components/Common/ImageFader';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import useServerUrl from '@/hooks/useServerUrl';
 import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
 // import LanguagePicker from '@/components/Layout/LanguagePicker';
@@ -17,16 +16,16 @@ import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
 import { MediaServerType } from '@/jellyseerr/server/constants/server';
 import { XCircle } from '@nandorojo/heroicons/24/solid';
-import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Image, ScrollView, View } from 'react-native';
 // import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { setServerUrl } from '@/store/appSettingsSlice';
 import { useDispatch } from 'react-redux';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 // import { BlurView } from 'expo-blur';
 import axios from 'axios';
+import { router } from 'expo-router';
 
 const messages = getJellyseerrMessages('components.Login');
 
@@ -35,8 +34,7 @@ const Login = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const settings = useSettings();
-  const { revalidate } = useUser();
-  const [loaded, setLoaded] = useState(false);
+  const { user, revalidate } = useUser();
   const [error, setError] = useState('');
   const [isProcessing, setProcessing] = useState(false);
   const [authToken, setAuthToken] = useState<string | undefined>(undefined);
@@ -46,20 +44,13 @@ const Login = () => {
 
   const revalidateWithRedirect = useCallback(async () => {
     await revalidate();
-    router.replace('/(tabs)');
-  }, [revalidate]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await axios(`${serverUrl}/api/v1/auth/me`);
-        console.log('User is authenticated');
-        revalidateWithRedirect();
-      } catch {
-        setLoaded(true);
-      }
-    })();
-  }, [revalidateWithRedirect, serverUrl]);
+    await mutate(
+      `${serverUrl}/api/v1/auth/me`,
+      axios.get(`${serverUrl}/api/v1/auth/me`),
+      true
+    );
+  }, [revalidate, serverUrl]);
+  // const revalidateWithRedirect = revalidate;
 
   // Effect that is triggered when the `authToken` comes back from the Plex OAuth
   // We take the token and attempt to sign in. If we get a success message, we will
@@ -88,11 +79,11 @@ const Login = () => {
 
   // Effect that is triggered whenever `useUser`'s user changes. If we get a new
   // valid user, we redirect the user to the home page as the login was successful.
-  // useEffect(() => {
-  //   if (user) {
-  //     router.replace('/(tabs)');
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      router.replace('/');
+    }
+  }, [user]);
 
   const { data: backdrops } = useSWR<string[]>(
     serverUrl + '/api/v1/backdrops',
@@ -176,14 +167,6 @@ const Login = () => {
       )),
   ].filter((o): o is JSX.Element => !!o);
 
-  if (!loaded) {
-    return (
-      <View className="flex flex-1 items-center justify-center">
-        <LoadingSpinner />
-      </View>
-    );
-  }
-
   return (
     // <View className="relative flex flex-1 flex-col justify-center">
     <View className="flex-1">
@@ -265,7 +248,6 @@ const Login = () => {
             buttonType="ghost"
             onClick={() => {
               dispatch(setServerUrl(''));
-              router.push('/');
             }}
             className="mt-4"
           >

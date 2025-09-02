@@ -228,7 +228,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
       data.genres
         .map((g) => (
           <Link
-            href={`(tabs)/discover_tv?genre=${g.id}`}
+            href={`/discover_tv?genre=${g.id}`}
             key={`genre-${g.id}`}
             className="text-gray-300 hover:underline"
           >
@@ -695,7 +695,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             <View className="mt-6 flex flex-row flex-wrap gap-x-2">
               {data.keywords.map((keyword) => (
                 <Link
-                  href={`(tabs)/discover_tv?keywords=${keyword.id}`}
+                  href={`/discover_tv?keywords=${keyword.id}`}
                   key={`keyword-id-${keyword.id}`}
                   asChild
                 >
@@ -1169,7 +1169,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                 </ThemedText>
                 <ThemedText className="ml-2 shrink text-right text-sm font-normal text-gray-400">
                   <Link
-                    href={`(tabs)/discover_tv/language/${data.originalLanguage}`}
+                    href={`/discover_tv/language/${data.originalLanguage}`}
                     className="block"
                   >
                     {/* {intl.formatDisplayName(data.originalLanguage, {
@@ -1231,7 +1231,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                   {data.networks.map((n) => (
                     <Link
                       className="block"
-                      href={`(tabs)/discover_tv/network/${n.id}`}
+                      href={`/discover_tv/network/${n.id}`}
                       key={`network-${n.id}`}
                     >
                       {n.name}
@@ -1303,14 +1303,14 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
         sliderKey="recommendations"
         title={intl.formatMessage(messages.recommendations)}
         url={`/api/v1/tv/${searchParams.tvId}/recommendations`}
-        linkUrl={`(tabs)/tv/${data.id}/recommendations`}
+        linkUrl={`/tv/${data.id}/recommendations`}
         // hideWhenEmpty
       />
       <MediaSlider
         sliderKey="similar"
         title={intl.formatMessage(messages.similar)}
         url={`/api/v1/tv/${searchParams.tvId}/similar`}
-        linkUrl={`(tabs)/tv/${data.id}/similar`}
+        linkUrl={`/tv/${data.id}/similar`}
         // hideWhenEmpty
       />
     </ScrollView>

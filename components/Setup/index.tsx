@@ -4,6 +4,7 @@ import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
+import useSettings from '@/hooks/useSettings';
 import type { RootState } from '@/store';
 import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
@@ -27,6 +28,7 @@ export default function Setup() {
   const [error, setError] = useState<ConnectionErrorType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
+  const settings = useSettings();
   const sendAnonymousData = useSelector(
     (state: RootState) => state.appSettings.sendAnonymousData
   );
@@ -41,7 +43,6 @@ export default function Setup() {
         dispatch(setServerUrl(url));
         dispatch(setSettings(serverSettings));
         setError(null);
-        router.push('/login');
       } catch (e) {
         if (e instanceof Error) {
           setError(e.message as ConnectionErrorType);
@@ -72,6 +73,12 @@ export default function Setup() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (serverUrl && settings.currentSettings) {
+      router.replace('/login');
+    }
+  }, [serverUrl, settings.currentSettings]);
 
   if (!initialized) {
     return (

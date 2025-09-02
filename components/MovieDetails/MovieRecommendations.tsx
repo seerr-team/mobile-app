@@ -42,7 +42,7 @@ const MovieRecommendations = () => {
           <Header
             subtext={
               <Link
-                href={`(tabs)/movie/${movieData?.id}`}
+                href={`/movie/${movieData?.id}`}
                 className="text-lg text-gray-400 hover:underline"
               >
                 {movieData?.title}

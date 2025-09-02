@@ -40,7 +40,7 @@ const TvRecommendations = () => {
           <Header
             subtext={
               <Link
-                href={`(tabs)/tv/${tvData?.id}`}
+                href={`/tv/${tvData?.id}`}
                 className="text-lg text-gray-400 hover:underline"
               >
                 {tvData?.name}

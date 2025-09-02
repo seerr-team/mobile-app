@@ -41,7 +41,7 @@ const CachedImage = ({ src, type, ...props }: CachedImageProps) => {
     return null;
   }
 
-  if (imageUrl.startsWith('/')) {
+  if (imageUrl?.startsWith('/')) {
     imageUrl = `${serverUrl}${imageUrl}`;
   }
 

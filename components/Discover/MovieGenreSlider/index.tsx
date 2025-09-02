@@ -56,7 +56,7 @@ const MovieGenreSlider = () => {
             image={`https://image.tmdb.org/t/p/w1280_filter(duotone,${
               genreColorMap[genre.id] ?? genreColorMap[0]
             })${genre.backdrops[4]}`}
-            url={`(tabs)/discover_movies?genre=${genre.id}`}
+            url={`/discover_movies?genre=${genre.id}`}
           />
         ))}
         placeholder={<GenreCard.Placeholder />}

@@ -17,7 +17,7 @@ const SearchInput = () => {
   useEffect(() => {
     if (searchValue !== '') {
       router.replace({
-        pathname: '(tabs)/search',
+        pathname: '/search',
         params: { query: searchValue },
       });
     } else {
@@ -50,7 +50,7 @@ const SearchInput = () => {
         onBlur={() => {
           if (searchValue === '' && pathname === '/search') {
             setIsOpen(false);
-            router.replace('(tabs)');
+            router.replace('');
           }
         }}
       />

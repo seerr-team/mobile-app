@@ -49,7 +49,7 @@ const TitleCard = ({
 
   return (
     <Link
-      href={`(tabs)/${mediaType}/${id}`}
+      href={`/${mediaType}/${id}`}
       className="overflow-hidden rounded-xl border border-gray-700 bg-gray-700"
       style={!canExpand ? { width: 150, height: 225 } : {}}
       asChild
