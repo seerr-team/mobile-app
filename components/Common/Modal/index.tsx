@@ -75,7 +75,10 @@ const Modal = ({
           className="absolute inset-0 flex h-screen w-screen items-center justify-center"
           style={{ zIndex: 999 }}
         >
-          <ScrollView contentContainerClassName="flex justify-center pb-12 flex-grow">
+          <ScrollView
+            className="w-full"
+            contentContainerClassName="flex justify-center pb-12 flex-grow"
+          >
             <Pressable
               android_disableSound
               className="absolute inset-0 h-screen w-screen bg-gray-800/70"

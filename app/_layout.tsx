@@ -175,8 +175,8 @@ function RootLayout() {
   const insets = useSafeAreaInsets();
   const contentStyle = {
     backgroundColor: '#111827',
-    paddingTop: insets.top + 67,
-    paddingBottom: 56 + insets.bottom,
+    paddingTop: insets.top + 56,
+    paddingBottom: insets.bottom + 56,
   };
 
   useEffect(() => {
@@ -242,8 +242,8 @@ function RootLayout() {
             <View className="flex-1">
               {user && (
                 <View
-                  className="h-18 absolute left-0 right-0 top-0 z-50 flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
-                  style={{ paddingTop: insets.top + 16 }}
+                  className="absolute left-0 right-0 top-0 z-50 flex h-16 flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
+                  style={{ paddingTop: insets.top + 8 }}
                 >
                   <SearchInput />
                   <UserDropdown />

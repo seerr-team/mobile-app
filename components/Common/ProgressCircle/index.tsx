@@ -1,76 +1,69 @@
-// import { useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { useRef } from 'react';
+import Svg, { Circle } from 'react-native-svg';
 
 interface ProgressCircleProps {
   className?: string;
   progress?: number;
   useHeatLevel?: boolean;
+  size?: number;
 }
 
 const ProgressCircle = ({
   className,
   progress = 0,
   useHeatLevel,
+  size = 24,
 }: ProgressCircleProps) => {
-  // const ref = useRef<SVGCircleElement>(null);
+  const ref = useRef<Circle>(null);
 
-  // let color = '';
-  // let emptyColor = 'text-gray-300';
+  let color = '';
+  let emptyColor = '#d1d5db'; // gray-300
 
-  // if (useHeatLevel) {
-  //   color = 'text-green-500';
+  if (useHeatLevel) {
+    color = '#10b981'; // green-500
 
-  //   if (progress <= 50) {
-  //     color = 'text-yellow-500';
-  //   }
+    if (progress <= 50) {
+      color = '#eab308'; // yellow-500
+    }
 
-  //   if (progress <= 10) {
-  //     color = 'text-red-500';
-  //   }
+    if (progress <= 10) {
+      color = '#ef4444'; // red-500
+    }
 
-  //   if (progress === 0) {
-  //     emptyColor = 'text-red-600';
-  //   }
-  // }
+    if (progress === 0) {
+      emptyColor = '#dc2626'; // red-600
+    }
+  }
 
-  // useEffect(() => {
-  //   if (ref && ref.current) {
-  //     const radius = ref.current?.r.baseVal.value;
-  //     const circumference = (radius ?? 0) * 2 * Math.PI;
-  //     const offset = circumference - (progress / 100) * circumference;
-  //     ref.current.style.strokeDashoffset = `${offset}`;
-  //     ref.current.style.strokeDasharray = `${circumference} ${circumference}`;
-  //   }
-  // });
+  const radius = 10;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
 
-  // return (
-  //   <svg className={`${className} ${color}`} viewBox="0 0 24 24">
-  //     <circle
-  //       className={`${emptyColor} opacity-30`}
-  //       stroke="currentColor"
-  //       strokeWidth="3"
-  //       fill="transparent"
-  //       r="10"
-  //       cx="12"
-  //       cy="12"
-  //     />
-  //     <circle
-  //       style={{
-  //         transition: '0.35s stroke-dashoffset',
-  //         transform: 'rotate(-90deg)',
-  //         transformOrigin: '50% 50%',
-  //       }}
-  //       ref={ref}
-  //       stroke="currentColor"
-  //       strokeWidth="3"
-  //       fill="transparent"
-  //       r="10"
-  //       cx="12"
-  //       cy="12"
-  //     />
-  //   </svg>
-  // );
-  return <View />;
+  return (
+    <Svg className={className} width={size} height={size} viewBox="0 0 24 24">
+      <Circle
+        stroke={emptyColor}
+        strokeWidth="3"
+        fill="transparent"
+        r={radius}
+        cx="12"
+        cy="12"
+        opacity={0.3}
+      />
+      <Circle
+        ref={ref}
+        stroke={color}
+        strokeWidth="3"
+        fill="transparent"
+        r={radius}
+        cx="12"
+        cy="12"
+        strokeDasharray={`${circumference} ${circumference}`}
+        strokeDashoffset={strokeDashoffset}
+        transform="rotate(-90 12 12)"
+      />
+    </Svg>
+  );
 };
 
 export default ProgressCircle;

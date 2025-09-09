@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp } from '@nandorojo/heroicons/24/solid';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 const messages = getJellyseerrMessages('components.RequestModal.QuotaDisplay');
 
@@ -28,18 +28,12 @@ const QuotaDisplay = ({
   const intl = useIntl();
   const [showDetails, setShowDetails] = useState(false);
   return (
-    <View
+    <Pressable
       className="my-4 flex flex-col rounded-md border border-gray-700 p-4 backdrop-blur"
-      // onClick={() => setShowDetails((s) => !s)}
-      // onKeyDown={(e) => {
-      //   if (e.key === 'Enter') {
-      //     setShowDetails((s) => !s);
-      //   }
-      // }}
-      role="button"
+      onPress={() => setShowDetails((s) => !s)}
       tabIndex={0}
     >
-      <View className="flex items-center">
+      <View className="flex flex-row items-center">
         <ProgressCircle
           className="h-8 w-8"
           progress={Math.round(
@@ -48,7 +42,7 @@ const QuotaDisplay = ({
           useHeatLevel
         />
         <View
-          className={`flex items-end ${
+          className={`flex flex-row items-end ${
             (remaining ?? quota?.remaining ?? 0) <= 0 || quota?.restricted
               ? 'text-red-500'
               : ''
@@ -68,13 +62,13 @@ const QuotaDisplay = ({
                 })}
           </ThemedText>
         </View>
-        <view className="flex flex-1 flex-row justify-end">
+        <View className="flex flex-1 flex-row justify-end">
           {showDetails ? (
             <ChevronUp color="#ffffff" width={24} height={24} />
           ) : (
             <ChevronDown color="#ffffff" width={24} height={24} />
           )}
-        </view>
+        </View>
       </View>
       {showDetails && (
         <View className="mt-4">
@@ -130,7 +124,7 @@ const QuotaDisplay = ({
           </ThemedText>
         </View>
       )}
-    </View>
+    </Pressable>
   );
 };
 

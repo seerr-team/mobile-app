@@ -94,6 +94,9 @@
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
   },
+  "overrides": {
+    "react-native-svg": "15.8.0"
+  },
   "lint-staged": {
     "**/*.{ts,tsx,js}": [
       "prettier --write"
