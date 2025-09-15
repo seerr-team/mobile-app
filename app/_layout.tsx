@@ -242,8 +242,11 @@ function RootLayout() {
             <View className="flex-1">
               {user && (
                 <View
-                  className="absolute left-0 right-0 top-0 z-50 flex h-16 flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
-                  style={{ paddingTop: insets.top + 8 }}
+                  className="absolute left-0 right-0 top-0 z-50 flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
+                  style={{
+                    paddingTop: insets.top + 8,
+                    height: insets.top + 64,
+                  }}
                 >
                   <SearchInput />
                   <UserDropdown />
