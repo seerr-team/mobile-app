@@ -32,18 +32,22 @@ This project contains the source code of the Jellyseerr mobile app. This app is 
 - [ ] Filters in discover pages
 - [x] Add movie collections
 - [x] Support for Plex
-- [ ] Support for iOS
+- [x] Support for iOS
 - [ ] Support for TV devices
 
 ## Screenshots
 
-| Select Server                                  | Homepage                                | Movie Details                                     |
-| ---------------------------------------------- | --------------------------------------- | ------------------------------------------------- |
-| ![Select Server](./screenshots/server-url.png) | ![Homepage](./screenshots/homepage.png) | ![Movie Details](./screenshots/movie-details.png) |
+| Select Server                                  | Login                             | Homepage                                |
+| ---------------------------------------------- | --------------------------------- | --------------------------------------- |
+| ![Select Server](./screenshots/server-url.png) | ![Login](./screenshots/login.png) | ![Homepage](./screenshots/homepage.png) |
 
-| Search                              | Request Modal                                     | Request List                                    |
-| ----------------------------------- | ------------------------------------------------- | ----------------------------------------------- |
-| ![Search](./screenshots/search.png) | ![Request Modal](./screenshots/request-modal.png) | ![Request List](./screenshots/request-list.png) |
+| Movie Details                                     | Search                              | Request Modal                                     |
+| ------------------------------------------------- | ----------------------------------- | ------------------------------------------------- |
+| ![Movie Details](./screenshots/movie-details.png) | ![Search](./screenshots/search.png) | ![Request Modal](./screenshots/request-modal.png) |
+
+| Also available for iOS!           |
+| --------------------------------- |
+| ![iOS app](./screenshots/ios.png) |
 
 ## License
 
