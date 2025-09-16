@@ -552,7 +552,7 @@ const TvRequestModal = ({
                       );
                       return (
                         <View
-                          key={`season-${season.id}`}
+                          key={`season-${season.seasonNumber}`}
                           className="flex flex-row"
                         >
                           <View
