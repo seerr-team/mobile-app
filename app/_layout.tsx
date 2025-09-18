@@ -51,108 +51,74 @@ axios.defaults.withCredentials = true;
 const loadLocaleData = async (locale: string): Promise<MessagesType> => {
   switch (locale) {
     case 'ar':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/ar.json')).default;
     case 'bg':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/bg.json')).default;
     case 'ca':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/ca.json')).default;
     case 'cs':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/cs.json')).default;
     case 'da':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/da.json')).default;
     case 'de':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/de.json')).default;
     case 'el':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/el.json')).default;
     case 'es':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/es.json')).default;
     case 'es-MX':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/es_MX.json')).default;
     case 'fi':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/fi.json')).default;
     case 'fr':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/fr.json')).default;
     case 'he':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/he.json')).default;
     case 'hi':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/hi.json')).default;
     case 'hr':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/hr.json')).default;
     case 'hu':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/hu.json')).default;
     case 'it':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/it.json')).default;
     case 'ja':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/ja.json')).default;
     case 'ko':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/ko.json')).default;
     case 'lt':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/lt.json')).default;
     case 'nb-NO':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/nb_NO.json')).default;
     case 'nl':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/nl.json')).default;
     case 'pl':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/pl.json')).default;
     case 'pt-BR':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/pt_BR.json')).default;
     case 'pt-PT':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/pt_PT.json')).default;
     case 'ro':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/ro.json')).default;
     case 'ru':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/ru.json')).default;
     case 'sq':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/sq.json')).default;
     case 'sr':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/sr.json')).default;
     case 'sv':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/sv.json')).default;
     case 'tr':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/tr.json')).default;
     case 'uk':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/uk.json')).default;
     case 'zh-CN':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/zh_Hans.json'))
         .default;
     case 'zh-TW':
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/zh_Hant.json'))
         .default;
     default:
-      // @ts-expect-error not an ES module
       return (await import('../jellyseerr/src/i18n/locale/en.json')).default;
   }
 };

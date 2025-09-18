@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#111827"
       },
-      "package": "com.anonymous.jellyseerrexpo"
+      "package": "com.anonymous.jellyseerrexpo",
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "bundler": "metro",
