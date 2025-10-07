@@ -13,7 +13,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: "true"
 
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
@@ -64,12 +64,20 @@ jobs:
           name: ${{ github.ref_type == 'tag' && format('jellyseerr-{0}.apk', github.ref_name) || 'jellyseerr.apk' }}
           path: ./${{ github.ref_type == 'tag' && format('jellyseerr-{0}.apk', github.ref_name) || 'jellyseerr.apk' }}
 
+      - name: 🛠 Generate a changelog
+        if: startsWith(github.ref, 'refs/tags/')
+        id: changelog
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: .github/cliff.toml
+          args: -vv --current
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
       - name: 🚀 Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ./${{ github.ref_type == 'tag' && format('jellyseerr-{0}.apk', github.ref_name) || 'jellyseerr.apk' }}
-          name: Release ${{ github.ref_name }}
-          generate_release_notes: true
+        run: gh release create ${GITHUB_REF_NAME} -t "Release ${GITHUB_REF_NAME}" -n "${RELEASE_BODY}" ./jellyseerr*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_BODY: ${{ steps.changelog.outputs.content }}
