@@ -11,7 +11,7 @@ interface CompanyCardProps {
 const CompanyCard = ({ image, url, name }: CompanyCardProps) => {
   return (
     <Link href={url} asChild>
-      <Pressable className="h-32 w-56 overflow-hidden rounded-xl border border-gray-700 bg-gray-700 p-8">
+      <Pressable className="h-32 w-56 overflow-hidden rounded-xl border border-gray-700 bg-gray-700 p-8 transition-colors focus:border-indigo-500">
         <CachedImage
           type="tmdb"
           src={image}

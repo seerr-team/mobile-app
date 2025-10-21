@@ -13,7 +13,7 @@ import type {
 } from '@/jellyseerr/server/models/Search';
 import globalMessages from '@/utils/globalMessages';
 import { useIntl } from 'react-intl';
-import { FlatList, View } from 'react-native';
+import { FlatList, Platform, View } from 'react-native';
 
 type ListViewProps = {
   items?: (TvResult | MovieResult | PersonResult | CollectionResult)[];
@@ -71,7 +71,7 @@ const ListView = ({
             : undefined
         }
         renderItem={({ item, index }) => item}
-        numColumns={2}
+        numColumns={Platform.isTV ? 6 : 2}
         horizontal={false}
         contentContainerStyle={{ alignItems: 'stretch' }}
         onEndReached={onScrollBottom}

@@ -23,7 +23,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Pressable, View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.RequestCard');
@@ -240,7 +240,11 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
       ) : requestData.status === MediaRequestStatus.FAILED ? (
         <Badge
           badgeType="danger"
-          href={`/${requestData.type}/${requestData.media.tmdbId}?manage=1`}
+          href={
+            !Platform.isTV
+              ? `/${requestData.type}/${requestData.media.tmdbId}?manage=1`
+              : undefined
+          }
         >
           {intl.formatMessage(globalMessages.failed)}
         </Badge>
@@ -249,7 +253,11 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
           MediaStatus.DELETED ? (
         <Badge
           badgeType="warning"
-          href={`/${requestData.type}/${requestData.media.tmdbId}?manage=1`}
+          href={
+            !Platform.isTV
+              ? `/${requestData.type}/${requestData.media.tmdbId}?manage=1`
+              : undefined
+          }
         >
           {intl.formatMessage(globalMessages.pending)}
         </Badge>
@@ -297,68 +305,76 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
           setShowEditModal(false);
         }}
       />
-      <View
-        className={`relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center py-4 pl-4 pr-1 text-gray-400 shadow ${canExpand ? 'w-full' : 'w-80 sm:w-96'}`}
-        data-testid="request-card"
+      <Link
+        href={
+          request.type === 'movie'
+            ? `/movie/${requestData.media.tmdbId}`
+            : `/tv/${requestData.media.tmdbId}`
+        }
+        asChild
       >
-        {title.backdropPath && (
-          <View className="absolute inset-0 z-0">
-            <CachedImage
-              type="tmdb"
-              alt=""
-              src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${title.backdropPath}`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-            <LinearGradient
-              colors={['rgba(31, 41, 55, 0.47)', 'rgba(31, 41, 55, 1)']}
-              start={[0, 0]}
-              end={[1, 0]}
-              locations={[0, 1]}
-              style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                height: '100%',
-              }}
-            />
-          </View>
-        )}
-        <View
-          className={`flex ${canExpand ? 'w-full flex-row-reverse items-center gap-2' : 'w-72 flex-row sm:w-96'}`}
+        <Pressable
+          className={`relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center py-4 pl-4 pr-1 text-gray-400 shadow focus:border-indigo-500 ${canExpand ? 'w-full' : 'w-80 sm:w-96'}`}
+          data-testid="request-card"
         >
+          {title.backdropPath && (
+            <View className="absolute inset-0 z-0">
+              <CachedImage
+                type="tmdb"
+                alt=""
+                src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${title.backdropPath}`}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <LinearGradient
+                colors={['rgba(31, 41, 55, 0.47)', 'rgba(31, 41, 55, 1)']}
+                start={[0, 0]}
+                end={[1, 0]}
+                locations={[0, 1]}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  height: '100%',
+                }}
+              />
+            </View>
+          )}
           <View
-            className="relative z-10 flex min-w-0 flex-1 flex-col pr-3"
-            data-testid="request-card-title"
+            className={`flex ${canExpand ? 'w-full flex-row-reverse items-center gap-2' : 'w-72 flex-row sm:w-96'}`}
           >
             <View
-              className={`${canExpand ? 'flex' : 'hidden sm:flex'} font-medium text-white`}
+              className="relative z-10 flex min-w-0 flex-1 flex-col pr-3"
+              data-testid="request-card-title"
             >
-              <ThemedText>
-                {(isMovie(title)
-                  ? title.releaseDate
-                  : title.firstAirDate
-                )?.slice(0, 4)}
-              </ThemedText>
-            </View>
-            <Link
-              href={
-                request.type === 'movie'
-                  ? `/movie/${requestData.media.tmdbId}`
-                  : `/tv/${requestData.media.tmdbId}`
-              }
-              className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${canExpand ? 'mb-1 text-2xl' : 'text-lg'} font-bold text-white hover:underline`}
-              numberOfLines={1}
-            >
-              {isMovie(title) ? title.title : title.name}
-            </Link>
-            {hasPermission(
-              [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
-              { type: 'or' }
-            ) && (
-              <View className="flex flex-row items-center truncate py-0.5 text-sm sm:py-1">
-                <Link href={`/users/${requestData.requestedBy.id}`}>
-                  <Pressable className="group flex flex-row items-center gap-2">
+              <View
+                className={`${canExpand ? 'flex' : 'hidden sm:flex'} font-medium text-white`}
+              >
+                <ThemedText>
+                  {(isMovie(title)
+                    ? title.releaseDate
+                    : title.firstAirDate
+                  )?.slice(0, 4)}
+                </ThemedText>
+              </View>
+              <Link
+                href={
+                  request.type === 'movie'
+                    ? `/movie/${requestData.media.tmdbId}`
+                    : `/tv/${requestData.media.tmdbId}`
+                }
+                className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${canExpand ? 'mb-1 text-2xl' : 'text-lg'} font-bold text-white hover:underline`}
+                numberOfLines={1}
+              >
+                {isMovie(title) ? title.title : title.name}
+              </Link>
+              {hasPermission(
+                [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
+                { type: 'or' }
+              ) && (
+                <View className="flex flex-row items-center truncate py-0.5 text-sm sm:py-1">
+                  {/* <Link href={`/users/${requestData.requestedBy.id}`}> */}
+                  <View className="group flex flex-row items-center gap-2">
                     <CachedImage
                       type="avatar"
                       src={requestData.requestedBy.avatar}
@@ -369,122 +385,127 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                     <ThemedText className="truncate font-semibold text-gray-300">
                       {requestData.requestedBy.displayName}
                     </ThemedText>
-                  </Pressable>
-                </Link>
+                  </View>
+                  {/* </Link> */}
+                </View>
+              )}
+              {!isMovie(title) && request.seasons.length > 0 && (
+                <View className="my-0.5 flex flex-row items-center text-sm sm:my-1">
+                  <ThemedText className="mr-2 text-sm font-bold text-gray-400">
+                    {intl.formatMessage(messages.seasons, {
+                      seasonCount:
+                        (settings.currentSettings.enableSpecialEpisodes
+                          ? title.seasons.length
+                          : title.seasons.filter(
+                              (season) => season.seasonNumber !== 0
+                            ).length) === request.seasons.length
+                          ? 0
+                          : request.seasons.length,
+                    })}
+                  </ThemedText>
+                  <View className="hide-scrollbar flex flex-row overflow-x-scroll">
+                    {request.seasons.map((season) => (
+                      <View key={`season-${season.id}`} className="mr-2">
+                        <Badge>
+                          {season.seasonNumber === 0
+                            ? intl.formatMessage(globalMessages.specials)
+                            : season.seasonNumber}
+                        </Badge>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              )}
+              {!canExpand && <AvailabilityBadge />}
+            </View>
+            <View className="flex-shrink-0 scale-100">
+              <View className="overflow-hidden rounded-md shadow-sm">
+                {/* <Link
+              href={
+                request.type === 'movie'
+                  ? `/movie/${requestData.media.tmdbId}`
+                  : `/tv/${requestData.media.tmdbId}`
+              }
+              className="flex-shrink-0 scale-100"
+            >
+              <Pressable className="overflow-hidden rounded-md shadow-sm"> */}
+                <CachedImage
+                  type="tmdb"
+                  src={
+                    title.posterPath
+                      ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${title.posterPath}`
+                      : '/images/jellyseerr_poster_not_found.png'
+                  }
+                  alt=""
+                  style={
+                    canExpand
+                      ? { width: 60, height: 90 }
+                      : { width: 80, height: 120 }
+                  }
+                />
+                {/* </Pressable>
+            </Link> */}
               </View>
-            )}
-            {!isMovie(title) && request.seasons.length > 0 && (
-              <View className="my-0.5 flex flex-row items-center text-sm sm:my-1">
-                <ThemedText className="mr-2 text-sm font-bold text-gray-400">
-                  {intl.formatMessage(messages.seasons, {
-                    seasonCount:
-                      (settings.currentSettings.enableSpecialEpisodes
-                        ? title.seasons.length
-                        : title.seasons.filter(
-                            (season) => season.seasonNumber !== 0
-                          ).length) === request.seasons.length
-                        ? 0
-                        : request.seasons.length,
+            </View>
+          </View>
+          {canExpand && (
+            <View className="pb-4 pt-2">
+              <View className="my-0.5 flex flex-row items-center sm:my-1">
+                <ThemedText className="mr-4 mt-2 font-bold text-gray-400 sm:mt-1">
+                  {intl.formatMessage(globalMessages.status)}
+                </ThemedText>
+                <AvailabilityBadge />
+              </View>
+              <View className="my-0.5 flex flex-row items-center sm:my-1">
+                <ThemedText className="mr-4 mt-2 font-bold text-gray-400 sm:mt-1">
+                  {intl.formatMessage(messagesRequestList.requested)}
+                </ThemedText>
+                <ThemedText className="mt-2 text-gray-300 sm:mt-1">
+                  <FormattedRelativeTime
+                    value={new Date(requestData.createdAt)}
+                    updateIntervalInSeconds={1}
+                    numeric="auto"
+                  />
+                </ThemedText>
+              </View>
+              <View className="my-0.5 flex flex-row items-center sm:my-1">
+                <ThemedText className="mr-4 mt-2 font-bold text-gray-400 sm:mt-1">
+                  {intl.formatMessage(messagesRequestList.modified)}
+                </ThemedText>
+                <ThemedText className="text-gray-300">
+                  {intl.formatMessage(messagesRequestList.modifieduserdate, {
+                    date: (
+                      <FormattedRelativeTime
+                        value={new Date(requestData.createdAt)}
+                        updateIntervalInSeconds={1}
+                        numeric="auto"
+                      />
+                    ),
+                    user: (
+                      <View
+                        // href={`/users/${requestData.requestedBy.id}`}
+                        className="group flex translate-y-1.5 flex-row items-center gap-1.5 truncate pl-1"
+                      >
+                        <View className="avatar-sm overflow-hidden rounded-full">
+                          <CachedImage
+                            type="avatar"
+                            src={requestData.requestedBy.avatar}
+                            alt=""
+                            style={{ width: 20, height: 20 }}
+                          />
+                        </View>
+                        <ThemedText className="truncate font-bold text-gray-300 group-hover:underline">
+                          {requestData.requestedBy.displayName}
+                        </ThemedText>
+                      </View>
+                    ),
                   })}
                 </ThemedText>
-                <View className="hide-scrollbar flex flex-row overflow-x-scroll">
-                  {request.seasons.map((season) => (
-                    <View key={`season-${season.id}`} className="mr-2">
-                      <Badge>
-                        {season.seasonNumber === 0
-                          ? intl.formatMessage(globalMessages.specials)
-                          : season.seasonNumber}
-                      </Badge>
-                    </View>
-                  ))}
-                </View>
               </View>
-            )}
-            {!canExpand && <AvailabilityBadge />}
-          </View>
-          <Link
-            href={
-              request.type === 'movie'
-                ? `/movie/${requestData.media.tmdbId}`
-                : `/tv/${requestData.media.tmdbId}`
-            }
-            className="flex-shrink-0 scale-100"
-          >
-            <Pressable className="overflow-hidden rounded-md shadow-sm">
-              <CachedImage
-                type="tmdb"
-                src={
-                  title.posterPath
-                    ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${title.posterPath}`
-                    : '/images/jellyseerr_poster_not_found.png'
-                }
-                alt=""
-                style={
-                  canExpand
-                    ? { width: 60, height: 90 }
-                    : { width: 80, height: 120 }
-                }
-              />
-            </Pressable>
-          </Link>
-        </View>
-        {canExpand && (
-          <View className="pb-4 pt-2">
-            <View className="my-0.5 flex flex-row items-center sm:my-1">
-              <ThemedText className="mr-4 mt-2 font-bold text-gray-400 sm:mt-1">
-                {intl.formatMessage(globalMessages.status)}
-              </ThemedText>
-              <AvailabilityBadge />
             </View>
-            <View className="my-0.5 flex flex-row items-center sm:my-1">
-              <ThemedText className="mr-4 mt-2 font-bold text-gray-400 sm:mt-1">
-                {intl.formatMessage(messagesRequestList.requested)}
-              </ThemedText>
-              <ThemedText className="mt-2 text-gray-300 sm:mt-1">
-                <FormattedRelativeTime
-                  value={new Date(requestData.createdAt)}
-                  updateIntervalInSeconds={1}
-                  numeric="auto"
-                />
-              </ThemedText>
-            </View>
-            <View className="my-0.5 flex flex-row items-center sm:my-1">
-              <ThemedText className="mr-4 mt-2 font-bold text-gray-400 sm:mt-1">
-                {intl.formatMessage(messagesRequestList.modified)}
-              </ThemedText>
-              <ThemedText className="text-gray-300">
-                {intl.formatMessage(messagesRequestList.modifieduserdate, {
-                  date: (
-                    <FormattedRelativeTime
-                      value={new Date(requestData.createdAt)}
-                      updateIntervalInSeconds={1}
-                      numeric="auto"
-                    />
-                  ),
-                  user: (
-                    <View
-                      // href={`/users/${requestData.requestedBy.id}`}
-                      className="group flex translate-y-1.5 flex-row items-center gap-1.5 truncate pl-1"
-                    >
-                      <View className="avatar-sm overflow-hidden rounded-full">
-                        <CachedImage
-                          type="avatar"
-                          src={requestData.requestedBy.avatar}
-                          alt=""
-                          style={{ width: 20, height: 20 }}
-                        />
-                      </View>
-                      <ThemedText className="truncate font-bold text-gray-300 group-hover:underline">
-                        {requestData.requestedBy.displayName}
-                      </ThemedText>
-                    </View>
-                  ),
-                })}
-              </ThemedText>
-            </View>
-          </View>
-        )}
-      </View>
+          )}
+        </Pressable>
+      </Link>
     </>
   );
 };

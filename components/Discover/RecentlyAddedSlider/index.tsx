@@ -61,9 +61,9 @@ const RecentlyAddedSlider = ({ lastRefresh }: RecentlyAddedSliderProps) => {
     <VisibilitySensor onChange={setIsVisible}>
       <View className="mb-4 mt-6 px-4">
         <Link href="/requests?filter=all" asChild>
-          <Pressable>
+          <Pressable className="group">
             <View className="flex min-w-0 flex-row items-center gap-2">
-              <ThemedText className="truncate text-2xl font-bold">
+              <ThemedText className="truncate text-2xl font-bold text-white group-focus:text-gray-400">
                 {intl.formatMessage(messages.recentlyAdded)}
               </ThemedText>
               <ArrowRightCircle color="#ffffff" />

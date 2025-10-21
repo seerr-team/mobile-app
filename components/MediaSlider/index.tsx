@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-// import ShowMoreCard from '@/components/MediaSlider/ShowMoreCard';
 import ThemedText from '@/components/Common/ThemedText';
+import ShowMoreCard from '@/components/MediaSlider/ShowMoreCard';
 import PersonCard from '@/components/PersonCard';
 import Slider from '@/components/Slider';
 import TitleCard from '@/components/TitleCard';
@@ -17,6 +16,7 @@ import type {
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import useSWRInfinite from 'swr/infinite';
 
@@ -169,27 +169,27 @@ const MediaSlider = ({
       }
     });
 
-  // if (linkUrl && titles.length > 20) {
-  //   finalTitles.push(
-  //     <ShowMoreCard
-  //       url={linkUrl}
-  //       posters={titles
-  //         .slice(20, 24)
-  //         .map((title) =>
-  //           title.mediaType !== 'person' ? title.posterPath : undefined
-  //         )}
-  //     />
-  //   );
-  // }
+  if (linkUrl && titles.length > 20) {
+    finalTitles.push(
+      <ShowMoreCard
+        url={linkUrl}
+        posters={titles
+          .slice(20, 24)
+          .map((title) =>
+            title.mediaType !== 'person' ? title.posterPath : undefined
+          )}
+      />
+    );
+  }
 
   return (
     <VisibilitySensor onChange={setIsVisible}>
       <View className="mb-4 mt-6 px-4">
         {linkUrl ? (
           <Link href={linkUrl} asChild>
-            <Pressable>
+            <Pressable className="group">
               <View className="flex min-w-0 flex-row items-center gap-2">
-                <ThemedText className="truncate text-2xl font-bold">
+                <ThemedText className="truncate text-2xl font-bold text-white group-focus:text-gray-400">
                   {title}
                 </ThemedText>
                 <ArrowRightCircle color="#ffffff" />

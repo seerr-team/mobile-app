@@ -31,8 +31,12 @@ import {
 import 'intl-pluralrules';
 import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
-import { KeyboardAvoidingView, View } from 'react-native';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
+  KeyboardAvoidingView,
+  KeyboardProvider,
+} from 'react-native-keyboard-controller';
 import 'react-native-reanimated';
 import { configureReanimatedLogger } from 'react-native-reanimated';
 import {
@@ -412,7 +416,9 @@ function RootLayoutWithIntl() {
       defaultLocale="en"
       messages={loadedMessages}
     >
-      <RootLayout />
+      <KeyboardProvider>
+        <RootLayout />
+      </KeyboardProvider>
     </IntlProvider>
   );
 }

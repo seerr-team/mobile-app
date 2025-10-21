@@ -70,9 +70,9 @@ const PlexWatchlistSlider = ({ lastRefresh }: PlexWatchlistSliderProps) => {
     <VisibilitySensor onChange={setIsVisible}>
       <View className="slider-header px-4">
         <Link href={'/discover_watchlist'} asChild>
-          <Pressable>
+          <Pressable className="group">
             <View className="flex min-w-0 flex-row items-center gap-2">
-              <ThemedText className="truncate text-2xl font-bold">
+              <ThemedText className="truncate text-2xl font-bold text-white group-focus:text-gray-400">
                 {intl.formatMessage(messages.plexwatchlist)}
               </ThemedText>
               <ArrowRightCircle color="#ffffff" />

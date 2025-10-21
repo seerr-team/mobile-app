@@ -21,7 +21,7 @@ export default function Button({
     'self-start whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out disabled:opacity-50';
   const typeClassNames = {
     primary:
-      'border border-indigo-500 bg-indigo-600 bg-opacity-80 text-white hover:border-indigo-500 hover:bg-opacity-100 focus:border-indigo-700 focus:ring-indigo focus:outline-none active:border-indigo-700 active:bg-opacity-100',
+      'border border-indigo-500 bg-indigo-600 bg-opacity-80 text-white hover:border-indigo-500 hover:bg-opacity-100 focus:border-indigo-400 focus:ring-indigo focus:outline-none active:border-indigo-700 active:bg-opacity-100',
     success:
       'border border-green-500 bg-green-600 bg-opacity-80 text-white hover:border-green-500 hover:bg-opacity-100 focus:border-green-700 focus:ring-green-500 focus:outline-none active:border-green-700 active:bg-opacity-100',
     danger:

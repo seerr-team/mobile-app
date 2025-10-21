@@ -4,7 +4,7 @@ export default function ThemedText({ style, className, ...rest }: TextProps) {
   const hasColorClass = className
     ?.trim()
     .split(/\s+/g)
-    .some((c) => c.match(/^text-\w+-\d+/));
+    .some((c) => c.match(/^(\S+:)?text-\w+-\d+/));
   return (
     <Text
       style={[style, hasColorClass ? {} : { color: 'white' }]}

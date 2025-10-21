@@ -33,6 +33,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "@react-native-tvos/config-tv",
       "expo-router",
       [
         "expo-splash-screen",

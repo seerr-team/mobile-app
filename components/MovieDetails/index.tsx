@@ -61,7 +61,7 @@ import uniqBy from 'lodash.uniqby';
 import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
-import { Linking, Pressable, ScrollView, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getJellyseerrMessages('components.MovieDetails');
@@ -394,6 +394,8 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   //   type: 'or',
   // });
 
+  const TextLinkType = Platform.isTV ? ThemedText : Link;
+
   return (
     <ScrollView contentContainerClassName="pb-4">
       {data.backdropPath && (
@@ -672,12 +674,12 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                       <ThemedText className="font-bold text-gray-300">
                         {person.job}
                       </ThemedText>
-                      <Link
+                      <TextLinkType
                         href={`/person/${person.id}`}
                         className="text-gray-400"
                       >
                         {person.name}
-                      </Link>
+                      </TextLinkType>
                     </View>
                   </View>
                 ))}
@@ -698,7 +700,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           {data.keywords.length > 0 && (
             <View className="mt-6 flex flex-row flex-wrap gap-x-2">
               {data.keywords.map((keyword) => (
-                <Link
+                <TextLinkType
                   href={`/discover_movies?keywords=${keyword.id}`}
                   key={`keyword-id-${keyword.id}`}
                   asChild
@@ -706,7 +708,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                   <Pressable className="mb-2 mr-2 inline-flex flex-row last:mr-0">
                     <Tag>{keyword.name}</Tag>
                   </Pressable>
-                </Link>
+                </TextLinkType>
               ))}
             </View>
           )}
@@ -715,7 +717,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           {data.collection && (
             <View className="mb-6">
               <Link href={`/collection/${data.collection.id}`} asChild>
-                <Pressable className="group relative z-0 cursor-pointer overflow-hidden rounded-lg border border-gray-700 bg-gray-800 bg-cover bg-center transition duration-300 hover:border-gray-500">
+                <Pressable className="group relative z-0 cursor-pointer overflow-hidden rounded-lg border border-gray-700 bg-gray-800 bg-cover bg-center transition duration-300 focus:border-indigo-500">
                   <View className="absolute inset-0 z-0 opacity-30">
                     <CachedImage
                       type="tmdb"
@@ -950,7 +952,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                   {intl.formatMessage(messages.originallanguage)}
                 </ThemedText>
                 <ThemedText className="ml-2 shrink text-right text-sm font-normal text-gray-400">
-                  <Link
+                  <TextLinkType
                     href={`/discover_movies/language/${data.originalLanguage}`}
                   >
                     {/* {intl.formatDisplayName(data.originalLanguage, {
@@ -965,7 +967,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                         (lng) => lng.iso_639_1 === data.originalLanguage
                       )?.name
                     }
-                  </Link>
+                  </TextLinkType>
                 </ThemedText>
               </View>
             )}
@@ -1018,13 +1020,13 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                     )
                     .map((s) => {
                       return (
-                        <Link
+                        <TextLinkType
                           href={`/discover_movies/studio/${s.id}`}
                           key={`studio-${s.id}`}
                           className="text-right text-sm font-normal text-gray-400"
                         >
                           {s.name}
-                        </Link>
+                        </TextLinkType>
                       );
                     })}
                   {!showAllStudios && (

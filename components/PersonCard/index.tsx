@@ -22,7 +22,7 @@ const PersonCard = ({
   return (
     <Link href={`/person/${personId}`} asChild>
       <Pressable
-        className="flex items-center overflow-hidden rounded-xl border border-gray-700 bg-gray-800"
+        className="flex items-center overflow-hidden rounded-xl border border-gray-700 bg-gray-800 transition-colors focus:border-indigo-500"
         style={
           !canExpand ? { width: 150, height: 225 } : { aspectRatio: '2 / 3' }
         }

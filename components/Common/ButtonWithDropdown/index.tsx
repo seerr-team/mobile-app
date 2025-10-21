@@ -88,9 +88,9 @@ const ButtonWithDropdown = ({
       {as === 'link' ? (
         <Link {...(props as LinkProps)} asChild>
           <Pressable
-            className={`relative z-10 inline-flex flex-row items-center justify-center gap-2 px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out hover:z-20 focus:z-20 focus:outline-none ${
+            className={`relative z-10 inline-flex flex-row items-center justify-center gap-2 px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out hover:z-30 focus:z-30 focus:outline-none ${
               styleClasses.mainButtonClasses
-            } ${children ? 'rounded-l-md' : 'rounded-md'} ${className}`}
+            } ${children ? 'rounded-l-md rounded-r-none' : 'rounded-md'} ${className}`}
           >
             {text}
           </Pressable>
@@ -98,9 +98,9 @@ const ButtonWithDropdown = ({
       ) : (
         <Pressable
           {...(props as PressableProps)}
-          className={`relative z-10 inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out hover:z-20 focus:z-20 focus:outline-none ${
+          className={`relative z-10 inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out hover:z-30 focus:z-30 focus:outline-none ${
             styleClasses.mainButtonClasses
-          } ${children ? 'rounded-l-md' : 'rounded-md'} ${className}`}
+          } ${children ? 'rounded-l-md rounded-r-none' : 'rounded-md'} ${className}`}
         >
           {text}
         </Pressable>

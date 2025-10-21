@@ -164,9 +164,9 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
                                 }forgotpassword.html`
                           );
                         }}
-                        className="pt-2 text-sm text-indigo-500 hover:text-indigo-400"
+                        className="group pt-2 text-sm"
                       >
-                        <ThemedText>
+                        <ThemedText className="text-indigo-500 group-hover:text-indigo-400 group-focus:text-indigo-400">
                           {intl.formatMessage(messages.forgotpassword)}
                         </ThemedText>
                       </Pressable>

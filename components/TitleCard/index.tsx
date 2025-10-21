@@ -50,11 +50,11 @@ const TitleCard = ({
   return (
     <Link
       href={`/${mediaType}/${id}`}
-      className="overflow-hidden rounded-xl border border-gray-700 bg-gray-700"
+      className="overflow-hidden"
       style={!canExpand ? { width: 150, height: 225 } : {}}
       asChild
     >
-      <Pressable>
+      <Pressable className="rounded-xl border border-gray-700 bg-gray-700 transition-colors focus:border-indigo-500">
         <View className="absolute flex w-full flex-row justify-between p-2">
           <View
             className={`pointer-events-none z-40 self-start rounded-full border shadow-md ${

@@ -18,7 +18,7 @@ import Checkbox from 'expo-checkbox';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function Setup() {
@@ -28,6 +28,7 @@ export default function Setup() {
   const [error, setError] = useState<ConnectionErrorType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
+  const [checkboxFocused, setCheckboxFocused] = useState(false);
   const settings = useSettings();
   const sendAnonymousData = useSelector(
     (state: RootState) => state.appSettings.sendAnonymousData
@@ -90,17 +91,20 @@ export default function Setup() {
 
   return (
     <ScrollView contentContainerClassName="flex-grow justify-center">
-      <View className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md">
-        <View className="relative w-full max-w-full">
+      <View className="relative z-40 mt-10 flex flex-col items-center px-4 sm:mx-auto sm:w-full sm:max-w-md md:mt-2">
+        <View className="tv:bg-reg-500 relative w-full max-w-full">
           <Image
-            className="max-w-full"
-            style={{ height: 192, objectFit: 'contain' }}
+            style={{
+              width: '100%',
+              height: Dimensions.get('window').height * 0.3,
+            }}
+            contentFit="contain"
             source={LogoStacked}
           />
         </View>
       </View>
       <View className="relative z-50 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <ThemedText className="mt-12 text-center text-3xl font-bold">
+        <ThemedText className="mt-12 text-center text-3xl font-bold md:mt-0 md:text-2xl">
           Enter the server address to continue.
         </ThemedText>
         <View className="mt-8 w-full bg-gray-800/50 px-10 py-8">
@@ -141,18 +145,28 @@ export default function Setup() {
           <View className="mt-4">
             <View className="flex flex-row items-center gap-2">
               <Checkbox
-                className="h-5 w-5 rounded-sm"
+                className="h-5 w-5"
                 value={sendAnonymousData}
+                onFocus={() => setCheckboxFocused(true)}
+                onBlur={() => setCheckboxFocused(false)}
+                style={
+                  checkboxFocused
+                    ? { borderColor: '#4f46e5', borderWidth: 2 }
+                    : {}
+                }
                 onValueChange={() =>
                   dispatch(setSendAnonymousData(!sendAnonymousData))
                 }
-                color={sendAnonymousData ? '#4f46e5' : '#ffffff'}
+                color={
+                  checkboxFocused
+                    ? '#6366f1'
+                    : sendAnonymousData
+                      ? '#4f46e5'
+                      : '#ffffff'
+                }
               />
               <ThemedText
-                onPress={() =>
-                  dispatch(setSendAnonymousData(!sendAnonymousData))
-                }
-                className="mb-1 text-lg font-bold text-white"
+                className={`text-lg font-bold ${checkboxFocused ? 'text-indigo-500' : 'text-white'}`}
               >
                 Send Anonymous Usage Data
               </ThemedText>

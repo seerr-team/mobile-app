@@ -14,7 +14,7 @@ interface GenreCardProps {
 const GenreCard = ({ image, url, name, canExpand = false }: GenreCardProps) => {
   return (
     <Link href={url} asChild>
-      <Pressable className="h-32 w-56 overflow-hidden rounded-xl border border-gray-700 bg-gray-700">
+      <Pressable className="h-32 w-56 overflow-hidden rounded-xl border border-gray-700 bg-gray-700 transition-colors focus:border-indigo-500">
         <View className="absolute z-10 flex h-full w-full items-center justify-center">
           <ThemedText className="truncate whitespace-normal text-center text-2xl font-bold text-white">
             {name}

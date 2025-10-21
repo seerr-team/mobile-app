@@ -6,11 +6,13 @@ import {
   Tv as TvFilled,
 } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
-import { TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const tintColor = '#6366f1';
 const inactiveColor = '#9ca3af';
+const focusColor = '#ffffff';
 
 interface NavigationItem {
   path: string;
@@ -48,6 +50,7 @@ const navigationItems: NavigationItem[] = [
 export default function BottomNavigation() {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
+  const [isFocused, setIsFocused] = useState<null | string>(null);
 
   return (
     <View
@@ -55,12 +58,17 @@ export default function BottomNavigation() {
       style={{ paddingBottom: insets.bottom, height: 56 + insets.bottom }}
     >
       {navigationItems.map((item) => {
-        const active = `/${pathname}` === item.path;
+        const active = pathname === item.path;
         const IconComponent = active ? item.activeIcon : item.icon;
-        const iconColor = active ? tintColor : inactiveColor;
+        const iconColor =
+          isFocused === item.path
+            ? focusColor
+            : active
+              ? tintColor
+              : inactiveColor;
 
         return (
-          <TouchableOpacity
+          <Pressable
             key={item.path}
             onPress={() => {
               if (pathname !== item.path) {
@@ -68,11 +76,13 @@ export default function BottomNavigation() {
               }
             }}
             className="flex-1 items-center justify-center"
+            onFocus={() => setIsFocused(item.path)}
+            onBlur={() => setIsFocused(null)}
           >
             <View className="items-center">
               <IconComponent color={iconColor} width={24} height={24} />
             </View>
-          </TouchableOpacity>
+          </Pressable>
         );
       })}
     </View>
