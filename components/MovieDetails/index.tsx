@@ -808,7 +808,18 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                     </Tooltip>
                   )}
                 {ratingData?.imdb?.criticsScore && (
-                  <Tooltip content={intl.formatMessage(messages.imdbuserscore)}>
+                  <Tooltip
+                    content={intl.formatMessage(messages.imdbuserscore, {
+                      formattedCount: intl.formatNumber(
+                        ratingData.imdb.criticsScoreCount,
+                        {
+                          notation: 'compact',
+                          compactDisplay: 'short',
+                          maximumFractionDigits: 1,
+                        }
+                      ),
+                    })}
+                  >
                     <Pressable
                       className="flex flex-row items-center gap-1.5"
                       onPress={() => Linking.openURL(ratingData.imdb.url)}

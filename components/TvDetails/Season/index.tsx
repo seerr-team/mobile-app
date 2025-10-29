@@ -68,7 +68,7 @@ const Season = ({ seasonNumber, tvId }: SeasonProps) => {
                   <View className="relative aspect-video overflow-hidden rounded-lg xl:h-32">
                     <CachedImage
                       type="tmdb"
-                      src={`https://image.tmdb.org/t/p/original/${episode.stillPath}`}
+                      src={episode.stillPath}
                       style={{ width: '100%', height: '100%' }}
                       alt=""
                     />
