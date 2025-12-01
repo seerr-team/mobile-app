@@ -39,6 +39,10 @@ export default function Setup() {
       if (!url) return;
       setLoading(true);
       try {
+        url = url.trim();
+        if (url.endsWith('/')) {
+          url = url.slice(0, -1);
+        }
         const serverSettings = await getServerSettings(url);
         await AsyncStorage.setItem('server-url', url);
         dispatch(setServerUrl(url));
