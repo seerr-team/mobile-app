@@ -224,7 +224,9 @@ const CollectionRequestModal = ({
         <ThemedText>
           {intl.formatMessage(messages.requestSuccess, {
             title: data?.name,
-            strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+            strong: (msg: React.ReactNode) => (
+              <ThemedText className="font-semibold">{msg}</ThemedText>
+            ),
           })}
         </ThemedText>
       );
