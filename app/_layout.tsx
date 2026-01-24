@@ -11,6 +11,7 @@ import '@/jellyseerr/src/styles/globals.css';
 import store from '@/store';
 import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
+import '@/utils/interceptCsrfToken';
 import {
   disableSentry,
   initSentry,
