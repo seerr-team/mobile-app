@@ -2,7 +2,7 @@ import CachedImage from '@/components/Common/CachedImage';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
 import { useUser } from '@/hooks/useUser';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { ArrowRightOnRectangle, Clock } from '@nandorojo/heroicons/24/outline';
 import axios from 'axios';
 import { BlurView } from 'expo-blur';
@@ -12,7 +12,7 @@ import { useIntl } from 'react-intl';
 import { Modal, Pressable, View } from 'react-native';
 import { mutate } from 'swr';
 
-const messages = getJellyseerrMessages('components.Layout.UserDropdown');
+const messages = getSeerrMessages('components.Layout.UserDropdown');
 
 const UserDropdown = () => {
   const serverUrl = useServerUrl();

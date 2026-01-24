@@ -1,6 +1,6 @@
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ThemedText from '@/components/Common/ThemedText';
-import { MediaStatus } from '@/jellyseerr/server/constants/media';
+import { MediaStatus } from '@/seerr/server/constants/media';
 import { CheckCircle } from '@nandorojo/heroicons/20/solid';
 import {
   Bell,

@@ -6,17 +6,16 @@ import RequestModal from '@/components/RequestModal';
 import StatusBadge from '@/components/StatusBadge';
 import useDeepLinks from '@/hooks/useDeepLinks';
 import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
 import { Permission, useUser } from '@/hooks/useUser';
 import {
   MediaRequestStatus,
   MediaStatus,
-} from '@/jellyseerr/server/constants/media';
-import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
-import type { NonFunctionProperties } from '@/jellyseerr/server/interfaces/api/common';
-import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
-import type { TvDetails } from '@/jellyseerr/server/models/Tv';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+} from '@/seerr/server/constants/media';
+import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
+import type { NonFunctionProperties } from '@/seerr/server/interfaces/api/common';
+import type { MovieDetails } from '@/seerr/server/models/Movie';
+import type { TvDetails } from '@/seerr/server/models/Tv';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,8 +25,8 @@ import { useIntl } from 'react-intl';
 import { Platform, Pressable, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.RequestCard');
-const messagesRequestList = getJellyseerrMessages(
+const messages = getSeerrMessages('components.RequestCard');
+const messagesRequestList = getSeerrMessages(
   'components.RequestList.RequestItem'
 );
 
@@ -176,7 +175,6 @@ interface RequestCardProps {
 
 const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
   const serverUrl = useServerUrl();
-  const settings = useSettings();
   const intl = useIntl();
   const { hasPermission } = useUser();
   const [showEditModal, setShowEditModal] = useState(false);
@@ -393,14 +391,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                 <View className="my-0.5 flex flex-row items-center text-sm sm:my-1">
                   <ThemedText className="mr-2 text-sm font-bold text-gray-400">
                     {intl.formatMessage(messages.seasons, {
-                      seasonCount:
-                        (settings.currentSettings.enableSpecialEpisodes
-                          ? title.seasons.length
-                          : title.seasons.filter(
-                              (season) => season.seasonNumber !== 0
-                            ).length) === request.seasons.length
-                          ? 0
-                          : request.seasons.length,
+                      seasonCount: request.seasons.length,
                     })}
                   </ThemedText>
                   <View className="hide-scrollbar flex flex-row overflow-x-scroll">
@@ -434,7 +425,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                   src={
                     title.posterPath
                       ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${title.posterPath}`
-                      : '/images/jellyseerr_poster_not_found.png'
+                      : '/images/seerr_poster_not_found.png'
                   }
                   alt=""
                   style={

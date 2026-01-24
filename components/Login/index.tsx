@@ -1,4 +1,4 @@
-import JellyseerrIcon from '@/assets/images/icon.png';
+import SeerrIcon from '@/assets/images/icon.png';
 import LogoStacked from '@/assets/images/logo-stacked.png';
 import EmbyLogo from '@/assets/services/emby-icon-only.png';
 import JellyfinLogo from '@/assets/services/jellyfin-icon.png';
@@ -6,7 +6,7 @@ import PlexLogo from '@/assets/services/plex.png';
 import Button from '@/components/Common/Button';
 import ImageFader from '@/components/Common/ImageFader';
 import useServerUrl from '@/hooks/useServerUrl';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 // import LanguagePicker from '@/components/Layout/LanguagePicker';
 import ThemedText from '@/components/Common/ThemedText';
 import JellyfinLogin from '@/components/Login/JellyfinLogin';
@@ -14,7 +14,7 @@ import LocalLogin from '@/components/Login/LocalLogin';
 import PlexLoginButton from '@/components/Login/PlexLoginButton';
 import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
-import { MediaServerType } from '@/jellyseerr/server/constants/server';
+import { MediaServerType } from '@/seerr/server/constants/server';
 import { XCircle } from '@nandorojo/heroicons/24/solid';
 import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -27,7 +27,7 @@ import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { router } from 'expo-router';
 
-const messages = getJellyseerrMessages('components.Login');
+const messages = getSeerrMessages('components.Login');
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -135,14 +135,14 @@ const Login = () => {
         settings.currentSettings.localLogin &&
         (mediaServerLogin ? (
           <Button
-            key="jellyseerr"
-            data-testid="jellyseerr-login-button"
+            key="seerr"
+            data-testid="seerr-login-button"
             buttonType="ghost"
             className="flex w-full flex-row items-center justify-center gap-2 bg-transparent"
             onClick={() => setMediaServerLogin(false)}
           >
             <Image
-              source={JellyseerrIcon}
+              source={SeerrIcon}
               alt={settings.currentSettings.applicationTitle}
               className="mr-2"
               style={{ width: 20, height: 20, objectFit: 'contain' }}

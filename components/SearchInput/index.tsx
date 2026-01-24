@@ -1,11 +1,11 @@
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { MagnifyingGlass } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { TextInput, View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.Layout.SearchInput');
+const messages = getSeerrMessages('components.Layout.SearchInput');
 
 const SearchInput = () => {
   const intl = useIntl();

@@ -2,7 +2,7 @@ import Button from '@/components/Common/Button';
 import useServerUrl from '@/hooks/useServerUrl';
 // import SensitiveInput from '@/components/Common/SensitiveInput';
 import useSettings from '@/hooks/useSettings';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
 import { Formik } from 'formik';
 // import Link from 'next/link';
@@ -14,7 +14,7 @@ import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import * as Yup from 'yup';
 
-const messages = getJellyseerrMessages('components.Login');
+const messages = getSeerrMessages('components.Login');
 
 interface LocalLoginProps {
   revalidate: () => void;

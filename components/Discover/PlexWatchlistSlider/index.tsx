@@ -3,8 +3,8 @@ import Slider from '@/components/Slider';
 import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
 import useServerUrl from '@/hooks/useServerUrl';
 import { useUser } from '@/hooks/useUser';
-import type { WatchlistItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { WatchlistItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
@@ -13,9 +13,7 @@ import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages(
-  'components.Discover.PlexWatchlistSlider'
-);
+const messages = getSeerrMessages('components.Discover.PlexWatchlistSlider');
 
 export interface PlexWatchlistSliderProps {
   lastRefresh?: Date;

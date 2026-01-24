@@ -1,12 +1,12 @@
 import CachedImage from '@/components/Common/CachedImage';
 import ThemedText from '@/components/Common/ThemedText';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/solid';
 import { Link } from 'expo-router';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.MediaSlider.ShowMoreCard');
+const messages = getSeerrMessages('components.MediaSlider.ShowMoreCard');
 
 interface ShowMoreCardProps {
   url: string;

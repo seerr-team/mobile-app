@@ -5,15 +5,15 @@ import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ThemedText from '@/components/Common/ThemedText';
 import useSettings from '@/hooks/useSettings';
 import { Permission, useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/jellyseerr/server/constants/media';
-import { MediaServerType } from '@/jellyseerr/server/constants/server';
-import type { DownloadingItem } from '@/jellyseerr/server/lib/downloadtracker';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { MediaStatus } from '@/seerr/server/constants/media';
+import { MediaServerType } from '@/seerr/server/constants/server';
+import type { DownloadingItem } from '@/seerr/server/lib/downloadtracker';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.StatusBadge');
+const messages = getSeerrMessages('components.StatusBadge');
 
 interface StatusBadgeProps {
   status?: MediaStatus;
@@ -136,7 +136,11 @@ const StatusBadge = ({
     <View
       className={`
       absolute left-0 top-0 z-10 flex h-full flex-row bg-opacity-80 ${
-        status === MediaStatus.PROCESSING ? 'bg-indigo-500' : 'bg-green-500'
+        status === MediaStatus.DELETED
+          ? 'bg-red-600'
+          : status === MediaStatus.PROCESSING
+            ? 'bg-indigo-500'
+            : 'bg-green-500'
       } transition-all duration-200 ease-in-out
     `}
       style={{
@@ -379,11 +383,69 @@ const StatusBadge = ({
 
     case MediaStatus.DELETED:
       return (
-        <Tooltip content={mediaLinkDescription}>
-          <Badge badgeType="danger">
-            {intl.formatMessage(is4k ? messages.status4k : messages.status, {
-              status: intl.formatMessage(globalMessages.deleted),
-            })}
+        <Tooltip
+          content={inProgress ? tooltipContent : mediaLinkDescription}
+          className={`${
+            inProgress && 'hidden max-h-96 w-96 overflow-y-auto sm:block'
+          }`}
+          tooltipConfig={{
+            ...(inProgress && { interactive: true, delayHide: 100 }),
+          }}
+        >
+          <Badge
+            badgeType="danger"
+            href={mediaLink}
+            className={`${
+              inProgress &&
+              'relative !bg-gray-700 !bg-opacity-80 !px-0 hover:!bg-gray-700'
+            } overflow-hidden`}
+            element={View}
+          >
+            {inProgress && badgeDownloadProgress}
+            <View
+              className={`relative z-20 flex flex-row items-center ${
+                inProgress && 'px-2'
+              }`}
+            >
+              <ThemedText className="text-xs">
+                {intl.formatMessage(
+                  is4k ? messages.status4k : messages.status,
+                  {
+                    status: inProgress
+                      ? intl.formatMessage(globalMessages.processing)
+                      : intl.formatMessage(globalMessages.deleted),
+                  }
+                )}
+              </ThemedText>
+              {inProgress && (
+                <>
+                  {mediaType === 'tv' &&
+                    downloadItem[0].episode &&
+                    (downloadItem.length > 1 &&
+                    downloadItem.every(
+                      (item) =>
+                        item.downloadId &&
+                        item.downloadId === downloadItem[0].downloadId
+                    ) ? (
+                      <ThemedText className="text-xs">
+                        {intl.formatMessage(messages.seasonnumber, {
+                          seasonNumber: downloadItem[0].episode.seasonNumber,
+                        })}
+                      </ThemedText>
+                    ) : (
+                      <ThemedText className="text-xs">
+                        {intl.formatMessage(messages.seasonepisodenumber, {
+                          seasonNumber: downloadItem[0].episode.seasonNumber,
+                          episodeNumber: downloadItem[0].episode.episodeNumber,
+                        })}
+                      </ThemedText>
+                    ))}
+                  <View className="ml-1">
+                    <LoadingSpinner size={12} />
+                  </View>
+                </>
+              )}
+            </View>
           </Badge>
         </Tooltip>
       );

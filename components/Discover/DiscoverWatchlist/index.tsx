@@ -3,11 +3,11 @@ import ListView from '@/components/Common/ListView';
 import ErrorPage from '@/components/ErrorPage';
 import useDiscover from '@/hooks/useDiscover';
 import { useUser } from '@/hooks/useUser';
-import type { WatchlistItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { WatchlistItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { useIntl } from 'react-intl';
 
-const messages = getJellyseerrMessages('components.Discover.DiscoverWatchlist');
+const messages = getSeerrMessages('components.Discover.DiscoverWatchlist');
 
 const DiscoverWatchlist = () => {
   const intl = useIntl();

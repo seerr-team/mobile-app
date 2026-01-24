@@ -3,14 +3,14 @@ import ListView from '@/components/Common/ListView';
 import Error from '@/components/ErrorPage';
 import useDiscover from '@/hooks/useDiscover';
 import useServerUrl from '@/hooks/useServerUrl';
-import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
-import type { MovieResult } from '@/jellyseerr/server/models/Search';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { MovieDetails } from '@/seerr/server/models/Movie';
+import type { MovieResult } from '@/seerr/server/models/Search';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.MovieDetails');
+const messages = getSeerrMessages('components.MovieDetails');
 
 const MovieSimilar = () => {
   const serverUrl = useServerUrl();

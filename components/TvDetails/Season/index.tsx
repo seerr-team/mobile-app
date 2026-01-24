@@ -3,13 +3,13 @@ import CachedImage from '@/components/Common/CachedImage';
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
-import type { SeasonWithEpisodes } from '@/jellyseerr/server/models/Tv';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { SeasonWithEpisodes } from '@/seerr/server/models/Tv';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.TvDetails.Season');
+const messages = getSeerrMessages('components.TvDetails.Season');
 
 type SeasonProps = {
   seasonNumber: number;

@@ -3,12 +3,9 @@ import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
-import { ApiErrorCode } from '@/jellyseerr/server/constants/error';
-import {
-  MediaServerType,
-  ServerType,
-} from '@/jellyseerr/server/constants/server';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { ApiErrorCode } from '@/seerr/server/constants/error';
+import { MediaServerType, ServerType } from '@/seerr/server/constants/server';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
 import axios from 'axios';
 import { Formik } from 'formik';
@@ -17,7 +14,7 @@ import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
 import * as Yup from 'yup';
 
-const messages = getJellyseerrMessages('components.Login');
+const messages = getSeerrMessages('components.Login');
 
 interface JellyfinLoginProps {
   revalidate: () => void;

@@ -11,12 +11,12 @@ import { useUser } from '@/hooks/useUser';
 import {
   MediaRequestStatus,
   MediaStatus,
-} from '@/jellyseerr/server/constants/media';
-import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
-import type { QuotaResponse } from '@/jellyseerr/server/interfaces/api/userInterfaces';
-import { Permission } from '@/jellyseerr/server/lib/permissions';
-import type { Collection } from '@/jellyseerr/server/models/Collection';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+} from '@/seerr/server/constants/media';
+import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
+import type { QuotaResponse } from '@/seerr/server/interfaces/api/userInterfaces';
+import { Permission } from '@/seerr/server/lib/permissions';
+import type { Collection } from '@/seerr/server/models/Collection';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
@@ -25,7 +25,7 @@ import { useIntl } from 'react-intl';
 import { Switch, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.RequestModal');
+const messages = getSeerrMessages('components.RequestModal');
 
 interface RequestModalProps {
   show: boolean;
@@ -380,7 +380,7 @@ const CollectionRequestModal = ({
                                 src={
                                   part.posterPath
                                     ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${part.posterPath}`
-                                    : '/images/jellyseerr_poster_not_found.png'
+                                    : '/images/seerr_poster_not_found.png'
                                 }
                                 alt=""
                                 style={{

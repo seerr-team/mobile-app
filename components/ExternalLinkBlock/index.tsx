@@ -9,8 +9,8 @@ import TraktLogo from '@/assets/services/trakt.png';
 import TvdbLogo from '@/assets/services/tvdb.png';
 import useLocale from '@/hooks/useLocale';
 import useSettings from '@/hooks/useSettings';
-import { MediaType } from '@/jellyseerr/server/constants/media';
-import { MediaServerType } from '@/jellyseerr/server/constants/server';
+import { MediaType } from '@/seerr/server/constants/media';
+import { MediaServerType } from '@/seerr/server/constants/server';
 import { Image } from 'expo-image';
 import { Linking, Pressable, View } from 'react-native';
 

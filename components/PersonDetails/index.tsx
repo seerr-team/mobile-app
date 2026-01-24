@@ -4,21 +4,21 @@ import CachedImage from '@/components/Common/CachedImage';
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ErrorPage from '@/components/ErrorPage';
 import TitleCard from '@/components/TitleCard';
-import type { PersonCombinedCreditsResponse } from '@/jellyseerr/server/interfaces/api/personInterfaces';
-import type { PersonDetails as PersonDetailsType } from '@/jellyseerr/server/models/Person';
+import type { PersonCombinedCreditsResponse } from '@/seerr/server/interfaces/api/personInterfaces';
+import type { PersonDetails as PersonDetailsType } from '@/seerr/server/models/Person';
 import { groupBy } from 'lodash';
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 // import TruncateMarkup from 'react-truncate-markup';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { useLocalSearchParams } from 'expo-router';
 import { Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.PersonDetails');
+const messages = getSeerrMessages('components.PersonDetails');
 
 const PersonDetails = () => {
   const serverUrl = useServerUrl();

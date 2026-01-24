@@ -6,12 +6,12 @@ import type {
   MovieResult,
   PersonResult,
   TvResult,
-} from '@/jellyseerr/server/models/Search';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+} from '@/seerr/server/models/Search';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
 
-const messages = getJellyseerrMessages('components.Search');
+const messages = getSeerrMessages('components.Search');
 
 const Search = () => {
   const intl = useIntl();

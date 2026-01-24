@@ -1,7 +1,7 @@
 import type {
   PublicSettingsResponse,
   StatusResponse,
-} from '@/jellyseerr/server/interfaces/api/settingsInterfaces';
+} from '@/seerr/server/interfaces/api/settingsInterfaces';
 import axios from 'axios';
 
 export const minimumServerVersion = '2.4.0';
@@ -9,7 +9,7 @@ export const minimumServerVersion = '2.4.0';
 export enum ConnectionErrorType {
   SERVER_NOT_REACHABLE = 'SERVER_NOT_REACHABLE',
   SERVER_NOT_INITIALIZED = 'SERVER_NOT_INITIALIZED',
-  SERVER_NOT_JELLYSEERR = 'SERVER_NOT_JELLYSEERR',
+  SERVER_NOT_SEERR = 'SERVER_NOT_SEERR',
   SERVER_NOT_UPTODATE = 'SERVER_NOT_UPTODATE',
 }
 
@@ -45,14 +45,14 @@ export async function getServerSettings(
         throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
       }
       if (error.response.status !== 200) {
-        throw new Error(ConnectionErrorType.SERVER_NOT_JELLYSEERR);
+        throw new Error(ConnectionErrorType.SERVER_NOT_SEERR);
       }
     }
     throw new Error(ConnectionErrorType.SERVER_NOT_REACHABLE);
   }
 
   if (typeof data?.mediaServerType !== 'number') {
-    throw new Error(ConnectionErrorType.SERVER_NOT_JELLYSEERR);
+    throw new Error(ConnectionErrorType.SERVER_NOT_SEERR);
   }
   if (!data?.initialized) {
     throw new Error(ConnectionErrorType.SERVER_NOT_INITIALIZED);

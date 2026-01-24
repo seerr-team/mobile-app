@@ -1,5 +1,5 @@
 import ThemedText from '@/components/Common/ThemedText';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
 import { useIntl } from 'react-intl';
@@ -9,7 +9,7 @@ interface ErrorProps {
   statusCode?: number;
 }
 
-const messages = getJellyseerrMessages('pages');
+const messages = getSeerrMessages('pages');
 
 const Error = ({ statusCode }: ErrorProps) => {
   const intl = useIntl();

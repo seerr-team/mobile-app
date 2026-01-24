@@ -3,8 +3,8 @@ import StatusBadgeMini from '@/components/Common/StatusBadgeMini';
 import ThemedText from '@/components/Common/ThemedText';
 import ErrorCard from '@/components/TitleCard/ErrorCard';
 import Placeholder from '@/components/TitleCard/Placeholder';
-import { MediaStatus } from '@/jellyseerr/server/constants/media';
-import type { MediaType } from '@/jellyseerr/server/models/Search';
+import { MediaStatus } from '@/seerr/server/constants/media';
+import type { MediaType } from '@/seerr/server/models/Search';
 import globalMessages from '@/utils/globalMessages';
 import { withProperties } from '@/utils/typeHelpers';
 import { Link } from 'expo-router';
@@ -99,7 +99,7 @@ const TitleCard = ({
           src={
             image
               ? `https://image.tmdb.org/t/p/w300_and_h450_face${image}`
-              : `/images/jellyseerr_poster_not_found_logo_top.png`
+              : `/images/seerr_poster_not_found_logo_top.png`
           }
           placeholder={null}
           placeholderContentFit="cover"

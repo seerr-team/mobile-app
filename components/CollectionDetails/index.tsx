@@ -10,9 +10,9 @@ import TitleCard from '@/components/TitleCard';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { Permission, useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/jellyseerr/server/constants/media';
-import type { Collection } from '@/jellyseerr/server/models/Collection';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { MediaStatus } from '@/seerr/server/constants/media';
+import type { Collection } from '@/seerr/server/models/Collection';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 import { ArrowDownTray } from '@nandorojo/heroicons/24/outline';
@@ -24,7 +24,7 @@ import { useIntl } from 'react-intl';
 import { ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.CollectionDetails');
+const messages = getSeerrMessages('components.CollectionDetails');
 
 interface CollectionDetailsProps {
   collection?: Collection;
@@ -238,7 +238,7 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
             src={
               data.posterPath
                 ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.posterPath}`
-                : '/images/jellyseerr_poster_not_found.png'
+                : '/images/seerr_poster_not_found.png'
             }
             alt=""
             style={{ width: 150, height: 225 }}

@@ -1,4 +1,4 @@
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import type { ParsedUrlQuery } from 'querystring';
 import { z } from 'zod';
 
@@ -66,7 +66,7 @@ export const genreColorMap: Record<number, [string, string]> = {
   10768: colorTones.darkred, // War & Politics
 };
 
-export const sliderTitles = getJellyseerrMessages('components.Discover');
+export const sliderTitles = getSeerrMessages('components.Discover');
 
 export const QueryFilterOptions = z.object({
   sortBy: z.string().optional(),

@@ -6,13 +6,13 @@ import TitleCard from '@/components/TitleCard';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/jellyseerr/server/constants/media';
-import { Permission } from '@/jellyseerr/server/lib/permissions';
+import { MediaStatus } from '@/seerr/server/constants/media';
+import { Permission } from '@/seerr/server/lib/permissions';
 import type {
   MovieResult,
   PersonResult,
   TvResult,
-} from '@/jellyseerr/server/models/Search';
+} from '@/seerr/server/models/Search';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';

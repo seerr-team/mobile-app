@@ -1,7 +1,7 @@
 import Button from '@/components/Common/Button';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { Check, Trash } from '@nandorojo/heroicons/24/solid';
 import axios from 'axios';
@@ -17,7 +17,7 @@ interface ErrorCardProps {
   canExpand?: boolean;
 }
 
-const messages = getJellyseerrMessages('components.TitleCard');
+const messages = getSeerrMessages('components.TitleCard');
 
 const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
   const intl = useIntl();

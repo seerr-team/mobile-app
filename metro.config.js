@@ -7,7 +7,7 @@ let config = getDefaultConfig(__dirname, {
 });
 config = getSentryExpoConfig(__dirname, config);
 config = withNativeWind(config, {
-  input: './jellyseerr/src/styles/globals.css',
+  input: './seerr/src/styles/globals.css',
 });
 // config.resolver.resolverMainFields = ['react-native', 'browser', 'module', 'main'];
 config.resolver.unstable_enablePackageExports = false;

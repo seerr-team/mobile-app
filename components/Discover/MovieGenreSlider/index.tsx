@@ -3,15 +3,15 @@ import { genreColorMap } from '@/components/Discover/constants';
 import GenreCard from '@/components/GenreCard';
 import Slider from '@/components/Slider';
 import useServerUrl from '@/hooks/useServerUrl';
-import type { GenreSliderItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { GenreSliderItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.Discover.MovieGenreSlider');
+const messages = getSeerrMessages('components.Discover.MovieGenreSlider');
 
 const MovieGenreSlider = () => {
   const intl = useIntl();

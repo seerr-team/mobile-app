@@ -5,9 +5,9 @@ import ToastContainer from '@/components/ToastContainer';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
-import type { AvailableLocale } from '@/jellyseerr/src/context/LanguageContext';
-import enMessages from '@/jellyseerr/src/i18n/locale/en.json';
-import '@/jellyseerr/src/styles/globals.css';
+import type { AvailableLocale } from '@/seerr/src/context/LanguageContext';
+import enMessages from '@/seerr/src/i18n/locale/en.json';
+import '@/seerr/src/styles/globals.css';
 import store from '@/store';
 import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
@@ -56,75 +56,73 @@ axios.defaults.withCredentials = true;
 const loadLocaleData = async (locale: string): Promise<MessagesType> => {
   switch (locale) {
     case 'ar':
-      return (await import('../jellyseerr/src/i18n/locale/ar.json')).default;
+      return (await import('../seerr/src/i18n/locale/ar.json')).default;
     case 'bg':
-      return (await import('../jellyseerr/src/i18n/locale/bg.json')).default;
+      return (await import('../seerr/src/i18n/locale/bg.json')).default;
     case 'ca':
-      return (await import('../jellyseerr/src/i18n/locale/ca.json')).default;
+      return (await import('../seerr/src/i18n/locale/ca.json')).default;
     case 'cs':
-      return (await import('../jellyseerr/src/i18n/locale/cs.json')).default;
+      return (await import('../seerr/src/i18n/locale/cs.json')).default;
     case 'da':
-      return (await import('../jellyseerr/src/i18n/locale/da.json')).default;
+      return (await import('../seerr/src/i18n/locale/da.json')).default;
     case 'de':
-      return (await import('../jellyseerr/src/i18n/locale/de.json')).default;
+      return (await import('../seerr/src/i18n/locale/de.json')).default;
     case 'el':
-      return (await import('../jellyseerr/src/i18n/locale/el.json')).default;
+      return (await import('../seerr/src/i18n/locale/el.json')).default;
     case 'es':
-      return (await import('../jellyseerr/src/i18n/locale/es.json')).default;
+      return (await import('../seerr/src/i18n/locale/es.json')).default;
     case 'es-MX':
-      return (await import('../jellyseerr/src/i18n/locale/es_MX.json')).default;
+      return (await import('../seerr/src/i18n/locale/es_MX.json')).default;
     case 'fi':
-      return (await import('../jellyseerr/src/i18n/locale/fi.json')).default;
+      return (await import('../seerr/src/i18n/locale/fi.json')).default;
     case 'fr':
-      return (await import('../jellyseerr/src/i18n/locale/fr.json')).default;
+      return (await import('../seerr/src/i18n/locale/fr.json')).default;
     case 'he':
-      return (await import('../jellyseerr/src/i18n/locale/he.json')).default;
+      return (await import('../seerr/src/i18n/locale/he.json')).default;
     case 'hi':
-      return (await import('../jellyseerr/src/i18n/locale/hi.json')).default;
+      return (await import('../seerr/src/i18n/locale/hi.json')).default;
     case 'hr':
-      return (await import('../jellyseerr/src/i18n/locale/hr.json')).default;
+      return (await import('../seerr/src/i18n/locale/hr.json')).default;
     case 'hu':
-      return (await import('../jellyseerr/src/i18n/locale/hu.json')).default;
+      return (await import('../seerr/src/i18n/locale/hu.json')).default;
     case 'it':
-      return (await import('../jellyseerr/src/i18n/locale/it.json')).default;
+      return (await import('../seerr/src/i18n/locale/it.json')).default;
     case 'ja':
-      return (await import('../jellyseerr/src/i18n/locale/ja.json')).default;
+      return (await import('../seerr/src/i18n/locale/ja.json')).default;
     case 'ko':
-      return (await import('../jellyseerr/src/i18n/locale/ko.json')).default;
+      return (await import('../seerr/src/i18n/locale/ko.json')).default;
     case 'lt':
-      return (await import('../jellyseerr/src/i18n/locale/lt.json')).default;
+      return (await import('../seerr/src/i18n/locale/lt.json')).default;
     case 'nb-NO':
-      return (await import('../jellyseerr/src/i18n/locale/nb_NO.json')).default;
+      return (await import('../seerr/src/i18n/locale/nb_NO.json')).default;
     case 'nl':
-      return (await import('../jellyseerr/src/i18n/locale/nl.json')).default;
+      return (await import('../seerr/src/i18n/locale/nl.json')).default;
     case 'pl':
-      return (await import('../jellyseerr/src/i18n/locale/pl.json')).default;
+      return (await import('../seerr/src/i18n/locale/pl.json')).default;
     case 'pt-BR':
-      return (await import('../jellyseerr/src/i18n/locale/pt_BR.json')).default;
+      return (await import('../seerr/src/i18n/locale/pt_BR.json')).default;
     case 'pt-PT':
-      return (await import('../jellyseerr/src/i18n/locale/pt_PT.json')).default;
+      return (await import('../seerr/src/i18n/locale/pt_PT.json')).default;
     case 'ro':
-      return (await import('../jellyseerr/src/i18n/locale/ro.json')).default;
+      return (await import('../seerr/src/i18n/locale/ro.json')).default;
     case 'ru':
-      return (await import('../jellyseerr/src/i18n/locale/ru.json')).default;
+      return (await import('../seerr/src/i18n/locale/ru.json')).default;
     case 'sq':
-      return (await import('../jellyseerr/src/i18n/locale/sq.json')).default;
+      return (await import('../seerr/src/i18n/locale/sq.json')).default;
     case 'sr':
-      return (await import('../jellyseerr/src/i18n/locale/sr.json')).default;
+      return (await import('../seerr/src/i18n/locale/sr.json')).default;
     case 'sv':
-      return (await import('../jellyseerr/src/i18n/locale/sv.json')).default;
+      return (await import('../seerr/src/i18n/locale/sv.json')).default;
     case 'tr':
-      return (await import('../jellyseerr/src/i18n/locale/tr.json')).default;
+      return (await import('../seerr/src/i18n/locale/tr.json')).default;
     case 'uk':
-      return (await import('../jellyseerr/src/i18n/locale/uk.json')).default;
+      return (await import('../seerr/src/i18n/locale/uk.json')).default;
     case 'zh-CN':
-      return (await import('../jellyseerr/src/i18n/locale/zh_Hans.json'))
-        .default;
+      return (await import('../seerr/src/i18n/locale/zh_Hans.json')).default;
     case 'zh-TW':
-      return (await import('../jellyseerr/src/i18n/locale/zh_Hant.json'))
-        .default;
+      return (await import('../seerr/src/i18n/locale/zh_Hant.json')).default;
     default:
-      return (await import('../jellyseerr/src/i18n/locale/en.json')).default;
+      return (await import('../seerr/src/i18n/locale/en.json')).default;
   }
 };
 

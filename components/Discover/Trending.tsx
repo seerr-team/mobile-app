@@ -6,11 +6,11 @@ import type {
   MovieResult,
   PersonResult,
   TvResult,
-} from '@/jellyseerr/server/models/Search';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+} from '@/seerr/server/models/Search';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { useIntl } from 'react-intl';
 
-const messages = getJellyseerrMessages('components.Discover');
+const messages = getSeerrMessages('components.Discover');
 
 const Trending = () => {
   const intl = useIntl();

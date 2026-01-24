@@ -8,18 +8,18 @@ import QuotaDisplay from '@/components/RequestModal/QuotaDisplay';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
-import { ANIME_KEYWORD_ID } from '@/jellyseerr/server/api/themoviedb/constants';
+import { ANIME_KEYWORD_ID } from '@/seerr/server/api/themoviedb/constants';
 import {
   MediaRequestStatus,
   MediaStatus,
-} from '@/jellyseerr/server/constants/media';
-import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
-import type SeasonRequest from '@/jellyseerr/server/entity/SeasonRequest';
-import type { NonFunctionProperties } from '@/jellyseerr/server/interfaces/api/common';
-import type { QuotaResponse } from '@/jellyseerr/server/interfaces/api/userInterfaces';
-import { Permission } from '@/jellyseerr/server/lib/permissions';
-import type { TvDetails } from '@/jellyseerr/server/models/Tv';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+} from '@/seerr/server/constants/media';
+import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
+import type SeasonRequest from '@/seerr/server/entity/SeasonRequest';
+import type { NonFunctionProperties } from '@/seerr/server/interfaces/api/common';
+import type { QuotaResponse } from '@/seerr/server/interfaces/api/userInterfaces';
+import { Permission } from '@/seerr/server/lib/permissions';
+import type { TvDetails } from '@/seerr/server/models/Tv';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import axios from 'axios';
 import { useState } from 'react';
@@ -28,7 +28,7 @@ import { useIntl } from 'react-intl';
 import { Switch, View } from 'react-native';
 import useSWR, { mutate } from 'swr';
 
-const messages = getJellyseerrMessages('components.RequestModal');
+const messages = getSeerrMessages('components.RequestModal');
 
 interface RequestModalProps extends React.HTMLAttributes<HTMLDivElement> {
   show: boolean;

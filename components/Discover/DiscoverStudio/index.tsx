@@ -3,14 +3,14 @@ import Header from '@/components/Common/Header';
 import ListView from '@/components/Common/ListView';
 import ErrorPage from '@/components/ErrorPage';
 import useDiscover from '@/hooks/useDiscover';
-import type { ProductionCompany } from '@/jellyseerr/server/models/common';
-import type { MovieResult } from '@/jellyseerr/server/models/Search';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { ProductionCompany } from '@/seerr/server/models/common';
+import type { MovieResult } from '@/seerr/server/models/Search';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
 
-const messages = getJellyseerrMessages('components.Discover.DiscoverStudio');
+const messages = getSeerrMessages('components.Discover.DiscoverStudio');
 
 const DiscoverMovieStudio = () => {
   const searchParams = useLocalSearchParams();

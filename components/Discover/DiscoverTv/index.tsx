@@ -11,15 +11,15 @@ import useDiscover from '@/hooks/useDiscover';
 // import { useUpdateQueryParams } from '@/hooks/useUpdateQueryParams';
 import ErrorPage from '@/components/ErrorPage';
 // import { BarsArrowDown, Funnel } from '@nandorojo/heroicons/24/solid';
-// import type { SortOptions as TMDBSortOptions } from '@/jellyseerr/server/api/themoviedb';
-import type { TvResult } from '@/jellyseerr/server/models/Search';
+// import type { SortOptions as TMDBSortOptions } from '@/seerr/server/api/themoviedb';
+import type { TvResult } from '@/seerr/server/models/Search';
 // import { useState } from 'react';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.Discover.DiscoverTv');
+const messages = getSeerrMessages('components.Discover.DiscoverTv');
 
 // const SortOptions: Record<string, TMDBSortOptions> = {
 //   PopularityAsc: 'popularity.asc',

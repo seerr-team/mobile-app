@@ -13,8 +13,8 @@ import { useUser } from '@/hooks/useUser';
 // } from '@nandorojo/heroicons/24/solid';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
-import type { RequestResultsResponse } from '@/jellyseerr/server/interfaces/api/requestInterfaces';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { RequestResultsResponse } from '@/seerr/server/interfaces/api/requestInterfaces';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { Link, useLocalSearchParams, usePathname } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ import { useIntl } from 'react-intl';
 import { RefreshControl, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.RequestList');
+const messages = getSeerrMessages('components.RequestList');
 
 enum Filter {
   ALL = 'all',

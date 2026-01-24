@@ -1,5 +1,5 @@
-import getJellyseerrMessages from './getJellyseerrMessages';
+import getSeerrMessages from './getSeerrMessages';
 
-const globalMessages = getJellyseerrMessages('i18n');
+const globalMessages = getSeerrMessages('i18n');
 
 export default globalMessages;

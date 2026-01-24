@@ -28,12 +28,12 @@ import useLocale from '@/hooks/useLocale';
 import useSettings from '@/hooks/useSettings';
 import { Permission, UserType, useUser } from '@/hooks/useUser';
 import { sortCrewPriority } from '@/utils/creditHelpers';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 // import { Disclosure, Transition } from '@headlessui/react';
-import type { RTRating } from '@/jellyseerr/server/api/rating/rottentomatoes';
-import { ANIME_KEYWORD_ID } from '@/jellyseerr/server/api/themoviedb/constants';
+import type { RTRating } from '@/seerr/server/api/rating/rottentomatoes';
+import { ANIME_KEYWORD_ID } from '@/seerr/server/api/themoviedb/constants';
 import {
   Film,
   // ArrowRightCircle,
@@ -44,15 +44,15 @@ import {
   Star,
 } from '@nandorojo/heroicons/24/outline';
 import { ChevronDown } from '@nandorojo/heroicons/24/solid';
-// import { IssueStatus } from '@/jellyseerr/server/constants/issue';
+// import { IssueStatus } from '@/seerr/server/constants/issue';
 import {
   MediaRequestStatus,
   MediaStatus,
   MediaType,
-} from '@/jellyseerr/server/constants/media';
-import { MediaServerType } from '@/jellyseerr/server/constants/server';
-import type { Crew } from '@/jellyseerr/server/models/common';
-import type { TvDetails as TvDetailsType } from '@/jellyseerr/server/models/Tv';
+} from '@/seerr/server/constants/media';
+import { MediaServerType } from '@/seerr/server/constants/server';
+import type { Crew } from '@/seerr/server/models/common';
+import type { TvDetails as TvDetailsType } from '@/seerr/server/models/Tv';
 // import { countries } from 'country-flag-icons';
 // import 'country-flag-icons/3x2/flags.css';
 import {
@@ -72,7 +72,7 @@ import { useIntl } from 'react-intl';
 import { Linking, Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.TvDetails');
+const messages = getSeerrMessages('components.TvDetails');
 
 interface TvDetailsProps {
   tv?: TvDetailsType;
@@ -450,7 +450,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             src={
               data.posterPath
                 ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.posterPath}`
-                : '/images/jellyseerr_poster_not_found.png'
+                : '/images/seerr_poster_not_found.png'
             }
             alt=""
             style={{ width: 150, height: 225 }}

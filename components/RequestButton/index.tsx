@@ -7,10 +7,10 @@ import { Permission, useUser } from '@/hooks/useUser';
 import {
   MediaRequestStatus,
   MediaStatus,
-} from '@/jellyseerr/server/constants/media';
-import type Media from '@/jellyseerr/server/entity/Media';
-import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+} from '@/seerr/server/constants/media';
+import type Media from '@/seerr/server/entity/Media';
+import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { ArrowDownTray } from '@nandorojo/heroicons/24/outline';
 import { Check, InformationCircle, XMark } from '@nandorojo/heroicons/24/solid';
@@ -20,7 +20,7 @@ import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import { mutate } from 'swr';
 
-const messages = getJellyseerrMessages('components.RequestButton');
+const messages = getSeerrMessages('components.RequestButton');
 
 interface ButtonOption {
   id: string;

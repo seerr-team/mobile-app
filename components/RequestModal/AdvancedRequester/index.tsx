@@ -9,10 +9,10 @@ import { Permission, useUser } from '@/hooks/useUser';
 import type {
   ServiceCommonServer,
   ServiceCommonServerWithDetails,
-} from '@/jellyseerr/server/interfaces/api/serviceInterfaces';
-import type { UserResultsResponse } from '@/jellyseerr/server/interfaces/api/userInterfaces';
-import { hasPermission } from '@/jellyseerr/server/lib/permissions';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+} from '@/seerr/server/interfaces/api/serviceInterfaces';
+import type { UserResultsResponse } from '@/seerr/server/interfaces/api/userInterfaces';
+import { hasPermission } from '@/seerr/server/lib/permissions';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import { formatBytes } from '@/utils/numberHelpers';
 import { Check, ChevronDown } from '@nandorojo/heroicons/24/solid';
@@ -23,9 +23,7 @@ import { View } from 'react-native';
 import { MultiSelect } from 'react-native-element-dropdown';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages(
-  'components.RequestModal.AdvancedRequester'
-);
+const messages = getSeerrMessages('components.RequestModal.AdvancedRequester');
 
 export type RequestOverrides = {
   server?: number;

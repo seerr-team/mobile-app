@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Jellyseerr",
-    "slug": "jellyseerr-expo",
+    "name": "Seerr",
+    "slug": "seerr-expo",
     "version": "v0.9.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -11,7 +11,7 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.jellyseerrexpo",
+      "bundleIdentifier": "dev.seerr.mobileapp",
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#111827"
       },
-      "package": "com.anonymous.jellyseerrexpo",
+      "package": "dev.seerr.mobileapp",
       "edgeToEdgeEnabled": true
     },
     "web": {

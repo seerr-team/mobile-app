@@ -6,13 +6,13 @@ import AdvancedRequester from '@/components/RequestModal/AdvancedRequester';
 import QuotaDisplay from '@/components/RequestModal/QuotaDisplay';
 import useServerUrl from '@/hooks/useServerUrl';
 import { useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/jellyseerr/server/constants/media';
-import type { MediaRequest } from '@/jellyseerr/server/entity/MediaRequest';
-import type { NonFunctionProperties } from '@/jellyseerr/server/interfaces/api/common';
-import type { QuotaResponse } from '@/jellyseerr/server/interfaces/api/userInterfaces';
-import { Permission } from '@/jellyseerr/server/lib/permissions';
-import type { MovieDetails } from '@/jellyseerr/server/models/Movie';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import { MediaStatus } from '@/seerr/server/constants/media';
+import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
+import type { NonFunctionProperties } from '@/seerr/server/interfaces/api/common';
+import type { QuotaResponse } from '@/seerr/server/interfaces/api/userInterfaces';
+import { Permission } from '@/seerr/server/lib/permissions';
+import type { MovieDetails } from '@/seerr/server/models/Movie';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import useSWR, { mutate } from 'swr';
 
-const messages = getJellyseerrMessages('components.RequestModal');
+const messages = getSeerrMessages('components.RequestModal');
 
 interface RequestModalProps {
   show: boolean;

@@ -3,8 +3,8 @@ import Slider from '@/components/Slider';
 import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
 import useServerUrl from '@/hooks/useServerUrl';
 import { Permission, useUser } from '@/hooks/useUser';
-import type { MediaResultsResponse } from '@/jellyseerr/server/interfaces/api/mediaInterfaces';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { MediaResultsResponse } from '@/seerr/server/interfaces/api/mediaInterfaces';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
@@ -13,9 +13,7 @@ import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages(
-  'components.Discover.RecentlyAddedSlider'
-);
+const messages = getSeerrMessages('components.Discover.RecentlyAddedSlider');
 
 export interface RecentlyAddedSliderProps {
   lastRefresh?: Date;

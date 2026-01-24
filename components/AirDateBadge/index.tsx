@@ -1,9 +1,9 @@
 import Badge from '@/components/Common/Badge';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { FormattedRelativeTime, useIntl } from 'react-intl';
 import { View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.AirDateBadge');
+const messages = getSeerrMessages('components.AirDateBadge');
 
 type AirDateBadgeProps = {
   airDate: string;

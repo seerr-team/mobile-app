@@ -56,13 +56,13 @@ jobs:
           SENTRY_URL: ${{ secrets.SENTRY_URL }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
-          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('jellyseerr-{0}.apk', github.ref_name) || 'jellyseerr.apk' }} --platform android --profile preview
+          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }} --platform android --profile preview
 
       - name: 📦 Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.ref_type == 'tag' && format('jellyseerr-{0}.apk', github.ref_name) || 'jellyseerr.apk' }}
-          path: ./${{ github.ref_type == 'tag' && format('jellyseerr-{0}.apk', github.ref_name) || 'jellyseerr.apk' }}
+          name: ${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }}
+          path: ./${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }}
 
       - name: 🛠 Generate a changelog
         if: startsWith(github.ref, 'refs/tags/')
@@ -77,7 +77,7 @@ jobs:
 
       - name: 🚀 Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
-        run: gh release create ${GITHUB_REF_NAME} -t "Release ${GITHUB_REF_NAME}" -n "${RELEASE_BODY}" ./jellyseerr*.apk
+        run: gh release create ${GITHUB_REF_NAME} -t "Release ${GITHUB_REF_NAME}" -n "${RELEASE_BODY}" ./seerr*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BODY: ${{ steps.changelog.outputs.content }}

@@ -1,14 +1,14 @@
 import ProgressCircle from '@/components/Common/ProgressCircle';
 import ThemedText from '@/components/Common/ThemedText';
-import type { QuotaStatus } from '@/jellyseerr/server/interfaces/api/userInterfaces';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { QuotaStatus } from '@/seerr/server/interfaces/api/userInterfaces';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { ChevronDown, ChevronUp } from '@nandorojo/heroicons/24/solid';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.RequestModal.QuotaDisplay');
+const messages = getSeerrMessages('components.RequestModal.QuotaDisplay');
 
 interface QuotaDisplayProps {
   quota?: QuotaStatus;

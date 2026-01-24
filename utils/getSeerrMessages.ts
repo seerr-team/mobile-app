@@ -1,8 +1,8 @@
-import enLocale from '@/jellyseerr/src/i18n/locale/en.json';
+import enLocale from '@/seerr/src/i18n/locale/en.json';
 import { defineMessages as intlDefineMessages } from 'react-intl';
 const localeValues: Record<string, string> = enLocale;
 
-export default function getJellyseerrMessages(prefix: string) {
+export default function getSeerrMessages(prefix: string) {
   const keys = Object.keys(enLocale).filter((key) =>
     key.startsWith(prefix + '.')
   );

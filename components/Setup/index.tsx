@@ -134,9 +134,9 @@ export default function Setup() {
                 Server not initialized
               </ThemedText>
             )}
-            {error === ConnectionErrorType.SERVER_NOT_JELLYSEERR && (
+            {error === ConnectionErrorType.SERVER_NOT_SEERR && (
               <ThemedText className="mt-1.5 text-red-500">
-                Specified server is not a Jellyseerr server
+                Specified server is not a Seerr server
               </ThemedText>
             )}
             {error === ConnectionErrorType.SERVER_NOT_UPTODATE && (
@@ -176,10 +176,10 @@ export default function Setup() {
               </ThemedText>
             </View>
             <ThemedText className="text-sm">
-              Help us improve the app by sending anonymous usage data to
-              Jellyseerr. This data is not shared with any third parties and is
-              only used to fix bugs and improve the app. You can opt-out at any
-              time in the settings.
+              Help us improve the app by sending anonymous usage data to Seerr.
+              This data is not shared with any third parties and is only used to
+              fix bugs and improve the app. You can opt-out at any time in the
+              settings.
             </ThemedText>
           </View>
           <View className="mt-8 flex border-t border-gray-700 pt-5">

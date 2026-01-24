@@ -5,7 +5,7 @@ import RequestCard, {
 } from '@/components/RequestCard';
 import Slider from '@/components/Slider';
 import useServerUrl from '@/hooks/useServerUrl';
-import type { RequestResultsResponse } from '@/jellyseerr/server/interfaces/api/requestInterfaces';
+import type { RequestResultsResponse } from '@/seerr/server/interfaces/api/requestInterfaces';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';

@@ -1,4 +1,4 @@
-import type { PublicSettingsResponse } from '@/jellyseerr/server/interfaces/api/settingsInterfaces';
+import type { PublicSettingsResponse } from '@/seerr/server/interfaces/api/settingsInterfaces';
 import type { RootState } from '@/store';
 import { useSelector } from 'react-redux';
 

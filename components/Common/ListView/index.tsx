@@ -3,14 +3,14 @@ import PersonCard from '@/components/PersonCard';
 import TitleCard from '@/components/TitleCard';
 import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
 import { Permission, useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/jellyseerr/server/constants/media';
-import type { WatchlistItem } from '@/jellyseerr/server/interfaces/api/discoverInterfaces';
+import { MediaStatus } from '@/seerr/server/constants/media';
+import type { WatchlistItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
 import type {
   CollectionResult,
   MovieResult,
   PersonResult,
   TvResult,
-} from '@/jellyseerr/server/models/Search';
+} from '@/seerr/server/models/Search';
 import globalMessages from '@/utils/globalMessages';
 import { useIntl } from 'react-intl';
 import { FlatList, Platform, View } from 'react-native';

@@ -1,11 +1,11 @@
 import ThemedText from '@/components/Common/ThemedText';
 import CompanyCard from '@/components/CompanyCard';
 import Slider from '@/components/Slider';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.Discover.NetworkSlider');
+const messages = getSeerrMessages('components.Discover.NetworkSlider');
 
 interface Network {
   name: string;

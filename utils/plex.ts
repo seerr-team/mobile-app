@@ -48,14 +48,14 @@ class PlexOAuth {
 
     this.plexHeaders = {
       Accept: 'application/json',
-      'X-Plex-Product': 'Jellyseerr',
+      'X-Plex-Product': 'Seerr',
       'X-Plex-Version': 'Plex OAuth',
       'X-Plex-Client-Identifier': clientId,
       'X-Plex-Model': 'Plex OAuth',
       'X-Plex-Platform': Device.osName || 'Unknown',
       'X-Plex-Platform-Version': Device.osVersion || 'Unknown',
       'X-Plex-Device': Device.brand || 'Unknown',
-      'X-Plex-Device-Name': `${Device.deviceName || 'ReactNative'} (Jellyseerr)`,
+      'X-Plex-Device-Name': `${Device.deviceName || 'ReactNative'} (Seerr)`,
       'X-Plex-Device-Screen-Resolution': `${width}x${height}`,
       'X-Plex-Language': 'en',
     };

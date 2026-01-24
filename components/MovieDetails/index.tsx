@@ -25,7 +25,7 @@ import useDeepLinks from '@/hooks/useDeepLinks';
 import useLocale from '@/hooks/useLocale';
 import useSettings from '@/hooks/useSettings';
 import { Permission, UserType, useUser } from '@/hooks/useUser';
-import { type RatingResponse } from '@/jellyseerr/server/api/ratings';
+import { type RatingResponse } from '@/seerr/server/api/ratings';
 import { sortCrewPriority } from '@/utils/creditHelpers';
 import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
 import {
@@ -42,16 +42,16 @@ import {
   Ticket,
 } from '@nandorojo/heroicons/24/outline';
 import {} from '@nandorojo/heroicons/24/solid';
-// import { IssueStatus } from '@/jellyseerr/server/constants/issue';
-import { MediaStatus, MediaType } from '@/jellyseerr/server/constants/media';
-import { MediaServerType } from '@/jellyseerr/server/constants/server';
-import type { MovieDetails as MovieDetailsType } from '@/jellyseerr/server/models/Movie';
+// import { IssueStatus } from '@/seerr/server/constants/issue';
+import { MediaStatus, MediaType } from '@/seerr/server/constants/media';
+import { MediaServerType } from '@/seerr/server/constants/server';
+import type { MovieDetails as MovieDetailsType } from '@/seerr/server/models/Movie';
 // import { countries } from 'country-flag-icons';
 // import 'country-flag-icons/3x2/flags.css';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
-import type { TmdbRelease } from '@/jellyseerr/server/api/themoviedb/interfaces';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import type { TmdbRelease } from '@/seerr/server/api/themoviedb/interfaces';
+import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
 import axios from 'axios';
 import { Image } from 'expo-image';
@@ -64,7 +64,7 @@ import { useIntl } from 'react-intl';
 import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
-const messages = getJellyseerrMessages('components.MovieDetails');
+const messages = getSeerrMessages('components.MovieDetails');
 
 interface MovieDetailsProps {
   movie?: MovieDetailsType;
@@ -460,7 +460,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             src={
               data.posterPath
                 ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.posterPath}`
-                : '/images/jellyseerr_poster_not_found.png'
+                : '/images/seerr_poster_not_found.png'
             }
             alt=""
             style={{ width: 150, height: 225 }}

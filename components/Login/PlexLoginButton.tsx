@@ -3,11 +3,12 @@ import Button from '@/components/Common/Button';
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import ThemedText from '@/components/Common/ThemedText';
 import usePlexLogin from '@/hooks/usePlexLogin';
-import getJellyseerrMessages from '@/utils/getJellyseerrMessages';
+import getSeerrMessages from '@/utils/getSeerrMessages';
+import { Fragment } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Image, View } from 'react-native';
 
-const messages = getJellyseerrMessages('components.Login');
+const messages = getSeerrMessages('components.Login');
 
 interface PlexLoginButtonProps {
   onAuthToken: (authToken: string) => void;
@@ -57,8 +58,12 @@ const PlexLoginButton = ({
         >
           {(chunks) => (
             <>
-              {chunks.map((c) =>
-                typeof c === 'string' ? <ThemedText>{c}</ThemedText> : c
+              {chunks.map((c, index) =>
+                typeof c === 'string' ? (
+                  <ThemedText key={index}>{c}</ThemedText>
+                ) : (
+                  <Fragment key={index}>{c}</Fragment>
+                )
               )}
             </>
           )}

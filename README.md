@@ -1,8 +1,8 @@
 <p align="center">
-<img src="./assets/logo_full.svg" alt="Jellyseerr" style="margin: 20px 0;">
+<img src="./assets/logo_full.svg" alt="Seerr" style="margin: 20px 0;">
 </p>
 
-This project contains the source code of the Jellyseerr mobile app. This app is built using React Native and Expo, and is mostly a rewrite of the original Jellyseerr web app to create a more user-friendly experience on mobile devices, and try to port it to TV devices.
+This project contains the source code of the Seerr mobile app. This app is built using React Native and Expo, and is mostly a rewrite of the original Seerr web app to create a more user-friendly experience on mobile devices, and try to port it to TV devices.
 
 ## Get started
 
