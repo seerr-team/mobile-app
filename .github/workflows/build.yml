@@ -1,13 +1,19 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Build Expo App
 
 on:
   workflow_dispatch:
   push:
     tags:
-      - v*
+      - 'v*'
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  build-android-phone:
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Setup repo
@@ -19,26 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
-
-      - name: 🛠 Run version update script
-        if: startsWith(github.ref, 'refs/tags/')
-        run: node scripts/new-version.mjs ${{ github.ref_name }}
-
-      - name: 🔧 Configure Git
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: 📤 Commit version changes
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          git fetch origin ${{ github.event.repository.default_branch }}
-          git checkout ${{ github.event.repository.default_branch }}
-          git pull
-          git add app.json package.json package-lock.json
-          git commit -m "chore: update version to ${{ github.ref_name }}"
-          git push origin ${{ github.event.repository.default_branch }}
 
       - name: 🏗 Setup Expo and EAS
         uses: expo/expo-github-action@v8
@@ -58,14 +44,99 @@ jobs:
         run: |
           eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }} --platform android --profile preview
 
-      - name: 📦 Upload artifacts
+      - name: 📦 Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }}
           path: ./${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }}
 
+  build-ios-phone:
+    runs-on: macos-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "16.4"
+
+      - name: 🏗 Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          token: ${{ secrets.EXPO_TOKEN }}
+          expo-version: latest
+          eas-version: latest
+          packager: npm
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 👷 Build expo app
+        env:
+          SENTRY_URL: ${{ secrets.SENTRY_URL }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }} --platform ios --profile preview
+
+      - name: 📦 Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }}
+          path: ./${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }}
+
+  release:
+    needs:
+      - build-android-phone
+      - build-ios-phone
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          submodules: "true"
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: 🛠 Run version update script
+        run: node scripts/new-version.mjs ${{ github.ref_name }}
+
+      - name: 🔧 Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 📤 Commit version changes
+        run: |
+          git fetch origin ${{ github.event.repository.default_branch }}
+          git checkout ${{ github.event.repository.default_branch }}
+          git pull
+          git add app.json package.json package-lock.json
+          git commit -m "chore: update version to ${{ github.ref_name }}"
+          git push origin ${{ github.event.repository.default_branch }}
+
+      - name: 📥 Fetch APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.ref_name && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }}
+
+      - name: 📥 Fetch IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.ref_name && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }}
+
       - name: 🛠 Generate a changelog
-        if: startsWith(github.ref, 'refs/tags/')
         id: changelog
         uses: orhun/git-cliff-action@v4
         with:
@@ -76,8 +147,7 @@ jobs:
           GITHUB_REPO: ${{ github.repository }}
 
       - name: 🚀 Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
-        run: gh release create ${GITHUB_REF_NAME} -t "Release ${GITHUB_REF_NAME}" -n "${RELEASE_BODY}" ./seerr*.apk
+        run: gh release create ${GITHUB_REF_NAME} -t "Release ${GITHUB_REF_NAME}" -n "${RELEASE_BODY}" ./seerr*.apk ./seerr*.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BODY: ${{ steps.changelog.outputs.content }}
