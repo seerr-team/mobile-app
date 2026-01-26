@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "Seerr",
-    "slug": "seerr-expo",
+    "slug": "seerr",
+    "owner": "seerr",
     "version": "v0.9.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -79,7 +80,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "15078cf5-0850-4ddb-b407-95dd7df35506"
+        "projectId": "2471de6a-13b0-4a05-8ffc-46e984768e9a"
       }
     }
   }
