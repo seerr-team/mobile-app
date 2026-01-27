@@ -42,7 +42,7 @@ jobs:
           SENTRY_URL: ${{ secrets.SENTRY_URL }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
-          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }} --platform android --profile preview
+          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }} --platform android --profile production
 
       - name: 📦 Upload APK artifact
         uses: actions/upload-artifact@v4
@@ -84,7 +84,7 @@ jobs:
           SENTRY_URL: ${{ secrets.SENTRY_URL }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
-          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }} --platform ios --profile preview
+          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }} --platform ios --profile production
 
       - name: 📦 Upload IPA artifact
         uses: actions/upload-artifact@v4
