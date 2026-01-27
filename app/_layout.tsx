@@ -53,77 +53,45 @@ type MessagesType = Record<string, string>;
 
 axios.defaults.withCredentials = true;
 
-const loadLocaleData = async (locale: string): Promise<MessagesType> => {
-  switch (locale) {
-    case 'ar':
-      return (await import('../seerr/src/i18n/locale/ar.json')).default;
-    case 'bg':
-      return (await import('../seerr/src/i18n/locale/bg.json')).default;
-    case 'ca':
-      return (await import('../seerr/src/i18n/locale/ca.json')).default;
-    case 'cs':
-      return (await import('../seerr/src/i18n/locale/cs.json')).default;
-    case 'da':
-      return (await import('../seerr/src/i18n/locale/da.json')).default;
-    case 'de':
-      return (await import('../seerr/src/i18n/locale/de.json')).default;
-    case 'el':
-      return (await import('../seerr/src/i18n/locale/el.json')).default;
-    case 'es':
-      return (await import('../seerr/src/i18n/locale/es.json')).default;
-    case 'es-MX':
-      return (await import('../seerr/src/i18n/locale/es_MX.json')).default;
-    case 'fi':
-      return (await import('../seerr/src/i18n/locale/fi.json')).default;
-    case 'fr':
-      return (await import('../seerr/src/i18n/locale/fr.json')).default;
-    case 'he':
-      return (await import('../seerr/src/i18n/locale/he.json')).default;
-    case 'hi':
-      return (await import('../seerr/src/i18n/locale/hi.json')).default;
-    case 'hr':
-      return (await import('../seerr/src/i18n/locale/hr.json')).default;
-    case 'hu':
-      return (await import('../seerr/src/i18n/locale/hu.json')).default;
-    case 'it':
-      return (await import('../seerr/src/i18n/locale/it.json')).default;
-    case 'ja':
-      return (await import('../seerr/src/i18n/locale/ja.json')).default;
-    case 'ko':
-      return (await import('../seerr/src/i18n/locale/ko.json')).default;
-    case 'lt':
-      return (await import('../seerr/src/i18n/locale/lt.json')).default;
-    case 'nb-NO':
-      return (await import('../seerr/src/i18n/locale/nb_NO.json')).default;
-    case 'nl':
-      return (await import('../seerr/src/i18n/locale/nl.json')).default;
-    case 'pl':
-      return (await import('../seerr/src/i18n/locale/pl.json')).default;
-    case 'pt-BR':
-      return (await import('../seerr/src/i18n/locale/pt_BR.json')).default;
-    case 'pt-PT':
-      return (await import('../seerr/src/i18n/locale/pt_PT.json')).default;
-    case 'ro':
-      return (await import('../seerr/src/i18n/locale/ro.json')).default;
-    case 'ru':
-      return (await import('../seerr/src/i18n/locale/ru.json')).default;
-    case 'sq':
-      return (await import('../seerr/src/i18n/locale/sq.json')).default;
-    case 'sr':
-      return (await import('../seerr/src/i18n/locale/sr.json')).default;
-    case 'sv':
-      return (await import('../seerr/src/i18n/locale/sv.json')).default;
-    case 'tr':
-      return (await import('../seerr/src/i18n/locale/tr.json')).default;
-    case 'uk':
-      return (await import('../seerr/src/i18n/locale/uk.json')).default;
-    case 'zh-CN':
-      return (await import('../seerr/src/i18n/locale/zh_Hans.json')).default;
-    case 'zh-TW':
-      return (await import('../seerr/src/i18n/locale/zh_Hant.json')).default;
-    default:
-      return (await import('../seerr/src/i18n/locale/en.json')).default;
-  }
+export const loadLocaleData = async (locale: string): Promise<MessagesType> => {
+  const locales: Record<string, any> = {
+    ar: require('../jellyseerr/src/i18n/locale/ar.json'),
+    bg: require('../jellyseerr/src/i18n/locale/bg.json'),
+    ca: require('../jellyseerr/src/i18n/locale/ca.json'),
+    cs: require('../jellyseerr/src/i18n/locale/cs.json'),
+    da: require('../jellyseerr/src/i18n/locale/da.json'),
+    de: require('../jellyseerr/src/i18n/locale/de.json'),
+    el: require('../jellyseerr/src/i18n/locale/el.json'),
+    es: require('../jellyseerr/src/i18n/locale/es.json'),
+    'es-MX': require('../jellyseerr/src/i18n/locale/es_MX.json'),
+    fi: require('../jellyseerr/src/i18n/locale/fi.json'),
+    fr: require('../jellyseerr/src/i18n/locale/fr.json'),
+    he: require('../jellyseerr/src/i18n/locale/he.json'),
+    hi: require('../jellyseerr/src/i18n/locale/hi.json'),
+    hr: require('../jellyseerr/src/i18n/locale/hr.json'),
+    hu: require('../jellyseerr/src/i18n/locale/hu.json'),
+    it: require('../jellyseerr/src/i18n/locale/it.json'),
+    ja: require('../jellyseerr/src/i18n/locale/ja.json'),
+    ko: require('../jellyseerr/src/i18n/locale/ko.json'),
+    lt: require('../jellyseerr/src/i18n/locale/lt.json'),
+    'nb-NO': require('../jellyseerr/src/i18n/locale/nb_NO.json'),
+    nl: require('../jellyseerr/src/i18n/locale/nl.json'),
+    pl: require('../jellyseerr/src/i18n/locale/pl.json'),
+    'pt-BR': require('../jellyseerr/src/i18n/locale/pt_BR.json'),
+    'pt-PT': require('../jellyseerr/src/i18n/locale/pt_PT.json'),
+    ro: require('../jellyseerr/src/i18n/locale/ro.json'),
+    ru: require('../jellyseerr/src/i18n/locale/ru.json'),
+    sq: require('../jellyseerr/src/i18n/locale/sq.json'),
+    sr: require('../jellyseerr/src/i18n/locale/sr.json'),
+    sv: require('../jellyseerr/src/i18n/locale/sv.json'),
+    tr: require('../jellyseerr/src/i18n/locale/tr.json'),
+    uk: require('../jellyseerr/src/i18n/locale/uk.json'),
+    'zh-CN': require('../jellyseerr/src/i18n/locale/zh_Hans.json'),
+    'zh-TW': require('../jellyseerr/src/i18n/locale/zh_Hant.json'),
+    default: require('../jellyseerr/src/i18n/locale/en.json'),
+  };
+
+  return locales[locale] || locales.default;
 };
 
 RelativeTimeFormat.addLocale(en);
