@@ -22,7 +22,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          submodules: "true"
+          submodules: 'true'
 
       - name: 🏗 Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
@@ -59,7 +59,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          submodules: "true"
+          submodules: 'true'
 
       - name: 🏗 Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
@@ -69,7 +69,7 @@ jobs:
       - name: 🔧 Setup Xcode
         uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
         with:
-          xcode-version: "16.4"
+          xcode-version: '16.4'
 
       - name: 🏗 Setup Expo and EAS
         uses: expo/expo-github-action@c7b66a9c327a43a8fa7c0158e7f30d6040d2481e # v8.2.1
@@ -105,7 +105,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          submodules: "true"
+          submodules: 'true'
           fetch-depth: 0
 
       - name: 📥 Fetch APK artifact
