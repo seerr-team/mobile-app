@@ -1,5 +1,8 @@
 import Setup from '@/components/Setup';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function IndexScreen() {
+function IndexScreen() {
   return <Setup />;
 }
+
+export default withAfterInteractions(IndexScreen);

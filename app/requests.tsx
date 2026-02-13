@@ -1,5 +1,8 @@
 import RequestList from '@/components/RequestList';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function Requests() {
+function Requests() {
   return <RequestList />;
 }
+
+export default withAfterInteractions(Requests);

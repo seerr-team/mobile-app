@@ -1,7 +1,8 @@
 import TitleCard from '@/components/TitleCard';
 import globalMessages from '@/utils/globalMessages';
+import { FlashList } from '@shopify/flash-list';
 import { useIntl } from 'react-intl';
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 
 interface SliderProps {
   sliderKey: string;
@@ -23,7 +24,7 @@ const Slider = ({
   const intl = useIntl();
 
   return (
-    <FlatList
+    <FlashList
       horizontal
       data={isLoading ? [...Array(10)] : items}
       keyExtractor={(item, index) =>
@@ -43,9 +44,9 @@ const Slider = ({
           </View>
         ) : null
       }
-      initialNumToRender={5}
-      maxToRenderPerBatch={3}
-      windowSize={5}
+      // initialNumToRender={5}
+      // maxToRenderPerBatch={3}
+      // windowSize={5}
     />
   );
 };

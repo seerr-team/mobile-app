@@ -30,7 +30,7 @@ import {
   usePathname,
 } from 'expo-router';
 import 'intl-pluralrules';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -110,11 +110,31 @@ function RootLayout() {
   const [loaded, setLoaded] = useState(false);
 
   const insets = useSafeAreaInsets();
-  const contentStyle = {
-    backgroundColor: '#111827',
-    paddingTop: insets.top + 56,
-    paddingBottom: insets.bottom + 56,
-  };
+  const contentStyle = useMemo(
+    () => ({
+      backgroundColor: '#111827',
+      paddingTop: insets.top + 56,
+      paddingBottom: insets.bottom + 56,
+    }),
+    [insets]
+  );
+
+  const swrConfig = useMemo(
+    () => ({
+      fetcher: (url: string) => axios.get(url).then((res) => res.data),
+    }),
+    []
+  );
+
+  const stackScreenOptions = useMemo(
+    () => ({
+      headerShown: false,
+      contentStyle,
+      animation: 'slide_from_right' as const,
+      animationDuration: 100,
+    }),
+    [contentStyle]
+  );
 
   useEffect(() => {
     if (serverUrl && settings.currentSettings && !user) {
@@ -167,11 +187,7 @@ function RootLayout() {
   return (
     <GestureHandlerRootView>
       <SafeAreaProvider>
-        <SWRConfig
-          value={{
-            fetcher: (url) => axios.get(url).then((res) => res.data),
-          }}
-        >
+        <SWRConfig value={swrConfig}>
           <KeyboardAvoidingView
             behavior="padding"
             className="flex-1 bg-gray-900"
@@ -189,126 +205,41 @@ function RootLayout() {
                   <UserDropdown />
                 </View>
               )}
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  contentStyle:
-                    pathname === '/setup' || pathname === '/login'
-                      ? {
-                          backgroundColor: '#111827',
-                          // paddingTop: 0,
-                          // paddingBottom: 0,
-                        }
-                      : contentStyle,
-                  animation: 'slide_from_right',
-                  animationDuration: 100,
-                }}
-              >
+              <Stack screenOptions={stackScreenOptions}>
+                <Stack.Screen name="index" />
                 <Stack.Screen
-                  name="index"
+                  name="setup"
                   options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen name="setup" />
-                <Stack.Screen name="login" />
-                <Stack.Screen
-                  name="discover_movies"
-                  options={{
-                    contentStyle,
+                    contentStyle: { backgroundColor: '#111827' },
                   }}
                 />
                 <Stack.Screen
-                  name="discover_tv"
+                  name="login"
                   options={{
-                    contentStyle,
+                    contentStyle: { backgroundColor: '#111827' },
                   }}
                 />
-                <Stack.Screen
-                  name="requests"
-                  options={{
-                    contentStyle,
-                  }}
-                />
+                <Stack.Screen name="discover_movies" />
+                <Stack.Screen name="discover_tv" />
+                <Stack.Screen name="requests" />
                 <Stack.Screen
                   name="search"
                   options={{
-                    contentStyle,
                     animation: 'none',
                   }}
                 />
-                <Stack.Screen
-                  name="discover_trending"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="discover_movies/studio/[studioId]"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="discover_tv/network/[networkId]"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="discover_watchlist"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="movie/[movieId]/index"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="movie/[movieId]/recommendations"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="movie/[movieId]/similar"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="tv/[tvId]/index"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="tv/[tvId]/recommendations"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="tv/[tvId]/similar"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="person/[personId]/index"
-                  options={{
-                    contentStyle,
-                  }}
-                />
-                <Stack.Screen
-                  name="collection/[collectionId]/index"
-                  options={{
-                    contentStyle,
-                  }}
-                />
+                <Stack.Screen name="discover_trending" />
+                <Stack.Screen name="discover_movies/studio/[studioId]" />
+                <Stack.Screen name="discover_tv/network/[networkId]" />
+                <Stack.Screen name="discover_watchlist" />
+                <Stack.Screen name="movie/[movieId]/index" />
+                <Stack.Screen name="movie/[movieId]/recommendations" />
+                <Stack.Screen name="movie/[movieId]/similar" />
+                <Stack.Screen name="tv/[tvId]/index" />
+                <Stack.Screen name="tv/[tvId]/recommendations" />
+                <Stack.Screen name="tv/[tvId]/similar" />
+                <Stack.Screen name="person/[personId]/index" />
+                <Stack.Screen name="collection/[collectionId]/index" />
               </Stack>
               {user && <BottomNavigation />}
             </View>

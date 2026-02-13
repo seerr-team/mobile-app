@@ -1,5 +1,8 @@
 import DiscoverWatchlist from '@/components/Discover/DiscoverWatchlist';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function DiscoverWatchlistPage() {
+function DiscoverWatchlistPage() {
   return <DiscoverWatchlist />;
 }
+
+export default withAfterInteractions(DiscoverWatchlistPage);

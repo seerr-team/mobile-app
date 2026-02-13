@@ -12,8 +12,9 @@ import type {
   TvResult,
 } from '@/seerr/server/models/Search';
 import globalMessages from '@/utils/globalMessages';
+import { FlashList } from '@shopify/flash-list';
 import { useIntl } from 'react-intl';
-import { FlatList, Platform, View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 type ListViewProps = {
   items?: (TvResult | MovieResult | PersonResult | CollectionResult)[];
@@ -57,7 +58,7 @@ const ListView = ({
 
   return (
     <View className="px-2">
-      <FlatList
+      <FlashList
         ListHeaderComponent={
           header
             ? () => {

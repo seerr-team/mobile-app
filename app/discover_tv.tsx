@@ -1,5 +1,8 @@
 import DiscoverTv from '@/components/Discover/DiscoverTv';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function DiscoverTvPage() {
+function DiscoverTvPage() {
   return <DiscoverTv />;
 }
+
+export default withAfterInteractions(DiscoverTvPage);

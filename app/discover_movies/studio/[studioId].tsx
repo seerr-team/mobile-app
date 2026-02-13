@@ -1,5 +1,8 @@
 import DiscoverStudio from '@/components/Discover/DiscoverStudio';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function DiscoverMoviesStudio() {
+function DiscoverMoviesStudio() {
   return <DiscoverStudio />;
 }
+
+export default withAfterInteractions(DiscoverMoviesStudio);

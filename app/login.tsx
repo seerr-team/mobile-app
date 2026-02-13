@@ -1,5 +1,8 @@
 import Login from '@/components/Login';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function LoginScreen() {
+function LoginScreen() {
   return <Login />;
 }
+
+export default withAfterInteractions(LoginScreen);

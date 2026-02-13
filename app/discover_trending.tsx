@@ -1,5 +1,8 @@
 import Trending from '@/components/Discover/Trending';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function DiscoverTrending() {
+function DiscoverTrending() {
   return <Trending />;
 }
+
+export default withAfterInteractions(DiscoverTrending);

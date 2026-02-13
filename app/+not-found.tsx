@@ -1,5 +1,8 @@
 import ErrorPage from '@/components/ErrorPage';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function NotFound() {
+function NotFound() {
   return <ErrorPage statusCode={404} />;
 }
+
+export default withAfterInteractions(NotFound);

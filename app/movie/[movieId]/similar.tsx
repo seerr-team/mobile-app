@@ -1,5 +1,8 @@
 import MovieSimilar from '@/components/MovieDetails/MovieSimilar';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function MovieSimilarPage() {
+function MovieSimilarPage() {
   return <MovieSimilar />;
 }
+
+export default withAfterInteractions(MovieSimilarPage);

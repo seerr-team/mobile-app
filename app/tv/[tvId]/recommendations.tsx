@@ -1,5 +1,8 @@
 import TvRecommendations from '@/components/TvDetails/TvRecommendations';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function TvRecommendationsPage() {
+function TvRecommendationsPage() {
   return <TvRecommendations />;
 }
+
+export default withAfterInteractions(TvRecommendationsPage);

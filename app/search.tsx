@@ -1,5 +1,8 @@
 import Search from '@/components/Search';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function SearchPage() {
+function SearchPage() {
   return <Search />;
 }
+
+export default withAfterInteractions(SearchPage);

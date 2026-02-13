@@ -1,5 +1,8 @@
 import MovieDetails from '@/components/MovieDetails';
+import { withAfterInteractions } from '@/utils/withAfterInteractions'; // Adjust path as needed
 
-export default function MoviePage() {
+const MoviePage = () => {
   return <MovieDetails />;
-}
+};
+
+export default withAfterInteractions(MoviePage);

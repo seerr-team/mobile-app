@@ -58,6 +58,10 @@ const Discover = () => {
       }
     >
       {discoverData?.map((slider, index) => {
+        if (!slider.enabled) {
+          return null;
+        }
+
         let sliderComponent: React.ReactElement = <></>;
 
         switch (slider.type) {
@@ -249,10 +253,6 @@ const Discover = () => {
               />
             );
             break;
-        }
-
-        if (!slider.enabled) {
-          return null;
         }
 
         return (

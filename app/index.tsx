@@ -1,5 +1,8 @@
 import Discover from '@/components/Discover';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function Home() {
+function Home() {
   return <Discover />;
 }
+
+export default withAfterInteractions(Home);

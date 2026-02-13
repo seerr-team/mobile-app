@@ -1,5 +1,8 @@
 import DiscoverTvNetwork from '@/components/Discover/DiscoverNetwork';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function DiscoverNetwork() {
+function DiscoverNetwork() {
   return <DiscoverTvNetwork />;
 }
+
+export default withAfterInteractions(DiscoverNetwork);

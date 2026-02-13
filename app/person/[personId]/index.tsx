@@ -1,7 +1,8 @@
 import PersonDetails from '@/components/PersonDetails';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export const PersonDetailsPage = () => {
+const PersonDetailsPage = () => {
   return <PersonDetails />;
 };
 
-export default PersonDetailsPage;
+export default withAfterInteractions(PersonDetailsPage);

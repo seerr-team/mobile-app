@@ -1,5 +1,8 @@
 import CollectionDetails from '@/components/CollectionDetails';
+import { withAfterInteractions } from '@/utils/withAfterInteractions';
 
-export default function CollectionPage() {
+function CollectionPage() {
   return <CollectionDetails />;
 }
+
+export default withAfterInteractions(CollectionPage);
