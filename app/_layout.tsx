@@ -53,6 +53,8 @@ type MessagesType = Record<string, string>;
 
 axios.defaults.withCredentials = true;
 
+disableSentry();
+
 export const loadLocaleData = async (locale: string): Promise<MessagesType> => {
   const locales: Record<string, MessagesType> = {
     ar: require('../seerr/src/i18n/locale/ar.json'),

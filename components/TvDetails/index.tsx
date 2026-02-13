@@ -66,7 +66,7 @@ import axios from 'axios';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, ScrollView, View } from 'react-native';
@@ -234,7 +234,10 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           </Link>
         ))
         .reduce((prev, curr) => (
-          <ThemedText className="text-gray-300">
+          <ThemedText
+            className="text-gray-300"
+            key={`genre-separator-${prev}-${curr}`}
+          >
             {intl.formatMessage(globalMessages.delimitedlist, {
               a: prev,
               b: curr,
@@ -505,11 +508,11 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           <View className="flex flex-row flex-wrap items-center justify-center">
             {seriesAttributes.length > 0 &&
               seriesAttributes.reduce((prev, curr) => (
-                <>
+                <Fragment key={`series-attributes-separator-${prev}-${curr}`}>
                   {prev}
                   <ThemedText className="mx-1.5">|</ThemedText>
                   {curr}
-                </>
+                </Fragment>
               ))}
           </View>
         </View>

@@ -1,4 +1,4 @@
-import CachedImage, { blurhash } from '@/components/Common/CachedImage';
+import CachedImage from '@/components/Common/CachedImage';
 import { Link } from 'expo-router';
 import { Pressable } from 'react-native';
 
@@ -18,7 +18,6 @@ const CompanyCard = ({ image, url, name }: CompanyCardProps) => {
           alt=""
           style={{ width: '100%', height: '100%' }}
           contentFit="contain"
-          placeholder={{ blurhash, width: '100%', height: '100%' }}
           placeholderContentFit="contain"
         />
       </Pressable>

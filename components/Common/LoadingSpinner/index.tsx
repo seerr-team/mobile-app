@@ -27,7 +27,7 @@ const LoadingSpinner = ({ size = 32 }) => {
   return (
     <ThemedText className="text-center text-3xl">
       <Animated.View style={{ transform: [{ rotate: spin }] }}>
-        <AntDesign name="loading1" size={size} color="white" />
+        <AntDesign name="loading" size={size} color="white" />
       </Animated.View>
     </ThemedText>
   );

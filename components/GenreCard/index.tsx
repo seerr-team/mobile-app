@@ -1,4 +1,4 @@
-import CachedImage, { blurhash } from '@/components/Common/CachedImage';
+import CachedImage from '@/components/Common/CachedImage';
 import ThemedText from '@/components/Common/ThemedText';
 import { withProperties } from '@/utils/typeHelpers';
 import { Link } from 'expo-router';
@@ -26,7 +26,6 @@ const GenreCard = ({ image, url, name, canExpand = false }: GenreCardProps) => {
           alt=""
           style={{ width: '100%', height: '100%' }}
           contentFit="cover"
-          placeholder={{ blurhash, width: '100%', height: '100%' }}
           placeholderContentFit="cover"
         />
       </Pressable>

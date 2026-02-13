@@ -58,7 +58,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import uniqBy from 'lodash.uniqby';
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
@@ -248,7 +248,10 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           </Link>
         ))
         .reduce((prev, curr) => (
-          <ThemedText className="text-gray-300">
+          <ThemedText
+            className="text-gray-300"
+            key={`genre-separator-${prev}-${curr}`}
+          >
             {intl.formatMessage(globalMessages.delimitedlist, {
               a: prev,
               b: curr,
@@ -517,11 +520,11 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           <View className="flex flex-row items-center justify-center">
             {movieAttributes.length > 0 &&
               movieAttributes.reduce((prev, curr) => (
-                <>
+                <Fragment key={`movie-attributes-${prev}-${curr}`}>
                   {prev}
                   <ThemedText className="mx-1.5">|</ThemedText>
                   {curr}
-                </>
+                </Fragment>
               ))}
           </View>
         </View>
