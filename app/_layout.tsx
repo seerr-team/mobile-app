@@ -5,7 +5,7 @@ import ToastContainer from '@/components/ToastContainer';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
 import { useUser } from '@/hooks/useUser';
-import type { AvailableLocale } from '@/seerr/src/context/LanguageContext';
+import { type AvailableLocale } from '@/seerr/server/types/languages';
 import enMessages from '@/seerr/src/i18n/locale/en.json';
 import '@/seerr/src/styles/globals.css';
 import store from '@/store';
@@ -54,7 +54,7 @@ type MessagesType = Record<string, string>;
 axios.defaults.withCredentials = true;
 
 export const loadLocaleData = async (locale: string): Promise<MessagesType> => {
-  const locales: Record<string, any> = {
+  const locales: Record<string, MessagesType> = {
     ar: require('../seerr/src/i18n/locale/ar.json'),
     bg: require('../seerr/src/i18n/locale/bg.json'),
     ca: require('../seerr/src/i18n/locale/ca.json'),
