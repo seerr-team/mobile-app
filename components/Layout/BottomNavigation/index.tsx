@@ -6,7 +6,7 @@ import {
   Tv as TvFilled,
 } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -51,6 +51,13 @@ export default function BottomNavigation() {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
   const [isFocused, setIsFocused] = useState<null | string>(null);
+  const [navigationHistory, setNavigationHistory] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (pathname !== navigationHistory[navigationHistory.length - 1]) {
+      setNavigationHistory((prev) => [...prev, pathname]);
+    }
+  }, [pathname]);
 
   return (
     <View
@@ -72,7 +79,11 @@ export default function BottomNavigation() {
             key={item.path}
             onPress={() => {
               if (pathname !== item.path) {
-                router.push(item.path);
+                if (router.canDismiss()) {
+                  router.dismissTo(item.path);
+                } else {
+                  router.push(item.path);
+                }
               }
             }}
             className="flex-1 items-center justify-center"
