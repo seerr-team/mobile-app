@@ -5,7 +5,7 @@
     "owner": "seerr",
     "version": "0.9.3",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./seerr/public/android-chrome-512x512.png",
     "scheme": "myapp",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -22,16 +22,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./seerr/public/android-chrome-512x512.png",
         "backgroundColor": "#111827"
       },
       "package": "dev.seerr.mobileapp",
       "edgeToEdgeEnabled": true
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "@react-native-tvos/config-tv",
@@ -39,8 +34,8 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 300,
+          "image": "./seerr/public/android-chrome-512x512.png",
+          "imageWidth": 200,
           "resizeMode": "cover",
           "backgroundColor": "#111827"
         }

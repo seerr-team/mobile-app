@@ -1,11 +1,12 @@
 import TitleCard from '@/components/TitleCard';
 import globalMessages from '@/utils/globalMessages';
+import React from 'react';
 import { useIntl } from 'react-intl';
 import { FlatList, View } from 'react-native';
 
 interface SliderProps {
   sliderKey: string;
-  items?: JSX.Element[];
+  items?: React.JSX.Element[];
   isLoading: boolean;
   isEmpty?: boolean;
   emptyMessage?: React.ReactNode;

@@ -1,4 +1,4 @@
-import LogoStacked from '@/assets/images/logo-stacked.png';
+import LogoStacked from '@/assets/images/logo_stacked.png';
 import Button from '@/components/Common/Button';
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
 import TextInput from '@/components/Common/TextInput';

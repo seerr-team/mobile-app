@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Easing } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
 export interface AccordionProps {
-  children: (args: AccordionChildProps) => JSX.Element;
+  children: (args: AccordionChildProps) => React.JSX.Element;
   /** If true, only one accordion item can be open at any time */
   single?: boolean;
   /** If true, at least one accordion item will always be open */

@@ -5,7 +5,7 @@ import { View } from 'react-native';
 
 type TagProps = {
   children: React.ReactNode;
-  iconSvg?: JSX.Element;
+  iconSvg?: React.JSX.Element;
 };
 
 const Tag = ({ children, iconSvg }: TagProps) => {

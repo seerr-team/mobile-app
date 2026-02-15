@@ -1,12 +1,13 @@
-import SeerrIcon from '@/assets/images/icon.png';
-import LogoStacked from '@/assets/images/logo-stacked.png';
+import LogoStacked from '@/assets/images/logo_stacked.png';
 import EmbyLogo from '@/assets/services/emby-icon-only.png';
 import JellyfinLogo from '@/assets/services/jellyfin-icon.png';
 import PlexLogo from '@/assets/services/plex.png';
 import Button from '@/components/Common/Button';
 import ImageFader from '@/components/Common/ImageFader';
 import useServerUrl from '@/hooks/useServerUrl';
+import SeerrIcon from '@/seerr/public/android-chrome-512x512.png';
 import getSeerrMessages from '@/utils/getSeerrMessages';
+import React from 'react';
 // import LanguagePicker from '@/components/Layout/LanguagePicker';
 import ThemedText from '@/components/Common/ThemedText';
 import JellyfinLogin from '@/components/Login/JellyfinLogin';
@@ -144,7 +145,6 @@ const Login = () => {
             <Image
               source={SeerrIcon}
               alt={settings.currentSettings.applicationTitle}
-              className="mr-2"
               style={{ width: 20, height: 20, objectFit: 'contain' }}
             />
             <ThemedText>{settings.currentSettings.applicationTitle}</ThemedText>
@@ -165,7 +165,7 @@ const Login = () => {
           </Button>
         ))
       )),
-  ].filter((o): o is JSX.Element => !!o);
+  ].filter((o): o is React.JSX.Element => !!o);
 
   return (
     // <View className="relative flex flex-1 flex-col justify-center">
