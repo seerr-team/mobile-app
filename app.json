@@ -3,7 +3,7 @@
     "name": "Seerr",
     "slug": "seerr",
     "owner": "seerr",
-    "version": "0.9.3",
+    "version": "0.9.5",
     "orientation": "portrait",
     "icon": "./seerr/public/android-chrome-512x512.png",
     "scheme": "myapp",
