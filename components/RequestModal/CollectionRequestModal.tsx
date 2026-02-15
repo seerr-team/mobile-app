@@ -69,7 +69,7 @@ const CollectionRequestModal = ({
 
   const getAllParts = (): number[] => {
     return (data?.parts ?? [])
-      .filter((part) => part.mediaInfo?.status !== MediaStatus.BLACKLISTED)
+      .filter((part) => part.mediaInfo?.status !== MediaStatus.BLOCKLISTED)
       .map((part) => part.id);
   };
 
@@ -246,8 +246,8 @@ const CollectionRequestModal = ({
     { type: 'or' }
   );
 
-  const blacklistVisibility = hasPermission(
-    [Permission.MANAGE_BLACKLIST, Permission.VIEW_BLACKLIST],
+  const blocklistVisibility = hasPermission(
+    [Permission.MANAGE_BLOCKLIST, Permission.VIEW_BLOCKLIST],
     { type: 'or' }
   );
 
@@ -328,9 +328,9 @@ const CollectionRequestModal = ({
                 <View className="divide-y divide-gray-700">
                   {data?.parts
                     .filter((part) => {
-                      if (!blacklistVisibility)
+                      if (!blocklistVisibility)
                         return (
-                          part.mediaInfo?.status !== MediaStatus.BLACKLISTED
+                          part.mediaInfo?.status !== MediaStatus.BLOCKLISTED
                         );
                       return part;
                     })
@@ -352,7 +352,7 @@ const CollectionRequestModal = ({
                               value={
                                 (!!partMedia &&
                                   partMedia.status !==
-                                    MediaStatus.BLACKLISTED) ||
+                                    MediaStatus.BLOCKLISTED) ||
                                 isSelectedPart(part.id)
                               }
                               onValueChange={() => togglePart(part.id)}
@@ -370,7 +370,7 @@ const CollectionRequestModal = ({
                           </View>
                           <View
                             className={`flex flex-1 flex-row px-1 py-4 ${
-                              partMedia?.status === MediaStatus.BLACKLISTED &&
+                              partMedia?.status === MediaStatus.BLOCKLISTED &&
                               'pointer-events-none opacity-50'
                             }`}
                           >
@@ -435,10 +435,10 @@ const CollectionRequestModal = ({
                                 </Badge>
                               )}
                               {partMedia?.status ===
-                                MediaStatus.BLACKLISTED && (
+                                MediaStatus.BLOCKLISTED && (
                                 <Badge badgeType="danger">
                                   {intl.formatMessage(
-                                    globalMessages.blacklisted
+                                    globalMessages.blocklisted
                                   )}
                                 </Badge>
                               )}

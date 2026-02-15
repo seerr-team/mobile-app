@@ -50,7 +50,7 @@ const StatusBadgeMini = ({
       );
       indicatorIcon = <Bell color="#fef9c3" />;
       break;
-    case MediaStatus.BLACKLISTED:
+    case MediaStatus.BLOCKLISTED:
       badgeStyle.push('bg-red-500 border-white-400 ring-white-400 text-white');
       indicatorIcon = <EyeSlash color="#ffffff" />;
       break;

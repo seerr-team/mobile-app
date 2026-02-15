@@ -4,7 +4,7 @@ import RTAudRotten from '@/assets/services/rt_aud_rotten.png';
 import RTFresh from '@/assets/services/rt_fresh.png';
 import RTRotten from '@/assets/services/rt_rotten.png';
 import TmdbLogo from '@/assets/services/tmdb_logo.png';
-// import BlacklistModal from '@/components/BlacklistModal';
+// import BlocklistModal from '@/components/BlocklistModal';
 import Button from '@/components/Common/Button';
 import CachedImage from '@/components/Common/CachedImage';
 import LoadingSpinner from '@/components/Common/LoadingSpinner';
@@ -87,9 +87,9 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   const [toggleWatchlist, setToggleWatchlist] = useState<boolean>(
     !movie?.onUserWatchlist
   );
-  // const [isBlacklistUpdating, setIsBlacklistUpdating] =
+  // const [isBlocklistUpdating, setIsBlocklistUpdating] =
   //   useState<boolean>(false);
-  // const [showBlacklistModal, setShowBlacklistModal] = useState(false);
+  // const [showBlocklistModal, setShowBlocklistModal] = useState(false);
 
   const {
     data,
@@ -122,8 +122,8 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   //   setShowManager(router.query.manage == '1' ? true : false);
   // }, [router.query.manage]);
 
-  // const closeBlacklistModal = useCallback(
-  //   () => setShowBlacklistModal(false),
+  // const closeBlocklistModal = useCallback(
+  //   () => setShowBlocklistModal(false),
   //   []
   // );
 
@@ -349,10 +349,10 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   };
 
   // const onClickHideItemBtn = async (): Promise<void> => {
-  //   setIsBlacklistUpdating(true);
+  //   setIsBlocklistUpdating(true);
 
   //   try {
-  //     await axios.post(serverUrl + '/api/v1/blacklist', {
+  //     await axios.post(serverUrl + '/api/v1/blocklist', {
   //       tmdbId: movie?.id,
   //       mediaType: 'movie',
   //       title: movie?.title,
@@ -361,7 +361,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
 
   //     addToast(
   //       <span>
-  //         {intl.formatMessage(globalMessages.blacklistSuccess, {
+  //         {intl.formatMessage(globalMessages.blocklistSuccess, {
   //           title: movie?.title,
   //           strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
   //         })}
@@ -374,7 +374,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   //     if (e?.response?.status === 412) {
   //       addToast(
   //         <span>
-  //           {intl.formatMessage(globalMessages.blacklistDuplicateError, {
+  //           {intl.formatMessage(globalMessages.blocklistDuplicateError, {
   //             title: movie?.title,
   //             strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
   //           })}
@@ -382,18 +382,18 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   //         { appearance: 'info', autoDismiss: true }
   //       );
   //     } else {
-  //       addToast(intl.formatMessage(globalMessages.blacklistError), {
+  //       addToast(intl.formatMessage(globalMessages.blocklistError), {
   //         appearance: 'error',
   //         autoDismiss: true,
   //       });
   //     }
   //   }
 
-  //   setIsBlacklistUpdating(false);
-  //   closeBlacklistModal();
+  //   setIsBlocklistUpdating(false);
+  //   closeBlocklistModal();
   // };
 
-  // const showHideButton = hasPermission([Permission.MANAGE_BLACKLIST], {
+  // const showHideButton = hasPermission([Permission.MANAGE_BLOCKLIST], {
   //   type: 'or',
   // });
 
@@ -448,13 +448,13 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         revalidate={() => revalidate()}
         show={showManager}
       /> */}
-      {/* <BlacklistModal
+      {/* <BlocklistModal
         tmdbId={data.id}
         type="movie"
-        show={showBlacklistModal}
-        onCancel={closeBlacklistModal}
+        show={showBlocklistModal}
+        onCancel={closeBlocklistModal}
         onComplete={onClickHideItemBtn}
-        isUpdating={isBlacklistUpdating}
+        isUpdating={isBlocklistUpdating}
       /> */}
       <View className="mt-4 flex flex-col items-center pt-2 xl:flex-row xl:items-end">
         <View className="overflow-hidden rounded shadow md:rounded-lg md:shadow-2xl xl:mr-4">
@@ -534,20 +534,20 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             data?.mediaInfo?.status !== MediaStatus.AVAILABLE &&
             data?.mediaInfo?.status !== MediaStatus.PARTIALLY_AVAILABLE &&
             data?.mediaInfo?.status !== MediaStatus.PENDING &&
-            data?.mediaInfo?.status !== MediaStatus.BLACKLISTED && (
+            data?.mediaInfo?.status !== MediaStatus.BLOCKLISTED && (
               <Tooltip
-                content={intl.formatMessage(globalMessages.addToBlacklist)}
+                content={intl.formatMessage(globalMessages.addToBlocklist)}
               >
                 <Button
                   buttonType={'ghost'}
                   className="z-40 mr-2"
-                  onClick={() => setShowBlacklistModal(true)}
+                  onClick={() => setShowBlocklistModal(true)}
                 >
                   <EyeSlash className={'h-3'} />
                 </Button>
               </Tooltip>
             )} */}
-          {data?.mediaInfo?.status !== MediaStatus.BLACKLISTED &&
+          {data?.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
             user?.userType !== UserType.PLEX && (
               <>
                 {toggleWatchlist ? (

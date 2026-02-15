@@ -92,9 +92,9 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   const [toggleWatchlist, setToggleWatchlist] = useState<boolean>(
     !tv?.onUserWatchlist
   );
-  // const [isBlacklistUpdating, setIsBlacklistUpdating] =
+  // const [isBlocklistUpdating, setIsBlocklistUpdating] =
   //   useState<boolean>(false);
-  // const [showBlacklistModal, setShowBlacklistModal] = useState(false);
+  // const [showBlocklistModal, setShowBlocklistModal] = useState(false);
 
   const {
     data,
@@ -409,13 +409,13 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           />
         </View>
       )}
-      {/* <BlacklistModal
+      {/* <BlocklistModal
         tmdbId={data.id}
         type="tv"
-        show={showBlacklistModal}
-        onCancel={closeBlacklistModal}
+        show={showBlocklistModal}
+        onCancel={closeBlocklistModal}
         onComplete={onClickHideItemBtn}
-        isUpdating={isBlacklistUpdating}
+        isUpdating={isBlocklistUpdating}
       /> */}
       {/* <IssueModal
         onCancel={() => setShowIssueModal(false)}
@@ -522,21 +522,21 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             data?.mediaInfo?.status !== MediaStatus.AVAILABLE &&
             data?.mediaInfo?.status !== MediaStatus.PARTIALLY_AVAILABLE &&
             data?.mediaInfo?.status !== MediaStatus.PENDING &&
-            data?.mediaInfo?.status !== MediaStatus.BLACKLISTED && (
+            data?.mediaInfo?.status !== MediaStatus.BLOCKLISTED && (
               <Tooltip
-                content={intl.formatMessage(globalMessages.addToBlacklist)}
+                content={intl.formatMessage(globalMessages.addToBlocklist)}
               >
                 <Button
                   buttonType={'ghost'}
                   className="z-40 mr-2"
                   buttonSize={'md'}
-                  onClick={() => setShowBlacklistModal(true)}
+                  onClick={() => setShowBlocklistModal(true)}
                 >
                   <EyeSlashIcon className={'h-3'} />
                 </Button>
               </Tooltip>
             )} */}
-          {data?.mediaInfo?.status !== MediaStatus.BLACKLISTED &&
+          {data?.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
             user?.userType !== UserType.PLEX && (
               <>
                 {toggleWatchlist ? (

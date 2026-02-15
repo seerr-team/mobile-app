@@ -40,8 +40,8 @@ const ListView = ({
   const { hasPermission } = useUser();
   // useVerticalScroll(onScrollBottom, !isLoading && !isEmpty && !isReachingEnd);
 
-  const blacklistVisibility = hasPermission(
-    [Permission.MANAGE_BLACKLIST, Permission.VIEW_BLACKLIST],
+  const blocklistVisibility = hasPermission(
+    [Permission.MANAGE_BLOCKLIST, Permission.VIEW_BLOCKLIST],
     { type: 'or' }
   );
 
@@ -92,10 +92,10 @@ const ListView = ({
           }),
           ...(items || [])
             .filter((title) => {
-              if (!blacklistVisibility)
+              if (!blocklistVisibility)
                 return (
                   (title as TvResult | MovieResult).mediaInfo?.status !==
-                  MediaStatus.BLACKLISTED
+                  MediaStatus.BLOCKLISTED
                 );
               return title;
             })
