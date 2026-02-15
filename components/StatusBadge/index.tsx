@@ -135,7 +135,7 @@ const StatusBadge = ({
   const badgeDownloadProgress = (
     <View
       className={`
-      absolute left-0 top-0 z-10 flex h-full flex-row bg-opacity-80 ${
+      absolute -top-0.5 left-0 z-10 bg-opacity-80 ${
         status === MediaStatus.DELETED
           ? 'bg-red-600'
           : status === MediaStatus.PROCESSING
@@ -147,6 +147,7 @@ const StatusBadge = ({
         width: `${
           downloadItem ? calculateDownloadProgress(downloadItem[0]) : 0
         }%`,
+        height: '120%',
       }}
     />
   );
