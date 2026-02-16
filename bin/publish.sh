@@ -8,5 +8,9 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
+# Update app.json with the new version
+jq --arg version "$1" '.expo.version = $version' app.json > tmp.json
+mv tmp.json app.json
+
 # Update package.json, commit the file and create a tag
-npm version "$1" -m "chore: update version to v$1" --sign-git-tag
+npm version "$1" -m "chore: prepare for v$1" --sign-git-tag
