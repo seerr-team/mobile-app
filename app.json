@@ -5,7 +5,7 @@
     "owner": "seerr",
     "version": "0.9.6",
     "orientation": "portrait",
-    "scheme": "myapp",
+    "scheme": "seerr",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "jsEngine": "hermes",
