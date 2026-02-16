@@ -5,7 +5,6 @@
     "owner": "seerr",
     "version": "0.9.5",
     "orientation": "portrait",
-    "icon": "./seerr/public/android-chrome-512x512.png",
     "scheme": "myapp",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -18,11 +17,16 @@
           "NSAllowsArbitraryLoads": true
         },
         "ITSAppUsesNonExemptEncryption": false
+      },
+      "icon": {
+        "dark": "./assets/images/ios_icon.png",
+        "light": "./assets/images/ios_icon.png",
+        "tinted": "./assets/images/ios_icon.png"
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./seerr/public/android-chrome-512x512.png",
+        "foregroundImage": "./assets/images/android_icon.png",
         "backgroundColor": "#111827"
       },
       "package": "dev.seerr.mobileapp",
@@ -34,9 +38,9 @@
       [
         "expo-splash-screen",
         {
-          "image": "./seerr/public/android-chrome-512x512.png",
-          "imageWidth": 200,
-          "resizeMode": "cover",
+          "image": "./assets/images/adaptative_icon.png",
+          "imageWidth": 300,
+          "resizeMode": "contain",
           "backgroundColor": "#111827"
         }
       ],
