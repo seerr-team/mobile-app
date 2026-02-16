@@ -21,13 +21,13 @@ export default function Button({
     'self-start whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out disabled:opacity-50';
   const typeClassNames = {
     primary:
-      'border border-indigo-500 bg-indigo-600 bg-opacity-80 text-white hover:border-indigo-500 hover:bg-opacity-100 focus:border-indigo-400 focus:ring-indigo focus:outline-none active:border-indigo-700 active:bg-opacity-100',
+      'border border-indigo-500 bg-indigo-600/80 text-white hover:border-indigo-500 hover:bg-indigo-600/100 focus:border-indigo-400 focus:ring-indigo focus:outline-none active:border-indigo-700 active:bg-opacity-100',
     success:
-      'border border-green-500 bg-green-600 bg-opacity-80 text-white hover:border-green-500 hover:bg-opacity-100 focus:border-green-700 focus:ring-green-500 focus:outline-none active:border-green-700 active:bg-opacity-100',
+      'border border-green-500 bg-green-600/80 text-white hover:border-green-500 hover:bg-green-600/100 focus:border-green-700 focus:ring-green-500 focus:outline-none active:border-green-700 active:bg-opacity-100',
     danger:
-      'border border-red-500 bg-red-600 bg-opacity-80 text-white hover:border-red-500 hover:bg-opacity-100 focus:border-red-700 focus:ring-red-500 focus:outline-none active:border-red-700 active:bg-opacity-100',
+      'border border-red-500 bg-red-600/80 text-white hover:border-red-500 hover:bg-red-600/100 focus:border-red-700 focus:ring-red-500 focus:outline-none active:border-red-700 active:bg-opacity-100',
     ghost:
-      'border border-gray-600 bg-transparent text-white hover:border-gray-200 focus:border-gray-100 focus:ring-indigo active:border-gray-100',
+      'border border-gray-600 bg-gray-800/80 text-white hover:border-gray-200 focus:border-gray-100 focus:ring-indigo active:border-gray-100',
   };
   const buttonClassName =
     forceClassName ||

@@ -44,6 +44,7 @@ const Slider = ({
           </View>
         ) : null
       }
+      contentContainerClassName="px-2"
       initialNumToRender={5}
       maxToRenderPerBatch={3}
       windowSize={5}

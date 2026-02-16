@@ -4,6 +4,7 @@ import useServerUrl from '@/hooks/useServerUrl';
 import { useUser } from '@/hooks/useUser';
 import getSeerrMessages from '@/utils/getSeerrMessages';
 import { ArrowRightOnRectangle, Clock } from '@nandorojo/heroicons/24/outline';
+import { User } from '@nandorojo/heroicons/24/solid';
 import axios from 'axios';
 import { BlurView } from 'expo-blur';
 import { Link } from 'expo-router';
@@ -90,7 +91,7 @@ const UserDropdown = () => {
               </View>
             </View>
             <View className="flex flex-col border-t border-gray-600 py-2">
-              {/* <Link href="/profile" asChild>
+              <Link href="/profile" asChild>
                 <Pressable onPress={() => setIsOpen(false)}>
                   <View className="flex flex-row items-center gap-2 px-4 py-2">
                     <User
@@ -104,7 +105,7 @@ const UserDropdown = () => {
                     </ThemedText>
                   </View>
                 </Pressable>
-              </Link> */}
+              </Link>
               <Link href="/requests?filter=all" asChild>
                 <Pressable onPress={() => setIsOpen(false)}>
                   <View className="flex flex-row items-center gap-2 px-4 py-2">
