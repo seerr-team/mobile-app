@@ -387,6 +387,7 @@ const RequestButton = ({
           </>
         }
         onPress={buttonOne.action}
+        popoverStyle={{ marginTop: 112, marginLeft: 32 }}
       >
         {others && others.length > 0
           ? others.map((button) => (

@@ -208,7 +208,7 @@ function RootLayout() {
                 </View>
               )}
               <Stack screenOptions={stackScreenOptions}>
-                <Stack.Screen name="index" />
+                {/* <Stack.Screen name="index" />
                 <Stack.Screen
                   name="setup"
                   options={{
@@ -223,14 +223,14 @@ function RootLayout() {
                 />
                 <Stack.Screen name="discover_movies" />
                 <Stack.Screen name="discover_tv" />
-                <Stack.Screen name="requests" />
+                <Stack.Screen name="requests" /> */}
                 <Stack.Screen
                   name="search"
                   options={{
                     animation: 'none',
                   }}
                 />
-                <Stack.Screen name="discover_trending" />
+                {/* <Stack.Screen name="discover_trending" />
                 <Stack.Screen name="discover_movies/studio/[studioId]" />
                 <Stack.Screen name="discover_tv/network/[networkId]" />
                 <Stack.Screen name="discover_watchlist" />
@@ -241,7 +241,7 @@ function RootLayout() {
                 <Stack.Screen name="tv/[tvId]/recommendations" />
                 <Stack.Screen name="tv/[tvId]/similar" />
                 <Stack.Screen name="person/[personId]/index" />
-                <Stack.Screen name="collection/[collectionId]/index" />
+                <Stack.Screen name="collection/[collectionId]/index" /> */}
               </Stack>
               {user && <BottomNavigation />}
             </View>

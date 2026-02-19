@@ -1,5 +1,5 @@
 const useLocale = () => {
-  return { locale: 'en' };
+  return { locale: 'en', setLocale: (_: string) => {} };
 };
 
 export default useLocale;

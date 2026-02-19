@@ -309,6 +309,7 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
                   </ThemedText>
                 </>
               }
+              popoverStyle={{ marginTop: 112, marginLeft: 32 }}
             >
               {hasRequestable && hasRequestable4k && (
                 <ButtonWithDropdown.Item

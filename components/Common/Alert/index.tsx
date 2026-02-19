@@ -17,7 +17,7 @@ const Alert = ({ title, children, type }: AlertProps) => {
     bgColor: 'border border-yellow-500 backdrop-blur bg-yellow-400/20',
     titleColor: 'text-yellow-100',
     textColor: 'text-yellow-300',
-    svg: <ExclamationTriangle className="h-5 w-5" />,
+    svg: <ExclamationTriangle color="#fef9c3" width={20} height={20} />,
   };
 
   switch (type) {
@@ -26,7 +26,7 @@ const Alert = ({ title, children, type }: AlertProps) => {
         bgColor: 'border border-indigo-500 backdrop-blur bg-indigo-400/20',
         titleColor: 'text-gray-100',
         textColor: 'text-gray-300',
-        svg: <InformationCircle color="#ffffff" width={20} height={20} />,
+        svg: <InformationCircle color="#f3f4f6" width={20} height={20} />,
       };
       break;
     case 'error':
@@ -34,7 +34,7 @@ const Alert = ({ title, children, type }: AlertProps) => {
         bgColor: 'bg-red-600',
         titleColor: 'text-red-100',
         textColor: 'text-red-300',
-        svg: <XCircle color="#ffffff" width={20} height={20} />,
+        svg: <XCircle color="#fee2e2" width={20} height={20} />,
       };
       break;
   }
@@ -45,7 +45,7 @@ const Alert = ({ title, children, type }: AlertProps) => {
         <View className={`flex-shrink-0 ${design.titleColor}`}>
           {design.svg}
         </View>
-        <View className="ml-3">
+        <View className="mx-3">
           {title && (
             <ThemedText className={`font-medium ${design.titleColor}`}>
               {title}

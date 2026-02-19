@@ -46,6 +46,13 @@ import {
 import { ChevronDown } from '@nandorojo/heroicons/24/solid';
 // import { IssueStatus } from '@/seerr/server/constants/issue';
 import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from '@/components/Common/Disclosure';
+import ThemedText from '@/components/Common/ThemedText';
+import useServerUrl from '@/hooks/useServerUrl';
+import {
   MediaRequestStatus,
   MediaStatus,
   MediaType,
@@ -53,16 +60,8 @@ import {
 import { MediaServerType } from '@/seerr/server/constants/server';
 import type { Crew } from '@/seerr/server/models/common';
 import type { TvDetails as TvDetailsType } from '@/seerr/server/models/Tv';
-// import { countries } from 'country-flag-icons';
-// import 'country-flag-icons/3x2/flags.css';
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from '@/components/Common/Disclosure';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
 import axios from 'axios';
+import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams } from 'expo-router';
@@ -1208,6 +1207,9 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                             className={`mr-1.5 text-xs leading-5 flag:${c.iso_3166_1}`}
                           />
                         )} */}
+                        <ThemedText className={`mr-1.5 text-xs leading-5`}>
+                          {getUnicodeFlagIcon(c.iso_3166_1)}
+                        </ThemedText>
                         <ThemedText className="text-right text-sm font-normal text-gray-400">
                           {/* {intl.formatDisplayName(c.iso_3166_1, {
                             type: 'region',

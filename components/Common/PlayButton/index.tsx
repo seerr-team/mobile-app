@@ -29,6 +29,7 @@ const PlayButton = ({ links }: PlayButtonProps) => {
       }
       href={links[0].url}
       target="_blank"
+      popoverStyle={{ marginTop: 112, marginLeft: 32 }}
     >
       {links.length > 1 &&
         links.slice(1).map((link, i) => {

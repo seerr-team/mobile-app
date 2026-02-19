@@ -35,7 +35,7 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
   }
 
   return (
-    <View className="mb-12 mt-6 px-4 lg:flex lg:flex-row lg:items-end lg:justify-between lg:gap-5">
+    <View className="mt-6 px-4 lg:flex lg:flex-row lg:items-end lg:justify-between lg:gap-5">
       <View className="flex flex-row items-end justify-items-end gap-5">
         <View className="flex-shrink-0">
           <View className="overflow-hidden rounded-full">
@@ -109,7 +109,7 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
                     : `/users/${user.id}`
                 );
               }}
-              className="flex flex-row items-center gap-2 pl-2"
+              className="flex w-full flex-row items-center justify-center gap-2 pl-2"
             >
               <User color="#ffffff" />
               <ThemedText>{intl.formatMessage(messages.profile)}</ThemedText>

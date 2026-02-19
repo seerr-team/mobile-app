@@ -3,7 +3,7 @@ import { ChevronDown } from '@nandorojo/heroicons/24/solid';
 import type { LinkProps } from 'expo-router';
 import { Link } from 'expo-router';
 import { useState } from 'react';
-import type { PressableProps } from 'react-native';
+import type { PressableProps, StyleProp, ViewStyle } from 'react-native';
 import { Pressable, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
@@ -41,9 +41,11 @@ interface ButtonWithDropdownProps {
   text: React.ReactNode;
   dropdownIcon?: React.ReactNode;
   buttonType?: 'primary' | 'ghost';
+  popoverStyle?: StyleProp<ViewStyle>;
 }
-interface ButtonProps extends PressableProps, ButtonWithDropdownProps {
-  children?: React.ReactNode;
+interface ButtonProps
+  extends Omit<PressableProps, 'children'>, ButtonWithDropdownProps {
+  children?: React.ReactNode | ((close: () => void) => React.ReactNode);
   as?: 'button';
 }
 interface AnchorProps extends LinkProps, ButtonWithDropdownProps {
@@ -57,6 +59,7 @@ const ButtonWithDropdown = ({
   dropdownIcon,
   className,
   buttonType = 'primary',
+  popoverStyle,
   ...props
 }: ButtonProps | AnchorProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -122,8 +125,7 @@ const ButtonWithDropdown = ({
             }
             popoverStyle={{
               backgroundColor: 'transparent',
-              marginTop: 112,
-              marginLeft: 32,
+              ...(popoverStyle as Object),
             }}
             arrowSize={{ width: 0, height: 0 }}
             animationConfig={{ duration: 0 }}
@@ -132,7 +134,11 @@ const ButtonWithDropdown = ({
               <View
                 className={`rounded-md ring-1 ring-black ring-opacity-5 ${styleClasses.dropdownClasses}`}
               >
-                <View className="py-1">{children}</View>
+                <View className="py-1">
+                  {typeof children === 'function'
+                    ? children(() => setIsOpen(false))
+                    : children}
+                </View>
               </View>
             </View>
           </Popover>
