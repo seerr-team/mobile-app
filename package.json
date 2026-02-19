@@ -1,7 +1,7 @@
 {
   "name": "seerr-expo",
   "main": "expo-router/entry",
-  "version": "0.9.6",
+  "version": "0.10.0",
   "scripts": {
     "prebuild": "EXPO_TV=0 expo prebuild --clean",
     "prebuild:tv": "EXPO_TV=1 expo prebuild --clean",
