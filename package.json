@@ -27,7 +27,7 @@
     "@react-navigation/native": "^7.0.0",
     "@reduxjs/toolkit": "^2.5.0",
     "@types/validator": "^13.15.10",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "bowser": "^2.11.0",
     "country-flag-icons": "^1.6.13",
     "expo": "^54.0.33",
