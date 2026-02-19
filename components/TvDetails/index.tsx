@@ -445,7 +445,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
         revalidate={() => revalidate()}
         show={showManager}
       /> */}
-      <View className="mt-4 flex flex-col items-center pt-2 xl:flex-row xl:items-end">
+      <View className="mt-4 flex flex-col items-center px-6 pt-2 xl:flex-row xl:items-end">
         <View className="overflow-hidden rounded shadow md:rounded-lg md:shadow-2xl xl:mr-4">
           <CachedImage
             type="tmdb"
@@ -459,7 +459,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           />
         </View>
         <View className="mt-4 flex flex-1 flex-col text-center text-white xl:mr-4 xl:mt-0 xl:text-left">
-          <View className="mb-2 flex flex-col items-center space-x-2">
+          <View className="mb-2 flex flex-col items-center space-x-2 sm:flex-row sm:items-start sm:gap-2">
             <StatusBadge
               status={data.mediaInfo?.status}
               downloadItem={data.mediaInfo?.downloadStatus}
@@ -496,7 +496,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
                 />
               )}
           </View>
-          <ThemedText className="mt-2 text-center text-3xl">
+          <ThemedText className="mt-2 text-center text-3xl sm:text-left">
             {data.name}{' '}
             {data.firstAirDate && (
               <ThemedText className="media-year">
@@ -504,7 +504,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
               </ThemedText>
             )}
           </ThemedText>
-          <View className="flex flex-row flex-wrap items-center justify-center">
+          <View className="flex flex-row items-center justify-center sm:justify-start">
             {seriesAttributes.length > 0 &&
               seriesAttributes.reduce((prev, curr) => (
                 <Fragment key={`series-attributes-separator-${prev}-${curr}`}>

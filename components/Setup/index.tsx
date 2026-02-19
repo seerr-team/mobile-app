@@ -111,7 +111,7 @@ export default function Setup() {
         <ThemedText className="mt-12 text-center text-3xl font-bold md:mt-0 md:text-2xl">
           Enter the server address to continue.
         </ThemedText>
-        <View className="mt-8 w-full bg-gray-800/50 px-10 py-8">
+        <View className="mt-8 w-full bg-gray-800/50 px-10 py-8 sm:rounded-lg">
           <View className="">
             <ThemedText className="mb-1 text-lg font-bold text-white">
               Server address

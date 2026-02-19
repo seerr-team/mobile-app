@@ -77,7 +77,7 @@ const Modal = ({
         >
           <ScrollView
             className="w-full"
-            contentContainerClassName="flex justify-center pb-12 flex-grow"
+            contentContainerClassName="flex justify-center items-center pb-12 flex-grow"
           >
             <Pressable
               android_disableSound
@@ -108,7 +108,7 @@ const Modal = ({
                 </View>
               )}
               <View className="relative -mx-4 overflow-x-hidden px-4 pt-0.5 sm:flex sm:flex-row sm:items-center">
-                <View className={`mt-3 truncate sm:mt-0 sm:text-left`}>
+                <View className={`mt-3 truncate sm:mt-0 sm:px-4 sm:text-left`}>
                   {(title || subTitle) && (
                     <View className="flex flex-col space-y-1">
                       {title && (
@@ -117,7 +117,7 @@ const Modal = ({
                         </ThemedText>
                       )}
                       {subTitle && (
-                        <ThemedText className="truncate text-center text-lg font-semibold leading-6 text-gray-200">
+                        <ThemedText className="truncate text-center text-lg font-semibold leading-6 text-gray-200 sm:text-left">
                           {subTitle}
                         </ThemedText>
                       )}

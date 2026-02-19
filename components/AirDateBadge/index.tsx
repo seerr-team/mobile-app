@@ -47,6 +47,7 @@ const AirDateBadge = ({ airDate }: AirDateBadgeProps) => {
             {
               relativeTime: (
                 <FormattedRelativeTime
+                  key={`airdate-${airDate}`}
                   value={diffInDays}
                   unit="day"
                   numeric="auto"

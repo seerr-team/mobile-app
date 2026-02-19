@@ -11,6 +11,7 @@ import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 // import TruncateMarkup from 'react-truncate-markup';
 import ThemedText from '@/components/Common/ThemedText';
+import useOrientation from '@/hooks/useOrientation';
 import useServerUrl from '@/hooks/useServerUrl';
 import getSeerrMessages from '@/utils/getSeerrMessages';
 import globalMessages from '@/utils/globalMessages';
@@ -28,6 +29,7 @@ const PersonDetails = () => {
     `${serverUrl}/api/v1/person/${searchParams.personId}`
   );
   const [showBio, setShowBio] = useState(false);
+  const orientation = useOrientation();
 
   const { data: combinedCredits, error: errorCombinedCredits } =
     useSWR<PersonCombinedCreditsResponse>(
@@ -125,12 +127,13 @@ const PersonDetails = () => {
           {intl.formatMessage(messages.appearsin)}
         </ThemedText>
       </View>
-      <View className="flex flex-row flex-wrap px-2">
+      <View className="-my-2 flex flex-row flex-wrap px-2">
         {sortedCast?.map((media, index) => {
           return (
             <View
               key={`list-cast-item-${media.id}-${index}`}
-              className="w-1/2 p-2"
+              className="px-2 pb-3"
+              style={{ width: orientation === 'portrait' ? '50%' : '12.5%' }}
             >
               <TitleCard
                 key={media.id}
@@ -149,7 +152,11 @@ const PersonDetails = () => {
                 canExpand
               />
               {media.character && (
-                <ThemedText className="mt-2 w-full truncate text-center text-sm text-gray-300">
+                <ThemedText
+                  className="mt-2 w-full truncate text-center text-sm text-gray-300 sm:text-xs"
+                  lineBreakMode="tail"
+                  numberOfLines={1}
+                >
                   {intl.formatMessage(messages.ascharacter, {
                     character: media.character,
                   })}
@@ -169,12 +176,13 @@ const PersonDetails = () => {
           {intl.formatMessage(messages.crewmember)}
         </ThemedText>
       </View>
-      <View className="flex flex-row flex-wrap px-2">
+      <View className="-my-2 flex flex-row flex-wrap px-2">
         {sortedCrew?.map((media, index) => {
           return (
             <View
               key={`list-crew-item-${media.id}-${index}`}
-              className="w-1/2 p-2"
+              className="px-2 pb-3"
+              style={{ width: orientation === 'portrait' ? '50%' : '12.5%' }}
             >
               <TitleCard
                 key={media.id}
@@ -193,7 +201,11 @@ const PersonDetails = () => {
                 canExpand
               />
               {media.job && (
-                <ThemedText className="mt-2 w-full truncate text-center text-sm text-gray-300">
+                <ThemedText
+                  className="mt-2 w-full truncate text-center text-sm text-gray-300 sm:text-xs"
+                  lineBreakMode="tail"
+                  numberOfLines={1}
+                >
                   {media.job}
                 </ThemedText>
               )}
@@ -221,7 +233,7 @@ const PersonDetails = () => {
         </View>
       )} */}
       <View
-        className={`relative z-10 my-4 flex flex-col items-center lg:flex-row ${
+        className={`relative z-10 my-4 flex flex-col items-center px-4 lg:flex-row ${
           data.biography ? 'lg:items-start' : ''
         }`}
       >
@@ -235,16 +247,16 @@ const PersonDetails = () => {
             />
           </View>
         )}
-        <View className="px-2 lg:text-left">
-          <ThemedText className="text-center text-3xl text-white lg:text-4xl">
+        <View className="flex-1 px-2">
+          <ThemedText className="text-center text-3xl text-white lg:text-left lg:text-4xl">
             {data.name}
           </ThemedText>
           <View className="mb-2 mt-1 space-y-1 text-xs text-white sm:text-sm lg:text-base">
-            <ThemedText className="text-center text-gray-300">
+            <ThemedText className="text-center text-gray-300 lg:text-left">
               {personAttributes.join(' | ')}
             </ThemedText>
             {(data.alsoKnownAs ?? []).length > 0 && (
-              <ThemedText className="text-center text-gray-300">
+              <ThemedText className="text-center text-gray-300 lg:text-left">
                 {intl.formatMessage(messages.alsoknownas, {
                   names: (data.alsoKnownAs ?? []).reduce((prev, curr) =>
                     intl.formatMessage(globalMessages.delimitedlist, {

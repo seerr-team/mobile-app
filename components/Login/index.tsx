@@ -181,7 +181,7 @@ const Login = () => {
         {/* <View className="absolute top-4 right-4 z-50">
           <LanguagePicker />
         </View> */}
-        <View className="mx-4 h-48">
+        <View className="mx-4 flex h-48 flex-row justify-center">
           <Image
             className="h-48 max-w-full"
             style={{ objectFit: 'contain' }}
@@ -189,7 +189,7 @@ const Login = () => {
           />
         </View>
         <View className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <View className="bg-gray-800/80">
+          <View className="bg-gray-800/80 sm:rounded-lg">
             {!!error && (
               <View className="mb-4 rounded-md bg-red-600 p-4">
                 <View className="flex flex-row">

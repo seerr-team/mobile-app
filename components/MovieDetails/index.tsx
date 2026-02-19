@@ -455,7 +455,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         onComplete={onClickHideItemBtn}
         isUpdating={isBlocklistUpdating}
       /> */}
-      <View className="mt-4 flex flex-col items-center pt-2 xl:flex-row xl:items-end">
+      <View className="mt-4 flex flex-col items-center px-6 pt-2 xl:flex-row xl:items-end">
         <View className="overflow-hidden rounded shadow md:rounded-lg md:shadow-2xl xl:mr-4">
           <CachedImage
             type="tmdb"
@@ -469,7 +469,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           />
         </View>
         <View className="mt-4 flex flex-1 flex-col text-center text-white xl:mr-4 xl:mt-0 xl:text-left">
-          <View className="mb-2 flex flex-col items-center space-x-2">
+          <View className="mb-2 flex flex-col items-center space-x-2 sm:flex-row sm:items-start sm:gap-2">
             <StatusBadge
               fontSize="text-base"
               status={data.mediaInfo?.status}
@@ -508,7 +508,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                 />
               )}
           </View>
-          <ThemedText className="mt-2 text-center text-3xl">
+          <ThemedText className="mt-2 text-center text-3xl sm:text-left">
             {data.title}{' '}
             {data.releaseDate && (
               <ThemedText className="media-year">
@@ -516,7 +516,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
               </ThemedText>
             )}
           </ThemedText>
-          <View className="flex flex-row items-center justify-center">
+          <View className="flex flex-row items-center justify-center sm:justify-start">
             {movieAttributes.length > 0 &&
               movieAttributes.reduce((prev, curr) => (
                 <Fragment key={`movie-attributes-${prev}-${curr}`}>

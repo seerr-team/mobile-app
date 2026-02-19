@@ -2,6 +2,7 @@ import ThemedText from '@/components/Common/ThemedText';
 import PersonCard from '@/components/PersonCard';
 import TitleCard from '@/components/TitleCard';
 import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
+import useOrientation from '@/hooks/useOrientation';
 import { Permission, useUser } from '@/hooks/useUser';
 import { MediaStatus } from '@/seerr/server/constants/media';
 import type { WatchlistItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
@@ -13,7 +14,7 @@ import type {
 } from '@/seerr/server/models/Search';
 import globalMessages from '@/utils/globalMessages';
 import { useIntl } from 'react-intl';
-import { FlatList, Platform, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 type ListViewProps = {
   items?: (TvResult | MovieResult | PersonResult | CollectionResult)[];
@@ -39,6 +40,7 @@ const ListView = ({
   const intl = useIntl();
   const { hasPermission } = useUser();
   // useVerticalScroll(onScrollBottom, !isLoading && !isEmpty && !isReachingEnd);
+  const orientation = useOrientation();
 
   const blocklistVisibility = hasPermission(
     [Permission.MANAGE_BLOCKLIST, Permission.VIEW_BLOCKLIST],
@@ -71,7 +73,7 @@ const ListView = ({
             : undefined
         }
         renderItem={({ item }) => item}
-        numColumns={Platform.isTV ? 6 : 2}
+        numColumns={orientation === 'portrait' ? 2 : 8}
         horizontal={false}
         contentContainerStyle={{ alignItems: 'stretch' }}
         onEndReached={onScrollBottom}

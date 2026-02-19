@@ -40,10 +40,7 @@ import {
 } from 'react-native-keyboard-controller';
 import 'react-native-reanimated';
 import { configureReanimatedLogger } from 'react-native-reanimated';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Provider, useDispatch } from 'react-redux';
 import RelativeTimeFormat from 'relative-time-format';
 import en from 'relative-time-format/locale/en';
@@ -115,10 +112,12 @@ function RootLayout() {
   const contentStyle = useMemo(
     () => ({
       backgroundColor: '#111827',
-      paddingTop: insets.top + 56,
-      paddingBottom: insets.bottom + 56,
+      paddingTop:
+        pathname === '/setup' || pathname === '/login' ? 0 : insets.top + 56,
+      paddingBottom:
+        pathname === '/setup' || pathname === '/login' ? 0 : insets.bottom + 56,
     }),
-    [insets]
+    [insets, pathname]
   );
 
   const swrConfig = useMemo(
@@ -188,67 +187,34 @@ function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <SafeAreaProvider>
-        <SWRConfig value={swrConfig}>
-          <KeyboardAvoidingView
-            behavior="padding"
-            className="flex-1 bg-gray-900"
-          >
-            <View className="flex-1">
-              {user && (
-                <View
-                  className="absolute left-0 right-0 top-0 z-50 flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
-                  style={{
-                    paddingTop: insets.top + 8,
-                    height: insets.top + 64,
-                  }}
-                >
-                  <SearchInput />
-                  <UserDropdown />
-                </View>
-              )}
-              <Stack screenOptions={stackScreenOptions}>
-                {/* <Stack.Screen name="index" />
-                <Stack.Screen
-                  name="setup"
-                  options={{
-                    contentStyle: { backgroundColor: '#111827' },
-                  }}
-                />
-                <Stack.Screen
-                  name="login"
-                  options={{
-                    contentStyle: { backgroundColor: '#111827' },
-                  }}
-                />
-                <Stack.Screen name="discover_movies" />
-                <Stack.Screen name="discover_tv" />
-                <Stack.Screen name="requests" /> */}
-                <Stack.Screen
-                  name="search"
-                  options={{
-                    animation: 'none',
-                  }}
-                />
-                {/* <Stack.Screen name="discover_trending" />
-                <Stack.Screen name="discover_movies/studio/[studioId]" />
-                <Stack.Screen name="discover_tv/network/[networkId]" />
-                <Stack.Screen name="discover_watchlist" />
-                <Stack.Screen name="movie/[movieId]/index" />
-                <Stack.Screen name="movie/[movieId]/recommendations" />
-                <Stack.Screen name="movie/[movieId]/similar" />
-                <Stack.Screen name="tv/[tvId]/index" />
-                <Stack.Screen name="tv/[tvId]/recommendations" />
-                <Stack.Screen name="tv/[tvId]/similar" />
-                <Stack.Screen name="person/[personId]/index" />
-                <Stack.Screen name="collection/[collectionId]/index" /> */}
-              </Stack>
-              {user && <BottomNavigation />}
-            </View>
-          </KeyboardAvoidingView>
-          <ToastContainer />
-        </SWRConfig>
-      </SafeAreaProvider>
+      <SWRConfig value={swrConfig}>
+        <KeyboardAvoidingView behavior="padding" className="flex-1 bg-gray-900">
+          <View className="flex-1">
+            {user && (
+              <View
+                className="absolute left-0 right-0 top-0 z-50 flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
+                style={{
+                  paddingTop: insets.top + 8,
+                  height: insets.top + 64,
+                }}
+              >
+                <SearchInput />
+                <UserDropdown />
+              </View>
+            )}
+            <Stack screenOptions={stackScreenOptions}>
+              <Stack.Screen
+                name="search"
+                options={{
+                  animation: 'none',
+                }}
+              />
+            </Stack>
+            {user && <BottomNavigation />}
+          </View>
+        </KeyboardAvoidingView>
+        <ToastContainer />
+      </SWRConfig>
     </GestureHandlerRootView>
   );
 }
