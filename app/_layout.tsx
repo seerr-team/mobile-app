@@ -9,17 +9,11 @@ import { type AvailableLocale } from '@/seerr/server/types/languages';
 import enMessages from '@/seerr/src/i18n/locale/en.json';
 import '@/seerr/src/styles/globals.css';
 import store from '@/store';
-import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
+import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import '@/utils/interceptCsrfToken';
-import {
-  disableSentry,
-  initSentry,
-  navigationIntegration,
-} from '@/utils/sentry';
 import { getServerSettings } from '@/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Sentry from '@sentry/react-native';
 import axios from 'axios';
 import { useFonts } from 'expo-font';
 import {
@@ -49,8 +43,6 @@ import { mutate, SWRConfig } from 'swr';
 type MessagesType = Record<string, string>;
 
 axios.defaults.withCredentials = true;
-
-disableSentry();
 
 export const loadLocaleData = async (locale: string): Promise<MessagesType> => {
   const locales: Record<string, MessagesType> = {
@@ -234,26 +226,9 @@ function RootLayoutWithIntl() {
   const [asyncStorageLoaded, setAsyncStorageLoaded] = useState(false);
 
   useEffect(() => {
-    if (ref?.current) {
-      navigationIntegration.registerNavigationContainer(ref);
-    }
-  }, [ref]);
-
-  useEffect(() => {
-    Promise.all([
-      AsyncStorage.getItem('server-url'),
-      AsyncStorage.getItem('send-anonymous-data'),
-    ]).then(([serverUrl, sendAnonymousData]) => {
+    Promise.all([AsyncStorage.getItem('server-url')]).then(([serverUrl]) => {
       if (serverUrl) {
         dispatch(setServerUrl(serverUrl));
-      }
-      if (sendAnonymousData) {
-        dispatch(setSendAnonymousData(sendAnonymousData === 'true'));
-        if (sendAnonymousData === 'true') {
-          initSentry();
-        } else {
-          disableSentry();
-        }
       }
       setAsyncStorageLoaded(true);
     });
@@ -297,4 +272,4 @@ function RootLayoutWithProvider() {
   );
 }
 
-export default Sentry.wrap(RootLayoutWithProvider);
+export default RootLayoutWithProvider;

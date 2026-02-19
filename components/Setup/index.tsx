@@ -5,8 +5,7 @@ import TextInput from '@/components/Common/TextInput';
 import ThemedText from '@/components/Common/ThemedText';
 import useServerUrl from '@/hooks/useServerUrl';
 import useSettings from '@/hooks/useSettings';
-import type { RootState } from '@/store';
-import { setSendAnonymousData, setServerUrl } from '@/store/appSettingsSlice';
+import { setServerUrl } from '@/store/appSettingsSlice';
 import { setSettings } from '@/store/serverSettingsSlice';
 import {
   ConnectionErrorType,
@@ -14,12 +13,11 @@ import {
   minimumServerVersion,
 } from '@/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Checkbox from 'expo-checkbox';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export default function Setup() {
   const serverUrl = useServerUrl();
@@ -30,9 +28,6 @@ export default function Setup() {
   const [inputUrl, setInputUrl] = useState<string>('');
   const [checkboxFocused, setCheckboxFocused] = useState(false);
   const settings = useSettings();
-  const sendAnonymousData = useSelector(
-    (state: RootState) => state.appSettings.sendAnonymousData
-  );
 
   const checkServer = useCallback(
     async (url: string) => {
@@ -145,42 +140,6 @@ export default function Setup() {
                 {minimumServerVersion}
               </ThemedText>
             )}
-          </View>
-          <View className="mt-4">
-            <View className="flex flex-row items-center gap-2">
-              <Checkbox
-                className="h-5 w-5"
-                value={sendAnonymousData}
-                onFocus={() => setCheckboxFocused(true)}
-                onBlur={() => setCheckboxFocused(false)}
-                style={
-                  checkboxFocused
-                    ? { borderColor: '#4f46e5', borderWidth: 2 }
-                    : {}
-                }
-                onValueChange={() =>
-                  dispatch(setSendAnonymousData(!sendAnonymousData))
-                }
-                color={
-                  checkboxFocused
-                    ? '#6366f1'
-                    : sendAnonymousData
-                      ? '#4f46e5'
-                      : '#ffffff'
-                }
-              />
-              <ThemedText
-                className={`text-lg font-bold ${checkboxFocused ? 'text-indigo-500' : 'text-white'}`}
-              >
-                Send Anonymous Usage Data
-              </ThemedText>
-            </View>
-            <ThemedText className="text-sm">
-              Help us improve the app by sending anonymous usage data to Seerr.
-              This data is not shared with any third parties and is only used to
-              fix bugs and improve the app. You can opt-out at any time in the
-              settings.
-            </ThemedText>
           </View>
           <View className="mt-8 flex border-t border-gray-700 pt-5">
             <Button
