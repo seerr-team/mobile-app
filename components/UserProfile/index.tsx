@@ -23,7 +23,7 @@ import getSeerrMessages from '@/utils/getSeerrMessages';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Linking, Pressable, ScrollView, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.UserProfile');
@@ -147,20 +147,26 @@ const UserProfile = () => {
                   {intl.formatMessage(messages.totalrequests)}
                 </ThemedText>
                 <View className="mt-1">
-                  <Link
-                    href={
-                      currentHasPermission(
-                        [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
-                        { type: 'or' }
-                      )
-                        ? `/users/${user?.id}/requests?filter=all`
-                        : '/requests'
-                    }
-                  >
+                  {Platform.isTV ? (
                     <ThemedText className="text-3xl font-semibold text-white">
                       {intl.formatNumber(user.requestCount)}
                     </ThemedText>
-                  </Link>
+                  ) : (
+                    <Link
+                      href={
+                        currentHasPermission(
+                          [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
+                          { type: 'or' }
+                        )
+                          ? `/users/${user?.id}/requests?filter=all`
+                          : '/requests'
+                      }
+                    >
+                      <ThemedText className="text-3xl font-semibold text-white">
+                        {intl.formatNumber(user.requestCount)}
+                      </ThemedText>
+                    </Link>
+                  )}
                 </View>
               </View>
               <View
@@ -301,10 +307,13 @@ const UserProfile = () => {
                     : '/requests'
                 }
                 className="slider-title"
+                asChild
               >
-                <ThemedText>
-                  {intl.formatMessage(messages.recentrequests)}
-                </ThemedText>
+                <Pressable className="group flex flex-row justify-start">
+                  <ThemedText className="truncate text-2xl font-bold text-white group-focus:text-gray-400">
+                    {intl.formatMessage(messages.recentrequests)}
+                  </ThemedText>
+                </Pressable>
               </Link>
             </View>
             <Slider
@@ -341,8 +350,13 @@ const UserProfile = () => {
                     : `/users/${user.id}/watchlist`
                 }
                 className="slider-title"
+                asChild
               >
-                <ThemedText>{watchlistSliderTitle}</ThemedText>
+                <Pressable className="group flex flex-row justify-start">
+                  <ThemedText className="truncate text-2xl font-bold text-white group-focus:text-gray-400">
+                    {watchlistSliderTitle}
+                  </ThemedText>
+                </Pressable>
               </Link>
             </View>
             <Slider

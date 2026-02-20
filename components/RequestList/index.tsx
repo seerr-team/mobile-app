@@ -19,7 +19,12 @@ import globalMessages from '@/utils/globalMessages';
 import { Link, useLocalSearchParams, usePathname } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { RefreshControl, ScrollView, View } from 'react-native';
+import {
+  RefreshControl,
+  ScrollView,
+  TVFocusGuideView,
+  View,
+} from 'react-native';
 import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.RequestList');
@@ -230,15 +235,17 @@ const RequestList = () => {
       </View>
       {data?.results.map((request) => {
         return (
-          <View className="py-2" key={`request-list-${request.id}`}>
-            {/* <RequestItem
-              request={request}
-              revalidateList={() => revalidate()}
-              radarrData={radarrData}
-              sonarrData={sonarrData}
-            /> */}
-            <RequestCard request={request} canExpand />
-          </View>
+          <TVFocusGuideView autoFocus key={`request-list-${request.id}`}>
+            <View className="py-2">
+              {/* <RequestItem
+                request={request}
+                revalidateList={() => revalidate()}
+                radarrData={radarrData}
+                sonarrData={sonarrData}
+              /> */}
+              <RequestCard request={request} canExpand />
+            </View>
+          </TVFocusGuideView>
         );
       })}
 

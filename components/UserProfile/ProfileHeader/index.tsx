@@ -1,15 +1,20 @@
 import Button from '@/components/Common/Button';
 import CachedImage from '@/components/Common/CachedImage';
 import ThemedText from '@/components/Common/ThemedText';
+import useServerUrl from '@/hooks/useServerUrl';
 import type { User as UserType } from '@/hooks/useUser';
 import { Permission, useUser } from '@/hooks/useUser';
 import getSeerrMessages from '@/utils/getSeerrMessages';
+import { ArrowRightOnRectangle } from '@nandorojo/heroicons/24/outline';
 import { Cog, User } from '@nandorojo/heroicons/24/solid';
+import axios from 'axios';
 import { Link, router } from 'expo-router';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
+import { mutate } from 'swr';
 
 const messages = getSeerrMessages('components.UserProfile.ProfileHeader');
+const dropdownMessages = getSeerrMessages('components.Layout.UserDropdown');
 
 interface ProfileHeaderProps {
   user: UserType;
@@ -17,8 +22,9 @@ interface ProfileHeaderProps {
 }
 
 const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
+  const serverUrl = useServerUrl();
   const intl = useIntl();
-  const { user: loggedInUser, hasPermission } = useUser();
+  const { user: loggedInUser, hasPermission, revalidate } = useUser();
 
   const subtextItems: React.ReactNode[] = [
     intl.formatMessage(messages.joindate, {
@@ -33,6 +39,16 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
   if (hasPermission(Permission.MANAGE_REQUESTS)) {
     subtextItems.push(intl.formatMessage(messages.userid, { userid: user.id }));
   }
+
+  const logout = async () => {
+    const response = await axios.post(serverUrl + '/api/v1/auth/logout');
+
+    if (response.data?.status === 'ok') {
+      mutate((_) => true, undefined, { revalidate: false });
+      await mutate(`${serverUrl}/api/v1/auth/me`, null, false);
+      await revalidate();
+    }
+  };
 
   return (
     <View className="mt-6 px-4 lg:flex lg:flex-row lg:items-end lg:justify-between lg:gap-5">
@@ -56,15 +72,23 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
         </View>
         <View className="pt-1.5">
           <View className="mb-1 flex flex-col sm:flex-row sm:items-center">
-            <Link
-              href={
-                user.id === loggedInUser?.id ? '/profile' : `/users/${user.id}`
-              }
-            >
+            {Platform.isTV ? (
               <ThemedText className="text-xl font-bold text-indigo-400 sm:text-2xl">
                 {user.displayName}
               </ThemedText>
-            </Link>
+            ) : (
+              <Link
+                href={
+                  user.id === loggedInUser?.id
+                    ? '/profile'
+                    : `/users/${user.id}`
+                }
+              >
+                <ThemedText className="text-xl font-bold text-indigo-400 sm:text-2xl">
+                  {user.displayName}
+                </ThemedText>
+              </Link>
+            )}
             {user.email && user.displayName.toLowerCase() !== user.email && (
               <ThemedText className="text-sm text-gray-400 sm:ml-2 sm:text-lg">
                 ({user.email})
@@ -80,7 +104,21 @@ const ProfileHeader = ({ user, isSettingsPage }: ProfileHeaderProps) => {
           </ThemedText>
         </View>
       </View>
-      <View className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse lg:flex-row lg:justify-end lg:space-x-3 lg:space-y-0 lg:space-x-reverse">
+      <View className="mt-6 flex flex-col-reverse justify-stretch gap-2 space-y-4 space-y-reverse lg:flex-row lg:justify-end lg:space-x-3 lg:space-y-0 lg:space-x-reverse">
+        {!isSettingsPage && loggedInUser?.id === user.id && (
+          <Button
+            buttonType="ghost"
+            onClick={() => {
+              logout();
+            }}
+            className="flex w-full flex-row items-center justify-center gap-2 pl-2"
+          >
+            <ArrowRightOnRectangle color="#ffffff" />
+            <ThemedText>
+              {intl.formatMessage(dropdownMessages.signout)}
+            </ThemedText>
+          </Button>
+        )}
         {(loggedInUser?.id === user.id ||
           (user.id !== 1 && hasPermission(Permission.MANAGE_USERS))) &&
         !isSettingsPage ? (

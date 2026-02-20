@@ -245,7 +245,7 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
           />
         </View>
         <View className="mt-4 flex flex-1 flex-col text-center text-white xl:mr-4 xl:mt-0 xl:text-left">
-          <View className="mb-2 flex flex-col items-center space-x-2 sm:flex-row sm:items-start sm:gap-2">
+          <View className="space-x-2xl:items-start mb-2 flex flex-row items-center justify-center gap-2">
             <StatusBadge
               status={collectionStatus}
               downloadItem={downloadStatus}
@@ -273,10 +273,10 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
                 />
               )}
           </View>
-          <ThemedText className="mt-2 text-center text-3xl sm:text-left">
+          <ThemedText className="mt-2 text-center text-3xl xl:text-left">
             {data.name}
           </ThemedText>
-          <View className="flex flex-row items-center justify-center sm:justify-start">
+          <View className="flex flex-row items-center justify-center xl:justify-start">
             {collectionAttributes.length > 0 &&
               collectionAttributes
                 .map((t, k) => <ThemedText key={k}>{t}</ThemedText>)

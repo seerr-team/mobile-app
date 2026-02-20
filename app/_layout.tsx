@@ -105,9 +105,9 @@ function RootLayout() {
     () => ({
       backgroundColor: '#111827',
       paddingTop:
-        pathname === '/setup' || pathname === '/login' ? 0 : insets.top + 56,
+        pathname === '/setup' || pathname === '/login' ? 0 : insets.top,
       paddingBottom:
-        pathname === '/setup' || pathname === '/login' ? 0 : insets.bottom + 56,
+        pathname === '/setup' || pathname === '/login' ? 0 : insets.bottom,
     }),
     [insets, pathname]
   );
@@ -177,33 +177,42 @@ function RootLayout() {
     }
   }, [loaded]);
 
+  const AppContent = () => (
+    <View className="flex-1">
+      {user && (
+        <View
+          className="flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
+          style={{
+            paddingTop: insets.top + 8,
+            height: insets.top + 64,
+          }}
+        >
+          <SearchInput />
+          <UserDropdown />
+        </View>
+      )}
+      <View className="flex-1">
+        <Stack screenOptions={stackScreenOptions}>
+          <Stack.Screen
+            name="search"
+            options={{
+              animation: 'none',
+            }}
+          />
+        </Stack>
+      </View>
+      {user && <BottomNavigation />}
+    </View>
+  );
+
   return (
     <GestureHandlerRootView>
       <SWRConfig value={swrConfig}>
-        <KeyboardAvoidingView behavior="padding" className="flex-1 bg-gray-900">
-          <View className="flex-1">
-            {user && (
-              <View
-                className="absolute left-0 right-0 top-0 z-50 flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
-                style={{
-                  paddingTop: insets.top + 8,
-                  height: insets.top + 64,
-                }}
-              >
-                <SearchInput />
-                <UserDropdown />
-              </View>
-            )}
-            <Stack screenOptions={stackScreenOptions}>
-              <Stack.Screen
-                name="search"
-                options={{
-                  animation: 'none',
-                }}
-              />
-            </Stack>
-            {user && <BottomNavigation />}
-          </View>
+        <KeyboardAvoidingView
+          behavior={pathname === '/setup' ? 'padding' : 'height'}
+          className="flex-1 bg-gray-900"
+        >
+          <AppContent />
         </KeyboardAvoidingView>
         <ToastContainer />
       </SWRConfig>

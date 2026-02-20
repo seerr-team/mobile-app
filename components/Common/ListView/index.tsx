@@ -14,7 +14,7 @@ import type {
 } from '@/seerr/server/models/Search';
 import globalMessages from '@/utils/globalMessages';
 import { useIntl } from 'react-intl';
-import { FlatList, View } from 'react-native';
+import { FlatList, TVFocusGuideView, View } from 'react-native';
 
 type ListViewProps = {
   items?: (TvResult | MovieResult | PersonResult | CollectionResult)[];
@@ -59,135 +59,161 @@ const ListView = ({
 
   return (
     <View className="px-2">
-      <FlatList
-        ListHeaderComponent={
-          header
-            ? () => {
-                return (
-                  <>
-                    {header}
-                    <View />
-                  </>
-                );
-              }
-            : undefined
-        }
-        renderItem={({ item }) => item}
-        numColumns={orientation === 'portrait' ? 2 : 8}
-        horizontal={false}
-        contentContainerStyle={{ alignItems: 'stretch' }}
-        onEndReached={onScrollBottom}
-        data={[
-          ...(plexItems || []).map((title, index) => {
-            return (
-              <View className="m-2 flex-1" key={`${title.ratingKey}-${index}`}>
-                <TmdbTitleCard
-                  id={title.tmdbId}
-                  tmdbId={title.tmdbId}
-                  type={title.mediaType}
-                  isAddedToWatchlist={true}
-                  canExpand
-                  mutateParent={mutateParent}
-                />
-              </View>
-            );
-          }),
-          ...(items || [])
-            .filter((title) => {
-              if (!blocklistVisibility)
-                return (
-                  (title as TvResult | MovieResult).mediaInfo?.status !==
-                  MediaStatus.BLOCKLISTED
-                );
-              return title;
-            })
-            .map((title, index) => {
-              let titleCard: React.ReactNode;
-
-              switch (title.mediaType) {
-                case 'movie':
-                  titleCard = (
-                    <TitleCard
-                      key={title.id}
-                      id={title.id}
-                      isAddedToWatchlist={
-                        title.mediaInfo?.watchlists?.length ?? 0
-                      }
-                      image={title.posterPath}
-                      status={title.mediaInfo?.status}
-                      summary={title.overview}
-                      title={title.title}
-                      userScore={title.voteAverage}
-                      year={title.releaseDate}
-                      mediaType={title.mediaType}
-                      inProgress={
-                        (title.mediaInfo?.downloadStatus ?? []).length > 0
-                      }
-                      canExpand
-                    />
+      <TVFocusGuideView autoFocus>
+        <FlatList
+          ListHeaderComponent={
+            header
+              ? () => {
+                  return (
+                    <>
+                      {header}
+                      <View />
+                    </>
                   );
-                  break;
-                case 'tv':
-                  titleCard = (
-                    <TitleCard
-                      key={title.id}
-                      id={title.id}
-                      isAddedToWatchlist={
-                        title.mediaInfo?.watchlists?.length ?? 0
-                      }
-                      image={title.posterPath}
-                      status={title.mediaInfo?.status}
-                      summary={title.overview}
-                      title={title.name}
-                      userScore={title.voteAverage}
-                      year={title.firstAirDate}
-                      mediaType={title.mediaType}
-                      inProgress={
-                        (title.mediaInfo?.downloadStatus ?? []).length > 0
-                      }
-                      canExpand
-                    />
-                  );
-                  break;
-                case 'collection':
-                  titleCard = (
-                    <TitleCard
-                      id={title.id}
-                      image={title.posterPath}
-                      summary={title.overview}
-                      title={title.title}
-                      mediaType={title.mediaType}
-                      canExpand
-                    />
-                  );
-                  break;
-                case 'person':
-                  titleCard = (
-                    <PersonCard
-                      personId={title.id}
-                      name={title.name}
-                      profilePath={title.profilePath}
-                      canExpand
-                    />
-                  );
-                  break;
-              }
-
+                }
+              : undefined
+          }
+          renderItem={({ item }) => item}
+          numColumns={orientation === 'portrait' ? 2 : 8}
+          horizontal={false}
+          contentContainerStyle={{ alignItems: 'stretch' }}
+          onEndReached={onScrollBottom}
+          onEndReachedThreshold={0.8}
+          data={[
+            ...(plexItems || []).map((title, index) => {
               return (
-                <View className="m-2 flex-1" key={`${title.id}-${index}`}>
-                  {titleCard}
+                <View
+                  className="m-2 flex-1"
+                  key={`${title.ratingKey}-${index}`}
+                >
+                  <TmdbTitleCard
+                    id={title.tmdbId}
+                    tmdbId={title.tmdbId}
+                    type={title.mediaType}
+                    isAddedToWatchlist={true}
+                    canExpand
+                    mutateParent={mutateParent}
+                  />
                 </View>
               );
             }),
-          ...(isLoading && !isReachingEnd
-            ? [...Array(20)].map((_item, i) => (
-                <View className="m-2 flex-1" key={`placeholder-${i}`}>
-                  <TitleCard.Placeholder canExpand />
-                </View>
-              ))
-            : []),
-        ]}
-      />
+            ...(items || [])
+              .filter((title) => {
+                if (!blocklistVisibility)
+                  return (
+                    (title as TvResult | MovieResult).mediaInfo?.status !==
+                    MediaStatus.BLOCKLISTED
+                  );
+                return title;
+              })
+              .map((title, index) => {
+                let titleCard: React.ReactNode;
+
+                switch (title.mediaType) {
+                  case 'movie':
+                    titleCard = (
+                      <TitleCard
+                        key={title.id}
+                        id={title.id}
+                        isAddedToWatchlist={
+                          title.mediaInfo?.watchlists?.length ?? 0
+                        }
+                        image={title.posterPath}
+                        status={title.mediaInfo?.status}
+                        summary={title.overview}
+                        title={title.title}
+                        userScore={title.voteAverage}
+                        year={title.releaseDate}
+                        mediaType={title.mediaType}
+                        inProgress={
+                          (title.mediaInfo?.downloadStatus ?? []).length > 0
+                        }
+                        canExpand
+                      />
+                    );
+                    break;
+                  case 'tv':
+                    titleCard = (
+                      <TitleCard
+                        key={title.id}
+                        id={title.id}
+                        isAddedToWatchlist={
+                          title.mediaInfo?.watchlists?.length ?? 0
+                        }
+                        image={title.posterPath}
+                        status={title.mediaInfo?.status}
+                        summary={title.overview}
+                        title={title.name}
+                        userScore={title.voteAverage}
+                        year={title.firstAirDate}
+                        mediaType={title.mediaType}
+                        inProgress={
+                          (title.mediaInfo?.downloadStatus ?? []).length > 0
+                        }
+                        canExpand
+                      />
+                    );
+                    break;
+                  case 'collection':
+                    titleCard = (
+                      <TitleCard
+                        id={title.id}
+                        image={title.posterPath}
+                        summary={title.overview}
+                        title={title.title}
+                        mediaType={title.mediaType}
+                        canExpand
+                      />
+                    );
+                    break;
+                  case 'person':
+                    titleCard = (
+                      <PersonCard
+                        personId={title.id}
+                        name={title.name}
+                        profilePath={title.profilePath}
+                        canExpand
+                      />
+                    );
+                    break;
+                }
+
+                return (
+                  <View className="m-2 flex-1" key={`${title.id}-${index}`}>
+                    {titleCard}
+                  </View>
+                );
+              }),
+            ...(!isReachingEnd && !isEmpty
+              ? new Array(
+                  orientation === 'portrait'
+                    ? 2 - ((items?.length || 0) % 2) + 2 * 2
+                    : 8 - ((items?.length || 0) % 8) + 8 * 2
+                )
+                  .fill(null)
+                  .map((_, i) => (
+                    <View className="m-2 flex-1" key={`placeholder-fill-${i}`}>
+                      <TitleCard.Placeholder canExpand />
+                    </View>
+                  ))
+              : []),
+            ...(isReachingEnd && !isEmpty
+              ? new Array(
+                  orientation === 'portrait'
+                    ? 2 - ((items?.length || 0) % 2)
+                    : 8 - ((items?.length || 0) % 8)
+                )
+                  .fill(null)
+                  .map((_, i) => (
+                    <View
+                      className="m-2 flex-1"
+                      key={`placeholder-fill-${i}`}
+                    />
+                  ))
+              : []),
+          ]}
+        />
+      </TVFocusGuideView>
     </View>
   );
 };

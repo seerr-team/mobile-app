@@ -80,9 +80,9 @@ const ButtonWithDropdown = ({
       break;
     default:
       styleClasses.mainButtonClasses +=
-        ' bg-indigo-600 border-indigo-500 bg-opacity-80 hover:bg-opacity-100 hover:border-indigo-500 active:bg-indigo-700 active:border-indigo-700 focus:ring-blue';
+        ' bg-indigo-600 border-indigo-500 bg-opacity-80 hover:bg-opacity-100 hover:border-indigo-500 active:bg-indigo-700 active:border-indigo-700 focus:ring-blue focus:border-blue-200';
       styleClasses.dropdownSideButtonClasses +=
-        ' bg-indigo-600 bg-opacity-80 border-indigo-500 hover:bg-opacity-100 active:bg-opacity-100 focus:ring-blue';
+        ' bg-indigo-600 bg-opacity-80 border-indigo-500 hover:bg-opacity-100 active:bg-opacity-100 focus:ring-blue focus:border-blue-200';
       styleClasses.dropdownClasses += ' bg-indigo-600 p-1';
   }
 

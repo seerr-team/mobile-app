@@ -312,7 +312,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
         asChild
       >
         <Pressable
-          className={`relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center py-1 pl-4 pr-1 text-gray-400 shadow focus:border-indigo-500 ${canExpand ? 'w-full sm:flex sm:flex-row' : 'w-80 sm:w-96'}`}
+          className={`relative overflow-hidden rounded-xl border border-gray-700 bg-gray-700 bg-cover bg-center p-4 text-gray-400 shadow focus:border-indigo-500 ${canExpand ? 'w-full sm:flex sm:flex-row' : 'w-80 sm:w-96'}`}
           data-testid="request-card"
         >
           {title.backdropPath && (
@@ -339,7 +339,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
             </View>
           )}
           <View
-            className={`flex ${canExpand ? 'w-full flex-row-reverse items-center gap-2 sm:w-7/12 2xl:w-2/3' : 'w-72 flex-row sm:w-96'}`}
+            className={`flex ${canExpand ? 'w-full flex-row-reverse items-center gap-2 sm:w-7/12 2xl:w-2/3' : 'w-72 flex-row sm:w-full'}`}
           >
             <View
               className="relative z-10 flex min-w-0 flex-1 flex-col pr-3"
@@ -477,6 +477,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                       <View
                         // href={`/users/${requestData.requestedBy.id}`}
                         className="group flex translate-y-1.5 flex-row items-center gap-1.5 truncate pl-1"
+                        key={`user-${requestData.id}`}
                       >
                         <View className="avatar-sm overflow-hidden rounded-full">
                           <CachedImage

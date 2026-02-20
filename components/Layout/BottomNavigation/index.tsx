@@ -7,7 +7,7 @@ import {
 } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, TVFocusGuideView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const tintColor = '#6366f1';
@@ -60,42 +60,44 @@ export default function BottomNavigation() {
   }, [pathname]);
 
   return (
-    <View
-      className="absolute bottom-0 left-0 right-0 flex-row border-t border-gray-600 bg-gray-800"
-      style={{ paddingBottom: insets.bottom, height: 56 + insets.bottom }}
-    >
-      {navigationItems.map((item) => {
-        const active = pathname === item.path;
-        const IconComponent = active ? item.activeIcon : item.icon;
-        const iconColor =
-          isFocused === item.path
-            ? focusColor
-            : active
-              ? tintColor
-              : inactiveColor;
+    <TVFocusGuideView autoFocus>
+      <View
+        className="flex-row border-t border-gray-600 bg-gray-800"
+        style={{ paddingBottom: insets.bottom, height: 56 + insets.bottom }}
+      >
+        {navigationItems.map((item) => {
+          const active = pathname === item.path;
+          const IconComponent = active ? item.activeIcon : item.icon;
+          const iconColor =
+            isFocused === item.path
+              ? focusColor
+              : active
+                ? tintColor
+                : inactiveColor;
 
-        return (
-          <Pressable
-            key={item.path}
-            onPress={() => {
-              if (pathname !== item.path) {
-                if (router.canDismiss()) {
-                  router.dismissTo(item.path);
-                } else {
-                  router.push(item.path);
+          return (
+            <Pressable
+              key={item.path}
+              onPress={() => {
+                if (pathname !== item.path) {
+                  if (router.canDismiss()) {
+                    router.dismissTo(item.path);
+                  } else {
+                    router.push(item.path);
+                  }
                 }
-              }
-            }}
-            className="flex-1 items-center justify-center"
-            onFocus={() => setIsFocused(item.path)}
-            onBlur={() => setIsFocused(null)}
-          >
-            <View className="items-center">
-              <IconComponent color={iconColor} width={24} height={24} />
-            </View>
-          </Pressable>
-        );
-      })}
-    </View>
+              }}
+              className="flex-1 items-center justify-center"
+              onFocus={() => setIsFocused(item.path)}
+              onBlur={() => setIsFocused(null)}
+            >
+              <View className="items-center">
+                <IconComponent color={iconColor} width={24} height={24} />
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
+    </TVFocusGuideView>
   );
 }

@@ -7,10 +7,10 @@ import { ArrowRightOnRectangle, Clock } from '@nandorojo/heroicons/24/outline';
 import { Cog, User } from '@nandorojo/heroicons/24/solid';
 import axios from 'axios';
 import { BlurView } from 'expo-blur';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Modal, Pressable, View } from 'react-native';
+import { Modal, Platform, Pressable, View } from 'react-native';
 import { mutate } from 'swr';
 
 const messages = getSeerrMessages('components.Layout.UserDropdown');
@@ -35,8 +35,14 @@ const UserDropdown = () => {
     <View className="relative">
       <View className="flex flex-1 items-center justify-center">
         <Pressable
-          className="flex items-center justify-center overflow-hidden rounded-full border border-gray-700 bg-gray-700 hover:border-gray-500 focus:border-gray-500 focus:outline-none"
-          onPress={() => setIsOpen(true)}
+          className="flex items-center justify-center overflow-hidden rounded-full border border-gray-700 bg-gray-700 hover:border-gray-500 focus:border-indigo-500 focus:outline-none"
+          onPress={() => {
+            if (Platform.isTV) {
+              router.push('/profile');
+            } else {
+              setIsOpen(true);
+            }
+          }}
         >
           <CachedImage
             type="avatar"

@@ -2,7 +2,7 @@ import TitleCard from '@/components/TitleCard';
 import globalMessages from '@/utils/globalMessages';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { FlatList, View } from 'react-native';
+import { FlatList, TVFocusGuideView, View } from 'react-native';
 
 interface SliderProps {
   sliderKey: string;
@@ -24,31 +24,33 @@ const Slider = ({
   const intl = useIntl();
 
   return (
-    <FlatList
-      horizontal
-      data={isLoading ? [...Array(10)] : items}
-      keyExtractor={(item, index) =>
-        isLoading ? `placeholder-${index}` : `${sliderKey}-${index}`
-      }
-      renderItem={({ item, index }) => (
-        <View className="inline-block px-2 align-top">
-          {isLoading ? placeholder : item}
-        </View>
-      )}
-      ListEmptyComponent={
-        isEmpty ? (
-          <View className="mb-16 mt-16 px-2 text-center font-medium text-gray-400">
-            {emptyMessage
-              ? emptyMessage
-              : intl.formatMessage(globalMessages.noresults)}
+    <TVFocusGuideView autoFocus>
+      <FlatList
+        horizontal
+        data={isLoading ? [...Array(10)] : items}
+        keyExtractor={(item, index) =>
+          isLoading ? `placeholder-${index}` : `${sliderKey}-${index}`
+        }
+        renderItem={({ item }) => (
+          <View className="inline-block px-2 align-top">
+            {isLoading ? placeholder : item}
           </View>
-        ) : null
-      }
-      contentContainerClassName="px-2"
-      initialNumToRender={5}
-      maxToRenderPerBatch={3}
-      windowSize={5}
-    />
+        )}
+        ListEmptyComponent={
+          isEmpty ? (
+            <View className="mb-16 mt-16 px-2 text-center font-medium text-gray-400">
+              {emptyMessage
+                ? emptyMessage
+                : intl.formatMessage(globalMessages.noresults)}
+            </View>
+          ) : null
+        }
+        contentContainerClassName="px-2"
+        initialNumToRender={5}
+        maxToRenderPerBatch={3}
+        windowSize={5}
+      />
+    </TVFocusGuideView>
   );
 };
 
