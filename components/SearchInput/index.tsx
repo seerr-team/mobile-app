@@ -3,7 +3,7 @@ import { MagnifyingGlass } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { TextInput, View } from 'react-native';
+import { Platform, TextInput, View } from 'react-native';
 
 const messages = getSeerrMessages('components.Layout.SearchInput');
 
@@ -15,6 +15,7 @@ const SearchInput = () => {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (Platform.isTV) return;
     if (searchValue !== '') {
       router.replace({
         pathname: '/search',
@@ -26,14 +27,15 @@ const SearchInput = () => {
   }, [searchValue]);
 
   useEffect(() => {
-    if (pathname !== '/search') {
+    if (pathname !== '/search' && searchValue !== '' && !Platform.isTV) {
       setSearchValue('');
     }
-  }, [pathname]);
+  }, [pathname, searchValue]);
 
   return (
     <View
       className={`flex flex-1 flex-row items-center gap-2 rounded-full border bg-gray-900 bg-opacity-80 pl-4 pr-2 hover:border-gray-500 ${isOpen ? 'border-gray-500' : 'border-gray-600'}`}
+      focusable={false}
     >
       <View className="pointer-events-none flex justify-center">
         <MagnifyingGlass width={20} height={20} color="#ffffff" />
@@ -48,20 +50,20 @@ const SearchInput = () => {
         onChangeText={(e) => setSearchValue(e)}
         onFocus={() => setIsOpen(true)}
         onBlur={() => {
-          if (searchValue === '' && pathname === '/search') {
+          if (searchValue === '' && pathname === '/search' && !Platform.isTV) {
             setIsOpen(false);
             router.replace('');
           }
         }}
+        onSubmitEditing={() => {
+          if (searchValue !== '') {
+            router.replace({
+              pathname: '/search',
+              params: { query: searchValue },
+            });
+          }
+        }}
       />
-      {/* {searchValue.length > 0 && (
-        <Button
-          forceClassName="absolute inset-y-0 right-2 m-auto h-7 w-7 border-none p-1 text-gray-400 outline-none transition hover:text-white focus:border-none focus:outline-none"
-          onClick={() => clear()}
-        >
-          <XCircle width={20} height={20} />
-        </Button>
-      )} */}
     </View>
   );
 };

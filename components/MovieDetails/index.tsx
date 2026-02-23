@@ -241,7 +241,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           <Link
             href={`/discover_movies?genre=${g.id}`}
             key={`genre-${g.id}`}
-            className="text-gray-300 hover:underline"
+            className="text-gray-300 hover:underline focus:underline"
           >
             {g.name}
           </Link>

@@ -1,11 +1,5 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  View,
-  type StyleProp,
-  type ViewStyle,
-} from 'react-native';
+import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
 type DisclosureContextType = {
   isOpen: boolean;
@@ -47,11 +41,7 @@ export function DisclosureButton({
   if (!ctx) throw new Error('DisclosureButton must be inside Disclosure');
 
   return (
-    <Pressable
-      onPress={ctx.toggle}
-      style={[styles.button, style]}
-      className={className}
-    >
+    <Pressable onPress={ctx.toggle} style={style} className={className}>
       {children}
     </Pressable>
   );
@@ -72,22 +62,8 @@ export function DisclosurePanel({
   if (!ctx.isOpen) return null;
 
   return (
-    <View style={[style]} className={className}>
-      <View style={styles.panelWrapper}>{children}</View>
+    <View style={style} className={className}>
+      <View>{children}</View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    // padding: 12,
-    // backgroundColor: "#2d2d2d",
-    // borderRadius: 8,
-    // flexDirection: "row",
-    // alignItems: "center",
-    // justifyContent: "space-between",
-  },
-  panelWrapper: {
-    // You can adjust styles as needed
-  },
-});

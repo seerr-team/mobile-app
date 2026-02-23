@@ -6,7 +6,7 @@ import useServerUrl from '@/hooks/useServerUrl';
 import type { SeasonWithEpisodes } from '@/seerr/server/models/Tv';
 import getSeerrMessages from '@/utils/getSeerrMessages';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.TvDetails.Season');
@@ -64,7 +64,7 @@ const Season = ({ seasonNumber, tvId }: SeasonProps) => {
                     <ThemedText>{episode.overview}</ThemedText>
                   )}
                 </View>
-                {episode.stillPath && (
+                {episode.stillPath && !Platform.isTV && (
                   <View className="relative aspect-video overflow-hidden rounded-lg xl:h-32">
                     <CachedImage
                       type="tmdb"

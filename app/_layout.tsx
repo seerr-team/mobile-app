@@ -26,7 +26,7 @@ import {
 import 'intl-pluralrules';
 import { useEffect, useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
-import { View } from 'react-native';
+import { TVFocusGuideView, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   KeyboardAvoidingView,
@@ -180,7 +180,8 @@ function RootLayout() {
   const AppContent = () => (
     <View className="flex-1">
       {user && (
-        <View
+        <TVFocusGuideView
+          autoFocus
           className="flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
           style={{
             paddingTop: insets.top + 8,
@@ -189,7 +190,7 @@ function RootLayout() {
         >
           <SearchInput />
           <UserDropdown />
-        </View>
+        </TVFocusGuideView>
       )}
       <View className="flex-1">
         <Stack screenOptions={stackScreenOptions}>
