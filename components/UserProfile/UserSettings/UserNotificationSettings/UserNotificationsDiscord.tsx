@@ -130,7 +130,7 @@ const UserNotificationsDiscord = () => {
                   </ThemedText>
                 )}
               </View>
-              <View className="form-input-area">
+              <View className="form-input-area w-full">
                 <View className="form-input-field">
                   <TextInput
                     id="discordId"

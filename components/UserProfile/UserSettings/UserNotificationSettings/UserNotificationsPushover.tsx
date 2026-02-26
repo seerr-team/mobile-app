@@ -150,7 +150,7 @@ const UserPushoverSettings = () => {
                   })}
                 </ThemedText>
               </View>
-              <View className="form-input-area">
+              <View className="form-input-area w-full">
                 <View className="form-input-field">
                   <TextInput
                     id="pushoverApplicationToken"
@@ -192,7 +192,7 @@ const UserPushoverSettings = () => {
                   })}
                 </ThemedText>
               </View>
-              <View className="form-input-area">
+              <View className="form-input-area w-full">
                 <View className="form-input-field">
                   <TextInput
                     id="pushoverUserKey"
@@ -217,7 +217,7 @@ const UserPushoverSettings = () => {
               <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                 {intl.formatMessage(messages.sound)}
               </ThemedText>
-              <View className="form-input-area">
+              <View className="form-input-area w-full">
                 <View className="form-input-field">
                   <SimpleSelect
                     data={[

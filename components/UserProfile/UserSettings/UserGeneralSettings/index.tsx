@@ -187,7 +187,7 @@ const UserGeneralSettings = () => {
           handleChange,
         }) => {
           return (
-            <View>
+            <View className="w-full">
               <View className="form-row">
                 <ThemedText className="text-label mb-1 font-bold text-gray-400">
                   {intl.formatMessage(messages.accounttype)}
@@ -236,7 +236,7 @@ const UserGeneralSettings = () => {
                 <ThemedText className="text-label mb-1 font-bold text-gray-400">
                   {intl.formatMessage(messages.displayName)}
                 </ThemedText>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field">
                     <TextInput
                       onChangeText={handleChange('displayName')}
@@ -267,7 +267,7 @@ const UserGeneralSettings = () => {
                     <ThemedText className="label-required">*</ThemedText>
                   )}
                 </ThemedText>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field">
                     <TextInput
                       onChangeText={handleChange('email')}
@@ -315,7 +315,7 @@ const UserGeneralSettings = () => {
                     </ThemedText>
                   )}
                 </View>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field">
                     <TextInput
                       onChangeText={handleChange('discordId')}
@@ -338,7 +338,7 @@ const UserGeneralSettings = () => {
                 <ThemedText className="text-label mb-1 font-bold text-gray-400">
                   {intl.formatMessage(messages.applanguage)}
                 </ThemedText>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field">
                     {/* <Field as="select" id="locale" name="locale">
                       <option value="" lang={locale}>
@@ -396,7 +396,7 @@ const UserGeneralSettings = () => {
                     {intl.formatMessage(messages.discoverRegionTip)}
                   </ThemedText>
                 </View>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field relative z-[22]">
                     <RegionSelector
                       name="discoverRegion"
@@ -416,7 +416,7 @@ const UserGeneralSettings = () => {
                     {intl.formatMessage(messages.originallanguageTip)}
                   </ThemedText>
                 </View>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field relative z-[21]">
                     <LanguageSelector
                       setFieldValue={setFieldValue}
@@ -436,7 +436,7 @@ const UserGeneralSettings = () => {
                     {intl.formatMessage(messages.streamingRegionTip)}
                   </ThemedText>
                 </View>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field relative z-20">
                     <RegionSelector
                       name="streamingRegion"
@@ -458,7 +458,7 @@ const UserGeneralSettings = () => {
                           {intl.formatMessage(messages.movierequestlimit)}
                         </span>
                       </label>
-                      <div className="form-input-area">
+                      <div className="form-input-area w-full">
                         <div className="flex flex-col">
                           <div className="mb-4 flex flex-row items-center">
                             <input
@@ -498,7 +498,7 @@ const UserGeneralSettings = () => {
                           {intl.formatMessage(messages.seriesrequestlimit)}
                         </span>
                       </label>
-                      <div className="form-input-area">
+                      <div className="form-input-area w-full">
                         <div className="flex flex-col">
                           <div className="mb-4 flex flex-row items-center">
                             <input
@@ -567,7 +567,7 @@ const UserGeneralSettings = () => {
                         )}
                       </ThemedText>
                     </View>
-                    <View className="form-input-area">
+                    <View className="form-input-area w-full">
                       <Switch
                         value={values.watchlistSyncMovies}
                         onValueChange={(value) => {
@@ -610,7 +610,7 @@ const UserGeneralSettings = () => {
                         )}
                       </ThemedText>
                     </View>
-                    <View className="form-input-area">
+                    <View className="form-input-area w-full">
                       <Switch
                         value={values.watchlistSyncTv}
                         onValueChange={(value) => {

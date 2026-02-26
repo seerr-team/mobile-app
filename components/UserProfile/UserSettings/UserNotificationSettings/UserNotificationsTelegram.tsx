@@ -159,7 +159,7 @@ const UserTelegramSettings = () => {
                   </ThemedText>
                 )}
               </View>
-              <View className="form-input-area">
+              <View className="form-input-area w-full">
                 <View className="form-input-field">
                   <TextInput
                     id="telegramChatId"
@@ -189,7 +189,7 @@ const UserTelegramSettings = () => {
                   {intl.formatMessage(messages.telegramMessageThreadIdTip)}
                 </ThemedText>
               </View>
-              <View className="form-input-area">
+              <View className="form-input-area w-full">
                 <View className="form-input-field">
                   <TextInput
                     id="telegramMessageThreadId"

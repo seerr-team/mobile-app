@@ -150,7 +150,7 @@ const UserPasswordChange = () => {
                   <ThemedText className="text-label mb-1 font-bold text-gray-400">
                     {intl.formatMessage(messages.currentpassword)}
                   </ThemedText>
-                  <View className="form-input-area">
+                  <View className="form-input-area w-full">
                     <View className="form-input-field">
                       <TextInput
                         onChangeText={handleChange('currentPassword')}
@@ -174,7 +174,7 @@ const UserPasswordChange = () => {
                 <ThemedText className="text-label mb-1 font-bold text-gray-400">
                   {intl.formatMessage(messages.newpassword)}
                 </ThemedText>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field">
                     <TextInput
                       onChangeText={handleChange('newPassword')}
@@ -197,7 +197,7 @@ const UserPasswordChange = () => {
                 <ThemedText className="text-label mb-1 font-bold text-gray-400">
                   {intl.formatMessage(messages.confirmpassword)}
                 </ThemedText>
-                <View className="form-input-area">
+                <View className="form-input-area w-full">
                   <View className="form-input-field">
                     <TextInput
                       onChangeText={handleChange('confirmPassword')}

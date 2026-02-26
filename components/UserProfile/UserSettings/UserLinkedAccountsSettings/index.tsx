@@ -160,7 +160,7 @@ const UserLinkedAccountsSettings = () => {
   const enableMediaServerUnlink = user?.id !== 1 && passwordInfo?.hasPassword;
 
   return (
-    <View className="px-4">
+    <View className="px-4 pb-4">
       {/* <View className="mb-6 flex flex-row items-end justify-between"> */}
       <View className="mb-6 flex gap-2">
         <View>
