@@ -1,5 +1,5 @@
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
 import { Image, type ImageProps } from 'expo-image';
 
 export type CachedImageProps = ImageProps & {

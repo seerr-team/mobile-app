@@ -1,5 +1,5 @@
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';

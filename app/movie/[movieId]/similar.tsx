@@ -1,5 +1,5 @@
-import MovieSimilar from '@/components/MovieDetails/MovieSimilar';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import MovieSimilar from '@app/components/MovieDetails/MovieSimilar';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function MovieSimilarPage() {
   return <MovieSimilar />;

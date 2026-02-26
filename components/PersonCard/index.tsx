@@ -1,5 +1,5 @@
-import CachedImage from '@/components/Common/CachedImage';
-import ThemedText from '@/components/Common/ThemedText';
+import CachedImage from '@app/components/Common/CachedImage';
+import ThemedText from '@app/components/Common/ThemedText';
 import { UserCircle } from '@nandorojo/heroicons/24/solid';
 import { Link } from 'expo-router';
 import { Pressable, View } from 'react-native';

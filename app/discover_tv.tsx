@@ -1,5 +1,5 @@
-import DiscoverTv from '@/components/Discover/DiscoverTv';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import DiscoverTv from '@app/components/Discover/DiscoverTv';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function DiscoverTvPage() {
   return <DiscoverTv />;

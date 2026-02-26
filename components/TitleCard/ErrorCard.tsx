@@ -1,8 +1,8 @@
-import Button from '@/components/Common/Button';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+import Button from '@app/components/Common/Button';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
 import { Check, Trash } from '@nandorojo/heroicons/24/solid';
 import axios from 'axios';
 import { useIntl } from 'react-intl';

@@ -1,6 +1,6 @@
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
-import { MediaStatus } from '@/seerr/server/constants/media';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
+import { MediaStatus } from '@server/constants/media';
 import useSWRInfinite from 'swr/infinite';
 import { Permission, useUser } from './useUser';
 

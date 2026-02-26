@@ -1,4 +1,4 @@
-import ThemedText from '@/components/Common/ThemedText';
+import ThemedText from '@app/components/Common/ThemedText';
 import { ChevronDown } from '@nandorojo/heroicons/24/solid';
 import { View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';

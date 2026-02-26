@@ -1,5 +1,5 @@
-import Badge from '@/components/Common/Badge';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import Badge from '@app/components/Common/Badge';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { FormattedRelativeTime, useIntl } from 'react-intl';
 import { View } from 'react-native';
 

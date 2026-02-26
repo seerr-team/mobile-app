@@ -1,20 +1,20 @@
-import ThemedText from '@/components/Common/ThemedText';
-import ShowMoreCard from '@/components/MediaSlider/ShowMoreCard';
-import PersonCard from '@/components/PersonCard';
-import Slider from '@/components/Slider';
-import TitleCard from '@/components/TitleCard';
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
-import { useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/seerr/server/constants/media';
-import { Permission } from '@/seerr/server/lib/permissions';
+import ThemedText from '@app/components/Common/ThemedText';
+import ShowMoreCard from '@app/components/MediaSlider/ShowMoreCard';
+import PersonCard from '@app/components/PersonCard';
+import Slider from '@app/components/Slider';
+import TitleCard from '@app/components/TitleCard';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
+import { useUser } from '@app/hooks/useUser';
+import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
+import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
+import { MediaStatus } from '@server/constants/media';
+import { Permission } from '@server/lib/permissions';
 import type {
   MovieResult,
   PersonResult,
   TvResult,
-} from '@/seerr/server/models/Search';
-import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
-import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
+} from '@server/models/Search';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';

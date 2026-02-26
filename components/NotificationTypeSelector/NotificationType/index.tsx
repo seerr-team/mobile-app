@@ -1,6 +1,6 @@
-import ThemedText from '@/components/Common/ThemedText';
-import type { NotificationItem } from '@/components/NotificationTypeSelector';
-import { hasNotificationType } from '@/components/NotificationTypeSelector';
+import ThemedText from '@app/components/Common/ThemedText';
+import type { NotificationItem } from '@app/components/NotificationTypeSelector';
+import { hasNotificationType } from '@app/components/NotificationTypeSelector';
 import Checkbox from 'expo-checkbox';
 import { useState } from 'react';
 import { View } from 'react-native';

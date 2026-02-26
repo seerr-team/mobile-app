@@ -1,20 +1,20 @@
-// import Button from '@/components/Common/Button';
-import Header from '@/components/Common/Header';
-import ListView from '@/components/Common/ListView';
-import type { FilterOptions } from '@/components/Discover/constants';
+// import Button from '@app/components/Common/Button';
+import Header from '@app/components/Common/Header';
+import ListView from '@app/components/Common/ListView';
+import type { FilterOptions } from '@app/components/Discover/constants';
 import {
   // countActiveFilters,
   prepareFilterValues,
-} from '@/components/Discover/constants';
-// import FilterSlideover from '@/components/Discover/FilterSlideover';
-import useDiscover from '@/hooks/useDiscover';
-// import { useUpdateQueryParams } from '@/hooks/useUpdateQueryParams';
-import ErrorPage from '@/components/ErrorPage';
+} from '@app/components/Discover/constants';
+// import FilterSlideover from '@app/components/Discover/FilterSlideover';
+import useDiscover from '@app/hooks/useDiscover';
+// import { useUpdateQueryParams } from '@app/hooks/useUpdateQueryParams';
+import ErrorPage from '@app/components/ErrorPage';
 // import { BarsArrowDown, Funnel } from '@nandorojo/heroicons/24/solid';
-// import type { SortOptions as TMDBSortOptions } from '@/seerr/server/api/themoviedb';
-import type { TvResult } from '@/seerr/server/models/Search';
+// import type { SortOptions as TMDBSortOptions } from '@server/api/themoviedb';
+import type { TvResult } from '@server/models/Search';
 // import { useState } from 'react';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { useLocalSearchParams } from 'expo-router';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';

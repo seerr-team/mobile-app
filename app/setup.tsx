@@ -1,5 +1,5 @@
-import Setup from '@/components/Setup';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import Setup from '@app/components/Setup';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function IndexScreen() {
   return <Setup />;

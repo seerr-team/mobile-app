@@ -1,19 +1,16 @@
-import ButtonWithDropdown from '@/components/Common/ButtonWithDropdown';
-import ThemedText from '@/components/Common/ThemedText';
-import RequestModal from '@/components/RequestModal';
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
-import { Permission, useUser } from '@/hooks/useUser';
-import {
-  MediaRequestStatus,
-  MediaStatus,
-} from '@/seerr/server/constants/media';
-import type Media from '@/seerr/server/entity/Media';
-import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+import ButtonWithDropdown from '@app/components/Common/ButtonWithDropdown';
+import ThemedText from '@app/components/Common/ThemedText';
+import RequestModal from '@app/components/RequestModal';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
+import { Permission, useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
 import { ArrowDownTray } from '@nandorojo/heroicons/24/outline';
 import { Check, InformationCircle, XMark } from '@nandorojo/heroicons/24/solid';
+import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import type Media from '@server/entity/Media';
+import type { MediaRequest } from '@server/entity/MediaRequest';
 import axios from 'axios';
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';

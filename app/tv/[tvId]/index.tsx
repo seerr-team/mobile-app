@@ -1,5 +1,5 @@
-import TvDetails from '@/components/TvDetails';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import TvDetails from '@app/components/TvDetails';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function TvPage() {
   return <TvDetails />;

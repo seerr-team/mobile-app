@@ -1,13 +1,13 @@
-import ThemedText from '@/components/Common/ThemedText';
-import { sliderTitles } from '@/components/Discover/constants';
+import ThemedText from '@app/components/Common/ThemedText';
+import { sliderTitles } from '@app/components/Discover/constants';
 import RequestCard, {
   Placeholder as RequestCardPlaceholder,
-} from '@/components/RequestCard';
-import Slider from '@/components/Slider';
-import useServerUrl from '@/hooks/useServerUrl';
-import type { RequestResultsResponse } from '@/seerr/server/interfaces/api/requestInterfaces';
+} from '@app/components/RequestCard';
+import Slider from '@app/components/Slider';
+import useServerUrl from '@app/hooks/useServerUrl';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
+import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';

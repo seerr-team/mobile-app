@@ -1,5 +1,5 @@
-import Search from '@/components/Search';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import Search from '@app/components/Search';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function SearchPage() {
   return <Search />;

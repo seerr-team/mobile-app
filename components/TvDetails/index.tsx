@@ -1,39 +1,37 @@
-import RTAudFresh from '@/assets/services/rt_aud_fresh.png';
-import RTAudRotten from '@/assets/services/rt_aud_rotten.png';
-import RTFresh from '@/assets/services/rt_fresh.png';
-import RTRotten from '@/assets/services/rt_rotten.png';
-import TmdbLogo from '@/assets/services/tmdb_logo.png';
-import Badge from '@/components/Common/Badge';
-import Button from '@/components/Common/Button';
-import CachedImage from '@/components/Common/CachedImage';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import type { PlayButtonLink } from '@/components/Common/PlayButton';
-import PlayButton from '@/components/Common/PlayButton';
-import StatusBadgeMini from '@/components/Common/StatusBadgeMini';
-import Tag from '@/components/Common/Tag';
-import Tooltip from '@/components/Common/Tooltip';
-import ExternalLinkBlock from '@/components/ExternalLinkBlock';
-// import IssueModal from '@/components/IssueModal';
-// import ManageSlideOver from '@/components/ManageSlideOver';
-import ErrorPage from '@/components/ErrorPage';
-import MediaSlider from '@/components/MediaSlider';
-import PersonCard from '@/components/PersonCard';
-import RequestButton from '@/components/RequestButton';
-import RequestModal from '@/components/RequestModal';
-import Slider from '@/components/Slider';
-import StatusBadge from '@/components/StatusBadge';
-import Season from '@/components/TvDetails/Season';
-import useDeepLinks from '@/hooks/useDeepLinks';
-import useLocale from '@/hooks/useLocale';
-import useSettings from '@/hooks/useSettings';
-import { Permission, UserType, useUser } from '@/hooks/useUser';
-import { sortCrewPriority } from '@/utils/creditHelpers';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
-import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
+import RTAudFresh from '@app/assets/services/rt_aud_fresh.png';
+import RTAudRotten from '@app/assets/services/rt_aud_rotten.png';
+import RTFresh from '@app/assets/services/rt_fresh.png';
+import RTRotten from '@app/assets/services/rt_rotten.png';
+import TmdbLogo from '@app/assets/services/tmdb_logo.png';
+import Badge from '@app/components/Common/Badge';
+import Button from '@app/components/Common/Button';
+import CachedImage from '@app/components/Common/CachedImage';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import type { PlayButtonLink } from '@app/components/Common/PlayButton';
+import PlayButton from '@app/components/Common/PlayButton';
+import StatusBadgeMini from '@app/components/Common/StatusBadgeMini';
+import Tag from '@app/components/Common/Tag';
+import Tooltip from '@app/components/Common/Tooltip';
+import ExternalLinkBlock from '@app/components/ExternalLinkBlock';
+// import IssueModal from '@app/components/IssueModal';
+// import ManageSlideOver from '@app/components/ManageSlideOver';
+import ErrorPage from '@app/components/ErrorPage';
+import MediaSlider from '@app/components/MediaSlider';
+import PersonCard from '@app/components/PersonCard';
+import RequestButton from '@app/components/RequestButton';
+import RequestModal from '@app/components/RequestModal';
+import Slider from '@app/components/Slider';
+import StatusBadge from '@app/components/StatusBadge';
+import Season from '@app/components/TvDetails/Season';
+import useDeepLinks from '@app/hooks/useDeepLinks';
+import useLocale from '@app/hooks/useLocale';
+import useSettings from '@app/hooks/useSettings';
+import { Permission, UserType, useUser } from '@app/hooks/useUser';
+import { sortCrewPriority } from '@app/utils/creditHelpers';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
+import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 // import { Disclosure, Transition } from '@headlessui/react';
-import type { RTRating } from '@/seerr/server/api/rating/rottentomatoes';
-import { ANIME_KEYWORD_ID } from '@/seerr/server/api/themoviedb/constants';
 import {
   Film,
   // ArrowRightCircle,
@@ -44,22 +42,24 @@ import {
   Star,
 } from '@nandorojo/heroicons/24/outline';
 import { ChevronDown } from '@nandorojo/heroicons/24/solid';
-// import { IssueStatus } from '@/seerr/server/constants/issue';
+import type { RTRating } from '@server/api/rating/rottentomatoes';
+import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
+// import { IssueStatus } from '@server/constants/issue';
 import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-} from '@/components/Common/Disclosure';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
+} from '@app/components/Common/Disclosure';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
 import {
   MediaRequestStatus,
   MediaStatus,
   MediaType,
-} from '@/seerr/server/constants/media';
-import { MediaServerType } from '@/seerr/server/constants/server';
-import type { Crew } from '@/seerr/server/models/common';
-import type { TvDetails as TvDetailsType } from '@/seerr/server/models/Tv';
+} from '@server/constants/media';
+import { MediaServerType } from '@server/constants/server';
+import type { Crew } from '@server/models/common';
+import type { TvDetails as TvDetailsType } from '@server/models/Tv';
 import axios from 'axios';
 import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { Image } from 'expo-image';

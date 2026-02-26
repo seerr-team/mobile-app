@@ -1,4 +1,4 @@
-import ThemedText from '@/components/Common/ThemedText';
+import ThemedText from '@app/components/Common/ThemedText';
 import {
   ExclamationTriangle,
   InformationCircle,

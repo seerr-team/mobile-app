@@ -1,8 +1,8 @@
-import ProgressCircle from '@/components/Common/ProgressCircle';
-import ThemedText from '@/components/Common/ThemedText';
-import type { QuotaStatus } from '@/seerr/server/interfaces/api/userInterfaces';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import ProgressCircle from '@app/components/Common/ProgressCircle';
+import ThemedText from '@app/components/Common/ThemedText';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ChevronDown, ChevronUp } from '@nandorojo/heroicons/24/solid';
+import type { QuotaStatus } from '@server/interfaces/api/userInterfaces';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';

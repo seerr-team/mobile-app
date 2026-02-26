@@ -1,5 +1,5 @@
-import TitleCard from '@/components/TitleCard';
-import globalMessages from '@/utils/globalMessages';
+import TitleCard from '@app/components/TitleCard';
+import globalMessages from '@app/utils/globalMessages';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { FlatList, TVFocusGuideView, View } from 'react-native';

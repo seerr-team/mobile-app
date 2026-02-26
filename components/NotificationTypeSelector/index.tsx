@@ -1,9 +1,9 @@
-import ThemedText from '@/components/Common/ThemedText';
-import NotificationType from '@/components/NotificationTypeSelector/NotificationType';
-import useSettings from '@/hooks/useSettings';
-import type { User } from '@/hooks/useUser';
-import { Permission, useUser } from '@/hooks/useUser';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import ThemedText from '@app/components/Common/ThemedText';
+import NotificationType from '@app/components/NotificationTypeSelector/NotificationType';
+import useSettings from '@app/hooks/useSettings';
+import type { User } from '@app/hooks/useUser';
+import { Permission, useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { sortBy } from 'lodash';
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';

@@ -1,6 +1,6 @@
-import CachedImage from '@/components/Common/CachedImage';
-import ThemedText from '@/components/Common/ThemedText';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import CachedImage from '@app/components/Common/CachedImage';
+import ThemedText from '@app/components/Common/ThemedText';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/solid';
 import { Link } from 'expo-router';
 import { useIntl } from 'react-intl';

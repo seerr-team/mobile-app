@@ -1,17 +1,17 @@
-import Button from '@/components/Common/Button';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import TextInput from '@/components/Common/TextInput';
-import ThemedText from '@/components/Common/ThemedText';
+import Button from '@app/components/Common/Button';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import TextInput from '@app/components/Common/TextInput';
+import ThemedText from '@app/components/Common/ThemedText';
 import NotificationTypeSelector, {
   ALL_NOTIFICATIONS,
-} from '@/components/NotificationTypeSelector';
-import SettingsBadge from '@/components/Settings/SettingsBadge';
-import useServerUrl from '@/hooks/useServerUrl';
-import { useUser } from '@/hooks/useUser';
-import type { UserSettingsNotificationsResponse } from '@/seerr/server/interfaces/api/userSettingsInterfaces';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+} from '@app/components/NotificationTypeSelector';
+import SettingsBadge from '@app/components/Settings/SettingsBadge';
+import useServerUrl from '@app/hooks/useServerUrl';
+import { useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
 import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
+import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import axios from 'axios';
 import { Formik } from 'formik';
 import toast from 'react-hot-toast/headless';

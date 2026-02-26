@@ -1,18 +1,18 @@
-import ThemedText from '@/components/Common/ThemedText';
-import PersonCard from '@/components/PersonCard';
-import TitleCard from '@/components/TitleCard';
-import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
-import useOrientation from '@/hooks/useOrientation';
-import { Permission, useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/seerr/server/constants/media';
-import type { WatchlistItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
+import ThemedText from '@app/components/Common/ThemedText';
+import PersonCard from '@app/components/PersonCard';
+import TitleCard from '@app/components/TitleCard';
+import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
+import useOrientation from '@app/hooks/useOrientation';
+import { Permission, useUser } from '@app/hooks/useUser';
+import globalMessages from '@app/utils/globalMessages';
+import { MediaStatus } from '@server/constants/media';
+import type { WatchlistItem } from '@server/interfaces/api/discoverInterfaces';
 import type {
   CollectionResult,
   MovieResult,
   PersonResult,
   TvResult,
-} from '@/seerr/server/models/Search';
-import globalMessages from '@/utils/globalMessages';
+} from '@server/models/Search';
 import { useIntl } from 'react-intl';
 import { FlatList, TVFocusGuideView, View } from 'react-native';
 

@@ -1,5 +1,5 @@
-import UserProfile from '@/components/UserProfile';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import UserProfile from '@app/components/UserProfile';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function Profile() {
   return <UserProfile />;

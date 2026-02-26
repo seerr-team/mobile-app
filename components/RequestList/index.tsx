@@ -1,21 +1,21 @@
-import Button from '@/components/Common/Button';
-import Header from '@/components/Common/Header';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-// import RequestItem from '@/components/RequestList/RequestItem';
-import RequestCard from '@/components/RequestCard';
-// import { useUpdateQueryParams } from '@/hooks/useUpdateQueryParams';
-import { useUser } from '@/hooks/useUser';
+import Button from '@app/components/Common/Button';
+import Header from '@app/components/Common/Header';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+// import RequestItem from '@app/components/RequestList/RequestItem';
+import RequestCard from '@app/components/RequestCard';
+// import { useUpdateQueryParams } from '@app/hooks/useUpdateQueryParams';
+import { useUser } from '@app/hooks/useUser';
 // import {
 //   BarsArrowDown,
 //   ChevronLeft,
 //   ChevronRight,
 //   Funnel,
 // } from '@nandorojo/heroicons/24/solid';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import type { RequestResultsResponse } from '@/seerr/server/interfaces/api/requestInterfaces';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
+import type { RequestResultsResponse } from '@server/interfaces/api/requestInterfaces';
 import { Link, useLocalSearchParams, usePathname } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';

@@ -1,13 +1,13 @@
-import Header from '@/components/Common/Header';
-import ListView from '@/components/Common/ListView';
-import ErrorPage from '@/components/ErrorPage';
-import useDiscover from '@/hooks/useDiscover';
+import Header from '@app/components/Common/Header';
+import ListView from '@app/components/Common/ListView';
+import ErrorPage from '@app/components/ErrorPage';
+import useDiscover from '@app/hooks/useDiscover';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import type {
   MovieResult,
   PersonResult,
   TvResult,
-} from '@/seerr/server/models/Search';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+} from '@server/models/Search';
 import { useIntl } from 'react-intl';
 
 const messages = getSeerrMessages('components.Discover');

@@ -1,23 +1,20 @@
-import Badge from '@/components/Common/Badge';
-import CachedImage from '@/components/Common/CachedImage';
-import FormattedRelativeTime from '@/components/Common/FormattedRelativeTime';
-import ThemedText from '@/components/Common/ThemedText';
-import RequestModal from '@/components/RequestModal';
-import StatusBadge from '@/components/StatusBadge';
-import useDeepLinks from '@/hooks/useDeepLinks';
-import useServerUrl from '@/hooks/useServerUrl';
-import { Permission, useUser } from '@/hooks/useUser';
-import {
-  MediaRequestStatus,
-  MediaStatus,
-} from '@/seerr/server/constants/media';
-import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
-import type { NonFunctionProperties } from '@/seerr/server/interfaces/api/common';
-import type { MovieDetails } from '@/seerr/server/models/Movie';
-import type { TvDetails } from '@/seerr/server/models/Tv';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
-import { refreshIntervalHelper } from '@/utils/refreshIntervalHelper';
+import Badge from '@app/components/Common/Badge';
+import CachedImage from '@app/components/Common/CachedImage';
+import FormattedRelativeTime from '@app/components/Common/FormattedRelativeTime';
+import ThemedText from '@app/components/Common/ThemedText';
+import RequestModal from '@app/components/RequestModal';
+import StatusBadge from '@app/components/StatusBadge';
+import useDeepLinks from '@app/hooks/useDeepLinks';
+import useServerUrl from '@app/hooks/useServerUrl';
+import { Permission, useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
+import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
+import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import type { MediaRequest } from '@server/entity/MediaRequest';
+import type { NonFunctionProperties } from '@server/interfaces/api/common';
+import type { MovieDetails } from '@server/models/Movie';
+import type { TvDetails } from '@server/models/Tv';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';

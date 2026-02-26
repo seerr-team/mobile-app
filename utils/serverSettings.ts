@@ -1,7 +1,7 @@
 import type {
   PublicSettingsResponse,
   StatusResponse,
-} from '@/seerr/server/interfaces/api/settingsInterfaces';
+} from '@server/interfaces/api/settingsInterfaces';
 import axios from 'axios';
 
 export const minimumServerVersion = '2.4.0';

@@ -1,17 +1,17 @@
-import LogoStacked from '@/assets/images/logo_stacked.png';
-import Button from '@/components/Common/Button';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import TextInput from '@/components/Common/TextInput';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
-import { setServerUrl } from '@/store/appSettingsSlice';
-import { setSettings } from '@/store/serverSettingsSlice';
+import LogoStacked from '@app/assets/images/logo_stacked.png';
+import Button from '@app/components/Common/Button';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import TextInput from '@app/components/Common/TextInput';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
+import { setServerUrl } from '@app/store/appSettingsSlice';
+import { setSettings } from '@app/store/serverSettingsSlice';
 import {
   ConnectionErrorType,
   getServerSettings,
   minimumServerVersion,
-} from '@/utils/serverSettings';
+} from '@app/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';

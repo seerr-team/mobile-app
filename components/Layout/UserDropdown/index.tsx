@@ -1,8 +1,8 @@
-import CachedImage from '@/components/Common/CachedImage';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import { useUser } from '@/hooks/useUser';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import CachedImage from '@app/components/Common/CachedImage';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
+import { useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowRightOnRectangle, Clock } from '@nandorojo/heroicons/24/outline';
 import { Cog, User } from '@nandorojo/heroicons/24/solid';
 import axios from 'axios';

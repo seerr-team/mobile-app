@@ -1,4 +1,4 @@
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import type { ParsedUrlQuery } from 'querystring';
 import { z } from 'zod';
 

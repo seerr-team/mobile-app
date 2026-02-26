@@ -1,9 +1,9 @@
-import PlexIcon from '@/assets/services/plex.png';
-import Button from '@/components/Common/Button';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import ThemedText from '@/components/Common/ThemedText';
-import usePlexLogin from '@/hooks/usePlexLogin';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import PlexIcon from '@app/assets/services/plex.png';
+import Button from '@app/components/Common/Button';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import ThemedText from '@app/components/Common/ThemedText';
+import usePlexLogin from '@app/hooks/usePlexLogin';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { Fragment } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Image, View } from 'react-native';

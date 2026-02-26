@@ -6,7 +6,9 @@
     "useUnknownInCatchVariables": false,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./*"]
+      "@app/*": ["./*"],
+      "@server/*": ["./seerr/server/*"],
+      "@seerr/*": ["./seerr/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"]

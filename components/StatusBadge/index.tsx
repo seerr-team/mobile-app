@@ -1,15 +1,15 @@
-import Badge from '@/components/Common/Badge';
-import Tooltip from '@/components/Common/Tooltip';
-// import DownloadBlock from '@/components/DownloadBlock';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import ThemedText from '@/components/Common/ThemedText';
-import useSettings from '@/hooks/useSettings';
-import { Permission, useUser } from '@/hooks/useUser';
-import { MediaStatus } from '@/seerr/server/constants/media';
-import { MediaServerType } from '@/seerr/server/constants/server';
-import type { DownloadingItem } from '@/seerr/server/lib/downloadtracker';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+import Badge from '@app/components/Common/Badge';
+import Tooltip from '@app/components/Common/Tooltip';
+// import DownloadBlock from '@app/components/DownloadBlock';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import ThemedText from '@app/components/Common/ThemedText';
+import useSettings from '@app/hooks/useSettings';
+import { Permission, useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
+import { MediaStatus } from '@server/constants/media';
+import { MediaServerType } from '@server/constants/server';
+import type { DownloadingItem } from '@server/lib/downloadtracker';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 

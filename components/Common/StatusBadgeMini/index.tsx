@@ -1,6 +1,5 @@
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import ThemedText from '@/components/Common/ThemedText';
-import { MediaStatus } from '@/seerr/server/constants/media';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import ThemedText from '@app/components/Common/ThemedText';
 import { CheckCircle } from '@nandorojo/heroicons/20/solid';
 import {
   Bell,
@@ -9,6 +8,7 @@ import {
   MinusSmall,
   Trash,
 } from '@nandorojo/heroicons/24/solid';
+import { MediaStatus } from '@server/constants/media';
 import { View } from 'react-native';
 
 interface StatusBadgeMiniProps {

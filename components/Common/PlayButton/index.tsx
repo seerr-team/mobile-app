@@ -1,5 +1,5 @@
-import ButtonWithDropdown from '@/components/Common/ButtonWithDropdown';
-import ThemedText from '@/components/Common/ThemedText';
+import ButtonWithDropdown from '@app/components/Common/ButtonWithDropdown';
+import ThemedText from '@app/components/Common/ThemedText';
 import { Linking } from 'react-native';
 
 interface PlayButtonProps {

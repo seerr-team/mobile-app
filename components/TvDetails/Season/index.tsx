@@ -1,10 +1,10 @@
-import AirDateBadge from '@/components/AirDateBadge';
-import CachedImage from '@/components/Common/CachedImage';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import type { SeasonWithEpisodes } from '@/seerr/server/models/Tv';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import AirDateBadge from '@app/components/AirDateBadge';
+import CachedImage from '@app/components/Common/CachedImage';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import type { SeasonWithEpisodes } from '@server/models/Tv';
 import { useIntl } from 'react-intl';
 import { Platform, View } from 'react-native';
 import useSWR from 'swr';

@@ -1,5 +1,5 @@
-import DiscoverTvNetwork from '@/components/Discover/DiscoverNetwork';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import DiscoverTvNetwork from '@app/components/Discover/DiscoverNetwork';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function DiscoverNetwork() {
   return <DiscoverTvNetwork />;

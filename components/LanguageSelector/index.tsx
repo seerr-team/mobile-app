@@ -1,8 +1,8 @@
-import useServerUrl from '@/hooks/useServerUrl';
-import type { Language } from '@/seerr/server/lib/settings';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+import useServerUrl from '@app/hooks/useServerUrl';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
 import { XMark } from '@nandorojo/heroicons/24/outline';
+import type { Language } from '@server/lib/settings';
 import { sortBy } from 'lodash';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';

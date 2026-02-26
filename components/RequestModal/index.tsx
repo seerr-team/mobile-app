@@ -1,9 +1,9 @@
-import CollectionRequestModal from '@/components/RequestModal/CollectionRequestModal';
-import MovieRequestModal from '@/components/RequestModal/MovieRequestModal';
-import TvRequestModal from '@/components/RequestModal/TvRequestModal';
-import type { MediaStatus } from '@/seerr/server/constants/media';
-import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
-import type { NonFunctionProperties } from '@/seerr/server/interfaces/api/common';
+import CollectionRequestModal from '@app/components/RequestModal/CollectionRequestModal';
+import MovieRequestModal from '@app/components/RequestModal/MovieRequestModal';
+import TvRequestModal from '@app/components/RequestModal/TvRequestModal';
+import type { MediaStatus } from '@server/constants/media';
+import type { MediaRequest } from '@server/entity/MediaRequest';
+import type { NonFunctionProperties } from '@server/interfaces/api/common';
 
 interface RequestModalProps {
   show: boolean;

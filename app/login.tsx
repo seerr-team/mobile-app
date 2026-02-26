@@ -1,5 +1,5 @@
-import Login from '@/components/Login';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import Login from '@app/components/Login';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function LoginScreen() {
   return <Login />;

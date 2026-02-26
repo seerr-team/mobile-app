@@ -1,11 +1,11 @@
-import ThemedText from '@/components/Common/ThemedText';
-import { genreColorMap } from '@/components/Discover/constants';
-import GenreCard from '@/components/GenreCard';
-import Slider from '@/components/Slider';
-import useServerUrl from '@/hooks/useServerUrl';
-import type { GenreSliderItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import ThemedText from '@app/components/Common/ThemedText';
+import { genreColorMap } from '@app/components/Discover/constants';
+import GenreCard from '@app/components/GenreCard';
+import Slider from '@app/components/Slider';
+import useServerUrl from '@app/hooks/useServerUrl';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
+import type { GenreSliderItem } from '@server/interfaces/api/discoverInterfaces';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';

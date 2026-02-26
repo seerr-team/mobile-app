@@ -1,8 +1,8 @@
-import useServerUrl from '@/hooks/useServerUrl';
-import { UserType } from '@/seerr/server/constants/user';
-import type { PermissionCheckOptions } from '@/seerr/server/lib/permissions';
-import { hasPermission, Permission } from '@/seerr/server/lib/permissions';
-import type { NotificationAgentKey } from '@/seerr/server/lib/settings';
+import useServerUrl from '@app/hooks/useServerUrl';
+import { UserType } from '@server/constants/user';
+import type { PermissionCheckOptions } from '@server/lib/permissions';
+import { hasPermission, Permission } from '@server/lib/permissions';
+import type { NotificationAgentKey } from '@server/lib/settings';
 import type { MutatorCallback } from 'swr';
 import useSWR from 'swr';
 

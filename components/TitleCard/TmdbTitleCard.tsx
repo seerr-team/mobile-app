@@ -1,8 +1,8 @@
-import TitleCard from '@/components/TitleCard';
-import useServerUrl from '@/hooks/useServerUrl';
-import { Permission, useUser } from '@/hooks/useUser';
-import type { MovieDetails } from '@/seerr/server/models/Movie';
-import type { TvDetails } from '@/seerr/server/models/Tv';
+import TitleCard from '@app/components/TitleCard';
+import useServerUrl from '@app/hooks/useServerUrl';
+import { Permission, useUser } from '@app/hooks/useUser';
+import type { MovieDetails } from '@server/models/Movie';
+import type { TvDetails } from '@server/models/Tv';
 import { View } from 'react-native';
 import useSWR from 'swr';
 

@@ -1,26 +1,23 @@
-import Alert from '@/components/Common/Alert';
-import Badge from '@/components/Common/Badge';
-import Modal from '@/components/Common/Modal';
-import ThemedText from '@/components/Common/ThemedText';
-import type { RequestOverrides } from '@/components/RequestModal/AdvancedRequester';
-import AdvancedRequester from '@/components/RequestModal/AdvancedRequester';
-import QuotaDisplay from '@/components/RequestModal/QuotaDisplay';
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
-import { useUser } from '@/hooks/useUser';
-import { ANIME_KEYWORD_ID } from '@/seerr/server/api/themoviedb/constants';
-import {
-  MediaRequestStatus,
-  MediaStatus,
-} from '@/seerr/server/constants/media';
-import type { MediaRequest } from '@/seerr/server/entity/MediaRequest';
-import type SeasonRequest from '@/seerr/server/entity/SeasonRequest';
-import type { NonFunctionProperties } from '@/seerr/server/interfaces/api/common';
-import type { QuotaResponse } from '@/seerr/server/interfaces/api/userInterfaces';
-import { Permission } from '@/seerr/server/lib/permissions';
-import type { TvDetails } from '@/seerr/server/models/Tv';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+import Alert from '@app/components/Common/Alert';
+import Badge from '@app/components/Common/Badge';
+import Modal from '@app/components/Common/Modal';
+import ThemedText from '@app/components/Common/ThemedText';
+import type { RequestOverrides } from '@app/components/RequestModal/AdvancedRequester';
+import AdvancedRequester from '@app/components/RequestModal/AdvancedRequester';
+import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
+import { useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
+import { ANIME_KEYWORD_ID } from '@server/api/themoviedb/constants';
+import { MediaRequestStatus, MediaStatus } from '@server/constants/media';
+import type { MediaRequest } from '@server/entity/MediaRequest';
+import type SeasonRequest from '@server/entity/SeasonRequest';
+import type { NonFunctionProperties } from '@server/interfaces/api/common';
+import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
+import { Permission } from '@server/lib/permissions';
+import type { TvDetails } from '@server/models/Tv';
 import axios from 'axios';
 import { useState } from 'react';
 import toast from 'react-hot-toast/headless';

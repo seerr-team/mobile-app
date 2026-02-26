@@ -1,5 +1,5 @@
-import MovieRecommendations from '@/components/MovieDetails/MovieRecommendations';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import MovieRecommendations from '@app/components/MovieDetails/MovieRecommendations';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function MovieRecommendationsPage() {
   return <MovieRecommendations />;

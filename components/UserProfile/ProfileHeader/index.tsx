@@ -1,10 +1,10 @@
-import Button from '@/components/Common/Button';
-import CachedImage from '@/components/Common/CachedImage';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import type { User as UserType } from '@/hooks/useUser';
-import { Permission, useUser } from '@/hooks/useUser';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import Button from '@app/components/Common/Button';
+import CachedImage from '@app/components/Common/CachedImage';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
+import type { User as UserType } from '@app/hooks/useUser';
+import { Permission, useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowRightOnRectangle } from '@nandorojo/heroicons/24/outline';
 import { Cog, User } from '@nandorojo/heroicons/24/solid';
 import axios from 'axios';

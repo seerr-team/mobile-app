@@ -1,5 +1,5 @@
-import RequestList from '@/components/RequestList';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import RequestList from '@app/components/RequestList';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function Requests() {
   return <RequestList />;

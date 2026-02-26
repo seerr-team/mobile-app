@@ -1,5 +1,5 @@
-import CollectionDetails from '@/components/CollectionDetails';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import CollectionDetails from '@app/components/CollectionDetails';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function CollectionPage() {
   return <CollectionDetails />;

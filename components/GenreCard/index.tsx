@@ -1,6 +1,6 @@
-import CachedImage from '@/components/Common/CachedImage';
-import ThemedText from '@/components/Common/ThemedText';
-import { withProperties } from '@/utils/typeHelpers';
+import CachedImage from '@app/components/Common/CachedImage';
+import ThemedText from '@app/components/Common/ThemedText';
+import { withProperties } from '@app/utils/typeHelpers';
 import { Link } from 'expo-router';
 import { Pressable, View } from 'react-native';
 

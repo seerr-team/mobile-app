@@ -1,10 +1,10 @@
-import Header from '@/components/Common/Header';
-import ListView from '@/components/Common/ListView';
-import ErrorPage from '@/components/ErrorPage';
-import useDiscover from '@/hooks/useDiscover';
-import { useUser } from '@/hooks/useUser';
-import type { WatchlistItem } from '@/seerr/server/interfaces/api/discoverInterfaces';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import Header from '@app/components/Common/Header';
+import ListView from '@app/components/Common/ListView';
+import ErrorPage from '@app/components/ErrorPage';
+import useDiscover from '@app/hooks/useDiscover';
+import { useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import type { WatchlistItem } from '@server/interfaces/api/discoverInterfaces';
 import { useIntl } from 'react-intl';
 
 const messages = getSeerrMessages('components.Discover.DiscoverWatchlist');

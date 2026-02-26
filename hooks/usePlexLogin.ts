@@ -1,4 +1,4 @@
-import PlexOAuth from '@/utils/plex';
+import PlexOAuth from '@app/utils/plex';
 import { useState } from 'react';
 
 const plexOAuth = new PlexOAuth();

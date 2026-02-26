@@ -1,4 +1,4 @@
-import CachedImage from '@/components/Common/CachedImage';
+import CachedImage from '@app/components/Common/CachedImage';
 import { Link } from 'expo-router';
 import { Pressable } from 'react-native';
 

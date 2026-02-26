@@ -1,9 +1,9 @@
-import type { ButtonType } from '@/components/Common/Button';
-import Button from '@/components/Common/Button';
-import CachedImage from '@/components/Common/CachedImage';
-// import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import ThemedText from '@/components/Common/ThemedText';
-import globalMessages from '@/utils/globalMessages';
+import type { ButtonType } from '@app/components/Common/Button';
+import Button from '@app/components/Common/Button';
+import CachedImage from '@app/components/Common/CachedImage';
+// import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import ThemedText from '@app/components/Common/ThemedText';
+import globalMessages from '@app/utils/globalMessages';
 import { LinearGradient } from 'expo-linear-gradient';
 import type { MouseEvent } from 'react';
 import React from 'react';

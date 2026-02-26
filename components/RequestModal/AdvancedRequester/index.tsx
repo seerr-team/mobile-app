@@ -1,21 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import CachedImage from '@/components/Common/CachedImage';
-import { Listbox } from '@/components/Common/Listbox';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import ThemedText from '@/components/Common/ThemedText';
-import useServerUrl from '@/hooks/useServerUrl';
-import type { User } from '@/hooks/useUser';
-import { Permission, useUser } from '@/hooks/useUser';
+import CachedImage from '@app/components/Common/CachedImage';
+import { Listbox } from '@app/components/Common/Listbox';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import ThemedText from '@app/components/Common/ThemedText';
+import useServerUrl from '@app/hooks/useServerUrl';
+import type { User } from '@app/hooks/useUser';
+import { Permission, useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
+import { formatBytes } from '@app/utils/numberHelpers';
+import { Check, ChevronDown } from '@nandorojo/heroicons/24/solid';
 import type {
   ServiceCommonServer,
   ServiceCommonServerWithDetails,
-} from '@/seerr/server/interfaces/api/serviceInterfaces';
-import type { UserResultsResponse } from '@/seerr/server/interfaces/api/userInterfaces';
-import { hasPermission } from '@/seerr/server/lib/permissions';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
-import { formatBytes } from '@/utils/numberHelpers';
-import { Check, ChevronDown } from '@nandorojo/heroicons/24/solid';
+} from '@server/interfaces/api/serviceInterfaces';
+import type { UserResultsResponse } from '@server/interfaces/api/userInterfaces';
+import { hasPermission } from '@server/lib/permissions';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';

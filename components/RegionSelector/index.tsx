@@ -1,9 +1,9 @@
-import useServerUrl from '@/hooks/useServerUrl';
-import useSettings from '@/hooks/useSettings';
-import type { Region } from '@/seerr/server/lib/settings';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import '@formatjs/intl-displaynames/polyfill.js';
 import { ChevronDown } from '@nandorojo/heroicons/24/solid';
+import type { Region } from '@server/lib/settings';
 import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { sortBy } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';

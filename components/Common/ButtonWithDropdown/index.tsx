@@ -1,4 +1,4 @@
-import { withProperties } from '@/utils/typeHelpers';
+import { withProperties } from '@app/utils/typeHelpers';
 import { ChevronDown } from '@nandorojo/heroicons/24/solid';
 import type { LinkProps } from 'expo-router';
 import { Link } from 'expo-router';

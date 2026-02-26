@@ -1,5 +1,5 @@
-import PersonDetails from '@/components/PersonDetails';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import PersonDetails from '@app/components/PersonDetails';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 const PersonDetailsPage = () => {
   return <PersonDetails />;

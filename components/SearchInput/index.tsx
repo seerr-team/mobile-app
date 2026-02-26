@@ -1,4 +1,4 @@
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { MagnifyingGlass } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';

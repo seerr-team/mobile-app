@@ -1,4 +1,4 @@
-import Toast from '@/components/Toast';
+import Toast from '@app/components/Toast';
 import { useToaster } from 'react-hot-toast/headless';
 import { View } from 'react-native';
 

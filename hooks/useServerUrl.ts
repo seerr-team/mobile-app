@@ -1,4 +1,4 @@
-import type { RootState } from '@/store';
+import type { RootState } from '@app/store';
 import { useSelector } from 'react-redux';
 
 const useServerUrl = () => {

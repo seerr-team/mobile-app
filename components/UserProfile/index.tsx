@@ -1,25 +1,25 @@
-import ImageFader from '@/components/Common/ImageFader';
-import LoadingSpinner from '@/components/Common/LoadingSpinner';
-import ProgressCircle from '@/components/Common/ProgressCircle';
-import ThemedText from '@/components/Common/ThemedText';
-import ErrorPage from '@/components/ErrorPage';
+import ImageFader from '@app/components/Common/ImageFader';
+import LoadingSpinner from '@app/components/Common/LoadingSpinner';
+import ProgressCircle from '@app/components/Common/ProgressCircle';
+import ThemedText from '@app/components/Common/ThemedText';
+import ErrorPage from '@app/components/ErrorPage';
 import RequestCard, {
   Placeholder as RequestCardPlaceholder,
-} from '@/components/RequestCard';
-import Slider from '@/components/Slider';
-import TmdbTitleCard from '@/components/TitleCard/TmdbTitleCard';
-import ProfileHeader from '@/components/UserProfile/ProfileHeader';
-import useServerUrl from '@/hooks/useServerUrl';
-import { Permission, UserType, useUser } from '@/hooks/useUser';
-import type { WatchlistResponse } from '@/seerr/server/interfaces/api/discoverInterfaces';
+} from '@app/components/RequestCard';
+import Slider from '@app/components/Slider';
+import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
+import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
+import useServerUrl from '@app/hooks/useServerUrl';
+import { Permission, UserType, useUser } from '@app/hooks/useUser';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import type { WatchlistResponse } from '@server/interfaces/api/discoverInterfaces';
 import type {
   QuotaResponse,
   UserRequestsResponse,
   UserWatchDataResponse,
-} from '@/seerr/server/interfaces/api/userInterfaces';
-import type { MovieDetails } from '@/seerr/server/models/Movie';
-import type { TvDetails } from '@/seerr/server/models/Tv';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+} from '@server/interfaces/api/userInterfaces';
+import type { MovieDetails } from '@server/models/Movie';
+import type { TvDetails } from '@server/models/Tv';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';

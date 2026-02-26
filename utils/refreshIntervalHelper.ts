@@ -1,4 +1,4 @@
-import type { DownloadingItem } from '@/seerr/server/lib/downloadtracker';
+import type { DownloadingItem } from '@server/lib/downloadtracker';
 
 export const refreshIntervalHelper = (
   downloadItem: {

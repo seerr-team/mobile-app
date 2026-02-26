@@ -1,7 +1,7 @@
-import ThemedText from '@/components/Common/ThemedText';
-import CompanyCard from '@/components/CompanyCard';
-import Slider from '@/components/Slider';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import ThemedText from '@app/components/Common/ThemedText';
+import CompanyCard from '@app/components/CompanyCard';
+import Slider from '@app/components/Slider';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 

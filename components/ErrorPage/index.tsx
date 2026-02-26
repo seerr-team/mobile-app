@@ -1,5 +1,5 @@
-import ThemedText from '@/components/Common/ThemedText';
-import getSeerrMessages from '@/utils/getSeerrMessages';
+import ThemedText from '@app/components/Common/ThemedText';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import { Link } from 'expo-router';
 import { useIntl } from 'react-intl';

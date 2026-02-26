@@ -1,4 +1,4 @@
-import Button from '@/components/Common/Button';
+import Button from '@app/components/Common/Button';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, Pressable, View } from 'react-native';
 

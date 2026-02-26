@@ -1,5 +1,5 @@
-import Trending from '@/components/Discover/Trending';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import Trending from '@app/components/Discover/Trending';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function DiscoverTrending() {
   return <Trending />;

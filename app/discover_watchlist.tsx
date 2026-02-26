@@ -1,5 +1,5 @@
-import DiscoverWatchlist from '@/components/Discover/DiscoverWatchlist';
-import { withAfterInteractions } from '@/utils/withAfterInteractions';
+import DiscoverWatchlist from '@app/components/Discover/DiscoverWatchlist';
+import { withAfterInteractions } from '@app/utils/withAfterInteractions';
 
 function DiscoverWatchlistPage() {
   return <DiscoverWatchlist />;

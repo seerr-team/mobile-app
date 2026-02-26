@@ -1,7 +1,7 @@
-import Badge from '@/components/Common/Badge';
-import Tooltip from '@/components/Common/Tooltip';
-import getSeerrMessages from '@/utils/getSeerrMessages';
-import globalMessages from '@/utils/globalMessages';
+import Badge from '@app/components/Common/Badge';
+import Tooltip from '@app/components/Common/Tooltip';
+import getSeerrMessages from '@app/utils/getSeerrMessages';
+import globalMessages from '@app/utils/globalMessages';
 import { useIntl } from 'react-intl';
 
 const messages = getSeerrMessages('components.Settings');

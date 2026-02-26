@@ -1,7 +1,7 @@
-import ThemedText from '@/components/Common/ThemedText';
-import { useUser } from '@/hooks/useUser';
-import type { Permission } from '@/seerr/server/lib/permissions';
-import { hasPermission } from '@/seerr/server/lib/permissions';
+import ThemedText from '@app/components/Common/ThemedText';
+import { useUser } from '@app/hooks/useUser';
+import type { Permission } from '@server/lib/permissions';
+import { hasPermission } from '@server/lib/permissions';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
