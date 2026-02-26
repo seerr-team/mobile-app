@@ -187,7 +187,7 @@ const UserGeneralSettings = () => {
           handleChange,
         }) => {
           return (
-            <View className="w-full">
+            <View className="section">
               <View className="form-row">
                 <ThemedText className="text-label mb-1 font-bold text-gray-400">
                   {intl.formatMessage(messages.accounttype)}

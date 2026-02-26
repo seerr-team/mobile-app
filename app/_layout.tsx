@@ -2,6 +2,7 @@ import BottomNavigation from '@app/components/Layout/BottomNavigation';
 import UserDropdown from '@app/components/Layout/UserDropdown';
 import SearchInput from '@app/components/SearchInput';
 import ToastContainer from '@app/components/ToastContainer';
+import { LanguageContext } from '@app/context/LanguageContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
@@ -16,13 +17,7 @@ import '@seerr/src/styles/globals.css';
 import { type AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
 import { useFonts } from 'expo-font';
-import {
-  router,
-  SplashScreen,
-  Stack,
-  useNavigationContainerRef,
-  usePathname,
-} from 'expo-router';
+import { router, SplashScreen, Stack, usePathname } from 'expo-router';
 import 'intl-pluralrules';
 import { useEffect, useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
@@ -225,7 +220,6 @@ function RootLayoutWithIntl() {
   const { user } = useUser();
   const settings = useSettings();
   const dispatch = useDispatch();
-  const ref = useNavigationContainerRef();
   const [fontLoaded] = useFonts({
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -262,15 +256,17 @@ function RootLayoutWithIntl() {
   }
 
   return (
-    <IntlProvider
-      locale={currentLocale}
-      defaultLocale="en"
-      messages={loadedMessages}
-    >
-      <KeyboardProvider>
-        <RootLayout />
-      </KeyboardProvider>
-    </IntlProvider>
+    <LanguageContext.Provider value={{ locale: currentLocale, setLocale }}>
+      <IntlProvider
+        locale={currentLocale}
+        defaultLocale="en"
+        messages={loadedMessages}
+      >
+        <KeyboardProvider>
+          <RootLayout />
+        </KeyboardProvider>
+      </IntlProvider>
+    </LanguageContext.Provider>
   );
 }
 
