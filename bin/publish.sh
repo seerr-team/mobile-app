@@ -23,7 +23,7 @@ mv tmp.json package-lock.json
 
 # Commit changes
 git add app.json package.json package-lock.json
-git commit -m "chore: prepare for v$1"
+git commit -m "chore: prepare for v$1" || true
 
 # Create signed git tag
 git tag -s "v$1" -m "Release v$1"
