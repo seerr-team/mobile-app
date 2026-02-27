@@ -19,7 +19,7 @@ import axios from 'axios';
 import { useFonts } from 'expo-font';
 import { router, SplashScreen, Stack, usePathname } from 'expo-router';
 import 'intl-pluralrules';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { TVFocusGuideView, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -96,33 +96,6 @@ function RootLayout() {
   const [loaded, setLoaded] = useState(false);
 
   const insets = useSafeAreaInsets();
-  const contentStyle = useMemo(
-    () => ({
-      backgroundColor: '#111827',
-      paddingTop:
-        pathname === '/setup' || pathname === '/login' ? 0 : insets.top,
-      paddingBottom:
-        pathname === '/setup' || pathname === '/login' ? 0 : insets.bottom,
-    }),
-    [insets, pathname]
-  );
-
-  const swrConfig = useMemo(
-    () => ({
-      fetcher: (url: string) => axios.get(url).then((res) => res.data),
-    }),
-    []
-  );
-
-  const stackScreenOptions = useMemo(
-    () => ({
-      headerShown: false,
-      contentStyle,
-      animation: 'slide_from_right' as const,
-      animationDuration: 100,
-    }),
-    [contentStyle]
-  );
 
   useEffect(() => {
     if (serverUrl && settings.currentSettings && !user) {
@@ -172,12 +145,12 @@ function RootLayout() {
     }
   }, [loaded]);
 
-  const AppContent = () => (
+  const appContent = (
     <View className="flex-1">
       {user && (
         <TVFocusGuideView
           autoFocus
-          className="flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 pb-2"
+          className="flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 "
           style={{
             paddingTop: insets.top + 8,
             height: insets.top + 64,
@@ -187,8 +160,19 @@ function RootLayout() {
           <UserDropdown />
         </TVFocusGuideView>
       )}
-      <View className="flex-1">
-        <Stack screenOptions={stackScreenOptions}>
+      <View className="flex-1 ">
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: '#111827',
+              paddingTop: 0,
+              paddingBottom: 0,
+            },
+            animation: 'slide_from_right' as const,
+            animationDuration: 100,
+          }}
+        >
           <Stack.Screen
             name="search"
             options={{
@@ -203,12 +187,16 @@ function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <SWRConfig value={swrConfig}>
+      <SWRConfig
+        value={() => ({
+          fetcher: (url: string) => axios.get(url).then((res) => res.data),
+        })}
+      >
         <KeyboardAvoidingView
           behavior={pathname === '/setup' ? 'padding' : 'height'}
           className="flex-1 bg-gray-900"
         >
-          <AppContent />
+          {appContent}
         </KeyboardAvoidingView>
         <ToastContainer />
       </SWRConfig>

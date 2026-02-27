@@ -3,7 +3,7 @@ import { MagnifyingGlass } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Platform, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 const messages = getSeerrMessages('components.Layout.SearchInput');
 
@@ -15,22 +15,25 @@ const SearchInput = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (Platform.isTV) return;
     if (searchValue !== '') {
-      router.replace({
-        pathname: '/search',
-        params: { query: searchValue },
-      });
+      if (pathname === '/search') {
+        router.setParams({ query: searchValue });
+      } else {
+        router.replace({
+          pathname: '/search',
+          params: { query: searchValue },
+        });
+      }
     } else {
       inputRef.current?.blur();
     }
-  }, [searchValue]);
+  }, [searchValue, pathname]);
 
   useEffect(() => {
-    if (pathname !== '/search' && searchValue !== '' && !Platform.isTV) {
+    if (pathname !== '/search') {
       setSearchValue('');
     }
-  }, [pathname, searchValue]);
+  }, [pathname]);
 
   return (
     <View
@@ -50,17 +53,9 @@ const SearchInput = () => {
         onChangeText={(e) => setSearchValue(e)}
         onFocus={() => setIsOpen(true)}
         onBlur={() => {
-          if (searchValue === '' && pathname === '/search' && !Platform.isTV) {
+          if (searchValue === '' && pathname === '/search') {
             setIsOpen(false);
             router.replace('');
-          }
-        }}
-        onSubmitEditing={() => {
-          if (searchValue !== '') {
-            router.replace({
-              pathname: '/search',
-              params: { query: searchValue },
-            });
           }
         }}
       />
