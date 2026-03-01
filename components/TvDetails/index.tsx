@@ -447,7 +447,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
         revalidate={() => revalidate()}
         show={showManager}
       /> */}
-      <View className="mt-4 flex flex-col items-center px-6 pt-2 xl:flex-row xl:items-end">
+      <View className="mt-4 flex flex-col items-center px-4 pt-2 xl:flex-row xl:items-end">
         <View className="overflow-hidden rounded shadow md:rounded-lg md:shadow-2xl xl:mr-4">
           <CachedImage
             type="tmdb"
@@ -630,7 +630,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
           )} */}
         </View>
       </View>
-      <View className="media-overview px-6">
+      <View className="media-overview px-4">
         <View className="media-overview-left">
           {data.tagline && (
             <ThemedText className="mb-4 text-xl italic text-gray-400 lg:text-2xl">
@@ -1291,7 +1291,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
       </View>
       {data.credits.cast.length > 0 && (
         <>
-          <View className="slider-header px-2">
+          <View className="slider-header px-4">
             <View className="flex min-w-0 flex-row items-center gap-2">
               <ThemedText className="truncate text-2xl font-bold">
                 {intl.formatMessage(messages.cast)}
@@ -1320,14 +1320,14 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
         title={intl.formatMessage(messages.recommendations)}
         url={`/api/v1/tv/${searchParams.tvId}/recommendations`}
         linkUrl={`/tv/${data.id}/recommendations`}
-        // hideWhenEmpty
+        hideWhenEmpty
       />
       <MediaSlider
         sliderKey="similar"
         title={intl.formatMessage(messages.similar)}
         url={`/api/v1/tv/${searchParams.tvId}/similar`}
         linkUrl={`/tv/${data.id}/similar`}
-        // hideWhenEmpty
+        hideWhenEmpty
       />
     </ScrollView>
   );

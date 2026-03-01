@@ -105,7 +105,7 @@ const MediaSlider = ({
     );
   }
 
-  if (hideWhenEmpty && (data?.[0].results ?? []).length === 0) {
+  if (hideWhenEmpty && titles.length === 0 && (isVisible || hasBeenVisible)) {
     return null;
   }
 
