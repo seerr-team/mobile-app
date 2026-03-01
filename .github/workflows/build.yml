@@ -82,7 +82,7 @@ jobs:
 
       - name: 👷 Build expo app
         run: |
-          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-tv-{0}.apk', github.ref_name) || 'seerr-tv.apk' }} --platform android --profile production-tv
+          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-tv-{0}.apk', github.ref_name) || 'seerr-tv.apk' }} --platform android --profile production
 
       - name: 📦 Upload APK artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
