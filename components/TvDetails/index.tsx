@@ -30,7 +30,6 @@ import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
-import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 // import { Disclosure, Transition } from '@headlessui/react';
 import {
   Film,
@@ -65,7 +64,7 @@ import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams } from 'expo-router';
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
@@ -73,11 +72,7 @@ import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.TvDetails');
 
-interface TvDetailsProps {
-  tv?: TvDetailsType;
-}
-
-const TvDetails = ({ tv }: TvDetailsProps) => {
+const TvDetails = () => {
   const serverUrl = useServerUrl();
   const settings = useSettings();
   const { user, hasPermission } = useUser();
@@ -88,9 +83,7 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   // const [showManager, setShowManager] = useState(router.query.manage == '1');
   // const [showIssueModal, setShowIssueModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [toggleWatchlist, setToggleWatchlist] = useState<boolean>(
-    !tv?.onUserWatchlist
-  );
+  const [toggleWatchlist, setToggleWatchlist] = useState<boolean>(true);
   // const [isBlocklistUpdating, setIsBlocklistUpdating] =
   //   useState<boolean>(false);
   // const [showBlocklistModal, setShowBlocklistModal] = useState(false);
@@ -100,14 +93,14 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
     error,
     mutate: revalidate,
   } = useSWR<TvDetailsType>(`${serverUrl}/api/v1/tv/${searchParams.tvId}`, {
-    fallbackData: tv,
-    refreshInterval: refreshIntervalHelper(
-      {
-        downloadStatus: tv?.mediaInfo?.downloadStatus,
-        downloadStatus4k: tv?.mediaInfo?.downloadStatus4k,
-      },
-      15000
-    ),
+    // fallbackData: tv,
+    // refreshInterval: refreshIntervalHelper(
+    //   {
+    //     downloadStatus: tv?.mediaInfo?.downloadStatus,
+    //     downloadStatus4k: tv?.mediaInfo?.downloadStatus4k,
+    //   },
+    //   15000
+    // ),
   });
 
   const { data: ratingData } = useSWR<RTRating>(
@@ -122,6 +115,10 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
   // useEffect(() => {
   //   setShowManager(router.query.manage == '1');
   // }, [router.query.manage]);
+
+  useEffect(() => {
+    setToggleWatchlist(!data?.onUserWatchlist);
+  }, [data?.onUserWatchlist]);
 
   const { mediaUrl: plexUrl, mediaUrl4k: plexUrl4k } = useDeepLinks({
     mediaUrl: data?.mediaInfo?.mediaUrl,
@@ -328,14 +325,14 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
 
     try {
       await axios.post(serverUrl + '/api/v1/watchlist', {
-        tmdbId: tv?.id,
+        tmdbId: data?.id,
         mediaType: MediaType.TV,
-        title: tv?.name,
+        title: data?.name,
       });
       toast.success(
         <ThemedText>
           {intl.formatMessage(messages.watchlistSuccess, {
-            title: tv?.name,
+            title: data?.name,
             strong: (msg: React.ReactNode) => (
               <ThemedText className="font-bold">{msg}</ThemedText>
             ),
@@ -357,13 +354,13 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
 
     try {
       await axios.delete(
-        `${serverUrl}/api/v1/watchlist/${tv?.id}?mediaType=${MediaType.TV}`
+        `${serverUrl}/api/v1/watchlist/${data?.id}?mediaType=${MediaType.TV}`
       );
 
       toast(
         <ThemedText>
           {intl.formatMessage(messages.watchlistDeleted, {
-            title: tv?.name,
+            title: data?.name,
             strong: (msg: React.ReactNode) => (
               <ThemedText className="font-bold">{msg}</ThemedText>
             ),

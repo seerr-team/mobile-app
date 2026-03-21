@@ -26,7 +26,6 @@ import useLocale from '@app/hooks/useLocale';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import { sortCrewPriority } from '@app/utils/creditHelpers';
-import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 import {
   // ArrowRightCircle,
   Cloud,
@@ -57,7 +56,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import uniqBy from 'lodash.uniqby';
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
@@ -65,11 +64,7 @@ import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.MovieDetails');
 
-interface MovieDetailsProps {
-  movie?: MovieDetailsType;
-}
-
-const MovieDetails = ({ movie }: MovieDetailsProps) => {
+const MovieDetails = () => {
   const serverUrl = useServerUrl();
   const settings = useSettings();
   const { user, hasPermission } = useUser();
@@ -83,9 +78,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   const [showMoreStudios, setShowMoreStudios] = useState(false);
   // const [showIssueModal, setShowIssueModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [toggleWatchlist, setToggleWatchlist] = useState<boolean>(
-    !movie?.onUserWatchlist
-  );
+  const [toggleWatchlist, setToggleWatchlist] = useState<boolean>(true);
   // const [isBlocklistUpdating, setIsBlocklistUpdating] =
   //   useState<boolean>(false);
   // const [showBlocklistModal, setShowBlocklistModal] = useState(false);
@@ -97,14 +90,14 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   } = useSWR<MovieDetailsType>(
     `${serverUrl}/api/v1/movie/${searchParams.movieId}`,
     {
-      fallbackData: movie,
-      refreshInterval: refreshIntervalHelper(
-        {
-          downloadStatus: movie?.mediaInfo?.downloadStatus,
-          downloadStatus4k: movie?.mediaInfo?.downloadStatus4k,
-        },
-        15000
-      ),
+      // fallbackData: movie,
+      // refreshInterval: refreshIntervalHelper(
+      //   {
+      //     downloadStatus: movie?.mediaInfo?.downloadStatus,
+      //     downloadStatus4k: movie?.mediaInfo?.downloadStatus4k,
+      //   },
+      //   15000
+      // ),
     }
   );
 
@@ -125,6 +118,10 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   //   () => setShowBlocklistModal(false),
   //   []
   // );
+
+  useEffect(() => {
+    setToggleWatchlist(!data?.onUserWatchlist);
+  }, [data?.onUserWatchlist]);
 
   const { mediaUrl: plexUrl, mediaUrl4k: plexUrl4k } = useDeepLinks({
     mediaUrl: data?.mediaInfo?.mediaUrl,
@@ -299,16 +296,16 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
 
     try {
       const response = await axios.post(serverUrl + '/api/v1/watchlist', {
-        tmdbId: movie?.id,
+        tmdbId: data?.id,
         mediaType: MediaType.MOVIE,
-        title: movie?.title,
+        title: data?.title,
       });
 
       if (response.data) {
         toast.success(
           <ThemedText>
             {intl.formatMessage(messages.watchlistSuccess, {
-              title: movie?.title,
+              title: data?.title,
               strong: (msg: React.ReactNode) => (
                 <ThemedText className="font-bold">{msg}</ThemedText>
               ),
@@ -317,7 +314,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
         );
       }
     } catch (e) {
-      console.error(e);
+      console.error('HERE', e);
       toast.error(intl.formatMessage(messages.watchlistError));
     }
 
@@ -329,13 +326,13 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     setIsUpdating(true);
     try {
       await axios.delete(
-        `${serverUrl}/api/v1/watchlist/${movie?.id}?mediaType=${MediaType.MOVIE}`
+        `${serverUrl}/api/v1/watchlist/${data?.id}?mediaType=${MediaType.MOVIE}`
       );
 
       toast(
         <ThemedText>
           {intl.formatMessage(messages.watchlistDeleted, {
-            title: movie?.title,
+            title: data?.title,
             strong: (msg: React.ReactNode) => (
               <ThemedText className="font-bold">{msg}</ThemedText>
             ),

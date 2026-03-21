@@ -12,7 +12,6 @@ import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
-import { refreshIntervalHelper } from '@app/utils/refreshIntervalHelper';
 import { ArrowDownTray } from '@nandorojo/heroicons/24/outline';
 import { MediaStatus } from '@server/constants/media';
 import type { Collection } from '@server/models/Collection';
@@ -26,11 +25,7 @@ import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.CollectionDetails');
 
-interface CollectionDetailsProps {
-  collection?: Collection;
-}
-
-const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
+const CollectionDetails = () => {
   const serverUrl = useServerUrl();
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
@@ -57,15 +52,15 @@ const CollectionDetails = ({ collection }: CollectionDetailsProps) => {
     error,
     mutate: revalidate,
   } = useSWR<Collection>(
-    `${serverUrl}/api/v1/collection/${searchParams.collectionId}`,
-    {
-      fallbackData: collection,
-      revalidateOnMount: true,
-      refreshInterval: refreshIntervalHelper(
-        returnCollectionDownloadItems(collection),
-        15000
-      ),
-    }
+    `${serverUrl}/api/v1/collection/${searchParams.collectionId}`
+    // {
+    //   fallbackData: collection,
+    //   revalidateOnMount: true,
+    //   refreshInterval: refreshIntervalHelper(
+    //     returnCollectionDownloadItems(collection),
+    //     15000
+    //   ),
+    // }
   );
 
   const { data: genres } = useSWR<{ id: number; name: string }[]>(
