@@ -14,8 +14,10 @@ import { MediaServerType } from '@server/constants/server';
 import { Image } from 'expo-image';
 import { Linking, Pressable, View } from 'react-native';
 
+type ExternalLinkType = 'movie' | 'tv' | 'person';
+
 interface ExternalLinkBlockProps {
-  mediaType: 'movie' | 'tv';
+  mediaType: ExternalLinkType;
   tmdbId?: number;
   tvdbId?: number;
   imdbId?: string;
@@ -93,12 +95,24 @@ const ExternalLinkBlock = ({
           />
         </Pressable>
       )}
-      {imdbId && (
+      {imdbId && mediaType !== 'person' && (
         <Pressable
           className="opacity-50 transition duration-300 hover:opacity-100"
           onPress={() =>
             Linking.openURL(`https://www.imdb.com/title/${imdbId}`)
           }
+        >
+          <Image
+            source={ImdbLogo}
+            contentFit="contain"
+            style={{ width: 32, height: 32 }}
+          />
+        </Pressable>
+      )}
+      {imdbId && mediaType === 'person' && (
+        <Pressable
+          className="opacity-50 transition duration-300 hover:opacity-100"
+          onPress={() => Linking.openURL(`https://www.imdb.com/name/${imdbId}`)}
         >
           <Image
             source={ImdbLogo}
@@ -119,7 +133,7 @@ const ExternalLinkBlock = ({
           />
         </Pressable>
       )}
-      {tmdbId && (
+      {tmdbId && mediaType !== 'person' && (
         <Pressable
           className="opacity-50 transition duration-300 hover:opacity-100"
           onPress={() =>

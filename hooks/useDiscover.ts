@@ -1,6 +1,10 @@
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
+import globalMessages from '@app/utils/globalMessages';
 import { MediaStatus } from '@server/constants/media';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast/headless';
+import { useIntl } from 'react-intl';
 import useSWRInfinite from 'swr/infinite';
 import { Permission, useUser } from './useUser';
 
@@ -60,6 +64,7 @@ const useDiscover = <
   const serverUrl = useServerUrl();
   const settings = useSettings();
   const { hasPermission } = useUser();
+  const intl = useIntl();
   const { data, error, size, setSize, isValidating, mutate } = useSWRInfinite<
     BaseSearchResult<T> & S
   >(
@@ -143,13 +148,20 @@ const useDiscover = <
     (!!data && (data[data?.length - 1]?.totalResults ?? 0) <= size * 20) ||
     (!!data && (data[data?.length - 1]?.totalResults ?? 0) < 41);
 
+  useEffect(() => {
+    if (error && titles.length) {
+      toast.error(intl.formatMessage(globalMessages.error));
+      console.error('Error while fetching discover titles:', error);
+    }
+  }, [data, error, intl, titles.length]);
+
   return {
     isLoadingInitialData,
     isLoadingMore,
     fetchMore,
     isEmpty,
     isReachingEnd,
-    error,
+    error: error && titles.length ? null : error,
     titles,
     firstResultData: data?.[0],
     mutate,

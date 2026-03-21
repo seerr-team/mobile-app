@@ -5,6 +5,7 @@ import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
+import { ExclamationTriangle } from '@nandorojo/heroicons/24/solid';
 import { ApiErrorCode } from '@server/constants/error';
 import { MediaServerType, ServerType } from '@server/constants/server';
 import axios from 'axios';
@@ -67,7 +68,7 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
               email: values.username,
             });
           } catch (e) {
-            let errorMessage = null;
+            let errorMessage = messages.loginerror;
             switch (e?.response?.data?.message) {
               case ApiErrorCode.InvalidUrl:
                 errorMessage = messages.invalidurlerror;
@@ -80,9 +81,6 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
                 break;
               case ApiErrorCode.NoAdminUser:
                 errorMessage = messages.noadminerror;
-                break;
-              default:
-                errorMessage = messages.loginerror;
                 break;
             }
             toast.error(
@@ -122,6 +120,16 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
                       autoCapitalize="none"
                     />
                   </View>
+                  {touched.username && values.username.match(/\s$/) && (
+                    <View className="warning label-tip flex flex-row items-center">
+                      <ExclamationTriangle color="#efb100" />
+                      <ThemedText className="ml-1 text-sm text-yellow-500">
+                        {intl.formatMessage(
+                          messages.tipUsernameHasTrailingWhitespace
+                        )}
+                      </ThemedText>
+                    </View>
+                  )}
                   {errors.username && touched.username && (
                     <ThemedText className="mt-1.5 text-red-500">
                       {errors.username}

@@ -356,7 +356,9 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
     setIsUpdating(true);
 
     try {
-      await axios.delete(serverUrl + '/api/v1/watchlist/' + tv?.id);
+      await axios.delete(
+        `${serverUrl}/api/v1/watchlist/${tv?.id}?mediaType=${MediaType.TV}`
+      );
 
       toast(
         <ThemedText>

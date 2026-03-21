@@ -4,6 +4,7 @@ import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
+import { ExclamationTriangle } from '@nandorojo/heroicons/24/solid';
 import { Formik } from 'formik';
 // import Link from 'next/link';
 import TextInput from '@app/components/Common/TextInput';
@@ -92,6 +93,16 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
                     )} / ${intl.formatMessage(messages.username)}`}
                   />
                 </View>
+                {touched.email && values.email.match(/\s$/) && (
+                  <View className="warning label-tip flex flex-row items-center">
+                    <ExclamationTriangle color="#efb100" />
+                    <ThemedText className="ml-1 text-sm text-yellow-500">
+                      {intl.formatMessage(
+                        messages.tipEmailHasTrailingWhitespace
+                      )}
+                    </ThemedText>
+                  </View>
+                )}
                 {errors.email &&
                   touched.email &&
                   typeof errors.email === 'string' && (

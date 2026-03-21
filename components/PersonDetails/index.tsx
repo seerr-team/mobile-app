@@ -3,6 +3,7 @@ import CachedImage from '@app/components/Common/CachedImage';
 // import ImageFader from '@app/components/Common/ImageFader';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import ErrorPage from '@app/components/ErrorPage';
+import ExternalLinkBlock from '@app/components/ExternalLinkBlock';
 import TitleCard from '@app/components/TitleCard';
 import type { PersonCombinedCreditsResponse } from '@server/interfaces/api/personInterfaces';
 import type { PersonDetails as PersonDetailsType } from '@server/models/Person';
@@ -255,6 +256,15 @@ const PersonDetails = () => {
           <ThemedText className="text-center text-3xl text-white lg:text-left lg:text-4xl">
             {data.name}
           </ThemedText>
+          <View className="flex w-full flex-row items-center justify-center lg:justify-between">
+            <View className="mb-3 mt-3">
+              <ExternalLinkBlock
+                mediaType="person"
+                tmdbId={data.id}
+                imdbId={data.imdbId}
+              />
+            </View>
+          </View>
           <View className="mb-2 mt-1 space-y-1 text-xs text-white sm:text-sm lg:text-base">
             <ThemedText className="text-center text-gray-300 lg:text-left">
               {personAttributes.join(' | ')}

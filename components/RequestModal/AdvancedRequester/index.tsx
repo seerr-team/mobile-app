@@ -413,54 +413,68 @@ const AdvancedRequester = ({
                         <Listbox.Options>
                           {!isValidating &&
                             serverData &&
-                            serverData.profiles.map((profile) => (
-                              <Listbox.Option
-                                key={`profile-list-${profile.id}`}
-                                value={profile.id}
-                              >
-                                {({ selected, active }) => (
-                                  <View
-                                    className={`${
-                                      active
-                                        ? 'bg-indigo-600 text-white'
-                                        : 'text-gray-300'
-                                    } relative cursor-default select-none py-2 pl-8 pr-4`}
-                                  >
-                                    <ThemedText
+                            serverData.profiles
+                              .toSorted((a, b) =>
+                                a.name.localeCompare(b.name, intl.locale, {
+                                  numeric: true,
+                                  sensitivity: 'base',
+                                })
+                              )
+                              .map((profile) => (
+                                <Listbox.Option
+                                  key={`profile-list-${profile.id}`}
+                                  value={profile.id}
+                                >
+                                  {({ selected, active }) => (
+                                    <View
                                       className={`${
-                                        selected ? 'font-medium' : 'font-normal'
-                                      } block truncate`}
+                                        active
+                                          ? 'bg-indigo-600 text-white'
+                                          : 'text-gray-300'
+                                      } relative cursor-default select-none py-2 pl-8 pr-4`}
                                     >
-                                      {isAnime &&
-                                      serverData.server.activeAnimeProfileId ===
-                                        profile.id
-                                        ? intl.formatMessage(messages.default, {
-                                            name: profile.name,
-                                          })
-                                        : !isAnime &&
-                                            serverData.server
-                                              .activeProfileId === profile.id
+                                      <ThemedText
+                                        className={`${
+                                          selected
+                                            ? 'font-medium'
+                                            : 'font-normal'
+                                        } block truncate`}
+                                      >
+                                        {isAnime &&
+                                        serverData.server
+                                          .activeAnimeProfileId === profile.id
                                           ? intl.formatMessage(
                                               messages.default,
                                               {
                                                 name: profile.name,
                                               }
                                             )
-                                          : profile.name}
-                                    </ThemedText>
-                                    {selected && (
-                                      <View className="absolute inset-y-0 left-0 flex flex-row items-center pl-1.5">
-                                        <Check
-                                          width={20}
-                                          height={20}
-                                          color={active ? '#ffffff' : '#4f46e5'}
-                                        />
-                                      </View>
-                                    )}
-                                  </View>
-                                )}
-                              </Listbox.Option>
-                            ))}
+                                          : !isAnime &&
+                                              serverData.server
+                                                .activeProfileId === profile.id
+                                            ? intl.formatMessage(
+                                                messages.default,
+                                                {
+                                                  name: profile.name,
+                                                }
+                                              )
+                                            : profile.name}
+                                      </ThemedText>
+                                      {selected && (
+                                        <View className="absolute inset-y-0 left-0 flex flex-row items-center pl-1.5">
+                                          <Check
+                                            width={20}
+                                            height={20}
+                                            color={
+                                              active ? '#ffffff' : '#4f46e5'
+                                            }
+                                          />
+                                        </View>
+                                      )}
+                                    </View>
+                                  )}
+                                </Listbox.Option>
+                              ))}
                         </Listbox.Options>
                       </View>
                     </>
