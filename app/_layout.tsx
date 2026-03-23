@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import enMessages from '@seerr/src/i18n/locale/en.json';
 import '@seerr/src/styles/globals.css';
 import { type AvailableLocale } from '@server/types/languages';
+import 'array.prototype.tosorted/auto';
 import axios from 'axios';
 import { useFonts } from 'expo-font';
 import { router, SplashScreen, Stack, usePathname } from 'expo-router';
