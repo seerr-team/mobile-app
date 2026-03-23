@@ -18,6 +18,7 @@ import { type AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
 import { useFonts } from 'expo-font';
 import { router, SplashScreen, Stack, usePathname } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import 'intl-pluralrules';
 import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
@@ -149,6 +150,7 @@ function RootLayout() {
 
   const appContent = (
     <View className="flex-1">
+      <StatusBar style="light" />
       {user && (
         <TVFocusGuideView
           autoFocus
