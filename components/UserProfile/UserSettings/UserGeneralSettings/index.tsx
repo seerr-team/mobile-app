@@ -20,11 +20,12 @@ import { ApiErrorCode } from '@server/constants/error';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import type { AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
+import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
-import { Linking, Pressable, Switch, View } from 'react-native';
+import { Linking, View } from 'react-native';
 import useSWR from 'swr';
 import validator from 'validator';
 import * as Yup from 'yup';
@@ -39,6 +40,9 @@ const UserGeneralSettings = () => {
   const { locale, setLocale } = useLocale();
   const [movieQuotaEnabled, setMovieQuotaEnabled] = useState(false);
   const [tvQuotaEnabled, setTvQuotaEnabled] = useState(false);
+  const [watchlistSyncMoviesFocused, setWatchlistSyncMoviesFocused] =
+    useState(false);
+  const [watchlistSyncTvFocused, setWatchlistSyncTvFocused] = useState(false);
   const {
     user,
     hasPermission,
@@ -539,7 +543,7 @@ const UserGeneralSettings = () => {
                 { type: 'or' }
               ) &&
                 user?.userType === UserType.PLEX && (
-                  <View className="form-row">
+                  <View className="form-row flex w-full flex-col gap-2 sm:flex-row">
                     <View className="checkbox-label">
                       <ThemedText className="mb-1 font-bold text-gray-400">
                         {intl.formatMessage(messages.plexwatchlistsyncmovies)}
@@ -551,28 +555,41 @@ const UserGeneralSettings = () => {
                             PlexWatchlistSupportLink: (
                               msg: React.ReactNode
                             ) => (
-                              <Pressable
+                              <ThemedText
+                                className="text-white transition duration-300 hover:underline"
                                 onPress={() => {
                                   Linking.openURL(
                                     'https://support.plex.tv/articles/universal-watchlist/'
                                   );
                                 }}
                               >
-                                <ThemedText className="text-white transition duration-300 hover:underline">
-                                  {msg}
-                                </ThemedText>
-                              </Pressable>
+                                {msg}
+                              </ThemedText>
                             ),
                           }
                         )}
                       </ThemedText>
                     </View>
-                    <View className="form-input-area w-full">
-                      <Switch
+                    <View className="form-input-area">
+                      <Checkbox
                         value={values.watchlistSyncMovies}
                         onValueChange={(value) => {
                           setFieldValue('watchlistSyncMovies', value);
                         }}
+                        onFocus={() => setWatchlistSyncMoviesFocused(true)}
+                        onBlur={() => setWatchlistSyncMoviesFocused(false)}
+                        style={
+                          watchlistSyncMoviesFocused
+                            ? { borderColor: '#4f46e5', borderWidth: 2 }
+                            : {}
+                        }
+                        color={
+                          watchlistSyncMoviesFocused
+                            ? '#6366f1'
+                            : values.watchlistSyncMovies
+                              ? '#4f46e5'
+                              : '#ffffff'
+                        }
                       />
                     </View>
                   </View>
@@ -594,28 +611,41 @@ const UserGeneralSettings = () => {
                             PlexWatchlistSupportLink: (
                               msg: React.ReactNode
                             ) => (
-                              <Pressable
+                              <ThemedText
+                                className="text-white transition duration-300 hover:underline"
                                 onPress={() => {
                                   Linking.openURL(
                                     'https://support.plex.tv/articles/universal-watchlist/'
                                   );
                                 }}
                               >
-                                <ThemedText className="text-white transition duration-300 hover:underline">
-                                  {msg}
-                                </ThemedText>
-                              </Pressable>
+                                {msg}
+                              </ThemedText>
                             ),
                           }
                         )}
                       </ThemedText>
                     </View>
                     <View className="form-input-area w-full">
-                      <Switch
+                      <Checkbox
                         value={values.watchlistSyncTv}
                         onValueChange={(value) => {
                           setFieldValue('watchlistSyncTv', value);
                         }}
+                        onFocus={() => setWatchlistSyncTvFocused(true)}
+                        onBlur={() => setWatchlistSyncTvFocused(false)}
+                        style={
+                          watchlistSyncTvFocused
+                            ? { borderColor: '#4f46e5', borderWidth: 2 }
+                            : {}
+                        }
+                        color={
+                          watchlistSyncTvFocused
+                            ? '#6366f1'
+                            : values.watchlistSyncTv
+                              ? '#4f46e5'
+                              : '#ffffff'
+                        }
                       />
                     </View>
                   </View>

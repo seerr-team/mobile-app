@@ -51,16 +51,14 @@ export default function SimpleSelect<T>({
       selectedTextStyle={{
         color: '#ffffff',
         fontSize: 12,
-        height: 36,
         marginLeft: 12,
-        lineHeight: 33,
+        lineHeight: 32,
       }}
       placeholderStyle={{
         color: '#6b7280',
         fontSize: 12,
-        height: 36,
         marginLeft: 12,
-        lineHeight: 33,
+        lineHeight: 32,
       }}
       renderItem={
         renderItem

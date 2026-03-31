@@ -1,7 +1,7 @@
 import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
-import { XMark } from '@nandorojo/heroicons/24/outline';
+import { ChevronDown, XMark } from '@nandorojo/heroicons/24/outline';
 import type { Language } from '@server/lib/settings';
 import { sortBy } from 'lodash';
 import { useMemo } from 'react';
@@ -135,20 +135,16 @@ const LanguageSelector = ({
         );
       }}
       disable={isDisabled}
+      renderRightIcon={() => (
+        <ChevronDown color="#6b7280" width={20} height={20} />
+      )}
       style={{
         backgroundColor: '#374151',
         borderWidth: 1,
         borderRadius: 6,
         borderColor: '#6b7280',
-        paddingLeft: 12,
         paddingRight: 8,
-        paddingVertical: 4,
-        height: 36,
         marginBottom: 4,
-      }}
-      placeholderStyle={{
-        color: '#9ca3af',
-        fontSize: 14,
       }}
       containerStyle={{
         marginTop: 4,
@@ -161,17 +157,21 @@ const LanguageSelector = ({
       selectedTextStyle={{
         color: '#ffffff',
         fontSize: 12,
-        height: 36,
         marginLeft: 12,
-        lineHeight: 33,
+        lineHeight: 32,
+      }}
+      placeholderStyle={{
+        color: '#6b7280',
+        fontSize: 12,
+        marginLeft: 12,
+        lineHeight: 32,
       }}
       renderItem={(item) => (
-        <View className="flex flex-row items-center gap-2 p-2">
-          {/* <View className="w-6">
-            {value.includes(Number(item.value)) && (
-              <Check color="#4ade80" width={20} height={20} />
-            )}
-          </View> */}
+        <View
+          style={{
+            padding: 8,
+          }}
+        >
           <ThemedText>{item.label}</ThemedText>
         </View>
       )}

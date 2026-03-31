@@ -49,7 +49,7 @@ const PlexLoginButton = ({
                 style={{
                   width: 32,
                   height: 20,
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                   marginTop: 2,
                 }}
               />

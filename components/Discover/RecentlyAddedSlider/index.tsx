@@ -5,12 +5,10 @@ import useServerUrl from '@app/hooks/useServerUrl';
 import { Permission, useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { VisibilitySensor } from '@futurejj/react-native-visibility-sensor';
-import { ArrowRightCircle } from '@nandorojo/heroicons/24/outline';
 import type { MediaResultsResponse } from '@server/interfaces/api/mediaInterfaces';
-import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.Discover.RecentlyAddedSlider');
@@ -58,16 +56,12 @@ const RecentlyAddedSlider = ({ lastRefresh }: RecentlyAddedSliderProps) => {
   return (
     <VisibilitySensor onChange={setIsVisible}>
       <View className="mb-4 mt-6 px-4">
-        <Link href="/requests?filter=all" asChild>
-          <Pressable className="group">
-            <View className="flex min-w-0 flex-row items-center gap-2">
-              <ThemedText className="truncate text-2xl font-bold text-white group-focus:text-gray-400">
-                {intl.formatMessage(messages.recentlyAdded)}
-              </ThemedText>
-              <ArrowRightCircle color="#ffffff" />
-            </View>
-          </Pressable>
-        </Link>
+        <View className="flex min-w-0 flex-row items-center gap-2">
+          <ThemedText className="truncate text-2xl font-bold text-white group-focus:text-gray-400">
+            {intl.formatMessage(messages.recentlyAdded)}
+          </ThemedText>
+          {/* <ArrowRightCircle color="#ffffff" /> */}
+        </View>
       </View>
       <Slider
         sliderKey="media"

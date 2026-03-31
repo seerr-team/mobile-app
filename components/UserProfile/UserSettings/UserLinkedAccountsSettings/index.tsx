@@ -218,13 +218,11 @@ const UserLinkedAccountsSettings = () => {
             >
               <View className="w-12">
                 {acct.type === LinkedAccountType.Plex ? (
-                  <View className="flex aspect-square h-full flex-row items-center justify-center rounded-full bg-neutral-800">
-                    <Image
-                      source={PlexLogo}
-                      contentFit="contain"
-                      style={{ width: 48, height: 48 }}
-                    />
-                  </View>
+                  <Image
+                    source={PlexLogo}
+                    contentFit="contain"
+                    style={{ width: 48, height: 48 }}
+                  />
                 ) : acct.type === LinkedAccountType.Emby ? (
                   <Image
                     source={EmbyLogo}
