@@ -17,10 +17,13 @@ import type {
 import type { UserResultsResponse } from '@server/interfaces/api/userInterfaces';
 import { hasPermission } from '@server/lib/permissions';
 import { isEqual } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
-import { MultiSelect } from 'react-native-element-dropdown';
+import { Pressable, View } from 'react-native';
+import {
+  type IMultiSelectRef,
+  MultiSelect,
+} from 'react-native-element-dropdown';
 import useSWR from 'swr';
 
 const messages = getSeerrMessages('components.RequestModal.AdvancedRequester');
@@ -82,6 +85,9 @@ const AdvancedRequester = ({
   const [selectedTags, setSelectedTags] = useState<number[]>(
     defaultOverrides?.tags ?? []
   );
+
+  const [isTagFocused, setIsTagFocused] = useState(false);
+  const tagDropdownRef = useRef<IMultiSelectRef>(null);
 
   const { data: serverData, isValidating } =
     useSWR<ServiceCommonServerWithDetails>(
@@ -759,81 +765,89 @@ const AdvancedRequester = ({
               <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
                 {intl.formatMessage(messages.tags)}
               </ThemedText>
-              <MultiSelect
-                data={(serverData?.tags ?? []).map((tag) => ({
-                  label: tag.label,
-                  value: tag.id.toString(),
-                }))}
-                disable={isValidating || !serverData}
-                placeholder={
-                  isValidating || !serverData
-                    ? intl.formatMessage(globalMessages.loading)
-                    : intl.formatMessage(messages.selecttags)
-                }
-                value={selectedTags
-                  .map((tagId) => {
-                    const foundTag = serverData?.tags.find(
-                      (tag) => tag.id === tagId
-                    );
+              <Pressable
+                onFocus={() => setIsTagFocused(true)}
+                onBlur={() => setIsTagFocused(false)}
+                focusable
+                onPress={() => tagDropdownRef.current?.open()}
+              >
+                <MultiSelect
+                  ref={tagDropdownRef}
+                  data={(serverData?.tags ?? []).map((tag) => ({
+                    label: tag.label,
+                    value: tag.id.toString(),
+                  }))}
+                  disable={isValidating || !serverData}
+                  placeholder={
+                    isValidating || !serverData
+                      ? intl.formatMessage(globalMessages.loading)
+                      : intl.formatMessage(messages.selecttags)
+                  }
+                  value={selectedTags
+                    .map((tagId) => {
+                      const foundTag = serverData?.tags.find(
+                        (tag) => tag.id === tagId
+                      );
 
-                    if (!foundTag) {
-                      return undefined;
-                    }
+                      if (!foundTag) {
+                        return undefined;
+                      }
 
-                    return foundTag.id.toString();
-                  })
-                  .filter((option) => option !== undefined)}
-                onChange={(values) => {
-                  setSelectedTags(values.map((v) => Number(v)));
-                }}
-                searchPlaceholder={intl.formatMessage(messages.notagoptions)}
-                labelField="label"
-                valueField="value"
-                renderRightIcon={() => (
-                  <ChevronDown color="#6b7280" width={20} height={20} />
-                )}
-                style={{
-                  backgroundColor: '#1f2937',
-                  borderWidth: 1,
-                  borderRadius: 6,
-                  borderColor: '#374151',
-                  paddingLeft: 12,
-                  paddingRight: 8,
-                  paddingVertical: 4,
-                  height: 40,
-                }}
-                placeholderStyle={{
-                  color: '#9ca3af',
-                  fontSize: 14,
-                }}
-                containerStyle={{
-                  marginTop: 24,
-                  backgroundColor: '#1f2937',
-                  borderWidth: 1,
-                  borderRadius: 6,
-                  borderColor: '#374151',
-                }}
-                activeColor=""
-                itemContainerStyle={{}}
-                itemTextStyle={{}}
-                selectedStyle={{
-                  borderRadius: 6,
-                  padding: 2,
-                }}
-                selectedTextStyle={{
-                  color: '#ffffff',
-                }}
-                renderItem={(item) => (
-                  <View className="flex flex-row items-center gap-2 p-2">
-                    <View className="w-6">
-                      {selectedTags.includes(Number(item.value)) && (
-                        <Check color="#4ade80" width={20} height={20} />
-                      )}
+                      return foundTag.id.toString();
+                    })
+                    .filter((option) => option !== undefined)}
+                  onChange={(values) => {
+                    setSelectedTags(values.map((v) => Number(v)));
+                  }}
+                  searchPlaceholder={intl.formatMessage(messages.notagoptions)}
+                  labelField="label"
+                  valueField="value"
+                  renderRightIcon={() => (
+                    <ChevronDown color="#6b7280" width={20} height={20} />
+                  )}
+                  style={{
+                    backgroundColor: '#1f2937',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderColor: isTagFocused ? '#93c5fd' : '#374151',
+                    paddingLeft: 12,
+                    paddingRight: 8,
+                    paddingVertical: 4,
+                    height: 40,
+                  }}
+                  placeholderStyle={{
+                    color: '#9ca3af',
+                    fontSize: 14,
+                  }}
+                  containerStyle={{
+                    marginTop: 24,
+                    backgroundColor: '#1f2937',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderColor: isTagFocused ? '#93c5fd' : '#374151',
+                  }}
+                  activeColor=""
+                  itemContainerStyle={{}}
+                  itemTextStyle={{}}
+                  selectedStyle={{
+                    borderRadius: 6,
+                    padding: 2,
+                  }}
+                  selectedTextStyle={{
+                    color: '#ffffff',
+                  }}
+                  renderItem={(item) => (
+                    <View className="flex flex-row items-center gap-2 p-2">
+                      <View className="w-6">
+                        {selectedTags.includes(Number(item.value)) && (
+                          <Check color="#4ade80" width={20} height={20} />
+                        )}
+                      </View>
+                      <ThemedText>{item.label}</ThemedText>
                     </View>
-                    <ThemedText>{item.label}</ThemedText>
-                  </View>
-                )}
-              />
+                  )}
+                />
+              </Pressable>
             </View>
           )}
         {currentHasPermission([

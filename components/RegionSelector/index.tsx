@@ -6,10 +6,10 @@ import { ChevronDown } from '@nandorojo/heroicons/24/solid';
 import type { Region } from '@server/lib/settings';
 import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { sortBy } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import { Pressable, View } from 'react-native';
+import { Dropdown, type IDropdownRef } from 'react-native-element-dropdown';
 import useSWR from 'swr';
 import ThemedText from '../Common/ThemedText';
 
@@ -43,6 +43,8 @@ const RegionSelector = ({
       : `${serverUrl}/api/v1/regions`
   );
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const dropdownRef = useRef<IDropdownRef>(null);
 
   const allRegion: Region = useMemo(
     () => ({
@@ -99,108 +101,116 @@ const RegionSelector = ({
   }, [onChange, selectedRegion, name, regions]);
 
   return (
-    <Dropdown
-      data={
-        // isUserSetting && !disableAll
-        //   ? [allRegion, ...(sortedRegions ?? [])]
-        //   : sortedRegions
-        [
-          ...(isUserSetting
-            ? [
-                {
-                  label: intl.formatMessage(messages.regionServerDefault, {
-                    region: regionValue
-                      ? regionName(regionValue)
-                      : intl.formatMessage(messages.regionDefault),
-                  }),
-                  value: null,
-                },
-              ]
-            : []),
-          ...(!disableAll
-            ? [
-                {
-                  label: intl.formatMessage(messages.regionDefault),
-                  value: isUserSetting ? 'all' : null,
-                },
-              ]
-            : []),
-          ...sortedRegions.map((region) => ({
-            label: region.name,
-            value: region.iso_3166_1,
-          })),
-        ].map((item) => ({
-          ...item,
-          label: item.value
-            ? `${getUnicodeFlagIcon(item.value)} ${item.label}`
-            : item.value !== 'all' && regionValue
-              ? `${getUnicodeFlagIcon(regionValue)} ${item.label}`
-              : `${item.label}`,
-        }))
-      }
-      value={value}
-      onChange={(item) => {
-        console.log('Selected item:', item);
-        if (item.value === 'all') {
-          setSelectedRegion(allRegion);
-        } else {
-          const matchedRegion = regions?.find(
-            (region) => region.iso_3166_1 === item.value
-          );
-          setSelectedRegion(matchedRegion ?? null);
+    <Pressable
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onPress={() => dropdownRef.current?.open()}
+      focusable
+    >
+      <Dropdown
+        ref={dropdownRef}
+        data={
+          // isUserSetting && !disableAll
+          //   ? [allRegion, ...(sortedRegions ?? [])]
+          //   : sortedRegions
+          [
+            ...(isUserSetting
+              ? [
+                  {
+                    label: intl.formatMessage(messages.regionServerDefault, {
+                      region: regionValue
+                        ? regionName(regionValue)
+                        : intl.formatMessage(messages.regionDefault),
+                    }),
+                    value: null,
+                  },
+                ]
+              : []),
+            ...(!disableAll
+              ? [
+                  {
+                    label: intl.formatMessage(messages.regionDefault),
+                    value: isUserSetting ? 'all' : null,
+                  },
+                ]
+              : []),
+            ...sortedRegions.map((region) => ({
+              label: region.name,
+              value: region.iso_3166_1,
+            })),
+          ].map((item) => ({
+            ...item,
+            label: item.value
+              ? `${getUnicodeFlagIcon(item.value)} ${item.label}`
+              : item.value !== 'all' && regionValue
+                ? `${getUnicodeFlagIcon(regionValue)} ${item.label}`
+                : `${item.label}`,
+          }))
         }
-      }}
-      labelField="label"
-      valueField="value"
-      autoScroll={false}
-      renderRightIcon={() => (
-        <ChevronDown color="#6b7280" width={20} height={20} />
-      )}
-      style={{
-        backgroundColor: '#374151',
-        borderWidth: 1,
-        borderRadius: 6,
-        borderColor: '#6b7280',
-        paddingRight: 8,
-      }}
-      containerStyle={{
-        marginTop: 4,
-        backgroundColor: '#1f2937',
-        borderWidth: 1,
-        borderRadius: 6,
-        borderColor: '#374151',
-      }}
-      activeColor="#4f46e5"
-      selectedTextStyle={{
-        color: '#ffffff',
-        fontSize: 12,
-        marginLeft: 12,
-        lineHeight: 32,
-      }}
-      placeholderStyle={{
-        color: '#6b7280',
-        fontSize: 12,
-        marginLeft: 12,
-        lineHeight: 32,
-      }}
-      renderItem={(item) => (
-        <View
-          style={{
-            padding: 8,
-          }}
-        >
-          <ThemedText>{item.label}</ThemedText>
-        </View>
-      )}
-      placeholder={
-        (regionValue ? getUnicodeFlagIcon(regionValue) + ' ' : '') +
-        intl.formatMessage(messages.regionServerDefault, {
-          region: regionValue
-            ? regionName(regionValue)
-            : intl.formatMessage(messages.regionDefault),
-        })
-      }
-    />
+        value={value}
+        onChange={(item) => {
+          console.log('Selected item:', item);
+          if (item.value === 'all') {
+            setSelectedRegion(allRegion);
+          } else {
+            const matchedRegion = regions?.find(
+              (region) => region.iso_3166_1 === item.value
+            );
+            setSelectedRegion(matchedRegion ?? null);
+          }
+        }}
+        labelField="label"
+        valueField="value"
+        autoScroll={false}
+        renderRightIcon={() => (
+          <ChevronDown color="#6b7280" width={20} height={20} />
+        )}
+        style={{
+          backgroundColor: '#374151',
+          borderWidth: 1,
+          borderRadius: 6,
+          borderColor: isFocused ? '#3b82f6' : '#6b7280',
+          paddingRight: 8,
+        }}
+        containerStyle={{
+          marginTop: 4,
+          backgroundColor: '#1f2937',
+          borderWidth: 1,
+          borderRadius: 6,
+          borderColor: isFocused ? '#3b82f6' : '#6b7280',
+        }}
+        activeColor="#4f46e5"
+        selectedTextStyle={{
+          color: '#ffffff',
+          fontSize: 12,
+          marginLeft: 12,
+          lineHeight: 32,
+        }}
+        placeholderStyle={{
+          color: '#6b7280',
+          fontSize: 12,
+          marginLeft: 12,
+          lineHeight: 32,
+        }}
+        renderItem={(item) => (
+          <View
+            style={{
+              padding: 8,
+            }}
+          >
+            <ThemedText>{item.label}</ThemedText>
+          </View>
+        )}
+        placeholder={
+          (regionValue ? getUnicodeFlagIcon(regionValue) + ' ' : '') +
+          intl.formatMessage(messages.regionServerDefault, {
+            region: regionValue
+              ? regionName(regionValue)
+              : intl.formatMessage(messages.regionDefault),
+          })
+        }
+      />
+    </Pressable>
   );
 };
 

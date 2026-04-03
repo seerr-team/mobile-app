@@ -1,7 +1,8 @@
 import ThemedText from '@app/components/Common/ThemedText';
 import { ChevronDown } from '@nandorojo/heroicons/24/solid';
-import { View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import { useRef, useState } from 'react';
+import { Pressable, View } from 'react-native';
+import { Dropdown, type IDropdownRef } from 'react-native-element-dropdown';
 
 export interface SimpleSelectProps<T = { label: string; value: string }> {
   data: T[];
@@ -20,59 +21,69 @@ export default function SimpleSelect<T>({
   renderItem,
   disabled,
 }: SimpleSelectProps<T>) {
+  const [isFocused, setIsFocused] = useState(false);
+  const dropdownRef = useRef<IDropdownRef>(null);
   return (
-    <Dropdown
-      data={data}
-      value={value}
-      onChange={onChange}
-      disable={disabled}
-      placeholder={placeholder}
-      labelField="label"
-      valueField="value"
-      autoScroll={false}
-      renderRightIcon={() => (
-        <ChevronDown color="#6b7280" width={20} height={20} />
-      )}
-      style={{
-        backgroundColor: '#374151',
-        borderWidth: 1,
-        borderRadius: 6,
-        borderColor: '#6b7280',
-        paddingRight: 8,
-      }}
-      containerStyle={{
-        marginTop: 4,
-        backgroundColor: '#1f2937',
-        borderWidth: 1,
-        borderRadius: 6,
-        borderColor: '#6b7280',
-      }}
-      activeColor="#4f46e5"
-      selectedTextStyle={{
-        color: '#ffffff',
-        fontSize: 12,
-        marginLeft: 12,
-        lineHeight: 32,
-      }}
-      placeholderStyle={{
-        color: '#6b7280',
-        fontSize: 12,
-        marginLeft: 12,
-        lineHeight: 32,
-      }}
-      renderItem={
-        renderItem
-          ? renderItem
-          : (item) => (
-              <View
-                style={{
-                  padding: 8,
-                }}
-              >
-                <ThemedText>{item.label}</ThemedText>
-              </View>
-            )
-      }
-    />
+    <Pressable
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onPress={() => dropdownRef.current?.open()}
+      focusable
+    >
+      <Dropdown
+        ref={dropdownRef}
+        data={data}
+        value={value}
+        onChange={onChange}
+        disable={disabled}
+        placeholder={placeholder}
+        labelField="label"
+        valueField="value"
+        autoScroll={false}
+        renderRightIcon={() => (
+          <ChevronDown color="#6b7280" width={20} height={20} />
+        )}
+        style={{
+          backgroundColor: '#374151',
+          borderWidth: 1,
+          borderRadius: 6,
+          borderColor: isFocused ? '#3b82f6' : '#6b7280',
+          paddingRight: 8,
+        }}
+        containerStyle={{
+          marginTop: 4,
+          backgroundColor: '#1f2937',
+          borderWidth: 1,
+          borderRadius: 6,
+          borderColor: isFocused ? '#3b82f6' : '#6b7280',
+        }}
+        activeColor="#4f46e5"
+        selectedTextStyle={{
+          color: '#ffffff',
+          fontSize: 12,
+          marginLeft: 12,
+          lineHeight: 32,
+        }}
+        placeholderStyle={{
+          color: '#6b7280',
+          fontSize: 12,
+          marginLeft: 12,
+          lineHeight: 32,
+        }}
+        renderItem={
+          renderItem
+            ? renderItem
+            : (item) => (
+                <View
+                  style={{
+                    padding: 8,
+                  }}
+                >
+                  <ThemedText>{item.label}</ThemedText>
+                </View>
+              )
+        }
+      />
+    </Pressable>
   );
 }

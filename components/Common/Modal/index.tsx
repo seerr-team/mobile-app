@@ -8,7 +8,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import type { MouseEvent } from 'react';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Pressable, Modal as RNModal, ScrollView, View } from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  Modal as RNModal,
+  ScrollView,
+  TVFocusGuideView,
+  View,
+} from 'react-native';
 
 interface ModalProps {
   show: boolean;
@@ -84,7 +91,10 @@ const Modal = ({
               className="absolute inset-0 h-screen w-screen bg-gray-800/70"
               onPress={() => backgroundClickable && onCancel && onCancel()}
             />
-            <View className="hide-scrollbar relative inline-block w-full scale-100 overflow-auto border border-gray-700 bg-gray-800 pb-4 pt-4 text-left opacity-100 transition-all sm:my-8 sm:max-w-3xl sm:rounded-lg">
+            <TVFocusGuideView
+              autoFocus
+              className="hide-scrollbar relative inline-block w-full scale-100 overflow-hidden border border-gray-700 bg-gray-800 pb-4 pt-4 text-left opacity-100 transition-all sm:my-8 sm:max-w-3xl sm:rounded-lg"
+            >
               {backdrop && (
                 <View className="absolute left-0 right-0 top-0 z-0 h-64 max-h-full w-full">
                   <CachedImage
@@ -95,6 +105,8 @@ const Modal = ({
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
+                      borderRadius:
+                        Dimensions.get('window').width > 640 ? 6 : 0,
                     }}
                   />
                   <LinearGradient
@@ -184,7 +196,7 @@ const Modal = ({
                   )}
                 </View>
               )}
-            </View>
+            </TVFocusGuideView>
           </ScrollView>
         </View>
       </RNModal>
