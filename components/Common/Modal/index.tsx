@@ -88,8 +88,9 @@ const Modal = ({
           >
             <Pressable
               android_disableSound
-              className="absolute inset-0 h-screen w-screen bg-gray-800/70"
+              className="absolute inset-0 h-full w-screen bg-gray-800/70"
               onPress={() => backgroundClickable && onCancel && onCancel()}
+              focusable={false}
             />
             <TVFocusGuideView
               autoFocus
@@ -157,6 +158,7 @@ const Modal = ({
                       className="ml-3"
                       disabled={okDisabled}
                       data-testid="modal-ok-button"
+                      pressableProps={{ hasTVPreferredFocus: true }}
                     >
                       {okText ? okText : 'Ok'}
                     </Button>
@@ -168,6 +170,7 @@ const Modal = ({
                       className="ml-3"
                       disabled={secondaryDisabled}
                       data-testid="modal-secondary-button"
+                      pressableProps={{ hasTVPreferredFocus: !onOk }}
                     >
                       {secondaryText}
                     </Button>
@@ -178,6 +181,9 @@ const Modal = ({
                       onClick={onTertiary}
                       className="ml-3"
                       disabled={tertiaryDisabled}
+                      pressableProps={{
+                        hasTVPreferredFocus: !onOk && !onSecondary,
+                      }}
                     >
                       {tertiaryText}
                     </Button>
@@ -188,6 +194,10 @@ const Modal = ({
                       onClick={onCancel}
                       className="ml-3 sm:ml-0"
                       data-testid="modal-cancel-button"
+                      pressableProps={{
+                        hasTVPreferredFocus:
+                          !onOk && !onSecondary && !onTertiary,
+                      }}
                     >
                       {cancelText
                         ? cancelText

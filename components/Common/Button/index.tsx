@@ -6,6 +6,7 @@ export type ButtonProps = TextProps & {
   onClick: () => void;
   forceClassName?: string;
   buttonType?: ButtonType;
+  pressableProps?: React.ComponentProps<typeof Pressable>;
 };
 
 export default function Button({
@@ -15,6 +16,7 @@ export default function Button({
   forceClassName,
   children,
   buttonType = 'primary',
+  pressableProps,
   ...rest
 }: ButtonProps) {
   const baseClassName =
@@ -38,6 +40,7 @@ export default function Button({
       onPress={onClick}
       className={buttonClassName}
       disabled={disabled}
+      {...pressableProps}
     >
       {typeof children === 'string' ? (
         <Text
