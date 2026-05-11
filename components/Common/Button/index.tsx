@@ -20,7 +20,7 @@ export default function Button({
   ...rest
 }: ButtonProps) {
   const baseClassName =
-    'self-start whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out disabled:opacity-50';
+    'self-start whitespace-nowrap rounded-md px-4 py-2 text-sm leading-5 transition duration-150 ease-in-out disabled:opacity-50';
   const typeClassNames = {
     primary:
       'border border-indigo-500 bg-indigo-600/80 text-white hover:border-indigo-500 hover:bg-indigo-600/100 focus:border-indigo-200 focus:ring-indigo focus:outline-none active:border-indigo-700 active:bg-opacity-100',
@@ -35,6 +35,15 @@ export default function Button({
     forceClassName ||
     `${baseClassName} ${typeClassNames[buttonType]} ${className}`;
 
+  const hasTextWeightClass = className
+    ?.trim()
+    .split(/\s+/g)
+    .some((c) =>
+      c.match(
+        /^(\S+:)?font-(thin|extralight|light|normal|medium|semibold|bold|extrabold|black)/
+      )
+    );
+
   return (
     <Pressable
       onPress={onClick}
@@ -44,6 +53,10 @@ export default function Button({
     >
       {typeof children === 'string' ? (
         <Text
+          style={[
+            hasTextWeightClass ? {} : { fontWeight: 'normal' },
+            rest.style,
+          ]}
           className="inline-flex items-center justify-center text-white"
           {...rest}
         >

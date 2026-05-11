@@ -164,18 +164,21 @@ const CollectionDetails = () => {
           <Link
             href={`/discover/movies/genre/${genreId}`}
             key={`genre-${genreId}`}
-            className="hover:underline"
+            className="text-center text-gray-300 hover:underline focus:underline"
           >
             {genres.find((g) => g.id === genreId)?.name}
           </Link>
         ))
         .reduce((prev, curr) => (
-          <>
+          <ThemedText
+            className="text-center text-gray-300"
+            key={`genre-separator-${prev}-${curr}`}
+          >
             {intl.formatMessage(globalMessages.delimitedlist, {
               a: prev,
               b: curr,
             })}
-          </>
+          </ThemedText>
         ))
     );
   }
@@ -271,7 +274,7 @@ const CollectionDetails = () => {
           <ThemedText className="mt-2 text-center text-3xl xl:text-left">
             {data.name}
           </ThemedText>
-          <View className="flex flex-row items-center justify-center xl:justify-start">
+          <View className="flex flex-row flex-wrap items-center justify-center xl:justify-start">
             {collectionAttributes.length > 0 &&
               collectionAttributes
                 .map((t, k) => <ThemedText key={k}>{t}</ThemedText>)

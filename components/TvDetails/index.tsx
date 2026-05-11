@@ -224,14 +224,14 @@ const TvDetails = () => {
           <Link
             href={`/discover_tv?genre=${g.id}`}
             key={`genre-${g.id}`}
-            className="text-gray-300 hover:underline"
+            className="text-center text-gray-300 hover:underline focus:underline"
           >
             {g.name}
           </Link>
         ))
         .reduce((prev, curr) => (
           <ThemedText
-            className="text-gray-300"
+            className="text-center text-gray-300"
             key={`genre-separator-${prev}-${curr}`}
           >
             {intl.formatMessage(globalMessages.delimitedlist, {
@@ -505,7 +505,7 @@ const TvDetails = () => {
               </ThemedText>
             )}
           </ThemedText>
-          <View className="flex flex-row items-center justify-center xl:justify-start">
+          <View className="flex flex-row flex-wrap items-center justify-center xl:justify-start">
             {seriesAttributes.length > 0 &&
               seriesAttributes.reduce((prev, curr) => (
                 <Fragment key={`series-attributes-separator-${prev}-${curr}`}>

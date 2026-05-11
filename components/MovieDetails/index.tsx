@@ -238,14 +238,14 @@ const MovieDetails = () => {
           <Link
             href={`/discover_movies?genre=${g.id}`}
             key={`genre-${g.id}`}
-            className="text-gray-300 hover:underline focus:underline"
+            className="text-center text-gray-300 hover:underline focus:underline"
           >
             {g.name}
           </Link>
         ))
         .reduce((prev, curr) => (
           <ThemedText
-            className="text-gray-300"
+            className="text-center text-gray-300"
             key={`genre-separator-${prev}-${curr}`}
           >
             {intl.formatMessage(globalMessages.delimitedlist, {
@@ -517,7 +517,7 @@ const MovieDetails = () => {
               </ThemedText>
             )}
           </ThemedText>
-          <View className="flex flex-row items-center justify-center xl:justify-start">
+          <View className="flex flex-row flex-wrap items-center justify-center xl:justify-start">
             {movieAttributes.length > 0 &&
               movieAttributes.reduce((prev, curr) => (
                 <Fragment key={`movie-attributes-${prev}-${curr}`}>
