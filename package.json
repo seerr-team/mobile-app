@@ -82,7 +82,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.29.6",
     "@types/lodash.uniqby": "^4.7.9",
     "@types/react": "~19.1.10",
     "eslint": "^9.39.2",
