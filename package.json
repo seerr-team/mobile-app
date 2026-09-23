@@ -12,7 +12,8 @@
     "lint": "expo lint",
     "format": "prettier --loglevel warn --write --cache .",
     "format:check": "prettier --check --cache .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "seerr:changes": "node bin/seerr-changes.mjs"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

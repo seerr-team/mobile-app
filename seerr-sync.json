@@ -1,0 +1,57 @@
+{
+  "branch": "develop",
+  "locale": "src/i18n/locale/en.json",
+  "mirrors": {
+    "components": "src/components",
+    "hooks": "src/hooks",
+    "utils": "src/utils",
+    "context": "src/context",
+    "store": "src/store",
+    "app": "src/pages"
+  },
+  "map": {
+    "utils/globalMessages.ts": "src/i18n/globalMessages.ts",
+    "components/SearchInput/index.tsx": "src/components/Layout/SearchInput",
+    "components/Layout/BottomNavigation/index.tsx": "src/components/Layout/MobileMenu",
+    "app/discover_movies.tsx": "src/pages/discover/movies",
+    "app/discover_tv.tsx": "src/pages/discover/tv",
+    "app/discover_trending.tsx": "src/pages/discover/trending.tsx",
+    "app/discover_watchlist.tsx": "src/pages/discover/watchlist.tsx",
+    "app/discover_movies/studio/[studioId].tsx": "src/pages/discover/movies/studio/[studioId].tsx",
+    "app/discover_tv/network/[networkId].tsx": "src/pages/discover/tv/network/[networkId].tsx",
+    "app/login.tsx": "src/pages/login",
+    "app/requests.tsx": "src/pages/requests",
+    "app/profile/settings.tsx": "src/pages/profile/settings",
+    "app/_layout.tsx": "src/pages/_app.tsx",
+    "app/+not-found.tsx": "src/pages/404.tsx",
+    "components/ErrorPage/index.tsx": "src/pages/_error.tsx",
+    "components/Common/TextInput/index.tsx": "src/styles/globals.css",
+    "components/Common/SimpleSelect/index.tsx": "src/styles/globals.css",
+    "utils/getSeerrMessages.ts": "src/utils/defineMessages.ts",
+    "utils/serverSettings.ts": "src/pages/_app.tsx",
+    "utils/interceptCsrfToken.ts": "server/index.ts",
+    "store/serverSettingsSlice.ts": "src/context/SettingsContext.tsx"
+  },
+  "mobileOnly": [
+    "components/Common/Disclosure/index.tsx",
+    "components/Common/FormattedRelativeTime/index.tsx",
+    "components/Common/Listbox/index.tsx",
+    "components/Common/ThemedText/index.tsx",
+    "components/ToastContainer/index.tsx",
+    "hooks/useOrientation.ts",
+    "hooks/useServerUrl.ts",
+    "store/appSettingsSlice.ts",
+    "store/index.ts",
+    "utils/withAfterInteractions.tsx"
+  ],
+  "ignore": [
+    "src/i18n/locale/**",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "cypress/**",
+    "docs/**",
+    "gen-docs/**",
+    ".github/**",
+    "pnpm-lock.yaml"
+  ]
+}
