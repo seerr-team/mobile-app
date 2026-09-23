@@ -1,3 +1,4 @@
+import Alert from '@app/components/Common/Alert';
 import Button from '@app/components/Common/Button';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import TextInput from '@app/components/Common/TextInput';
@@ -7,7 +8,12 @@ import useServerUrl from '@app/hooks/useServerUrl';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
-import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
+import {
+  ArrowDownOnSquare,
+  Plus,
+  Trash,
+} from '@nandorojo/heroicons/24/outline';
+import { DISCORD_SNOWFLAKE_REGEX } from '@server/constants/discord';
 import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import axios from 'axios';
 import { Formik } from 'formik';
@@ -36,15 +42,20 @@ const UserNotificationsDiscord = () => {
   );
 
   const UserNotificationsDiscordSchema = Yup.object().shape({
-    discordId: Yup.string()
+    discordIds: Yup.array()
+      .of(
+        Yup.string().matches(DISCORD_SNOWFLAKE_REGEX, {
+          message: intl.formatMessage(messages.validationDiscordId),
+          excludeEmptyString: true,
+        })
+      )
       .when('types', {
         is: (types: number) => !!types,
-        then: Yup.string()
-          .nullable()
-          .required(intl.formatMessage(messages.validationDiscordId)),
-        otherwise: Yup.string().nullable(),
-      })
-      .matches(/^\d{17,19}$/, intl.formatMessage(messages.validationDiscordId)),
+        then: (schema) =>
+          schema
+            .compact((value) => value === '')
+            .min(1, intl.formatMessage(messages.validationDiscordId)),
+      }),
   });
 
   if (!data && !error) {
@@ -54,7 +65,7 @@ const UserNotificationsDiscord = () => {
   return (
     <Formik
       initialValues={{
-        discordId: data?.discordId,
+        discordIds: data?.discordIds ?? [''],
         types:
           (data?.discordEnabledTypes ?? 0) &
           (data?.notificationTypes.discord ?? 0),
@@ -67,7 +78,7 @@ const UserNotificationsDiscord = () => {
             `${serverUrl}/api/v1/user/${user?.id}/settings/notifications`,
             {
               pgpKey: data?.pgpKey,
-              discordId: values.discordId,
+              discordIds: values.discordIds,
               pushbulletAccessToken: data?.pushbulletAccessToken,
               pushoverApplicationToken: data?.pushoverApplicationToken,
               pushoverUserKey: data?.pushoverUserKey,
@@ -99,6 +110,14 @@ const UserNotificationsDiscord = () => {
       }) => {
         return (
           <View className="section mt-0">
+            {!(data?.discordEnabledTypes ?? 0) && (
+              <Alert
+                type="warning"
+                title={intl.formatMessage(
+                  messages.discordNotificationsNotEnabled
+                )}
+              />
+            )}
             <View className="form-row">
               <View className="text-label">
                 <View className="flex flex-row items-center">
@@ -131,20 +150,73 @@ const UserNotificationsDiscord = () => {
                 )}
               </View>
               <View className="form-input-area w-full">
-                <View className="form-input-field">
-                  <TextInput
-                    id="discordId"
-                    value={values.discordId}
-                    onChangeText={(text) => setFieldValue('discordId', text)}
-                    onBlur={handleBlur('discordId')}
-                    autoCapitalize="none"
-                  />
+                <View className="gap-2">
+                  {values.discordIds.map((_id: string, index: number) => (
+                    <View key={index} className="flex flex-row gap-2">
+                      <View className="flex-1">
+                        <View className="form-input-field">
+                          <TextInput
+                            value={values.discordIds[index]}
+                            onChangeText={(text) =>
+                              setFieldValue(`discordIds.${index}`, text)
+                            }
+                            onBlur={handleBlur(`discordIds.${index}`)}
+                            placeholder={intl.formatMessage(
+                              messages.discordIdPlaceholder
+                            )}
+                            autoCapitalize="none"
+                            keyboardType="number-pad"
+                          />
+                        </View>
+                        {Array.isArray(errors.discordIds) &&
+                          errors.discordIds[index] &&
+                          Array.isArray(touched.discordIds) &&
+                          touched.discordIds[index] && (
+                            <ThemedText className="error mt-2 text-sm text-red-500">
+                              {errors.discordIds[index]}
+                            </ThemedText>
+                          )}
+                      </View>
+                      {values.discordIds.length > 1 && (
+                        <View className="flex items-center">
+                          <Button
+                            buttonType="danger"
+                            onClick={() => {
+                              const newIds = values.discordIds.filter(
+                                (_: string, idx: number) => idx !== index
+                              );
+                              setFieldValue('discordIds', newIds);
+                            }}
+                            pressableProps={{
+                              accessibilityLabel: intl.formatMessage(
+                                messages.discordIdRemove
+                              ),
+                            }}
+                          >
+                            <Trash color="#ffffff" width={20} height={20} />
+                          </Button>
+                        </View>
+                      )}
+                    </View>
+                  ))}
+                  <Button
+                    buttonType="ghost"
+                    onClick={() => {
+                      setFieldValue('discordIds', [...values.discordIds, '']);
+                    }}
+                    className="flex flex-row items-center gap-2"
+                  >
+                    <Plus color="#ffffff" width={20} height={20} />
+                    <ThemedText>
+                      {intl.formatMessage(messages.discordIdAdd)}
+                    </ThemedText>
+                  </Button>
                 </View>
-                {errors.discordId &&
-                  touched.discordId &&
-                  typeof errors.discordId === 'string' && (
+                {errors.discordIds &&
+                  touched.discordIds &&
+                  typeof errors.discordIds === 'string' && (
                     <ThemedText className="error mt-2 text-sm text-red-500">
-                      {errors.discordId}
+                      {errors.discordIds}
                     </ThemedText>
                   )}
               </View>

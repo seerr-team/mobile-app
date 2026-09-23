@@ -30,7 +30,7 @@ const Search = () => {
     {
       query: searchParams.query,
     },
-    { hideAvailable: false }
+    { hideAvailable: false, hideBlocklisted: false, hideRequested: false }
   );
 
   if (error) {

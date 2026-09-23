@@ -70,7 +70,6 @@ const UserNotificationSettings = () => {
           <ThemedText>Discord</ThemedText>
         </View>
       ),
-      hidden: !data?.discordEnabled,
       component: UserNotificationsDiscord,
     },
     {

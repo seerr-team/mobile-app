@@ -1,15 +1,17 @@
 import Button from '@app/components/Common/Button';
 import TextInput from '@app/components/Common/TextInput';
 import ThemedText from '@app/components/Common/ThemedText';
+import JellyfinQuickConnectModal from '@app/components/Login/JellyfinQuickConnectModal';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
-import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
+import { ArrowLeftOnRectangle, QrCode } from '@nandorojo/heroicons/24/outline';
 import { ExclamationTriangle } from '@nandorojo/heroicons/24/solid';
 import { ApiErrorCode } from '@server/constants/error';
 import { MediaServerType, ServerType } from '@server/constants/server';
 import axios from 'axios';
 import { Formik } from 'formik';
+import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
@@ -22,13 +24,11 @@ interface JellyfinLoginProps {
   serverType?: MediaServerType;
 }
 
-const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
-  revalidate,
-  serverType,
-}) => {
+const JellyfinLogin = ({ revalidate, serverType }: JellyfinLoginProps) => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const settings = useSettings();
+  const [showQuickConnect, setShowQuickConnect] = useState(false);
 
   const mediaServerFormatValues = {
     mediaServerName:
@@ -38,6 +38,10 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
           ? ServerType.EMBY
           : 'Media Server',
   };
+
+  const handleQuickConnectError = useCallback((error: string) => {
+    toast.error(error);
+  }, []);
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required(
@@ -71,6 +75,7 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
             let errorMessage = messages.loginerror;
             switch (e?.response?.data?.message) {
               case ApiErrorCode.InvalidUrl:
+              case ApiErrorCode.ConnectionError:
                 errorMessage = messages.invalidurlerror;
                 break;
               case ApiErrorCode.InvalidCredentials:
@@ -197,6 +202,31 @@ const JellyfinLogin: React.FC<JellyfinLoginProps> = ({
           );
         }}
       </Formik>
+
+      {serverType === MediaServerType.JELLYFIN && (
+        <View className="mt-4">
+          <Button
+            buttonType="ghost"
+            onClick={() => setShowQuickConnect(true)}
+            className="flex w-full flex-row items-center justify-center gap-2"
+          >
+            <QrCode color="#ffffff" />
+            <ThemedText>{intl.formatMessage(messages.quickconnect)}</ThemedText>
+          </Button>
+        </View>
+      )}
+
+      {showQuickConnect && (
+        <JellyfinQuickConnectModal
+          onClose={() => setShowQuickConnect(false)}
+          onAuthenticated={() => {
+            setShowQuickConnect(false);
+            revalidate();
+          }}
+          onError={handleQuickConnectError}
+          mediaServerName={mediaServerFormatValues.mediaServerName}
+        />
+      )}
     </View>
   );
 };

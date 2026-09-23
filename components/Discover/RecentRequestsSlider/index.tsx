@@ -29,7 +29,7 @@ const RecentRequestsSlider = ({ lastRefresh }: RecentRequestsSliderProps) => {
     mutate,
   } = useSWR<RequestResultsResponse>(
     isVisible || hasBeenVisible
-      ? serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+      ? serverUrl + '/api/v1/request?filter=all&take=10&sort=added&skip=0'
       : null,
     {
       revalidateOnMount: true,

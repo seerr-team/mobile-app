@@ -1,4 +1,5 @@
 import Alert from '@app/components/Common/Alert';
+import Button from '@app/components/Common/Button';
 import Modal from '@app/components/Common/Modal';
 import TextInput from '@app/components/Common/TextInput';
 import ThemedText from '@app/components/Common/ThemedText';
@@ -6,6 +7,7 @@ import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
+import { QrCode } from '@nandorojo/heroicons/24/outline';
 import { MediaServerType } from '@server/constants/server';
 import axios from 'axios';
 import { Formik } from 'formik';
@@ -22,13 +24,15 @@ interface LinkJellyfinModalProps {
   show: boolean;
   onClose: () => void;
   onSave: () => void;
+  onSwitchToQuickConnect: () => void;
 }
 
-const LinkJellyfinModal: React.FC<LinkJellyfinModalProps> = ({
+const LinkJellyfinModal = ({
   show,
   onClose,
   onSave,
-}) => {
+  onSwitchToQuickConnect,
+}: LinkJellyfinModalProps) => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const settings = useSettings();
@@ -123,7 +127,7 @@ const LinkJellyfinModal: React.FC<LinkJellyfinModalProps> = ({
               </ThemedText>
               {error && (
                 <View className="mt-2">
-                  <Alert type="error">{error}</Alert>
+                  <Alert type="error" title={error} />
                 </View>
               )}
               <ThemedText className="text-label mb-1 block text-sm font-bold leading-5 text-gray-400">
@@ -160,6 +164,24 @@ const LinkJellyfinModal: React.FC<LinkJellyfinModalProps> = ({
                   <ThemedText className="error">{errors.password}</ThemedText>
                 )}
               </ThemedText>
+              {settings.currentSettings.mediaServerType ===
+                MediaServerType.JELLYFIN && (
+                <View className="mt-4">
+                  <Button
+                    buttonType="ghost"
+                    onClick={() => {
+                      setError(null);
+                      onSwitchToQuickConnect();
+                    }}
+                    className="flex w-full flex-row items-center justify-center gap-2"
+                  >
+                    <QrCode color="#ffffff" />
+                    <ThemedText>
+                      {intl.formatMessage(messages.quickConnect)}
+                    </ThemedText>
+                  </Button>
+                </View>
+              )}
             </View>
           </Modal>
         );

@@ -4,6 +4,7 @@ import JellyfinLogo from '@app/assets/services/jellyfin.png';
 import LetterboxdLogo from '@app/assets/services/letterboxd.png';
 import PlexLogo from '@app/assets/services/plex.png';
 import RTLogo from '@app/assets/services/rt.png';
+import SimklLogo from '@app/assets/services/simkl.png';
 import TmdbLogo from '@app/assets/services/tmdb.png';
 import TraktLogo from '@app/assets/services/trakt.png';
 import TvdbLogo from '@app/assets/services/tvdb.png';
@@ -133,17 +134,36 @@ const ExternalLinkBlock = ({
           />
         </Pressable>
       )}
-      {tmdbId && mediaType !== 'person' && (
+      {imdbId && mediaType !== 'person' && (
         <Pressable
           className="opacity-50 transition duration-300 hover:opacity-100"
           onPress={() =>
             Linking.openURL(
-              `https://trakt.tv/search/tmdb/${tmdbId}?id_type=${mediaType === 'movie' ? 'movie' : 'show'}`
+              `https://trakt.tv/${mediaType === 'movie' ? 'movies' : 'shows'}/${imdbId}`
             )
           }
         >
           <Image
             source={TraktLogo}
+            contentFit="contain"
+            style={{ width: 32, height: 32 }}
+          />
+        </Pressable>
+      )}
+      {imdbId && mediaType !== 'person' && (
+        <Pressable
+          className="opacity-50 transition duration-300 hover:opacity-100"
+          onPress={() =>
+            Linking.openURL(
+              `https://api.simkl.com/redirect?to=Simkl&imdb=${encodeURIComponent(
+                imdbId
+              )}`
+            )
+          }
+          aria-label="Simkl"
+        >
+          <Image
+            source={SimklLogo}
             contentFit="contain"
             style={{ width: 32, height: 32 }}
           />

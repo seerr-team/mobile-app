@@ -79,9 +79,6 @@ const UserGeneralSettings = () => {
             (value) =>
               !value || validator.isEmail(value, { require_tld: false })
           ),
-    discordId: Yup.string()
-      .nullable()
-      .matches(/^\d{17,19}$/, intl.formatMessage(messages.validationDiscordId)),
   });
 
   useEffect(() => {
@@ -110,7 +107,6 @@ const UserGeneralSettings = () => {
         initialValues={{
           displayName: data?.username !== user?.email ? data?.username : '',
           email: data?.email?.includes('@') ? data.email : '',
-          discordId: data?.discordId ?? '',
           locale: data?.locale,
           discoverRegion: data?.discoverRegion,
           streamingRegion: data?.streamingRegion,
@@ -132,7 +128,6 @@ const UserGeneralSettings = () => {
                 username: values.displayName,
                 email:
                   values.email || user?.jellyfinUsername || user?.plexUsername,
-                discordId: values.discordId,
                 locale: values.locale,
                 discoverRegion: values.discoverRegion,
                 streamingRegion: values.streamingRegion,
@@ -292,50 +287,6 @@ const UserGeneralSettings = () => {
                       {errors.email}
                     </ThemedText>
                   )}
-                </View>
-              </View>
-              <View className="form-row">
-                <View className="-mt-1">
-                  <ThemedText className="text-label mb-1 font-bold text-gray-400">
-                    {intl.formatMessage(messages.discordId)}
-                  </ThemedText>
-                  {currentUser?.id === user?.id && (
-                    <ThemedText className="label-tip mb-1 flex items-center font-medium text-gray-500">
-                      {intl.formatMessage(messages.discordIdTip, {
-                        FindDiscordIdLink: (msg: React.ReactNode) => (
-                          <ThemedText
-                            key="discordIdTipLink"
-                            onPress={() => {
-                              Linking.openURL(
-                                'https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-'
-                              );
-                            }}
-                            className="flex items-center"
-                          >
-                            {msg}
-                          </ThemedText>
-                        ),
-                      })}
-                    </ThemedText>
-                  )}
-                </View>
-                <View className="form-input-area w-full">
-                  <View className="form-input-field">
-                    <TextInput
-                      onChangeText={handleChange('discordId')}
-                      onBlur={handleBlur('discordId')}
-                      value={values.discordId}
-                      keyboardType="default"
-                      autoCapitalize="none"
-                    />
-                  </View>
-                  {errors.discordId &&
-                    touched.discordId &&
-                    typeof errors.discordId === 'string' && (
-                      <ThemedText className="mt-1.5 text-red-500">
-                        {errors.discordId}
-                      </ThemedText>
-                    )}
                 </View>
               </View>
               <View className="form-row">

@@ -52,6 +52,7 @@ export const loadLocaleData = async (locale: string): Promise<MessagesType> => {
     el: require('../seerr/src/i18n/locale/el.json'),
     es: require('../seerr/src/i18n/locale/es.json'),
     'es-MX': require('../seerr/src/i18n/locale/es_MX.json'),
+    et: require('../seerr/src/i18n/locale/et.json'),
     fi: require('../seerr/src/i18n/locale/fi.json'),
     fr: require('../seerr/src/i18n/locale/fr.json'),
     he: require('../seerr/src/i18n/locale/he.json'),

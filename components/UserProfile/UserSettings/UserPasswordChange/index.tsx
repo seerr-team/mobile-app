@@ -5,6 +5,7 @@ import TextInput from '@app/components/Common/TextInput';
 import ThemedText from '@app/components/Common/ThemedText';
 import ErrorPage from '@app/components/ErrorPage';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -24,6 +25,7 @@ const messages = getSeerrMessages(
 const UserPasswordChange = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const settings = useSettings();
   const { user: currentUser } = useUser();
   // const { user, hasPermission } = useUser({ id: Number(router.query.userId) });
   const { user, hasPermission } = useUser();
@@ -87,6 +89,11 @@ const UserPasswordChange = () => {
       <View className="mb-6">
         <ThemedText className="heading">
           {intl.formatMessage(messages.password)}
+        </ThemedText>
+        <ThemedText className="mt-1 text-sm text-gray-400">
+          {intl.formatMessage(messages.localPasswordDescription, {
+            applicationTitle: settings.currentSettings.applicationTitle,
+          })}
         </ThemedText>
       </View>
       <Formik

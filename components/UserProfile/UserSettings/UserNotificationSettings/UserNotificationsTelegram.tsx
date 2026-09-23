@@ -51,15 +51,8 @@ const UserTelegramSettings = () => {
         intl.formatMessage(messages.validationTelegramChatId)
       ),
     telegramMessageThreadId: Yup.string()
-      .when(['types'], {
-        is: (enabled: boolean, types: number) => enabled && !!types,
-        then: Yup.string()
-          .nullable()
-          .required(
-            intl.formatMessage(messages.validationTelegramMessageThreadId)
-          ),
-        otherwise: Yup.string().nullable(),
-      })
+      .transform((v) => v || null)
+      .nullable()
       .matches(
         /^\d+$/,
         intl.formatMessage(messages.validationTelegramMessageThreadId)
@@ -86,7 +79,7 @@ const UserTelegramSettings = () => {
             `${serverUrl}/api/v1/user/${user?.id}/settings/notifications`,
             {
               pgpKey: data?.pgpKey,
-              discordId: data?.discordId,
+              discordIds: data?.discordIds,
               pushbulletAccessToken: data?.pushbulletAccessToken,
               pushoverApplicationToken: data?.pushoverApplicationToken,
               pushoverUserKey: data?.pushoverUserKey,

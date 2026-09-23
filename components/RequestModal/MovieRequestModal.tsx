@@ -87,11 +87,12 @@ const MovieRequestModal = ({
           mediaId: data?.id,
           mediaType: 'movie',
           is4k,
+          ignoreQuota: requestOverrides?.ignoreQuota,
           ...overrideParams,
         }
       );
       mutate(
-        serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+        serverUrl + '/api/v1/request?filter=all&take=10&sort=added&skip=0'
       );
       mutate(serverUrl + '/api/v1/request/count');
 
@@ -145,7 +146,7 @@ const MovieRequestModal = ({
         `${serverUrl}/api/v1/request/${editRequest?.id}`
       );
       mutate(
-        serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+        serverUrl + '/api/v1/request?filter=all&take=10&sort=added&skip=0'
       );
       mutate(serverUrl + '/api/v1/request/count');
 
@@ -188,7 +189,7 @@ const MovieRequestModal = ({
         );
       }
       mutate(
-        serverUrl + '/api/v1/request?filter=all&take=10&sort=modified&skip=0'
+        serverUrl + '/api/v1/request?filter=all&take=10&sort=added&skip=0'
       );
       mutate(serverUrl + '/api/v1/request/count');
 
@@ -285,12 +286,16 @@ const MovieRequestModal = ({
                 username: editRequest.requestedBy.displayName,
               })}
         </ThemedText>
-        {(hasPermission(Permission.REQUEST_ADVANCED) ||
-          hasPermission(Permission.MANAGE_REQUESTS)) && (
+        {hasPermission(
+          [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
+          { type: 'or' }
+        ) && (
           <AdvancedRequester
             type="movie"
+            tmdbId={tmdbId}
             is4k={is4k}
             requestUser={editRequest.requestedBy}
+            requestId={editRequest.id}
             defaultOverrides={{
               folder: editRequest.rootFolder,
               profile: editRequest.profileId,
@@ -322,7 +327,10 @@ const MovieRequestModal = ({
       backgroundClickable
       onCancel={onCancel}
       onOk={sendRequest}
-      okDisabled={isUpdating || quota?.movie.restricted}
+      okDisabled={
+        isUpdating ||
+        (quota?.movie.restricted && !requestOverrides?.ignoreQuota)
+      }
       title={intl.formatMessage(
         is4k ? messages.requestmovie4ktitle : messages.requestmovietitle
       )}
@@ -356,11 +364,15 @@ const MovieRequestModal = ({
           }
         />
       )}
-      {(hasPermission(Permission.REQUEST_ADVANCED) ||
-        hasPermission(Permission.MANAGE_REQUESTS)) && (
+      {hasPermission(
+        [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
+        { type: 'or' }
+      ) && (
         <AdvancedRequester
+          tmdbId={tmdbId}
           type="movie"
           is4k={is4k}
+          quota={quota}
           onChange={(overrides) => {
             setRequestOverrides(overrides);
           }}

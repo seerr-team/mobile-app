@@ -1,3 +1,4 @@
+import useSettings from '@app/hooks/useSettings';
 import PlexOAuth from '@app/utils/plex';
 import { useState } from 'react';
 
@@ -11,11 +12,15 @@ function usePlexLogin({
   onError?: (err: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
+  const { currentSettings } = useSettings();
 
   const login = async () => {
     setLoading(true);
     try {
-      const authToken = await plexOAuth.login(); // handles WebBrowser internally
+      // handles WebBrowser internally
+      const authToken = await plexOAuth.login(
+        currentSettings.plexClientIdentifier
+      );
       setLoading(false);
       onAuthToken(authToken);
     } catch (err) {

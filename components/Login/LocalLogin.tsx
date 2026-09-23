@@ -5,6 +5,7 @@ import useSettings from '@app/hooks/useSettings';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowLeftOnRectangle } from '@nandorojo/heroicons/24/outline';
 import { ExclamationTriangle } from '@nandorojo/heroicons/24/solid';
+import { MediaServerType } from '@server/constants/server';
 import { Formik } from 'formik';
 // import Link from 'next/link';
 import TextInput from '@app/components/Common/TextInput';
@@ -55,7 +56,13 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
             password: values.password,
           });
         } catch (e) {
-          setLoginError(intl.formatMessage(messages.loginerror));
+          setLoginError(
+            intl.formatMessage(
+              axios.isAxiosError(e) && e.response?.status === 403
+                ? messages.credentialerror
+                : messages.loginerror
+            )
+          );
         } finally {
           revalidate();
         }
@@ -88,9 +95,7 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
                     value={values.email}
                     keyboardType="email-address"
                     autoCapitalize="none"
-                    placeholder={`${intl.formatMessage(
-                      messages.email
-                    )} / ${intl.formatMessage(messages.username)}`}
+                    placeholder={intl.formatMessage(messages.email)}
                   />
                 </View>
                 {touched.email && values.email.match(/\s$/) && (
@@ -110,6 +115,20 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
                       {errors.email}
                     </ThemedText>
                   )}
+                {(settings.currentSettings.mediaServerType ===
+                  MediaServerType.JELLYFIN ||
+                  settings.currentSettings.mediaServerType ===
+                    MediaServerType.EMBY) && (
+                  <ThemedText className="mt-1 text-xs text-gray-400">
+                    {intl.formatMessage(messages.jellyfinLocalLoginHint, {
+                      mediaServerName:
+                        settings.currentSettings.mediaServerType ===
+                        MediaServerType.JELLYFIN
+                          ? 'Jellyfin'
+                          : 'Emby',
+                    })}
+                  </ThemedText>
+                )}
               </View>
               <View className="mb-2 mt-1">
                 <View className="form-input-field">

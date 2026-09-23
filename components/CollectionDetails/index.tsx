@@ -1,7 +1,10 @@
+// import BlocklistModal from '@app/components/BlocklistModal';
+// import Button from '@app/components/Common/Button';
 import ButtonWithDropdown from '@app/components/Common/ButtonWithDropdown';
 import CachedImage from '@app/components/Common/CachedImage';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import ThemedText from '@app/components/Common/ThemedText';
+// import Tooltip from '@app/components/Common/Tooltip';
 import ErrorPage from '@app/components/ErrorPage';
 import RequestModal from '@app/components/RequestModal';
 import Slider from '@app/components/Slider';
@@ -18,7 +21,7 @@ import type { Collection } from '@server/models/Collection';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { uniq } from 'lodash';
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { ScrollView, View } from 'react-native';
 import useSWR from 'swr';
@@ -33,6 +36,8 @@ const CollectionDetails = () => {
   const { hasPermission } = useUser();
   const [requestModal, setRequestModal] = useState(false);
   const [is4k, setIs4k] = useState(false);
+  // const [showBlocklistModal, setShowBlocklistModal] = useState(false);
+  // const [isBlocklistUpdating, setIsBlocklistUpdating] = useState(false);
 
   const returnCollectionDownloadItems = (data: Collection | undefined) => {
     const [downloadStatus, downloadStatus4k] = [
@@ -67,6 +72,63 @@ const CollectionDetails = () => {
     `${serverUrl}/api/v1/genres/movie`
   );
 
+  // const onClickHideItemBtn = async (): Promise<void> => {
+  //   setIsBlocklistUpdating(true);
+
+  //   try {
+  //     await axios.post(`${serverUrl}/api/v1/blocklist/collection/${data?.id}`);
+
+  //     addToast(
+  //       <span>
+  //         {intl.formatMessage(globalMessages.blocklistSuccess, {
+  //           title: data?.name,
+  //           strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+  //         })}
+  //       </span>,
+  //       { appearance: 'success', autoDismiss: true }
+  //     );
+
+  //     revalidate();
+  //   } catch {
+  //     addToast(intl.formatMessage(globalMessages.blocklistError), {
+  //       appearance: 'error',
+  //       autoDismiss: true,
+  //     });
+  //   }
+
+  //   setIsBlocklistUpdating(false);
+  //   setShowBlocklistModal(false);
+  // };
+
+  // const onClickUnblocklistBtn = async (): Promise<void> => {
+  //   if (!data) return;
+
+  //   setIsBlocklistUpdating(true);
+
+  //   try {
+  //     await axios.delete(`${serverUrl}/api/v1/blocklist/collection/${data.id}`);
+
+  //     addToast(
+  //       <span>
+  //         {intl.formatMessage(globalMessages.removeFromBlocklistSuccess, {
+  //           title: data.name,
+  //           strong: (msg: React.ReactNode) => <strong>{msg}</strong>,
+  //         })}
+  //       </span>,
+  //       { appearance: 'success', autoDismiss: true }
+  //     );
+
+  //     revalidate();
+  //   } catch {
+  //     addToast(intl.formatMessage(globalMessages.blocklistError), {
+  //       appearance: 'error',
+  //       autoDismiss: true,
+  //     });
+  //   }
+
+  //   setIsBlocklistUpdating(false);
+  // };
+
   const [downloadStatus, downloadStatus4k] = useMemo(() => {
     const downloadItems = returnCollectionDownloadItems(data);
     return [downloadItems.downloadStatus, downloadItems.downloadStatus4k];
@@ -94,7 +156,18 @@ const CollectionDetails = () => {
   let collectionStatus = MediaStatus.UNKNOWN;
   let collectionStatus4k = MediaStatus.UNKNOWN;
 
-  if (
+  const blocklistedParts = data.parts.filter(
+    (part) =>
+      part.mediaInfo && part.mediaInfo.status === MediaStatus.BLOCKLISTED
+  );
+  const isCollectionBlocklisted = blocklistedParts.length > 0;
+  const isCollectionPartiallyBlocklisted =
+    blocklistedParts.length > 0 && blocklistedParts.length < data.parts.length;
+
+  if (isCollectionBlocklisted) {
+    collectionStatus = MediaStatus.BLOCKLISTED;
+  } else if (
+    data.parts.length > 0 &&
     data.parts.every(
       (part) =>
         part.mediaInfo && part.mediaInfo.status === MediaStatus.AVAILABLE
@@ -111,6 +184,7 @@ const CollectionDetails = () => {
   }
 
   if (
+    data.parts.length > 0 &&
     data.parts.every(
       (part) =>
         part.mediaInfo && part.mediaInfo.status4k === MediaStatus.AVAILABLE
@@ -143,6 +217,11 @@ const CollectionDetails = () => {
       (part) =>
         !part.mediaInfo || part.mediaInfo.status4k === MediaStatus.UNKNOWN
     ).length > 0;
+
+  const blocklistVisibility = hasPermission(
+    [Permission.MANAGE_BLOCKLIST, Permission.VIEW_BLOCKLIST],
+    { type: 'or' }
+  );
 
   const collectionAttributes: React.ReactNode[] = [];
 
@@ -182,11 +261,6 @@ const CollectionDetails = () => {
         ))
     );
   }
-
-  const blocklistVisibility = hasPermission(
-    [Permission.MANAGE_BLOCKLIST, Permission.VIEW_BLOCKLIST],
-    { type: 'or' }
-  );
 
   return (
     <ScrollView contentContainerClassName="pb-4">
@@ -229,6 +303,14 @@ const CollectionDetails = () => {
         }}
         onCancel={() => setRequestModal(false)}
       />
+      {/* <BlocklistModal
+        tmdbId={data.id}
+        type="collection"
+        show={showBlocklistModal}
+        onCancel={() => setShowBlocklistModal(false)}
+        onComplete={onClickHideItemBtn}
+        isUpdating={isBlocklistUpdating}
+      /> */}
       <View className="mt-4 flex flex-col items-center px-6 pt-2 xl:flex-row xl:items-end">
         <View className="overflow-hidden rounded shadow md:rounded-lg md:shadow-2xl xl:mr-4">
           <CachedImage
@@ -248,6 +330,11 @@ const CollectionDetails = () => {
               status={collectionStatus}
               downloadItem={downloadStatus}
               title={titles}
+              statusLabelOverride={
+                isCollectionPartiallyBlocklisted
+                  ? intl.formatMessage(globalMessages.partiallyblocklisted)
+                  : undefined
+              }
               inProgress={data.parts.some(
                 (part) => (part.mediaInfo?.downloadStatus ?? []).length > 0
               )}
@@ -279,15 +366,57 @@ const CollectionDetails = () => {
               collectionAttributes
                 .map((t, k) => <ThemedText key={k}>{t}</ThemedText>)
                 .reduce((prev, curr) => (
-                  <>
+                  <Fragment key={`${prev.key}-${curr.key}`}>
                     {prev}
                     <ThemedText className="mx-1.5">|</ThemedText>
                     {curr}
-                  </>
+                  </Fragment>
                 ))}
           </View>
         </View>
         <View className="media-actions flex flex-row justify-stretch gap-4">
+          {/* {hasPermission([Permission.MANAGE_BLOCKLIST], { type: 'or' }) &&
+            (isCollectionBlocklisted ? (
+              <Tooltip
+                content={
+                  blocklistedParts.length === data.parts.length
+                    ? intl.formatMessage(globalMessages.removefromBlocklist)
+                    : intl.formatMessage(
+                        messages.removefromblocklistpartialcount,
+                        {
+                          removeLabel: intl.formatMessage(
+                            globalMessages.removefromBlocklist
+                          ),
+                          count: blocklistedParts.length,
+                        }
+                      )
+                }
+              >
+                <Button
+                  buttonType="ghost"
+                  className="z-40 mr-2"
+                  buttonSize="md"
+                  onClick={onClickUnblocklistBtn}
+                  disabled={isBlocklistUpdating}
+                >
+                  <EyeIcon />
+                </Button>
+              </Tooltip>
+            ) : (
+              <Tooltip
+                content={intl.formatMessage(globalMessages.addToBlocklist)}
+              >
+                <Button
+                  buttonType="ghost"
+                  className="z-40 mr-2"
+                  buttonSize="md"
+                  onClick={() => setShowBlocklistModal(true)}
+                  disabled={isBlocklistUpdating}
+                >
+                  <EyeSlashIcon />
+                </Button>
+              </Tooltip>
+            ))} */}
           {(hasRequestable || hasRequestable4k) && (
             <ButtonWithDropdown
               buttonType="primary"
@@ -349,8 +478,9 @@ const CollectionDetails = () => {
           isEmpty={data.parts.length === 0}
           items={data.parts
             .filter((title) => {
-              if (!blocklistVisibility)
+              if (!blocklistVisibility) {
                 return title.mediaInfo?.status !== MediaStatus.BLOCKLISTED;
+              }
               return title;
             })
             .map((title) => (
@@ -365,6 +495,7 @@ const CollectionDetails = () => {
                 userScore={title.voteAverage}
                 year={title.releaseDate}
                 mediaType={title.mediaType}
+                mutateParent={revalidate}
               />
             ))}
         />

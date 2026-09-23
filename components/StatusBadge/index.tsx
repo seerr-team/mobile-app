@@ -25,6 +25,7 @@ interface StatusBadgeProps {
   tmdbId?: number;
   mediaType?: 'movie' | 'tv';
   title?: string | string[];
+  statusLabelOverride?: string;
   fontSize?: string;
 }
 
@@ -38,6 +39,7 @@ const StatusBadge = ({
   tmdbId,
   mediaType,
   title,
+  statusLabelOverride,
   fontSize = 'text-xs',
 }: StatusBadgeProps) => {
   const intl = useIntl();
@@ -376,7 +378,9 @@ const StatusBadge = ({
         <Tooltip content={mediaLinkDescription}>
           <Badge badgeType="danger" href={mediaLink}>
             {intl.formatMessage(is4k ? messages.status4k : messages.status, {
-              status: intl.formatMessage(globalMessages.blocklisted),
+              status:
+                statusLabelOverride ??
+                intl.formatMessage(globalMessages.blocklisted),
             })}
           </Badge>
         </Tooltip>

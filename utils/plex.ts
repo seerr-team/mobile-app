@@ -37,8 +37,11 @@ class PlexOAuth {
   private pin?: PlexPin;
   private authToken?: string;
 
-  public async initializeHeaders(): Promise<void> {
-    let clientId = await AsyncStorage.getItem('plex-client-id');
+  public async initializeHeaders(plexClientIdentifier?: string): Promise<void> {
+    // Use the Seerr instance client identifier so the auth token matches the
+    // one used by the server. Servers older than v3.2.0 don't expose it.
+    let clientId =
+      plexClientIdentifier || (await AsyncStorage.getItem('plex-client-id'));
     if (!clientId) {
       clientId = await uuidv4();
       await AsyncStorage.setItem('plex-client-id', clientId);
@@ -75,8 +78,8 @@ class PlexOAuth {
     return this.pin;
   }
 
-  public async login(): Promise<string> {
-    await this.initializeHeaders();
+  public async login(plexClientIdentifier?: string): Promise<string> {
+    await this.initializeHeaders(plexClientIdentifier);
     await this.getPin();
 
     if (!this.plexHeaders || !this.pin) {
@@ -109,6 +112,8 @@ class PlexOAuth {
   }
 
   private async pinPoll(): Promise<string> {
+    // Bound polling by the PIN expiresAt with a 15m hard fallback.
+    const deadline = Date.now() + 15 * 60 * 1000;
     return new Promise((resolve, reject) => {
       const poll = async () => {
         try {
@@ -124,6 +129,13 @@ class PlexOAuth {
             this.authToken = response.data.authToken as string;
             resolve(this.authToken);
           } else {
+            const expiresAt = response.data?.expiresAt
+              ? Date.parse(response.data.expiresAt)
+              : deadline;
+            if (Date.now() >= Math.min(expiresAt, deadline)) {
+              reject(new Error('Plex PIN expired before login completed.'));
+              return;
+            }
             setTimeout(poll, 1000);
           }
         } catch (e) {

@@ -64,7 +64,7 @@ const UserEmailSettings = () => {
             `${serverUrl}/api/v1/user/${user?.id}/settings/notifications`,
             {
               pgpKey: values.pgpKey,
-              discordId: data?.discordId,
+              discordIds: data?.discordIds,
               pushbulletAccessToken: data?.pushbulletAccessToken,
               pushoverApplicationToken: data?.pushoverApplicationToken,
               pushoverUserKey: data?.pushoverUserKey,

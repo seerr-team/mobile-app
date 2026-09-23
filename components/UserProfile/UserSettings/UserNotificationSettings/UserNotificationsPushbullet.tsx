@@ -62,7 +62,7 @@ const UserPushbulletSettings = () => {
             `${serverUrl}/api/v1/user/${user?.id}/settings/notifications`,
             {
               pgpKey: data?.pgpKey,
-              discordId: data?.discordId,
+              discordIds: data?.discordIds,
               pushbulletAccessToken: values.pushbulletAccessToken,
               pushoverApplicationToken: data?.pushoverApplicationToken,
               pushoverUserKey: data?.pushoverUserKey,

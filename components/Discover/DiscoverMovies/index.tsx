@@ -12,7 +12,7 @@ import useDiscover from '@app/hooks/useDiscover';
 import ErrorPage from '@app/components/ErrorPage';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 // import { BarsArrowDown, Funnel } from '@nandorojo/heroicons/24/solid';
-// import type { SortOptions as TMDBSortOptions } from '@server/api/themoviedb';
+// import type { MovieSortOptions as TMDBSortOptions } from '@server/api/themoviedb';
 import type { MovieResult } from '@server/models/Search';
 // import { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';

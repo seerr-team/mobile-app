@@ -5,6 +5,7 @@ import Alert from '@app/components/Common/Alert';
 import ButtonWithDropdown from '@app/components/Common/ButtonWithDropdown';
 import ConfirmButton from '@app/components/Common/ConfirmButton';
 import ThemedText from '@app/components/Common/ThemedText';
+import LinkJellyfinQuickConnectModal from '@app/components/UserProfile/UserSettings/UserLinkedAccountsSettings/LinkJellyfinQuickConnectModal';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
@@ -53,6 +54,8 @@ const UserLinkedAccountsSettings = () => {
     user ? `${serverUrl}/api/v1/user/${user?.id}/settings/password` : null
   );
   const [showJellyfinModal, setShowJellyfinModal] = useState(false);
+  const [showJellyfinQuickConnectModal, setShowJellyfinQuickConnectModal] =
+    useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const applicationName = settings.currentSettings.applicationTitle;
@@ -81,7 +84,9 @@ const UserLinkedAccountsSettings = () => {
   const linkPlexAccount = async () => {
     setError(null);
     try {
-      const authToken = await plexOAuth.login();
+      const authToken = await plexOAuth.login(
+        settings.currentSettings.plexClientIdentifier
+      );
       await axios.post(
         `${serverUrl}/api/v1/user/${user?.id}/settings/linked-accounts/plex`,
         {
@@ -279,6 +284,23 @@ const UserLinkedAccountsSettings = () => {
         onSave={() => {
           setShowJellyfinModal(false);
           revalidateUser();
+        }}
+        onSwitchToQuickConnect={() => {
+          setShowJellyfinModal(false);
+          setShowJellyfinQuickConnectModal(true);
+        }}
+      />
+
+      <LinkJellyfinQuickConnectModal
+        show={showJellyfinQuickConnectModal}
+        onClose={() => setShowJellyfinQuickConnectModal(false)}
+        onSave={() => {
+          setShowJellyfinQuickConnectModal(false);
+          revalidateUser();
+        }}
+        onSwitchToPassword={() => {
+          setShowJellyfinQuickConnectModal(false);
+          setShowJellyfinModal(true);
         }}
       />
     </View>

@@ -28,6 +28,7 @@ interface LanguageSelectorProps {
   serverValue?: string;
   isUserSettings?: boolean;
   isDisabled?: boolean;
+  fieldName?: string;
 }
 
 const LanguageSelector = ({
@@ -36,6 +37,7 @@ const LanguageSelector = ({
   serverValue,
   isUserSettings = false,
   isDisabled,
+  fieldName = 'originalLanguage',
 }: LanguageSelectorProps) => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
@@ -131,18 +133,15 @@ const LanguageSelector = ({
         }
         onChange={(value) => {
           if (value.every((v) => v === 'server')) {
-            return setFieldValue('originalLanguage', '');
+            return setFieldValue(fieldName, '');
           }
 
           if (value.every((v) => v === 'all')) {
-            return setFieldValue(
-              'originalLanguage',
-              isUserSettings ? 'all' : ''
-            );
+            return setFieldValue(fieldName, isUserSettings ? 'all' : '');
           }
 
           setFieldValue(
-            'originalLanguage',
+            fieldName,
             value
               .map((lang) => lang)
               .filter((v) => v !== 'all')

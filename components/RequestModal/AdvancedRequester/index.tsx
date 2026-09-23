@@ -15,11 +15,14 @@ import type {
   ServiceCommonServerWithDetails,
 } from '@server/interfaces/api/serviceInterfaces';
 import type { UserResultsResponse } from '@server/interfaces/api/userInterfaces';
+import type { OverrideRulesResult } from '@server/lib/overrideRules';
 import { hasPermission } from '@server/lib/permissions';
+import axios from 'axios';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
-import { Pressable, View } from 'react-native';
+import { Pressable, Switch, View } from 'react-native';
 import {
   type IMultiSelectRef,
   MultiSelect,
@@ -35,23 +38,30 @@ export type RequestOverrides = {
   tags?: number[];
   language?: number;
   user?: User;
+  ignoreQuota?: boolean;
 };
 
 interface AdvancedRequesterProps {
   type: 'movie' | 'tv';
+  tmdbId?: number;
   is4k: boolean;
   isAnime?: boolean;
   defaultOverrides?: RequestOverrides;
   requestUser?: User;
+  requestId?: number;
+  quota?: { movie: { limit?: number }; tv: { limit?: number } };
   onChange: (overrides: RequestOverrides) => void;
 }
 
 const AdvancedRequester = ({
   type,
+  tmdbId,
   is4k = false,
   isAnime = false,
   defaultOverrides,
   requestUser,
+  requestId,
+  quota,
   onChange,
 }: AdvancedRequesterProps) => {
   const serverUrl = useServerUrl();
@@ -89,6 +99,13 @@ const AdvancedRequester = ({
   const [isTagFocused, setIsTagFocused] = useState(false);
   const tagDropdownRef = useRef<IMultiSelectRef>(null);
 
+  const [ignoreQuota, setIgnoreQuota] = useState<boolean>(
+    defaultOverrides?.ignoreQuota ?? false
+  );
+  const isIgnoreQuotaVisible =
+    currentHasPermission([Permission.MANAGE_REQUESTS]) &&
+    ((type === 'movie' ? quota?.movie.limit : quota?.tv.limit) ?? 0) > 0;
+
   const { data: serverData, isValidating } =
     useSWR<ServiceCommonServerWithDetails>(
       selectedServer !== null
@@ -106,6 +123,8 @@ const AdvancedRequester = ({
   const [selectedUser, setSelectedUser] = useState<User | null>(
     requestUser ?? null
   );
+  const selectedUserId = selectedUser?.id;
+  const previousSelectedUserIdRef = useRef<number | undefined>(selectedUserId);
 
   const { data: userData } = useSWR<UserResultsResponse>(
     currentHasPermission([Permission.MANAGE_REQUESTS, Permission.MANAGE_USERS])
@@ -138,9 +157,14 @@ const AdvancedRequester = ({
 
   useEffect(() => {
     if (filteredUserData && !requestUser) {
-      setSelectedUser(
-        filteredUserData.find((u) => u.id === currentUser?.id) ?? null
-      );
+      const nextSelectedUser =
+        filteredUserData.find((u) => u.id === currentUser?.id) ?? null;
+
+      if (nextSelectedUser?.id !== selectedUserId) {
+        setIgnoreQuota(false);
+      }
+
+      setSelectedUser(nextSelectedUser);
     }
   }, [filteredUserData]);
 
@@ -248,13 +272,28 @@ const AdvancedRequester = ({
     if (defaultOverrides && defaultOverrides.tags != null) {
       setSelectedTags(defaultOverrides.tags);
     }
+
+    if (defaultOverrides && defaultOverrides.ignoreQuota != null) {
+      setIgnoreQuota(defaultOverrides.ignoreQuota);
+    }
   }, [
     defaultOverrides?.server,
     defaultOverrides?.folder,
     defaultOverrides?.profile,
     defaultOverrides?.language,
     defaultOverrides?.tags,
+    defaultOverrides?.ignoreQuota,
   ]);
+
+  useEffect(() => {
+    const selectedUserChanged =
+      previousSelectedUserIdRef.current !== selectedUserId;
+    previousSelectedUserIdRef.current = selectedUserId;
+
+    if (!isIgnoreQuotaVisible || selectedUserChanged) {
+      setIgnoreQuota(false);
+    }
+  }, [isIgnoreQuotaVisible, selectedUserId]);
 
   useEffect(() => {
     if (selectedServer !== null || selectedUser) {
@@ -265,6 +304,7 @@ const AdvancedRequester = ({
         user: selectedUser ?? undefined,
         language: selectedLanguage !== -1 ? selectedLanguage : undefined,
         tags: selectedTags,
+        ignoreQuota: isIgnoreQuotaVisible && ignoreQuota ? true : undefined,
       });
     }
   }, [
@@ -274,6 +314,74 @@ const AdvancedRequester = ({
     selectedUser,
     selectedLanguage,
     selectedTags,
+    ignoreQuota,
+    isIgnoreQuotaVisible,
+  ]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (tmdbId && serverData?.server.id === selectedServer) {
+        try {
+          const { data: override } = await axios.post<OverrideRulesResult>(
+            serverUrl + '/api/v1/overrideRule/advancedRequest',
+            {
+              mediaType: type,
+              is4k,
+              requestUser:
+                selectedUser?.id ?? requestUser?.id ?? currentUser?.id,
+              tmdbId,
+              tags: selectedTags.length > 0 ? selectedTags : undefined,
+              serviceId: selectedServer ?? undefined,
+              requestId: requestId ?? undefined,
+            }
+          );
+          if (cancelled) {
+            return;
+          }
+          if (!defaultOverrides?.folder && override.rootFolder) {
+            setSelectedFolder(override.rootFolder);
+          }
+          if (!defaultOverrides?.profile && override.profileId) {
+            setSelectedProfile(override.profileId);
+          }
+          if (
+            !defaultOverrides?.tags &&
+            override.tags &&
+            !isEqual(override.tags, selectedTags)
+          ) {
+            setSelectedTags(override.tags);
+          }
+        } catch (e) {
+          if (cancelled) {
+            return;
+          }
+          // Servers up to v3.4.1 don't have this endpoint
+          if (
+            axios.isAxiosError(e) &&
+            (e.response?.status === 404 || e.response?.status === 405)
+          ) {
+            return;
+          }
+          toast.error(intl.formatMessage(globalMessages.error));
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    tmdbId,
+    type,
+    is4k,
+    serverData?.server.id,
+    selectedServer,
+    selectedUserId,
+    requestUser?.id,
+    currentUser?.id,
+    defaultOverrides?.folder,
+    defaultOverrides?.profile,
+    defaultOverrides?.tags,
   ]);
 
   if (!data && !error) {
@@ -850,6 +958,24 @@ const AdvancedRequester = ({
               </Pressable>
             </View>
           )}
+        {isIgnoreQuotaVisible && (
+          <View className="mb-2">
+            <ThemedText className="mb-1 block text-sm font-bold leading-5 text-gray-400">
+              {intl.formatMessage(messages.ignoreQuotaTitle)}
+            </ThemedText>
+            <View className="flex flex-row items-center justify-between gap-2">
+              <ThemedText className="flex-1 text-sm text-gray-400">
+                {intl.formatMessage(messages.ignoreQuotaDescription)}
+              </ThemedText>
+              <Switch
+                value={ignoreQuota}
+                onValueChange={() => setIgnoreQuota(!ignoreQuota)}
+                trackColor={{ false: '#1f2937', true: '#6366f1' }}
+                thumbColor="#ffffff"
+              />
+            </View>
+          </View>
+        )}
         {currentHasPermission([
           Permission.MANAGE_REQUESTS,
           Permission.MANAGE_USERS,
@@ -858,7 +984,10 @@ const AdvancedRequester = ({
           (filteredUserData ?? []).length > 1 && (
             <Listbox
               value={selectedUser}
-              onChange={(value) => setSelectedUser(value)}
+              onChange={(value) => {
+                setIgnoreQuota(false);
+                setSelectedUser(value);
+              }}
             >
               {({ open }) => (
                 <>

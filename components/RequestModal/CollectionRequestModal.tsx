@@ -450,8 +450,10 @@ const CollectionRequestModal = ({
           </View>
         </View>
       </View>
-      {(hasPermission(Permission.REQUEST_ADVANCED) ||
-        hasPermission(Permission.MANAGE_REQUESTS)) && (
+      {hasPermission(
+        [Permission.REQUEST_ADVANCED, Permission.MANAGE_REQUESTS],
+        { type: 'or' }
+      ) && (
         <AdvancedRequester
           type="movie"
           is4k={is4k}
