@@ -65,7 +65,8 @@
             "usesCleartextTraffic": true
           }
         }
-      ]
+      ],
+      "expo-adi-registration"
     ],
     "extra": {
       "router": {
