@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, InteractionManager, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 export function withAfterInteractions(WrappedComponent: React.ComponentType) {
   return function WithAfterInteractions(
@@ -8,10 +8,10 @@ export function withAfterInteractions(WrappedComponent: React.ComponentType) {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-      const task = InteractionManager.runAfterInteractions(() => {
+      const handle = requestIdleCallback(() => {
         setIsReady(true);
       });
-      return () => task.cancel();
+      return () => cancelIdleCallback(handle);
     }, []);
 
     if (!isReady) {
