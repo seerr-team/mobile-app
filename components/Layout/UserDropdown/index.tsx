@@ -10,7 +10,7 @@ import { BlurView } from 'expo-blur';
 import { Link, router } from 'expo-router';
 import { type RefObject, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Modal, Platform, Pressable, View } from 'react-native';
+import { Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { mutate } from 'swr';
 
 const messages = getSeerrMessages('components.Layout.UserDropdown');
@@ -73,7 +73,10 @@ const UserDropdown = ({ blurTarget }: UserDropdownProps) => {
         </View>
         <View className="absolute right-6 top-20 z-50 w-72 origin-top-right shadow-lg">
           <BlurView
-            className="absolute h-full w-full overflow-hidden rounded-md"
+            style={[
+              StyleSheet.absoluteFill,
+              { borderRadius: 6, overflow: 'hidden' },
+            ]}
             intensity={20}
             tint="regular"
             blurMethod="dimezisBlurView"

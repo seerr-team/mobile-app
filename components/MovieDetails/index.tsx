@@ -473,7 +473,7 @@ const MovieDetails = () => {
             style={{ width: 150, height: 225 }}
           />
         </View>
-        <View className="mt-4 flex flex-1 flex-col text-center text-white xl:mr-4 xl:mt-0 xl:text-left">
+        <View className="mt-4 flex flex-col text-center text-white xl:mr-4 xl:mt-0 xl:flex-1 xl:text-left">
           <View className="space-x-2xl:items-start mb-2 flex flex-row items-center justify-center gap-2">
             <StatusBadge
               fontSize="text-base"
@@ -683,7 +683,7 @@ const MovieDetails = () => {
                       </ThemedText>
                       <TextLinkType
                         href={`/person/${person.id}`}
-                        className="text-gray-400"
+                        style={{ color: '#9ca3af' }}
                       >
                         {person.name}
                       </TextLinkType>

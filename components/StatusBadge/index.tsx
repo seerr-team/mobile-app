@@ -250,7 +250,7 @@ const StatusBadge = ({
                 inProgress && 'px-2'
               }`}
             >
-              <ThemedText className="text-xs">
+              <ThemedText className={fontSize}>
                 {intl.formatMessage(
                   is4k ? messages.status4k : messages.status,
                   {
@@ -319,7 +319,7 @@ const StatusBadge = ({
                 inProgress && 'px-2'
               }`}
             >
-              <ThemedText className="text-xs">
+              <ThemedText className={fontSize}>
                 {intl.formatMessage(
                   is4k ? messages.status4k : messages.status,
                   {
@@ -403,7 +403,7 @@ const StatusBadge = ({
             className={`${
               inProgress &&
               'relative !bg-gray-700 !bg-opacity-80 !px-0 hover:!bg-gray-700'
-            } overflow-hidden`}
+            } overflow-hidden pb-0.5`}
             element={View}
           >
             {inProgress && badgeDownloadProgress}
@@ -412,7 +412,7 @@ const StatusBadge = ({
                 inProgress && 'px-2'
               }`}
             >
-              <ThemedText className="text-xs">
+              <ThemedText className={fontSize}>
                 {intl.formatMessage(
                   is4k ? messages.status4k : messages.status,
                   {

@@ -347,7 +347,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                   )?.slice(0, 4)}
                 </ThemedText>
               </View>
-              <Link
+              {/* <Link
                 href={
                   request.type === 'movie'
                     ? `/movie/${requestData.media.tmdbId}`
@@ -355,9 +355,13 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                 }
                 className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${canExpand ? 'mb-1 text-2xl' : 'text-lg'} font-bold text-white hover:underline`}
                 numberOfLines={1}
+              > */}
+              <ThemedText
+                className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${canExpand ? 'mb-1 text-2xl' : 'text-lg'} font-bold text-white hover:underline`}
               >
                 {isMovie(title) ? title.title : title.name}
-              </Link>
+              </ThemedText>
+              {/* </Link> */}
               {hasPermission(
                 [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
                 { type: 'or' }
@@ -455,7 +459,7 @@ const RequestCard = ({ request, onTitleData, canExpand }: RequestCardProps) => {
                 <ThemedText className="mr-4 mt-2 font-bold text-gray-400 sm:mt-1">
                   {intl.formatMessage(messagesRequestList.modified)}
                 </ThemedText>
-                <ThemedText className="text-gray-300">
+                <ThemedText className="flex-1 text-gray-300">
                   {intl.formatMessage(messagesRequestList.modifieduserdate, {
                     date: (
                       <FormattedRelativeTime
