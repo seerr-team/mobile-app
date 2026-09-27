@@ -17,11 +17,12 @@ import '@seerr/src/styles/globals.css';
 import { type AvailableLocale } from '@server/types/languages';
 import 'array.prototype.tosorted/auto';
 import axios from 'axios';
+import { BlurTargetView } from 'expo-blur';
 import { useFonts } from 'expo-font';
 import { router, SplashScreen, Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'intl-pluralrules';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { TVFocusGuideView, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -99,6 +100,7 @@ function RootLayout() {
   const serverUrl = useServerUrl();
   const { user, revalidate } = useUser();
   const [loaded, setLoaded] = useState(false);
+  const blurTargetRef = useRef<View>(null);
 
   const insets = useSafeAreaInsets();
 
@@ -151,7 +153,7 @@ function RootLayout() {
   }, [loaded]);
 
   const appContent = (
-    <View className="flex-1">
+    <BlurTargetView ref={blurTargetRef} style={{ flex: 1 }}>
       <StatusBar style="light" />
       {user && (
         <TVFocusGuideView
@@ -163,7 +165,7 @@ function RootLayout() {
           }}
         >
           <SearchInput />
-          <UserDropdown />
+          <UserDropdown blurTarget={blurTargetRef} />
         </TVFocusGuideView>
       )}
       <View className="flex-1 ">
@@ -188,7 +190,7 @@ function RootLayout() {
         </Stack>
       </View>
       {user && <BottomNavigation />}
-    </View>
+    </BlurTargetView>
   );
 
   return (

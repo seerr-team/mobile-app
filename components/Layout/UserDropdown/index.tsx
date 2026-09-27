@@ -8,14 +8,18 @@ import { Cog, User } from '@nandorojo/heroicons/24/solid';
 import axios from 'axios';
 import { BlurView } from 'expo-blur';
 import { Link, router } from 'expo-router';
-import { useState } from 'react';
+import { type RefObject, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Modal, Platform, Pressable, View } from 'react-native';
 import { mutate } from 'swr';
 
 const messages = getSeerrMessages('components.Layout.UserDropdown');
 
-const UserDropdown = () => {
+type UserDropdownProps = {
+  blurTarget?: RefObject<View | null>;
+};
+
+const UserDropdown = ({ blurTarget }: UserDropdownProps) => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const { user, revalidate } = useUser();
@@ -72,7 +76,8 @@ const UserDropdown = () => {
             className="absolute h-full w-full overflow-hidden rounded-md"
             intensity={20}
             tint="regular"
-            experimentalBlurMethod="dimezisBlurView"
+            blurMethod="dimezisBlurView"
+            blurTarget={blurTarget}
           />
           <View className="overflow-hidden rounded-md border border-gray-600 bg-gray-800/60">
             <View className="flex flex-row items-center justify-start gap-4 p-6">

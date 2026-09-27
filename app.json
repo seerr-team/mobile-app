@@ -8,8 +8,6 @@
     "githubUrl": "https://github.com/seerr-team/mobile-app",
     "scheme": "seerr",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
-    "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "dev.seerr.mobileapp",
@@ -30,8 +28,7 @@
         "foregroundImage": "./assets/images/adaptative_icon.png",
         "backgroundColor": "#111827"
       },
-      "package": "dev.seerr.mobileapp",
-      "edgeToEdgeEnabled": true
+      "package": "dev.seerr.mobileapp"
     },
     "plugins": [
       "@react-native-tvos/config-tv",
@@ -62,6 +59,7 @@
         "expo-build-properties",
         {
           "android": {
+            "minSdkVersion": 24,
             "usesCleartextTraffic": true
           }
         }
