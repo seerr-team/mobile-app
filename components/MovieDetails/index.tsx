@@ -73,7 +73,8 @@ const MovieDetails = () => {
   const { locale } = useLocale();
   // const [showManager, setShowManager] = useState(false);
   const minStudios = 3;
-  const [showMoreStudios, setShowMoreStudios] = useState(false);
+  // const [showMoreStudios, setShowMoreStudios] = useState(false);
+  const showMoreStudios = false;
   // const [showIssueModal, setShowIssueModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [toggleWatchlist, setToggleWatchlist] = useState<boolean>(true);

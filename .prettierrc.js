@@ -1,4 +1,3 @@
-/* eslint-disable */
 const tailwind = require('prettier-plugin-tailwindcss');
 const organizeImports = require('prettier-plugin-organize-imports');
 

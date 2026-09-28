@@ -64,7 +64,8 @@ const TvRequestModal = ({
   }>({
     show: true,
   });
-  const [tvdbId, setTvdbId] = useState<number | undefined>(undefined);
+  // const [tvdbId, setTvdbId] = useState<number | undefined>(undefined);
+  const tvdbId = undefined;
   const { data: quota } = useSWR<QuotaResponse>(
     user &&
       (!requestOverrides?.user?.id || hasPermission(Permission.MANAGE_USERS))
@@ -207,7 +208,7 @@ const TvRequestModal = ({
           </ThemedText>
         );
       }
-    } catch (e) {
+    } catch {
       toast.error(intl.formatMessage(messages.requesterror));
     } finally {
       if (onUpdating) {

@@ -2,7 +2,7 @@ import type {
   PublicSettingsResponse,
   StatusResponse,
 } from '@server/interfaces/api/settingsInterfaces';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 
 export const minimumServerVersion = '2.4.0';
 
@@ -36,7 +36,7 @@ export async function getServerSettings(
     clearTimeout(timeoutId);
     data = response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       if (
         error.code === 'ERR_CANCELED' ||
         error.code === 'ECONNABORTED' ||
@@ -83,7 +83,7 @@ export async function isServerUpToDate(serverUrl: string): Promise<boolean> {
     data = response.data;
   } catch (error) {
     if (
-      axios.isAxiosError(error) &&
+      isAxiosError(error) &&
       (error.code === 'ERR_CANCELED' ||
         error.code === 'ECONNABORTED' ||
         !error.response)

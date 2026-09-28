@@ -217,7 +217,6 @@ function RootLayoutWithIntl() {
   const settings = useSettings();
   const dispatch = useDispatch();
   const [fontLoaded] = useFonts({
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 

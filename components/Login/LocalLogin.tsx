@@ -10,7 +10,7 @@ import { Formik } from 'formik';
 // import Link from 'next/link';
 import TextInput from '@app/components/Common/TextInput';
 import ThemedText from '@app/components/Common/ThemedText';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
@@ -58,7 +58,7 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
         } catch (e) {
           setLoginError(
             intl.formatMessage(
-              axios.isAxiosError(e) && e.response?.status === 403
+              isAxiosError(e) && e.response?.status === 403
                 ? messages.credentialerror
                 : messages.loginerror
             )
@@ -149,7 +149,7 @@ const LocalLogin = ({ revalidate }: LocalLoginProps) => {
                         {errors.password}
                       </ThemedText>
                     )}
-                  <View className="flex-grow"></View>
+                  <View className="flex-grow" />
                   {/* {passwordResetEnabled && (
                     <Link
                       href="/resetpassword"

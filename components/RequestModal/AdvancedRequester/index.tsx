@@ -17,7 +17,7 @@ import type {
 import type { UserResultsResponse } from '@server/interfaces/api/userInterfaces';
 import type { OverrideRulesResult } from '@server/lib/overrideRules';
 import { hasPermission } from '@server/lib/permissions';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast/headless';
@@ -358,7 +358,7 @@ const AdvancedRequester = ({
           }
           // Servers up to v3.4.1 don't have this endpoint
           if (
-            axios.isAxiosError(e) &&
+            isAxiosError(e) &&
             (e.response?.status === 404 || e.response?.status === 405)
           ) {
             return;

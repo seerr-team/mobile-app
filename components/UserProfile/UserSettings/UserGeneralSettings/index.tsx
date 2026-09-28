@@ -8,7 +8,7 @@ import TextInput from '@app/components/Common/TextInput';
 import ThemedText from '@app/components/Common/ThemedText';
 import ErrorPage from '@app/components/ErrorPage';
 import RegionSelector from '@app/components/RegionSelector';
-import useLocale from '@app/hooks/useLocale';
+// import useLocale from '@app/hooks/useLocale';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
@@ -18,7 +18,7 @@ import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
 import { availableLanguages } from '@seerr/src/context/LanguageContext';
 import { ApiErrorCode } from '@server/constants/error';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
-import type { AvailableLocale } from '@server/types/languages';
+// import type { AvailableLocale } from '@server/types/languages';
 import axios from 'axios';
 import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
@@ -37,7 +37,7 @@ const messages = getSeerrMessages(
 const UserGeneralSettings = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
-  const { locale, setLocale } = useLocale();
+  // const { locale, setLocale } = useLocale();
   const [movieQuotaEnabled, setMovieQuotaEnabled] = useState(false);
   const [tvQuotaEnabled, setTvQuotaEnabled] = useState(false);
   const [watchlistSyncMoviesFocused, setWatchlistSyncMoviesFocused] =
@@ -50,7 +50,7 @@ const UserGeneralSettings = () => {
   } = useUser({
     // id: Number(router.query.userId),
   });
-  const { user: currentUser, hasPermission: currentHasPermission } = useUser();
+  // const { user: currentUser, hasPermission: currentHasPermission } = useUser();
   const { currentSettings } = useSettings();
   const {
     data,
@@ -145,13 +145,13 @@ const UserGeneralSettings = () => {
               }
             );
 
-            if (currentUser?.id === user?.id && setLocale) {
-              setLocale(
-                (values.locale
-                  ? values.locale
-                  : currentSettings.locale) as AvailableLocale
-              );
-            }
+            // if (currentUser?.id === user?.id && setLocale) {
+            //   setLocale(
+            //     (values.locale
+            //       ? values.locale
+            //       : currentSettings.locale) as AvailableLocale
+            //   );
+            // }
 
             toast.success(intl.formatMessage(messages.toastSettingsSuccess));
           } catch (e) {

@@ -76,7 +76,7 @@ const UserEmailSettings = () => {
             }
           );
           toast.success(intl.formatMessage(messages.emailsettingssaved));
-        } catch (e) {
+        } catch {
           toast.error(intl.formatMessage(messages.emailsettingsfailed));
         } finally {
           revalidate();

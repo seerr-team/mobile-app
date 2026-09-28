@@ -116,7 +116,7 @@ const UserPasswordChange = () => {
             );
 
             toast.success(intl.formatMessage(messages.toastSettingsSuccess));
-          } catch (e) {
+          } catch {
             toast.error(
               intl.formatMessage(
                 data.hasPassword && user?.id === currentUser?.id

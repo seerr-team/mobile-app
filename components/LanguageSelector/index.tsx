@@ -1,3 +1,4 @@
+import ThemedText from '@app/components/Common/ThemedText';
 import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -12,7 +13,6 @@ import {
   MultiSelect,
 } from 'react-native-element-dropdown';
 import useSWR from 'swr';
-import ThemedText from '../Common/ThemedText';
 
 const messages = getSeerrMessages('components.LanguageSelector');
 

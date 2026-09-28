@@ -1,3 +1,4 @@
+import ThemedText from '@app/components/Common/ThemedText';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
@@ -11,7 +12,6 @@ import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import { Dropdown, type IDropdownRef } from 'react-native-element-dropdown';
 import useSWR from 'swr';
-import ThemedText from '../Common/ThemedText';
 
 const messages = getSeerrMessages('components.RegionSelector');
 

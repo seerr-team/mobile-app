@@ -4,7 +4,7 @@ import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
 import { Check, Trash } from '@nandorojo/heroicons/24/solid';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
@@ -30,13 +30,13 @@ const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
         `${serverUrl}/api/v1/watchlist/${tmdbId}?mediaType=${type}`
       );
     } catch (e) {
-      if (!axios.isAxiosError(e) || e.response?.status !== 404) {
+      if (!isAxiosError(e) || e.response?.status !== 404) {
         toast.error(intl.formatMessage(globalMessages.error));
         return;
       }
     }
     await axios.delete(`${serverUrl}/api/v1/media/${id}`).catch((e) => {
-      if (axios.isAxiosError(e) && e.response?.status === 404) return;
+      if (isAxiosError(e) && e.response?.status === 404) return;
       toast.error(intl.formatMessage(globalMessages.error));
     });
     mutate(serverUrl + '/api/v1/discover/watchlist');

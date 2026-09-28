@@ -26,7 +26,6 @@ export default function Setup() {
   const [error, setError] = useState<ConnectionErrorType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
-  const [checkboxFocused, setCheckboxFocused] = useState(false);
   const settings = useSettings();
 
   const checkServer = useCallback(

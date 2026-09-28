@@ -74,7 +74,7 @@ const UserPushbulletSettings = () => {
             }
           );
           toast.success(intl.formatMessage(messages.pushbulletsettingssaved));
-        } catch (e) {
+        } catch {
           toast.error(intl.formatMessage(messages.pushbulletsettingsfailed));
         } finally {
           revalidate();

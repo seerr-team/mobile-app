@@ -37,7 +37,7 @@ const GenreCardPlaceholder = () => {
   return (
     <View
       className={`relative h-32 w-56 rounded-xl bg-gray-700 sm:h-40 sm:w-72`}
-    ></View>
+    />
   );
 };
 

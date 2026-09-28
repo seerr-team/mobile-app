@@ -5,7 +5,7 @@ import {
   InformationCircle,
 } from '@nandorojo/heroicons/24/outline';
 import Constants from 'expo-constants';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { type Toast as RHToast } from 'react-hot-toast/headless';
 import { Animated, useWindowDimensions, View } from 'react-native';
 
@@ -19,8 +19,8 @@ export default function Toast({
   offset: number;
 }) {
   const { width } = useWindowDimensions();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const [fadeAnim] = useState(() => new Animated.Value(0));
+  const [scaleAnim] = useState(() => new Animated.Value(0.8));
 
   useEffect(() => {
     Animated.timing(fadeAnim, {

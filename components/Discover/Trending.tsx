@@ -8,7 +8,6 @@ import type {
   PersonResult,
   TvResult,
 } from '@server/models/Search';
-import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
 const messages = getSeerrMessages('components.Discover');
@@ -19,8 +18,10 @@ type TimeWindow = 'day' | 'week';
 
 const Trending = () => {
   const intl = useIntl();
-  const [currentMediaType, setCurrentMediaType] = useState<MediaType>('all');
-  const [currentTimeWindow, setCurrentTimeWindow] = useState<TimeWindow>('day');
+  // const [currentMediaType, setCurrentMediaType] = useState<MediaType>('all');
+  // const [currentTimeWindow, setCurrentTimeWindow] = useState<TimeWindow>('day');
+  const currentMediaType: MediaType = 'all';
+  const currentTimeWindow: TimeWindow = 'day';
   const {
     isLoadingInitialData,
     isEmpty,

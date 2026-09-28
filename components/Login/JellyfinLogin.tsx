@@ -159,7 +159,7 @@ const JellyfinLogin = ({ revalidate, serverType }: JellyfinLoginProps) => {
                         {errors.password}
                       </ThemedText>
                     )}
-                    <View className="flex-grow"></View>
+                    <View className="flex-grow" />
                     {baseUrl && (
                       <Pressable
                         onPress={() => {

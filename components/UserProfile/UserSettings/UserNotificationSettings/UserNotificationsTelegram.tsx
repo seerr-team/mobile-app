@@ -92,7 +92,7 @@ const UserTelegramSettings = () => {
             }
           );
           toast.success(intl.formatMessage(messages.telegramsettingssaved));
-        } catch (e) {
+        } catch {
           toast.error(intl.formatMessage(messages.telegramsettingsfailed));
         } finally {
           revalidate();

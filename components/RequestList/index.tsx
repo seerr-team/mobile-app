@@ -50,8 +50,10 @@ const RequestList = () => {
   const searchParams = useLocalSearchParams();
   const { user: currentUser } = useUser();
   const [currentFilter, setCurrentFilter] = useState<Filter>(Filter.PENDING);
-  const [currentSort, setCurrentSort] = useState<Sort>('added');
-  const [currentPageSize, setCurrentPageSize] = useState<number>(10);
+  // const [currentSort, setCurrentSort] = useState<Sort>('added');
+  // const [currentPageSize, setCurrentPageSize] = useState<number>(10);
+  const currentSort: Sort = 'added';
+  const currentPageSize = 10;
   const { user } = useUser({
     id: Number(searchParams.userId),
   });

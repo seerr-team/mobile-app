@@ -90,7 +90,7 @@ const UserNotificationsDiscord = () => {
             }
           );
           toast.success(intl.formatMessage(messages.discordsettingssaved));
-        } catch (e) {
+        } catch {
           toast.error(intl.formatMessage(messages.discordsettingsfailed));
         } finally {
           revalidate();

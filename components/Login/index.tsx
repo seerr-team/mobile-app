@@ -221,11 +221,11 @@ const Login = () => {
               {additionalLoginOptions.length > 0 &&
                 (loginFormVisible ? (
                   <View className="flex flex-row items-center py-5">
-                    <View className="flex-grow border-t border-gray-600"></View>
+                    <View className="flex-grow border-t border-gray-600" />
                     <ThemedText className="mx-2 flex-shrink text-sm text-gray-400">
                       {intl.formatMessage(messages.orsigninwith)}
                     </ThemedText>
-                    <View className="flex-grow border-t border-gray-600"></View>
+                    <View className="flex-grow border-t border-gray-600" />
                   </View>
                 ) : (
                   <ThemedText className="mb-6 text-center text-lg font-bold text-neutral-200">

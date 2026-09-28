@@ -9,7 +9,7 @@ import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
 import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
-import type { PushoverSound } from '@server/api/pushover';
+// import type { PushoverSound } from '@server/api/pushover';
 import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import axios from 'axios';
 import { Formik } from 'formik';
@@ -36,11 +36,11 @@ const UserPushoverSettings = () => {
   } = useSWR<UserSettingsNotificationsResponse>(
     user ? `${serverUrl}/api/v1/user/${user?.id}/settings/notifications` : null
   );
-  const { data: soundsData } = useSWR<PushoverSound[]>(
-    data?.pushoverApplicationToken
-      ? `${serverUrl}/api/v1/settings/notifications/pushover/sounds?token=${data.pushoverApplicationToken}`
-      : null
-  );
+  // const { data: soundsData } = useSWR<PushoverSound[]>(
+  //   data?.pushoverApplicationToken
+  //     ? `${serverUrl}/api/v1/settings/notifications/pushover/sounds?token=${data.pushoverApplicationToken}`
+  //     : null
+  // );
 
   const UserNotificationsPushoverSchema = Yup.object().shape({
     pushoverApplicationToken: Yup.string()
@@ -102,7 +102,7 @@ const UserPushoverSettings = () => {
             }
           );
           toast.success(intl.formatMessage(messages.pushoversettingssaved));
-        } catch (e) {
+        } catch {
           toast.error(intl.formatMessage(messages.pushoversettingsfailed));
         } finally {
           revalidate();
