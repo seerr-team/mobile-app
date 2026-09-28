@@ -121,9 +121,11 @@ const Modal = ({
                 </View>
               )}
               <View className="relative -mx-4 overflow-x-hidden px-4 pt-0.5 sm:flex sm:flex-row sm:items-center">
-                <View className={`mt-3 truncate sm:mt-0 sm:px-4 sm:text-left`}>
+                <View
+                  className={`mt-3 flex-1 truncate sm:mt-0 sm:px-4 sm:text-left`}
+                >
                   {(title || subTitle) && (
-                    <View className="flex flex-col space-y-1">
+                    <View className="flex flex-col items-start space-y-1 sm:items-start">
                       {title && (
                         <ThemedText className="truncate pb-0.5 text-center text-3xl font-bold text-indigo-400">
                           {title}

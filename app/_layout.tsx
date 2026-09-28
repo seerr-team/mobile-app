@@ -30,7 +30,6 @@ import {
   KeyboardAvoidingView,
   KeyboardProvider,
 } from 'react-native-keyboard-controller';
-import 'react-native-reanimated';
 import { configureReanimatedLogger } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Provider, useDispatch } from 'react-redux';

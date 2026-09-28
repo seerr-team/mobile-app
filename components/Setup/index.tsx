@@ -11,6 +11,7 @@ import {
   ConnectionErrorType,
   getServerSettings,
   minimumServerVersion,
+  ServerConnectionError,
 } from '@app/utils/serverSettings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
@@ -24,6 +25,7 @@ export default function Setup() {
   const dispatch = useDispatch();
   const [initialized, setInitialized] = useState(false);
   const [error, setError] = useState<ConnectionErrorType | null>(null);
+  const [errorDescription, setErrorDescription] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<string>('');
   const settings = useSettings();
@@ -43,11 +45,12 @@ export default function Setup() {
         dispatch(setSettings(serverSettings));
         setError(null);
       } catch (e) {
-        if (e instanceof Error) {
-          setError(e.message as ConnectionErrorType);
+        if (e instanceof ServerConnectionError) {
+          setError(e.type);
         } else {
           setError(ConnectionErrorType.SERVER_NOT_REACHABLE);
         }
+        setErrorDescription(e.message);
         setInitialized(true);
         setLoading(false);
       }
@@ -137,6 +140,11 @@ export default function Setup() {
               <ThemedText className="mt-1.5 text-red-500">
                 Server is not up-to-date. Minimum version required:{' '}
                 {minimumServerVersion}
+              </ThemedText>
+            )}
+            {errorDescription && (
+              <ThemedText className="mt-1 text-xs text-red-500">
+                {errorDescription}
               </ThemedText>
             )}
           </View>
