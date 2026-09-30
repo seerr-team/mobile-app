@@ -64,10 +64,12 @@ const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
                 type === 'movie' ? 'bg-blue-500' : 'bg-purple-600'
               }`}
             >
-              <View className="flex h-4 items-center px-2 py-2 text-center text-xs font-medium uppercase tracking-wider text-white sm:h-5">
-                {type === 'movie'
-                  ? intl.formatMessage(globalMessages.movie)
-                  : intl.formatMessage(globalMessages.tvshow)}
+              <View className="flex items-center px-2 py-1 text-center">
+                <ThemedText className="text-xs font-medium uppercase tracking-wider text-white">
+                  {type === 'movie'
+                    ? intl.formatMessage(globalMessages.movie)
+                    : intl.formatMessage(globalMessages.tvshow)}
+                </ThemedText>
               </View>
             </View>
             <View className="pointer-events-none z-40">
@@ -104,14 +106,14 @@ const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
                   <ThemedText className="mr-2 font-bold text-gray-400">
                     {intl.formatMessage(messages.tmdbid)}
                   </ThemedText>
-                  {tmdbId}
+                  <ThemedText>{tmdbId}</ThemedText>
                 </View>
                 {!!tvdbId && (
                   <View className="mt-2 flex items-center sm:mt-1">
                     <ThemedText className="mr-2 font-bold text-gray-400">
                       {intl.formatMessage(messages.tvdbid)}
                     </ThemedText>
-                    {tvdbId}
+                    <ThemedText>{tvdbId}</ThemedText>
                   </View>
                 )}
               </View>

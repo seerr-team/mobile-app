@@ -50,6 +50,7 @@ import {
   DisclosurePanel,
 } from '@app/components/Common/Disclosure';
 import ThemedText from '@app/components/Common/ThemedText';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import {
   MediaRequestStatus,
@@ -78,6 +79,7 @@ const TvDetails = () => {
   const { user, hasPermission } = useUser();
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const { locale } = useLocale();
   const [showRequestModal, setShowRequestModal] = useState(false);
   // const [showManager, setShowManager] = useState(false);
@@ -393,7 +395,10 @@ const TvDetails = () => {
   const TextLinkType = Platform.isTV ? ThemedText : Link;
 
   return (
-    <ScrollView contentContainerClassName="pb-4">
+    <ScrollView
+      contentContainerClassName="pb-4"
+      contentContainerStyle={{ paddingTop: topBarHeight }}
+    >
       {data.backdropPath && (
         <View className="absolute inset-0 -z-10 h-full w-full">
           <CachedImage
@@ -1261,6 +1266,7 @@ const TvDetails = () => {
                       className="block"
                       href={`/discover_tv/network/${n.id}`}
                       key={`network-${n.id}`}
+                      style={{ color: '#9ca3af' }}
                     >
                       {n.name}
                     </TextLinkType>

@@ -1,6 +1,7 @@
 import Button from '@app/components/Common/Button';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, Pressable, View } from 'react-native';
+import ThemedText from '../ThemedText';
 
 interface ConfirmButtonProps {
   onClick: () => void;
@@ -87,7 +88,7 @@ export default function ConfirmButton({
               opacity: confirmOpacity,
             }}
           >
-            {confirmText}
+            <ThemedText>{confirmText}</ThemedText>
           </Animated.View>
         </Button>
       </View>

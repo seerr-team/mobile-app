@@ -2,6 +2,7 @@ import ThemedText from '@app/components/Common/ThemedText';
 import PersonCard from '@app/components/PersonCard';
 import TitleCard from '@app/components/TitleCard';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useOrientation from '@app/hooks/useOrientation';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/utils/globalMessages';
@@ -38,6 +39,7 @@ const ListView = ({
   header,
 }: ListViewProps) => {
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const { hasPermission } = useUser();
   // useVerticalScroll(onScrollBottom, !isLoading && !isEmpty && !isReachingEnd);
   const orientation = useOrientation();
@@ -61,6 +63,7 @@ const ListView = ({
     <View className="px-2">
       <TVFocusGuideView autoFocus>
         <FlatList
+          key={orientation}
           ListHeaderComponent={
             header
               ? () => {
@@ -76,7 +79,10 @@ const ListView = ({
           renderItem={({ item }) => item}
           numColumns={orientation === 'portrait' ? 2 : 8}
           horizontal={false}
-          contentContainerStyle={{ alignItems: 'stretch' }}
+          contentContainerStyle={{
+            alignItems: 'stretch',
+            paddingTop: topBarHeight,
+          }}
           onEndReached={onScrollBottom}
           onEndReachedThreshold={0.8}
           data={[

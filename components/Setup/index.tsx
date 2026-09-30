@@ -17,10 +17,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { Dimensions, ScrollView, View } from 'react-native';
+import { ScrollView, useWindowDimensions, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 export default function Setup() {
+  const dimensions = useWindowDimensions();
   const serverUrl = useServerUrl();
   const dispatch = useDispatch();
   const [initialized, setInitialized] = useState(false);
@@ -97,7 +98,7 @@ export default function Setup() {
           <Image
             style={{
               width: '100%',
-              height: Dimensions.get('window').height * 0.3,
+              height: dimensions.height * 0.3,
             }}
             contentFit="contain"
             source={LogoStacked}

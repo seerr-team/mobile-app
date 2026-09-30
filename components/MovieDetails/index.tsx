@@ -43,6 +43,7 @@ import {} from '@nandorojo/heroicons/24/solid';
 import { type RatingResponse } from '@server/api/ratings';
 // import { IssueStatus } from '@server/constants/issue';
 import ThemedText from '@app/components/Common/ThemedText';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -70,6 +71,7 @@ const MovieDetails = () => {
   const { user, hasPermission } = useUser();
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const { locale } = useLocale();
   // const [showManager, setShowManager] = useState(false);
   const minStudios = 3;
@@ -405,7 +407,10 @@ const MovieDetails = () => {
   const TextLinkType = Platform.isTV ? ThemedText : Link;
 
   return (
-    <ScrollView contentContainerClassName="pb-4">
+    <ScrollView
+      contentContainerClassName="pb-4"
+      contentContainerStyle={{ paddingTop: topBarHeight }}
+    >
       {data.backdropPath && (
         <View className="absolute inset-0 -z-10 h-full w-full">
           <CachedImage
@@ -1045,7 +1050,8 @@ const MovieDetails = () => {
                         <TextLinkType
                           href={`/discover_movies/studio/${s.id}`}
                           key={`studio-${s.id}`}
-                          className="text-right text-sm font-normal text-gray-400"
+                          className="text-right text-sm font-normal"
+                          style={{ color: '#9ca3af' }}
                         >
                           {s.name}
                         </TextLinkType>

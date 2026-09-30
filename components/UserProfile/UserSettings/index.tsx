@@ -4,6 +4,7 @@ import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
 import ErrorPage from '@app/components/ErrorPage';
 import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
@@ -24,10 +25,15 @@ const UserSettings = () => {
   // const { user, error } = useUser({ id: Number(router.query.userId) });
   const { user, error } = useUser();
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const [currentRoute, setCurrentRoute] = useState<string>();
 
   if (!user && !error) {
-    return <LoadingSpinner />;
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <LoadingSpinner />
+      </View>
+    );
   }
 
   if (!user) {
@@ -86,7 +92,7 @@ const UserSettings = () => {
     settingsRoutes[0];
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ paddingTop: topBarHeight }}>
       <ProfileHeader user={user} isSettingsPage />
       <View className="mt-6 px-4">
         <SettingsTabs

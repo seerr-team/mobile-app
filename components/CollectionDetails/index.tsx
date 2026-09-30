@@ -10,6 +10,7 @@ import RequestModal from '@app/components/RequestModal';
 import Slider from '@app/components/Slider';
 import StatusBadge from '@app/components/StatusBadge';
 import TitleCard from '@app/components/TitleCard';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -32,6 +33,7 @@ const CollectionDetails = () => {
   const serverUrl = useServerUrl();
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const settings = useSettings();
   const { hasPermission } = useUser();
   const [requestModal, setRequestModal] = useState(false);
@@ -146,7 +148,11 @@ const CollectionDetails = () => {
   }, [data?.parts]);
 
   if (!data && !error) {
-    return <LoadingSpinner />;
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <LoadingSpinner />
+      </View>
+    );
   }
 
   if (!data) {
@@ -263,7 +269,10 @@ const CollectionDetails = () => {
   }
 
   return (
-    <ScrollView contentContainerClassName="pb-4">
+    <ScrollView
+      contentContainerClassName="pb-4"
+      contentContainerStyle={{ paddingTop: topBarHeight }}
+    >
       {data.backdropPath && (
         <View className="absolute inset-0 -z-10 h-full w-full">
           <CachedImage

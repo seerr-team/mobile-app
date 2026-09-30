@@ -432,13 +432,15 @@ const TvRequestModal = ({
       }
       backdrop={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data?.backdropPath}`}
     >
-      {editRequest
-        ? isOwner
-          ? intl.formatMessage(messages.pendingapproval)
-          : intl.formatMessage(messages.requestfrom, {
-              username: editRequest?.requestedBy.displayName,
-            })
-        : null}
+      <ThemedText className="text-center font-medium text-gray-400">
+        {editRequest
+          ? isOwner
+            ? intl.formatMessage(messages.pendingapproval)
+            : intl.formatMessage(messages.requestfrom, {
+                username: editRequest?.requestedBy.displayName,
+              })
+          : null}
+      </ThemedText>
       {hasPermission(
         [
           Permission.MANAGE_REQUESTS,

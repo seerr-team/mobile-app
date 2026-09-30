@@ -3,6 +3,10 @@ import UserDropdown from '@app/components/Layout/UserDropdown';
 import SearchInput from '@app/components/SearchInput';
 import ToastContainer from '@app/components/ToastContainer';
 import { LanguageContext } from '@app/context/LanguageContext';
+import {
+  TOP_BAR_HEIGHT,
+  TopBarHeightContext,
+} from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
@@ -17,14 +21,14 @@ import '@seerr/src/styles/globals.css';
 import { type AvailableLocale } from '@server/types/languages';
 import 'array.prototype.tosorted/auto';
 import axios from 'axios';
-import { BlurTargetView } from 'expo-blur';
+import { BlurTargetView, BlurView } from 'expo-blur';
 import { useFonts } from 'expo-font';
 import { router, SplashScreen, Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'intl-pluralrules';
 import { useEffect, useRef, useState } from 'react';
 import { IntlProvider } from 'react-intl';
-import { TVFocusGuideView, View } from 'react-native';
+import { StyleSheet, TVFocusGuideView, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   KeyboardAvoidingView,
@@ -151,45 +155,57 @@ function RootLayout() {
     }
   }, [loaded]);
 
+  const topBarHeight = user ? insets.top + TOP_BAR_HEIGHT : 0;
+
   const appContent = (
-    <BlurTargetView ref={blurTargetRef} style={{ flex: 1 }}>
+    <View className="flex-1">
       <StatusBar style="light" />
+      <BlurTargetView ref={blurTargetRef} style={{ flex: 1 }}>
+        <TopBarHeightContext.Provider value={topBarHeight}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: '#111827',
+                paddingTop: 0,
+                paddingBottom: 0,
+              },
+              animation: 'slide_from_right' as const,
+              animationDuration: 100,
+            }}
+          >
+            <Stack.Screen
+              name="search"
+              options={{
+                animation: 'none',
+              }}
+            />
+          </Stack>
+        </TopBarHeightContext.Provider>
+      </BlurTargetView>
       {user && (
         <TVFocusGuideView
           autoFocus
-          className="flex flex-row items-center gap-4 border-b border-gray-600 bg-gray-900 px-6 "
+          className="absolute left-0 right-0 top-0 flex flex-row items-center gap-4 overflow-hidden px-6"
           style={{
-            paddingTop: insets.top + 8,
-            height: insets.top + 64,
+            paddingTop: insets.top,
+            height: topBarHeight,
           }}
         >
+          <BlurView
+            blurTarget={blurTargetRef}
+            blurMethod="dimezisBlurView"
+            intensity={60}
+            tint="dark"
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+          />
           <SearchInput />
           <UserDropdown blurTarget={blurTargetRef} />
         </TVFocusGuideView>
       )}
-      <View className="flex-1 ">
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: '#111827',
-              paddingTop: 0,
-              paddingBottom: 0,
-            },
-            animation: 'slide_from_right' as const,
-            animationDuration: 100,
-          }}
-        >
-          <Stack.Screen
-            name="search"
-            options={{
-              animation: 'none',
-            }}
-          />
-        </Stack>
-      </View>
       {user && <BottomNavigation />}
-    </BlurTargetView>
+    </View>
   );
 
   return (

@@ -12,6 +12,7 @@ import { useUser } from '@app/hooks/useUser';
 //   Funnel,
 // } from '@nandorojo/heroicons/24/solid';
 import ThemedText from '@app/components/Common/ThemedText';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -46,6 +47,7 @@ type Sort = 'added' | 'modified';
 const RequestList = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const pathname = usePathname();
   const searchParams = useLocalSearchParams();
   const { user: currentUser } = useUser();
@@ -129,10 +131,12 @@ const RequestList = () => {
   return (
     <ScrollView
       contentContainerClassName="pb-4"
+      contentContainerStyle={{ paddingTop: topBarHeight }}
       className="px-2"
       refreshControl={
         <RefreshControl
           refreshing={!data && !error}
+          progressViewOffset={topBarHeight}
           onRefresh={() => revalidate()}
           colors={['white']}
           progressBackgroundColor={'black'}

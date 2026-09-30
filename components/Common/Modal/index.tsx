@@ -9,13 +9,14 @@ import type { MouseEvent } from 'react';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import {
-  Dimensions,
   Pressable,
   Modal as RNModal,
   ScrollView,
   TVFocusGuideView,
+  useWindowDimensions,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ModalProps {
   show: boolean;
@@ -69,6 +70,8 @@ const Modal = ({
   backdrop,
 }: ModalProps) => {
   const intl = useIntl();
+  const insets = useSafeAreaInsets();
+  const dimensions = useWindowDimensions();
 
   return (
     <View className="relative">
@@ -78,13 +81,10 @@ const Modal = ({
         animationType="fade"
         onRequestClose={() => onCancel && onCancel()}
       >
-        <View
-          className="absolute inset-0 flex h-screen w-screen items-center justify-center"
-          style={{ zIndex: 999 }}
-        >
+        <View className="flex-1 items-center justify-center">
           <ScrollView
             className="w-full"
-            contentContainerClassName="flex justify-center items-center pb-12 flex-grow"
+            contentContainerClassName="flex justify-center items-center flex-grow"
           >
             <Pressable
               android_disableSound
@@ -94,7 +94,11 @@ const Modal = ({
             />
             <TVFocusGuideView
               autoFocus
-              className="hide-scrollbar relative inline-block w-full scale-100 overflow-hidden border border-gray-700 bg-gray-800 pb-4 pt-4 text-left opacity-100 transition-all sm:my-8 sm:max-w-3xl sm:rounded-lg"
+              className="hide-scrollbar relative inline-block w-full scale-100 overflow-hidden border border-gray-700 bg-gray-800 text-left opacity-100 transition-all sm:my-8 sm:max-w-3xl sm:rounded-lg"
+              style={{
+                paddingTop: insets.top,
+                paddingBottom: insets.bottom,
+              }}
             >
               {backdrop && (
                 <View className="absolute left-0 right-0 top-0 z-0 h-64 max-h-full w-full">
@@ -106,8 +110,7 @@ const Modal = ({
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      borderRadius:
-                        Dimensions.get('window').width > 640 ? 6 : 0,
+                      borderRadius: dimensions.width > 640 ? 6 : 0,
                     }}
                   />
                   <LinearGradient
@@ -125,7 +128,7 @@ const Modal = ({
                   className={`mt-3 flex-1 truncate sm:mt-0 sm:px-4 sm:text-left`}
                 >
                   {(title || subTitle) && (
-                    <View className="flex flex-col items-start space-y-1 sm:items-start">
+                    <View className="flex flex-col items-center space-y-1 sm:items-start">
                       {title && (
                         <ThemedText className="truncate pb-0.5 text-center text-3xl font-bold text-indigo-400">
                           {title}

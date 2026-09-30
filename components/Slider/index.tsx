@@ -3,6 +3,7 @@ import globalMessages from '@app/utils/globalMessages';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { FlatList, TVFocusGuideView, View } from 'react-native';
+import ThemedText from '../Common/ThemedText';
 
 interface SliderProps {
   sliderKey: string;
@@ -38,10 +39,12 @@ const Slider = ({
         )}
         ListEmptyComponent={
           isEmpty ? (
-            <View className="mb-16 mt-16 px-2 text-center font-medium text-gray-400">
-              {emptyMessage
-                ? emptyMessage
-                : intl.formatMessage(globalMessages.noresults)}
+            <View className="mb-16 mt-16 px-2">
+              <ThemedText className="text-center font-medium text-gray-400">
+                {emptyMessage
+                  ? emptyMessage
+                  : intl.formatMessage(globalMessages.noresults)}
+              </ThemedText>
             </View>
           ) : null
         }

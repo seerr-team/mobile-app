@@ -37,6 +37,9 @@ const ImageFader = ({
   };
 
   useEffect(() => {
+    if (!backgroundImages || backgroundImages.length === 0) {
+      return;
+    }
     const interval = setInterval(
       () => setIndex((ai) => (ai + 1) % backgroundImages.length),
       rotationSpeed

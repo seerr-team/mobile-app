@@ -12,6 +12,7 @@ import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 // import TruncateMarkup from 'react-truncate-markup';
 import ThemedText from '@app/components/Common/ThemedText';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useOrientation from '@app/hooks/useOrientation';
 import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
@@ -26,6 +27,7 @@ const PersonDetails = () => {
   const serverUrl = useServerUrl();
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const { data, error } = useSWR<PersonDetailsType>(
     `${serverUrl}/api/v1/person/${searchParams.personId}`
   );
@@ -222,7 +224,10 @@ const PersonDetails = () => {
   );
 
   return (
-    <ScrollView contentContainerClassName="pb-4">
+    <ScrollView
+      contentContainerClassName="pb-4"
+      contentContainerStyle={{ paddingTop: topBarHeight }}
+    >
       {/* {(sortedCrew || sortedCast) && (
         <View className="absolute top-0 left-0 right-0 z-0 h-96">
           <ImageFader

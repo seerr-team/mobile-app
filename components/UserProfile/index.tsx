@@ -9,6 +9,7 @@ import RequestCard, {
 import Slider from '@app/components/Slider';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
 import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
+import { useTopBarHeight } from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import { Permission, UserType, useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
@@ -33,6 +34,7 @@ type MediaTitle = MovieDetails | TvDetails;
 const UserProfile = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const topBarHeight = useTopBarHeight();
   const { user, error } = useUser({
     // id: Number(router.query.userId),
   });
@@ -102,7 +104,11 @@ const UserProfile = () => {
   }, [user?.id]);
 
   if (!user && !error) {
-    return <LoadingSpinner />;
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <LoadingSpinner />
+      </View>
+    );
   }
 
   if (!user) {
@@ -117,7 +123,10 @@ const UserProfile = () => {
   );
 
   return (
-    <ScrollView contentContainerClassName="pb-4">
+    <ScrollView
+      contentContainerClassName="pb-4"
+      contentContainerStyle={{ paddingTop: topBarHeight }}
+    >
       {Object.keys(availableTitles).length > 0 && (
         <View className="absolute inset-0 -z-10 h-96 w-full">
           <ImageFader
