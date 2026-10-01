@@ -27,6 +27,7 @@ The mobile app offers almost all the features of the web app, with some addition
 - [x] More settings in advanced request modal
 - [x] TV shows seasons details
 - [x] Add movie collections
+- [x] Jellyfin Quick Connect
 - [x] Support for Plex
 - [x] Support for iOS
 - [x] Support for TV devices
@@ -84,22 +85,22 @@ The mobile app offers almost all the features of the web app, with some addition
 2. Prebuild the project
 
    ```bash
-   # For mobile devices
-   npm run prebuild
-   # For TV devices
-   npm run prebuild:tv
+   # For Android phones and Android TV (single universal build)
+   npm run prebuild:android
+   # For iPhone and iPad
+   npm run prebuild:ios
+   # For Apple TV
+   npm run prebuild:ios:tv
    ```
 
 3. Start the development server
 
    ```bash
-   # For Android devices
+   # For Android phones and Android TV
    npm run android
-   # For iOS devices
+   # For iPhone and iPad
    npm run ios
-   # For Android TV devices
-   npm run android:tv
-   # For Apple TV devices
+   # For Apple TV
    npm run ios:tv
    ```
 

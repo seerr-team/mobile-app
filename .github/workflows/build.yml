@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-android-phone:
+  build-android:
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Setup repo
@@ -39,9 +39,6 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm ci
-
-      - name: 🔧 Prebuild expo app
-        run: npm run prebuild
 
       - name: 👷 Build expo app
         run: |
@@ -53,7 +50,7 @@ jobs:
           name: ${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }}
           path: ./${{ github.ref_type == 'tag' && format('seerr-{0}.apk', github.ref_name) || 'seerr.apk' }}
 
-  build-android-phone-aab:
+  build-android-aab:
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Setup repo
@@ -76,9 +73,6 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm ci
-
-      - name: 🔧 Prebuild expo app
-        run: npm run prebuild
 
       - name: 👷 Build expo app bundle
         run: |
@@ -89,43 +83,6 @@ jobs:
         with:
           name: ${{ github.ref_type == 'tag' && format('seerr-{0}.aab', github.ref_name) || 'seerr.aab' }}
           path: ./${{ github.ref_type == 'tag' && format('seerr-{0}.aab', github.ref_name) || 'seerr.aab' }}
-
-  build-android-tv:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🏗 Setup repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          submodules: 'true'
-
-      - name: 🏗 Setup Node
-        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
-        with:
-          node-version: 22.x
-
-      - name: 🏗 Setup Expo and EAS
-        uses: expo/expo-github-action@c7b66a9c327a43a8fa7c0158e7f30d6040d2481e # v8.2.1
-        with:
-          token: ${{ secrets.EXPO_TOKEN }}
-          expo-version: latest
-          eas-version: latest
-          packager: npm
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🔧 Prebuild expo app
-        run: npm run prebuild:tv
-
-      - name: 👷 Build expo app
-        run: |
-          eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-tv-{0}.apk', github.ref_name) || 'seerr-tv.apk' }} --platform android --profile production
-
-      - name: 📦 Upload APK artifact
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: ${{ github.ref_type == 'tag' && format('seerr-tv-{0}.apk', github.ref_name) || 'seerr-tv.apk' }}
-          path: ./${{ github.ref_type == 'tag' && format('seerr-tv-{0}.apk', github.ref_name) || 'seerr-tv.apk' }}
 
   build-ios-phone:
     runs-on: macos-latest
@@ -156,9 +113,6 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 🔧 Prebuild expo app
-        run: npm run prebuild
-
       - name: 👷 Build expo app
         run: |
           eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }} --platform ios --profile production
@@ -169,12 +123,51 @@ jobs:
           name: ${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }}
           path: ./${{ github.ref_type == 'tag' && format('seerr-{0}.ipa', github.ref_name) || 'seerr.ipa' }}
 
+  # build-ios-tv:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: 🏗 Setup repo
+  #       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+  #       with:
+  #         submodules: 'true'
+
+  #     - name: 🏗 Setup Node
+  #       uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+  #       with:
+  #         node-version: 22.x
+
+  #     - name: 🔧 Setup Xcode
+  #       uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+  #       with:
+  #         xcode-version: '^26.4'
+
+  #     - name: 🏗 Setup Expo and EAS
+  #       uses: expo/expo-github-action@c7b66a9c327a43a8fa7c0158e7f30d6040d2481e # v8.2.1
+  #       with:
+  #         token: ${{ secrets.EXPO_TOKEN }}
+  #         expo-version: latest
+  #         eas-version: latest
+  #         packager: npm
+
+  #     - name: 📦 Install dependencies
+  #       run: npm ci
+
+  #     - name: 👷 Build expo app
+  #       run: |
+  #         eas build --local --non-interactive --output ./${{ github.ref_type == 'tag' && format('seerr-tv-{0}.ipa', github.ref_name) || 'seerr-tv.ipa' }} --platform ios --profile production-tv
+
+  #     - name: 📦 Upload IPA artifact
+  #       uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+  #       with:
+  #         name: ${{ github.ref_type == 'tag' && format('seerr-tv-{0}.ipa', github.ref_name) || 'seerr-tv.ipa' }}
+  #         path: ./${{ github.ref_type == 'tag' && format('seerr-tv-{0}.ipa', github.ref_name) || 'seerr-tv.ipa' }}
+
   release:
     needs:
-      - build-android-phone
-      - build-android-phone-aab
+      - build-android
+      - build-android-aab
       - build-ios-phone
-      - build-android-tv
+      # - build-ios-tv
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     permissions:

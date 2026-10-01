@@ -13,13 +13,29 @@
     },
     "production": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "env": {
+          "EXPO_TV": "1"
+        }
+      },
+      "ios": {
+        "env": {
+          "EXPO_TV": "0"
+        }
       }
     },
     "production-aab": {
       "extends": "production",
       "android": {
         "buildType": "app-bundle"
+      }
+    },
+    "production-tv": {
+      "extends": "production",
+      "ios": {
+        "env": {
+          "EXPO_TV": "1"
+        }
       }
     }
   },
