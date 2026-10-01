@@ -15,6 +15,12 @@
       "android": {
         "buildType": "apk"
       }
+    },
+    "production-aab": {
+      "extends": "production",
+      "android": {
+        "buildType": "app-bundle"
+      }
     }
   },
   "submit": {
