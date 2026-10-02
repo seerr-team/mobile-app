@@ -195,7 +195,7 @@ function RootLayout() {
           <BlurView
             blurTarget={blurTargetRef}
             blurMethod="dimezisBlurView"
-            intensity={60}
+            intensity={50}
             tint="dark"
             style={StyleSheet.absoluteFill}
             pointerEvents="none"

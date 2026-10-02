@@ -12,7 +12,10 @@ import { useUser } from '@app/hooks/useUser';
 //   Funnel,
 // } from '@nandorojo/heroicons/24/solid';
 import ThemedText from '@app/components/Common/ThemedText';
-import { useTopBarHeight } from '@app/context/TopBarContext';
+import {
+  useTopBarFadingEdge,
+  useTopBarHeight,
+} from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -48,6 +51,7 @@ const RequestList = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const topBarHeight = useTopBarHeight();
+  const topBarFadingEdge = useTopBarFadingEdge();
   const pathname = usePathname();
   const searchParams = useLocalSearchParams();
   const { user: currentUser } = useUser();
@@ -132,6 +136,7 @@ const RequestList = () => {
     <ScrollView
       contentContainerClassName="pb-4"
       contentContainerStyle={{ paddingTop: topBarHeight }}
+      fadingEdgeLength={topBarFadingEdge}
       className="px-2"
       refreshControl={
         <RefreshControl

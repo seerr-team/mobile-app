@@ -43,7 +43,10 @@ import {} from '@nandorojo/heroicons/24/solid';
 import { type RatingResponse } from '@server/api/ratings';
 // import { IssueStatus } from '@server/constants/issue';
 import ThemedText from '@app/components/Common/ThemedText';
-import { useTopBarHeight } from '@app/context/TopBarContext';
+import {
+  useTopBarFadingEdge,
+  useTopBarHeight,
+} from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useToasts from '@app/hooks/useToasts';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
@@ -72,6 +75,7 @@ const MovieDetails = () => {
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
   const topBarHeight = useTopBarHeight();
+  const topBarFadingEdge = useTopBarFadingEdge();
   const { locale } = useLocale();
   // const [showManager, setShowManager] = useState(false);
   const minStudios = 3;
@@ -419,6 +423,7 @@ const MovieDetails = () => {
     <ScrollView
       contentContainerClassName="pb-4"
       contentContainerStyle={{ paddingTop: topBarHeight }}
+      fadingEdgeLength={topBarFadingEdge}
     >
       {data.backdropPath && (
         <View className="absolute inset-0 -z-10 h-full w-full">

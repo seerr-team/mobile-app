@@ -50,7 +50,10 @@ import {
   DisclosurePanel,
 } from '@app/components/Common/Disclosure';
 import ThemedText from '@app/components/Common/ThemedText';
-import { useTopBarHeight } from '@app/context/TopBarContext';
+import {
+  useTopBarFadingEdge,
+  useTopBarHeight,
+} from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useToasts from '@app/hooks/useToasts';
 import {
@@ -80,6 +83,7 @@ const TvDetails = () => {
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
   const topBarHeight = useTopBarHeight();
+  const topBarFadingEdge = useTopBarFadingEdge();
   const { locale } = useLocale();
   const [showRequestModal, setShowRequestModal] = useState(false);
   // const [showManager, setShowManager] = useState(false);
@@ -407,6 +411,7 @@ const TvDetails = () => {
     <ScrollView
       contentContainerClassName="pb-4"
       contentContainerStyle={{ paddingTop: topBarHeight }}
+      fadingEdgeLength={topBarFadingEdge}
     >
       {data.backdropPath && (
         <View className="absolute inset-0 -z-10 h-full w-full">

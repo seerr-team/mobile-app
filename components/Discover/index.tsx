@@ -8,7 +8,10 @@ import RecentRequestsSlider from '@app/components/Discover/RecentRequestsSlider'
 import StudioSlider from '@app/components/Discover/StudioSlider';
 import TvGenreSlider from '@app/components/Discover/TvGenreSlider';
 import MediaSlider from '@app/components/MediaSlider';
-import { useTopBarHeight } from '@app/context/TopBarContext';
+import {
+  useTopBarFadingEdge,
+  useTopBarHeight,
+} from '@app/context/TopBarContext';
 import { encodeURIExtraParams } from '@app/hooks/useDiscover';
 import useServerUrl from '@app/hooks/useServerUrl';
 import { DiscoverSliderType } from '@server/constants/discover';
@@ -21,6 +24,7 @@ import useSWR from 'swr';
 const Discover = () => {
   const intl = useIntl();
   const topBarHeight = useTopBarHeight();
+  const topBarFadingEdge = useTopBarFadingEdge();
   const serverUrl = useServerUrl();
   const [lastRefresh, setLastRefresh] = useState(new Date());
   const {
@@ -47,6 +51,7 @@ const Discover = () => {
     <ScrollView
       contentContainerClassName="pb-4"
       contentContainerStyle={{ paddingTop: topBarHeight }}
+      fadingEdgeLength={topBarFadingEdge}
       refreshControl={
         <RefreshControl
           refreshing={!discoverData && !discoverError}

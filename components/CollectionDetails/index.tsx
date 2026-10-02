@@ -10,7 +10,10 @@ import RequestModal from '@app/components/RequestModal';
 import Slider from '@app/components/Slider';
 import StatusBadge from '@app/components/StatusBadge';
 import TitleCard from '@app/components/TitleCard';
-import { useTopBarHeight } from '@app/context/TopBarContext';
+import {
+  useTopBarFadingEdge,
+  useTopBarHeight,
+} from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
 import { Permission, useUser } from '@app/hooks/useUser';
@@ -34,6 +37,7 @@ const CollectionDetails = () => {
   const searchParams = useLocalSearchParams();
   const intl = useIntl();
   const topBarHeight = useTopBarHeight();
+  const topBarFadingEdge = useTopBarFadingEdge();
   const settings = useSettings();
   const { hasPermission } = useUser();
   const [requestModal, setRequestModal] = useState(false);
@@ -272,6 +276,7 @@ const CollectionDetails = () => {
     <ScrollView
       contentContainerClassName="pb-4"
       contentContainerStyle={{ paddingTop: topBarHeight }}
+      fadingEdgeLength={topBarFadingEdge}
     >
       {data.backdropPath && (
         <View className="absolute inset-0 -z-10 h-full w-full">

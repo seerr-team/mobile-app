@@ -4,7 +4,10 @@ import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
 import ErrorPage from '@app/components/ErrorPage';
 import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
-import { useTopBarHeight } from '@app/context/TopBarContext';
+import {
+  useTopBarFadingEdge,
+  useTopBarHeight,
+} from '@app/context/TopBarContext';
 import useSettings from '@app/hooks/useSettings';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
@@ -26,6 +29,7 @@ const UserSettings = () => {
   const { user, error } = useUser();
   const intl = useIntl();
   const topBarHeight = useTopBarHeight();
+  const topBarFadingEdge = useTopBarFadingEdge();
   const [currentRoute, setCurrentRoute] = useState<string>();
 
   if (!user && !error) {
@@ -92,7 +96,10 @@ const UserSettings = () => {
     settingsRoutes[0];
 
   return (
-    <ScrollView contentContainerStyle={{ paddingTop: topBarHeight }}>
+    <ScrollView
+      contentContainerStyle={{ paddingTop: topBarHeight }}
+      fadingEdgeLength={topBarFadingEdge}
+    >
       <ProfileHeader user={user} isSettingsPage />
       <View className="mt-6 px-4">
         <SettingsTabs

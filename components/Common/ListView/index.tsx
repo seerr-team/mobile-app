@@ -2,7 +2,10 @@ import ThemedText from '@app/components/Common/ThemedText';
 import PersonCard from '@app/components/PersonCard';
 import TitleCard from '@app/components/TitleCard';
 import TmdbTitleCard from '@app/components/TitleCard/TmdbTitleCard';
-import { useTopBarHeight } from '@app/context/TopBarContext';
+import {
+  useTopBarFadingEdge,
+  useTopBarHeight,
+} from '@app/context/TopBarContext';
 import useOrientation from '@app/hooks/useOrientation';
 import { Permission, useUser } from '@app/hooks/useUser';
 import globalMessages from '@app/utils/globalMessages';
@@ -40,6 +43,7 @@ const ListView = ({
 }: ListViewProps) => {
   const intl = useIntl();
   const topBarHeight = useTopBarHeight();
+  const topBarFadingEdge = useTopBarFadingEdge();
   const { hasPermission } = useUser();
   // useVerticalScroll(onScrollBottom, !isLoading && !isEmpty && !isReachingEnd);
   const orientation = useOrientation();
@@ -83,6 +87,7 @@ const ListView = ({
             alignItems: 'stretch',
             paddingTop: topBarHeight,
           }}
+          fadingEdgeLength={topBarFadingEdge}
           onEndReached={onScrollBottom}
           onEndReachedThreshold={0.8}
           data={[
