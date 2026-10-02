@@ -5,6 +5,7 @@ import type { RequestOverrides } from '@app/components/RequestModal/AdvancedRequ
 import AdvancedRequester from '@app/components/RequestModal/AdvancedRequester';
 import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -16,7 +17,6 @@ import { Permission } from '@server/lib/permissions';
 import type { MovieDetails } from '@server/models/Movie';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import useSWR, { mutate } from 'swr';
@@ -46,6 +46,7 @@ const MovieRequestModal = ({
   const [isUpdating, setIsUpdating] = useState(false);
   const [requestOverrides, setRequestOverrides] =
     useState<RequestOverrides | null>(null);
+  const { addToast } = useToasts();
   const { data, error } = useSWR<MovieDetails>(
     `${serverUrl}/api/v1/movie/${tmdbId}`,
     {
@@ -111,7 +112,7 @@ const MovieRequestModal = ({
               : MediaStatus.PENDING
           );
         }
-        toast.success(
+        addToast(
           <ThemedText>
             {intl.formatMessage(messages.requestSuccess, {
               title: data?.title,
@@ -119,11 +120,15 @@ const MovieRequestModal = ({
                 <ThemedText className="font-bold">{msg}</ThemedText>
               ),
             })}
-          </ThemedText>
+          </ThemedText>,
+          { appearance: 'success', autoDismiss: true }
         );
       }
     } catch {
-      toast.error(intl.formatMessage(messages.requesterror));
+      addToast(intl.formatMessage(messages.requesterror), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     } finally {
       setIsUpdating(false);
     }
@@ -134,6 +139,7 @@ const MovieRequestModal = ({
     data?.title,
     is4k,
     onComplete,
+    addToast,
     intl,
     hasPermission,
   ]);
@@ -154,7 +160,7 @@ const MovieRequestModal = ({
         if (onComplete) {
           onComplete(MediaStatus.UNKNOWN);
         }
-        toast.success(
+        addToast(
           <ThemedText>
             {intl.formatMessage(messages.requestCancel, {
               title: data?.title,
@@ -162,7 +168,8 @@ const MovieRequestModal = ({
                 <ThemedText className="font-bold">{msg}</ThemedText>
               ),
             })}
-          </ThemedText>
+          </ThemedText>,
+          { appearance: 'success', autoDismiss: true }
         );
       }
     } catch {
@@ -193,7 +200,7 @@ const MovieRequestModal = ({
       );
       mutate(serverUrl + '/api/v1/request/count');
 
-      toast.success(
+      addToast(
         <ThemedText>
           {intl.formatMessage(
             alsoApproveRequest
@@ -206,15 +213,17 @@ const MovieRequestModal = ({
               ),
             }
           )}
-        </ThemedText>
+        </ThemedText>,
+        { appearance: 'success', autoDismiss: true }
       );
 
       if (onComplete) {
         onComplete(MediaStatus.PENDING);
       }
     } catch {
-      toast.error(
-        <ThemedText>{intl.formatMessage(messages.errorediting)}</ThemedText>
+      addToast(
+        <ThemedText>{intl.formatMessage(messages.errorediting)}</ThemedText>,
+        { appearance: 'error', autoDismiss: true }
       );
     } finally {
       setIsUpdating(false);

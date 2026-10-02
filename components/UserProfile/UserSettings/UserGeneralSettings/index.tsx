@@ -19,11 +19,11 @@ import { availableLanguages } from '@seerr/src/context/LanguageContext';
 import { ApiErrorCode } from '@server/constants/error';
 import type { UserSettingsGeneralResponse } from '@server/interfaces/api/userSettingsInterfaces';
 // import type { AvailableLocale } from '@server/types/languages';
+import useToasts from '@app/hooks/useToasts';
 import axios from 'axios';
 import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, View } from 'react-native';
 import useSWR from 'swr';
@@ -37,6 +37,7 @@ const messages = getSeerrMessages(
 const UserGeneralSettings = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const { addToast } = useToasts();
   // const { locale, setLocale } = useLocale();
   const [movieQuotaEnabled, setMovieQuotaEnabled] = useState(false);
   const [tvQuotaEnabled, setTvQuotaEnabled] = useState(false);
@@ -153,20 +154,28 @@ const UserGeneralSettings = () => {
             //   );
             // }
 
-            toast.success(intl.formatMessage(messages.toastSettingsSuccess));
+            addToast(intl.formatMessage(messages.toastSettingsSuccess), {
+              autoDismiss: true,
+              appearance: 'success',
+            });
           } catch (e) {
             if (e?.response?.data?.message === ApiErrorCode.InvalidEmail) {
               if (values.email) {
-                toast.error(
-                  intl.formatMessage(messages.toastSettingsFailureEmail)
+                addToast(
+                  intl.formatMessage(messages.toastSettingsFailureEmail),
+                  { autoDismiss: true, appearance: 'error' }
                 );
               } else {
-                toast.error(
-                  intl.formatMessage(messages.toastSettingsFailureEmailEmpty)
+                addToast(
+                  intl.formatMessage(messages.toastSettingsFailureEmailEmpty),
+                  { autoDismiss: true, appearance: 'error' }
                 );
               }
             } else {
-              toast.error(intl.formatMessage(messages.toastSettingsFailure));
+              addToast(intl.formatMessage(messages.toastSettingsFailure), {
+                autoDismiss: true,
+                appearance: 'error',
+              });
             }
           } finally {
             revalidate();

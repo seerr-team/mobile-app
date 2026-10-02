@@ -4,6 +4,7 @@ import ThemedText from '@app/components/Common/ThemedText';
 import JellyfinQuickConnectModal from '@app/components/Login/JellyfinQuickConnectModal';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
+import useToasts from '@app/hooks/useToasts';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { ArrowLeftOnRectangle, QrCode } from '@nandorojo/heroicons/24/outline';
 import { ExclamationTriangle } from '@nandorojo/heroicons/24/solid';
@@ -12,7 +13,6 @@ import { MediaServerType, ServerType } from '@server/constants/server';
 import axios from 'axios';
 import { Formik } from 'formik';
 import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
 import * as Yup from 'yup';
@@ -26,6 +26,7 @@ interface JellyfinLoginProps {
 
 const JellyfinLogin = ({ revalidate, serverType }: JellyfinLoginProps) => {
   const serverUrl = useServerUrl();
+  const toasts = useToasts();
   const intl = useIntl();
   const settings = useSettings();
   const [showQuickConnect, setShowQuickConnect] = useState(false);
@@ -39,9 +40,12 @@ const JellyfinLogin = ({ revalidate, serverType }: JellyfinLoginProps) => {
           : 'Media Server',
   };
 
-  const handleQuickConnectError = useCallback((error: string) => {
-    toast.error(error);
-  }, []);
+  const handleQuickConnectError = useCallback(
+    (error: string) => {
+      toasts.addToast(error, { autoDismiss: true, appearance: 'error' });
+    },
+    [toasts]
+  );
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required(
@@ -88,8 +92,9 @@ const JellyfinLogin = ({ revalidate, serverType }: JellyfinLoginProps) => {
                 errorMessage = messages.noadminerror;
                 break;
             }
-            toast.error(
-              intl.formatMessage(errorMessage, mediaServerFormatValues)
+            toasts.addToast(
+              intl.formatMessage(errorMessage, mediaServerFormatValues),
+              { autoDismiss: true, appearance: 'error' }
             );
           } finally {
             revalidate();

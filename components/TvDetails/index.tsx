@@ -52,6 +52,7 @@ import {
 import ThemedText from '@app/components/Common/ThemedText';
 import { useTopBarHeight } from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import {
   MediaRequestStatus,
   MediaStatus,
@@ -66,7 +67,6 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
@@ -89,6 +89,7 @@ const TvDetails = () => {
   // const [isBlocklistUpdating, setIsBlocklistUpdating] =
   //   useState<boolean>(false);
   // const [showBlocklistModal, setShowBlocklistModal] = useState(false);
+  const { addToast } = useToasts();
 
   const {
     data,
@@ -344,7 +345,7 @@ const TvDetails = () => {
         mediaType: MediaType.TV,
         title: data?.name,
       });
-      toast.success(
+      addToast(
         <ThemedText>
           {intl.formatMessage(messages.watchlistSuccess, {
             title: data?.name,
@@ -352,13 +353,17 @@ const TvDetails = () => {
               <ThemedText className="font-bold">{msg}</ThemedText>
             ),
           })}
-        </ThemedText>
+        </ThemedText>,
+        { appearance: 'success', autoDismiss: true }
       );
 
       setIsUpdating(false);
       setToggleWatchlist((prevState) => !prevState);
     } catch {
-      toast.error(intl.formatMessage(messages.watchlistError));
+      addToast(intl.formatMessage(messages.watchlistError), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
 
       setIsUpdating(false);
     }
@@ -372,7 +377,7 @@ const TvDetails = () => {
         `${serverUrl}/api/v1/watchlist/${data?.id}?mediaType=${MediaType.TV}`
       );
 
-      toast(
+      addToast(
         <ThemedText>
           {intl.formatMessage(messages.watchlistDeleted, {
             title: data?.name,
@@ -380,13 +385,17 @@ const TvDetails = () => {
               <ThemedText className="font-bold">{msg}</ThemedText>
             ),
           })}
-        </ThemedText>
+        </ThemedText>,
+        { appearance: 'info', autoDismiss: true }
       );
 
       setIsUpdating(false);
       setToggleWatchlist((prevState) => !prevState);
     } catch {
-      toast.error(intl.formatMessage(messages.watchlistError));
+      addToast(intl.formatMessage(messages.watchlistError), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
 
       setIsUpdating(false);
     }

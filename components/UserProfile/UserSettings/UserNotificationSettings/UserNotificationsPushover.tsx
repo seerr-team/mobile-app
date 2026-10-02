@@ -10,10 +10,10 @@ import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
 import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
 // import type { PushoverSound } from '@server/api/pushover';
+import useToasts from '@app/hooks/useToasts';
 import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import axios from 'axios';
 import { Formik } from 'formik';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, View } from 'react-native';
 import useSWR from 'swr';
@@ -27,6 +27,7 @@ const UserPushoverSettings = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const settings = useSettings();
+  const { addToast } = useToasts();
   // const { user } = useUser({ id: Number(router.query.userId) });
   const { user } = useUser();
   const {
@@ -101,9 +102,15 @@ const UserPushoverSettings = () => {
               },
             }
           );
-          toast.success(intl.formatMessage(messages.pushoversettingssaved));
+          addToast(intl.formatMessage(messages.pushoversettingssaved), {
+            appearance: 'success',
+            autoDismiss: true,
+          });
         } catch {
-          toast.error(intl.formatMessage(messages.pushoversettingsfailed));
+          addToast(intl.formatMessage(messages.pushoversettingsfailed), {
+            appearance: 'error',
+            autoDismiss: true,
+          });
         } finally {
           revalidate();
         }

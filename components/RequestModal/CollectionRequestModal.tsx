@@ -7,6 +7,7 @@ import type { RequestOverrides } from '@app/components/RequestModal/AdvancedRequ
 import AdvancedRequester from '@app/components/RequestModal/AdvancedRequester';
 import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -17,7 +18,6 @@ import { Permission } from '@server/lib/permissions';
 import type { Collection } from '@server/models/Collection';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Switch, View } from 'react-native';
 import useSWR from 'swr';
@@ -46,6 +46,7 @@ const CollectionRequestModal = ({
   const [requestOverrides, setRequestOverrides] =
     useState<RequestOverrides | null>(null);
   const [selectedParts, setSelectedParts] = useState<number[]>([]);
+  const { addToast } = useToasts();
   const { data, error } = useSWR<Collection>(
     `${serverUrl}/api/v1/collection/${tmdbId}`,
     {
@@ -217,7 +218,7 @@ const CollectionRequestModal = ({
         );
       }
 
-      toast.success(
+      addToast(
         <ThemedText>
           {intl.formatMessage(messages.requestSuccess, {
             title: data?.name,
@@ -225,14 +226,18 @@ const CollectionRequestModal = ({
               <ThemedText className="font-semibold">{msg}</ThemedText>
             ),
           })}
-        </ThemedText>
+        </ThemedText>,
+        { appearance: 'success', autoDismiss: true }
       );
     } catch {
-      toast.error(intl.formatMessage(messages.requesterror));
+      addToast(intl.formatMessage(messages.requesterror), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     } finally {
       setIsUpdating(false);
     }
-  }, [requestOverrides, data, onComplete, intl, selectedParts, is4k]);
+  }, [requestOverrides, data, onComplete, addToast, intl, selectedParts, is4k]);
 
   const hasAutoApprove = hasPermission(
     [

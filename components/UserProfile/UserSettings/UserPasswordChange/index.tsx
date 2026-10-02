@@ -6,13 +6,13 @@ import ThemedText from '@app/components/Common/ThemedText';
 import ErrorPage from '@app/components/ErrorPage';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
+import useToasts from '@app/hooks/useToasts';
 import { Permission, useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
 import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
 import axios from 'axios';
 import { Formik } from 'formik';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import useSWR from 'swr';
@@ -26,6 +26,7 @@ const UserPasswordChange = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
   const settings = useSettings();
+  const { addToast } = useToasts();
   const { user: currentUser } = useUser();
   // const { user, hasPermission } = useUser({ id: Number(router.query.userId) });
   const { user, hasPermission } = useUser();
@@ -115,14 +116,18 @@ const UserPasswordChange = () => {
               }
             );
 
-            toast.success(intl.formatMessage(messages.toastSettingsSuccess));
+            addToast(intl.formatMessage(messages.toastSettingsSuccess), {
+              autoDismiss: true,
+              appearance: 'success',
+            });
           } catch {
-            toast.error(
+            addToast(
               intl.formatMessage(
                 data.hasPassword && user?.id === currentUser?.id
                   ? messages.toastSettingsFailureVerifyCurrent
                   : messages.toastSettingsFailure
-              )
+              ),
+              { autoDismiss: true, appearance: 'error' }
             );
           } finally {
             revalidate();

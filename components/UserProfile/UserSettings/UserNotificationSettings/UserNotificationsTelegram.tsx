@@ -4,6 +4,7 @@ import TextInput from '@app/components/Common/TextInput';
 import ThemedText from '@app/components/Common/ThemedText';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -13,7 +14,6 @@ import axios from 'axios';
 import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
 import { useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Pressable, View } from 'react-native';
 import useSWR from 'swr';
@@ -26,6 +26,7 @@ const messages = getSeerrMessages(
 const UserTelegramSettings = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const { addToast } = useToasts();
   // const { user } = useUser({ id: Number(router.query.userId) });
   const { user } = useUser();
   const {
@@ -91,9 +92,15 @@ const UserTelegramSettings = () => {
               },
             }
           );
-          toast.success(intl.formatMessage(messages.telegramsettingssaved));
+          addToast(intl.formatMessage(messages.telegramsettingssaved), {
+            appearance: 'success',
+            autoDismiss: true,
+          });
         } catch {
-          toast.error(intl.formatMessage(messages.telegramsettingsfailed));
+          addToast(intl.formatMessage(messages.telegramsettingsfailed), {
+            appearance: 'error',
+            autoDismiss: true,
+          });
         } finally {
           revalidate();
         }

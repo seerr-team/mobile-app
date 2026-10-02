@@ -45,6 +45,7 @@ import { type RatingResponse } from '@server/api/ratings';
 import ThemedText from '@app/components/Common/ThemedText';
 import { useTopBarHeight } from '@app/context/TopBarContext';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
 import type { TmdbRelease } from '@server/api/themoviedb/interfaces';
@@ -58,7 +59,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import uniqBy from 'lodash.uniqby';
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, Platform, Pressable, ScrollView, View } from 'react-native';
 import useSWR from 'swr';
@@ -83,6 +83,7 @@ const MovieDetails = () => {
   // const [isBlocklistUpdating, setIsBlocklistUpdating] =
   //   useState<boolean>(false);
   // const [showBlocklistModal, setShowBlocklistModal] = useState(false);
+  const { addToast } = useToasts();
 
   const {
     data,
@@ -309,7 +310,7 @@ const MovieDetails = () => {
       });
 
       if (response.data) {
-        toast.success(
+        addToast(
           <ThemedText>
             {intl.formatMessage(messages.watchlistSuccess, {
               title: data?.title,
@@ -317,12 +318,16 @@ const MovieDetails = () => {
                 <ThemedText className="font-bold">{msg}</ThemedText>
               ),
             })}
-          </ThemedText>
+          </ThemedText>,
+          { appearance: 'success', autoDismiss: true }
         );
       }
     } catch (e) {
       console.error('HERE', e);
-      toast.error(intl.formatMessage(messages.watchlistError));
+      addToast(intl.formatMessage(messages.watchlistError), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     }
 
     setIsUpdating(false);
@@ -336,7 +341,7 @@ const MovieDetails = () => {
         `${serverUrl}/api/v1/watchlist/${data?.id}?mediaType=${MediaType.MOVIE}`
       );
 
-      toast(
+      addToast(
         <ThemedText>
           {intl.formatMessage(messages.watchlistDeleted, {
             title: data?.title,
@@ -344,11 +349,15 @@ const MovieDetails = () => {
               <ThemedText className="font-bold">{msg}</ThemedText>
             ),
           })}
-        </ThemedText>
+        </ThemedText>,
+        { appearance: 'info', autoDismiss: true }
       );
     } catch (e) {
       console.error(e);
-      toast.error(intl.formatMessage(messages.watchlistError));
+      addToast(intl.formatMessage(messages.watchlistError), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     } finally {
       setIsUpdating(false);
       setToggleWatchlist((prevState) => !prevState);

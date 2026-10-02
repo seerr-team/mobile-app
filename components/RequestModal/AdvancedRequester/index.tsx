@@ -4,6 +4,7 @@ import { Listbox } from '@app/components/Common/Listbox';
 import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import ThemedText from '@app/components/Common/ThemedText';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import type { User } from '@app/hooks/useUser';
 import { Permission, useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
@@ -20,7 +21,6 @@ import { hasPermission } from '@server/lib/permissions';
 import axios, { isAxiosError } from 'axios';
 import { isEqual } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Pressable, Switch, View } from 'react-native';
 import {
@@ -66,6 +66,7 @@ const AdvancedRequester = ({
 }: AdvancedRequesterProps) => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const { addToast } = useToasts();
   const { user: currentUser, hasPermission: currentHasPermission } = useUser();
   const { data, error } = useSWR<ServiceCommonServer[]>(
     `${serverUrl}/api/v1/service/${type === 'movie' ? 'radarr' : 'sonarr'}`,
@@ -363,7 +364,10 @@ const AdvancedRequester = ({
           ) {
             return;
           }
-          toast.error(intl.formatMessage(globalMessages.error));
+          addToast(intl.formatMessage(globalMessages.error), {
+            appearance: 'error',
+            autoDismiss: true,
+          });
         }
       }
     })();

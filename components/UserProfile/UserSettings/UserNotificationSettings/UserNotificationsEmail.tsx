@@ -7,6 +7,7 @@ import NotificationTypeSelector, {
 } from '@app/components/NotificationTypeSelector';
 import SettingsBadge from '@app/components/Settings/SettingsBadge';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -14,7 +15,6 @@ import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
 import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import axios from 'axios';
 import { Formik } from 'formik';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, View } from 'react-native';
 import useSWR from 'swr';
@@ -27,6 +27,7 @@ const messages = getSeerrMessages(
 const UserEmailSettings = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const { addToast } = useToasts();
   // const { user } = useUser({ id: Number(router.query.userId) });
   const { user } = useUser();
   const {
@@ -75,9 +76,15 @@ const UserEmailSettings = () => {
               },
             }
           );
-          toast.success(intl.formatMessage(messages.emailsettingssaved));
+          addToast(intl.formatMessage(messages.emailsettingssaved), {
+            appearance: 'success',
+            autoDismiss: true,
+          });
         } catch {
-          toast.error(intl.formatMessage(messages.emailsettingsfailed));
+          addToast(intl.formatMessage(messages.emailsettingsfailed), {
+            appearance: 'error',
+            autoDismiss: true,
+          });
         } finally {
           revalidate();
         }

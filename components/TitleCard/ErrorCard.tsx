@@ -1,11 +1,11 @@
 import Button from '@app/components/Common/Button';
 import ThemedText from '@app/components/Common/ThemedText';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
 import { Check, Trash } from '@nandorojo/heroicons/24/solid';
 import axios, { isAxiosError } from 'axios';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { View } from 'react-native';
 import { mutate } from 'swr';
@@ -22,6 +22,7 @@ const messages = getSeerrMessages('components.TitleCard');
 
 const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
   const intl = useIntl();
+  const { addToast } = useToasts();
   const serverUrl = useServerUrl();
 
   const deleteMedia = async () => {
@@ -31,13 +32,19 @@ const ErrorCard = ({ id, tmdbId, tvdbId, type, canExpand }: ErrorCardProps) => {
       );
     } catch (e) {
       if (!isAxiosError(e) || e.response?.status !== 404) {
-        toast.error(intl.formatMessage(globalMessages.error));
+        addToast(intl.formatMessage(globalMessages.error), {
+          appearance: 'error',
+          autoDismiss: true,
+        });
         return;
       }
     }
     await axios.delete(`${serverUrl}/api/v1/media/${id}`).catch((e) => {
       if (isAxiosError(e) && e.response?.status === 404) return;
-      toast.error(intl.formatMessage(globalMessages.error));
+      addToast(intl.formatMessage(globalMessages.error), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     });
     mutate(serverUrl + '/api/v1/discover/watchlist');
     mutate(

@@ -4,6 +4,7 @@ import TextInput from '@app/components/Common/TextInput';
 import ThemedText from '@app/components/Common/ThemedText';
 import NotificationTypeSelector from '@app/components/NotificationTypeSelector';
 import useServerUrl from '@app/hooks/useServerUrl';
+import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -11,7 +12,6 @@ import { ArrowDownOnSquare } from '@nandorojo/heroicons/24/outline';
 import type { UserSettingsNotificationsResponse } from '@server/interfaces/api/userSettingsInterfaces';
 import axios from 'axios';
 import { Formik } from 'formik';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Linking, View } from 'react-native';
 import useSWR from 'swr';
@@ -24,6 +24,7 @@ const messages = getSeerrMessages(
 const UserPushbulletSettings = () => {
   const serverUrl = useServerUrl();
   const intl = useIntl();
+  const { addToast } = useToasts();
   // const { user } = useUser({ id: Number(router.query.userId) });
   const { user } = useUser();
   const {
@@ -73,9 +74,15 @@ const UserPushbulletSettings = () => {
               },
             }
           );
-          toast.success(intl.formatMessage(messages.pushbulletsettingssaved));
+          addToast(intl.formatMessage(messages.pushbulletsettingssaved), {
+            appearance: 'success',
+            autoDismiss: true,
+          });
         } catch {
-          toast.error(intl.formatMessage(messages.pushbulletsettingsfailed));
+          addToast(intl.formatMessage(messages.pushbulletsettingsfailed), {
+            appearance: 'error',
+            autoDismiss: true,
+          });
         } finally {
           revalidate();
         }

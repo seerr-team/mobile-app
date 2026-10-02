@@ -7,6 +7,7 @@ import AdvancedRequester from '@app/components/RequestModal/AdvancedRequester';
 import QuotaDisplay from '@app/components/RequestModal/QuotaDisplay';
 import useServerUrl from '@app/hooks/useServerUrl';
 import useSettings from '@app/hooks/useSettings';
+import useToasts from '@app/hooks/useToasts';
 import { useUser } from '@app/hooks/useUser';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
@@ -20,7 +21,6 @@ import { Permission } from '@server/lib/permissions';
 import type { TvDetails } from '@server/models/Tv';
 import axios from 'axios';
 import { useState } from 'react';
-import toast from 'react-hot-toast/headless';
 import { useIntl } from 'react-intl';
 import { Switch, View } from 'react-native';
 import useSWR, { mutate } from 'swr';
@@ -48,6 +48,7 @@ const TvRequestModal = ({
 }: RequestModalProps) => {
   const serverUrl = useServerUrl();
   const settings = useSettings();
+  const { addToast } = useToasts();
   const editingSeasons: number[] = (editRequest?.seasons ?? []).map(
     (season) => season.seasonNumber
   );
@@ -113,7 +114,7 @@ const TvRequestModal = ({
       );
       mutate(serverUrl + '/api/v1/request/count');
 
-      toast.success(
+      addToast(
         <ThemedText>
           {selectedSeasons.length > 0
             ? intl.formatMessage(
@@ -133,14 +134,16 @@ const TvRequestModal = ({
                   <ThemedText className="font-bold">{msg}</ThemedText>
                 ),
               })}
-        </ThemedText>
+        </ThemedText>,
+        { appearance: 'success', autoDismiss: true }
       );
       if (onComplete) {
         onComplete(MediaStatus.PENDING);
       }
     } catch {
-      toast.error(
-        <ThemedText>{intl.formatMessage(messages.errorediting)}</ThemedText>
+      addToast(
+        <ThemedText>{intl.formatMessage(messages.errorediting)}</ThemedText>,
+        { appearance: 'error', autoDismiss: true }
       );
     } finally {
       if (onUpdating) {
@@ -197,7 +200,7 @@ const TvRequestModal = ({
         if (onComplete) {
           onComplete(response.data.media.status);
         }
-        toast.success(
+        addToast(
           <ThemedText>
             {intl.formatMessage(messages.requestSuccess, {
               title: data?.name,
@@ -205,11 +208,15 @@ const TvRequestModal = ({
                 <ThemedText className="font-bold">{msg}</ThemedText>
               ),
             })}
-          </ThemedText>
+          </ThemedText>,
+          { appearance: 'success', autoDismiss: true }
         );
       }
     } catch {
-      toast.error(intl.formatMessage(messages.requesterror));
+      addToast(intl.formatMessage(messages.requesterror), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
     } finally {
       if (onUpdating) {
         onUpdating(false);
