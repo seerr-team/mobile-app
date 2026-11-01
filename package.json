@@ -30,7 +30,7 @@
     "axios": "^1.20.0",
     "bowser": "^2.11.0",
     "country-flag-icons": "^1.6.13",
-    "expo": "^57.0.0",
+    "expo": "^58.0.22",
     "expo-adi-registration": "^1.0.0",
     "expo-asset": "~57.0.18",
     "expo-blur": "~57.0.3",
@@ -79,7 +79,7 @@
     "tailwindcss": "^3.4.16",
     "validator": "^13.15.26",
     "yup": "^0.32.11",
-    "zod": "^3.24.1"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@babel/core": "^7.29.6",
