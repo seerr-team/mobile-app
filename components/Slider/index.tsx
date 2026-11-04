@@ -46,7 +46,7 @@ const Slider = ({
                   : intl.formatMessage(globalMessages.noresults)}
               </ThemedText>
             </View>
-          ) : null
+          ) : undefined
         }
         contentContainerClassName="px-2"
         initialNumToRender={5}

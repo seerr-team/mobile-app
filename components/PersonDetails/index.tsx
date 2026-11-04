@@ -165,7 +165,7 @@ const PersonDetails = () => {
               {media.character && (
                 <ThemedText
                   className="mt-2 w-full truncate text-center text-sm text-gray-300 sm:text-xs"
-                  lineBreakMode="tail"
+                  ellipsizeMode="tail"
                   numberOfLines={1}
                 >
                   {intl.formatMessage(messages.ascharacter, {
@@ -214,7 +214,7 @@ const PersonDetails = () => {
               {media.job && (
                 <ThemedText
                   className="mt-2 w-full truncate text-center text-sm text-gray-300 sm:text-xs"
-                  lineBreakMode="tail"
+                  ellipsizeMode="tail"
                   numberOfLines={1}
                 >
                   {media.job}

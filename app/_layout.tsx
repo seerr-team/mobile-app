@@ -28,7 +28,12 @@ import { StatusBar } from 'expo-status-bar';
 import 'intl-pluralrules';
 import { useEffect, useRef, useState } from 'react';
 import { IntlProvider } from 'react-intl';
-import { StyleSheet, TVFocusGuideView, View } from 'react-native';
+import {
+  StyleSheet,
+  TVFocusGuideView,
+  View,
+  type ViewInstance,
+} from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   KeyboardAvoidingView,
@@ -103,7 +108,7 @@ function RootLayout() {
   const serverUrl = useServerUrl();
   const { user, revalidate } = useUser();
   const [loaded, setLoaded] = useState(false);
-  const blurTargetRef = useRef<View>(null);
+  const blurTargetRef = useRef<ViewInstance>(null);
 
   const insets = useSafeAreaInsets();
 

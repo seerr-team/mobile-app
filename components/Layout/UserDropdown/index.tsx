@@ -10,13 +10,20 @@ import { BlurView } from 'expo-blur';
 import { Link, router } from 'expo-router';
 import { type RefObject, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
+import {
+  Modal,
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+  type ViewInstance,
+} from 'react-native';
 import { mutate } from 'swr';
 
 const messages = getSeerrMessages('components.Layout.UserDropdown');
 
 type UserDropdownProps = {
-  blurTarget?: RefObject<View | null>;
+  blurTarget?: RefObject<ViewInstance | null>;
 };
 
 const UserDropdown = ({ blurTarget }: UserDropdownProps) => {

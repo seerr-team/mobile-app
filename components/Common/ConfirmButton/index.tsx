@@ -1,6 +1,12 @@
 import Button from '@app/components/Common/Button';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Modal, Pressable, View } from 'react-native';
+import {
+  Animated,
+  Modal,
+  Pressable,
+  View,
+  type ViewInstance,
+} from 'react-native';
 import ThemedText from '../ThemedText';
 
 interface ConfirmButtonProps {
@@ -21,7 +27,7 @@ export default function ConfirmButton({
   const opacity = useRef(new Animated.Value(1)).current;
   const confirmTranslateY = useRef(new Animated.Value(40)).current;
   const confirmOpacity = useRef(new Animated.Value(0)).current;
-  const buttonRef = useRef<View>(null);
+  const buttonRef = useRef<ViewInstance>(null);
   const [buttonLayout, setButtonLayout] = useState({
     x: 0,
     y: 0,

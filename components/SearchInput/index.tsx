@@ -3,13 +3,13 @@ import { MagnifyingGlass } from '@nandorojo/heroicons/24/solid';
 import { router, usePathname } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { TextInput, View } from 'react-native';
+import { TextInput, type TextInputInstance, View } from 'react-native';
 
 const messages = getSeerrMessages('components.Layout.SearchInput');
 
 const SearchInput = () => {
   const intl = useIntl();
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<TextInputInstance>(null);
   const [searchValue, setSearchValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();

@@ -142,7 +142,9 @@ const RequestList = () => {
         <RefreshControl
           refreshing={!data && !error}
           progressViewOffset={topBarHeight}
-          onRefresh={() => revalidate()}
+          onRefresh={() => {
+            revalidate();
+          }}
           colors={['white']}
           progressBackgroundColor={'black'}
         />

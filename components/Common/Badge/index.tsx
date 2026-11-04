@@ -1,11 +1,6 @@
 import ThemedText from '@app/components/Common/ThemedText';
 import React, { useState } from 'react';
-import {
-  Linking,
-  type NativeSyntheticEvent,
-  Pressable,
-  type TextLayoutEventData,
-} from 'react-native';
+import { Linking, Pressable, type TextLayoutEvent } from 'react-native';
 
 interface BadgeProps {
   badgeType?:
@@ -95,7 +90,7 @@ const Badge = (
   const props = {
     className: badgeStyle.join(' '),
     numberOfLines: 1,
-    onTextLayout: (e: NativeSyntheticEvent<TextLayoutEventData>) => {
+    onTextLayout: (e: TextLayoutEvent) => {
       if (e.nativeEvent.lines.length > 1) {
         setIsWrapped(true);
       }
