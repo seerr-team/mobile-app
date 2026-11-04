@@ -33,8 +33,8 @@ const PlexLoginButton = ({
       data-testid="plex-login-button"
     >
       {loading && (
-        <View className="absolute right-0 mr-4 h-4 w-4">
-          <LoadingSpinner />
+        <View className="absolute right-0 mr-4">
+          <LoadingSpinner size={16} />
         </View>
       )}
 

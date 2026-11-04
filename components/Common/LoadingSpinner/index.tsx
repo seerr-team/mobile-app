@@ -2,7 +2,7 @@ import { ActivityIndicator } from 'react-native';
 
 // This component is used as a compatibility layer for the Seerr web app loading spinner.
 const LoadingSpinner = ({ size = 32 }: { size?: number }) => {
-  if (size == 12) {
+  if (size === 12) {
     return (
       <ActivityIndicator
         size="small"

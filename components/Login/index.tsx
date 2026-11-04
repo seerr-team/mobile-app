@@ -181,9 +181,9 @@ const Login = () => {
         {/* <View className="absolute top-4 right-4 z-50">
           <LanguagePicker />
         </View> */}
-        <View className="mx-4 flex h-48 flex-row justify-center">
+        <View className="flex h-48 flex-row justify-center">
           <Image
-            className="h-48 max-w-full"
+            className="h-48 max-w-full px-4"
             style={{ objectFit: 'contain' }}
             source={LogoStacked}
           />
