@@ -42,7 +42,7 @@ export async function getServerSettings(
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     const response = await axios.get<PublicSettingsResponse>(
       `${serverUrl}/api/v1/settings/public`,
@@ -84,9 +84,9 @@ export async function getServerSettings(
   if (!data?.initialized) {
     throw new ServerConnectionError(ConnectionErrorType.SERVER_NOT_INITIALIZED);
   }
-  if (!(await isServerUpToDate(serverUrl))) {
-    throw new ServerConnectionError(ConnectionErrorType.SERVER_NOT_UPTODATE);
-  }
+  // if (!(await isServerUpToDate(serverUrl))) {
+  //   throw new ServerConnectionError(ConnectionErrorType.SERVER_NOT_UPTODATE);
+  // }
 
   return data;
 }
@@ -96,12 +96,12 @@ export async function isServerUpToDate(serverUrl: string): Promise<boolean> {
     serverUrl = serverUrl.slice(0, -1);
   }
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000);
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   let data: StatusResponse;
   try {
     const response = await axios.get<StatusResponse>(
-      `${serverUrl}/api/v1/status`,
+      `${serverUrl}/api/v1/status?checkUpdateAvailable=false`,
       {
         signal: controller.signal,
       }
