@@ -65,6 +65,8 @@ export default defineConfig(
       'jsx-a11y/no-noninteractive-tabindex': 'off',
       'jsx-a11y/anchor-is-valid': 'off',
       'jsx-a11y/no-onchange': 'off',
+      // autoFocus on TVFocusGuideView is required for TV focus navigation
+      'jsx-a11y/no-autofocus': ['error', { ignoreNonDOM: true }],
 
       // React Hooks: Expo's base enables the whole recommended preset,
       // including the React Compiler rules; keep only the ones Seerr uses.
@@ -77,8 +79,13 @@ export default defineConfig(
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
+      // Import: Expo's base enables eslint-plugin-import, which Seerr doesn't use
+      'import/no-named-as-default': 'off',
+      'import/no-named-as-default-member': 'off',
+
       // General
       'arrow-parens': 'off',
+      eqeqeq: 'off',
       'no-console': 'warn',
       'no-unused-vars': 'off',
 

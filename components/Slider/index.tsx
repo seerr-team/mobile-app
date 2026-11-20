@@ -1,9 +1,9 @@
+import ThemedText from '@app/components/Common/ThemedText';
 import TitleCard from '@app/components/TitleCard';
 import globalMessages from '@app/utils/globalMessages';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { FlatList, TVFocusGuideView, View } from 'react-native';
-import ThemedText from '../Common/ThemedText';
 
 interface SliderProps {
   sliderKey: string;

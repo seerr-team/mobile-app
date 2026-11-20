@@ -51,7 +51,6 @@ import useServerUrl from '@app/hooks/useServerUrl';
 import useToasts from '@app/hooks/useToasts';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import globalMessages from '@app/utils/globalMessages';
-import type { TmdbRelease } from '@server/api/themoviedb/interfaces';
 import { MediaStatus, MediaType } from '@server/constants/media';
 import { MediaServerType } from '@server/constants/server';
 import type { MovieDetails as MovieDetailsType } from '@server/models/Movie';
@@ -208,8 +207,8 @@ const MovieDetails = () => {
       ? settings.currentSettings.discoverRegion
       : 'US';
 
-  const releases: TmdbRelease['release_dates'] = data.releases.results.find(
-    (r: TmdbRelease) => r.iso_3166_1 === discoverRegion
+  const releases = data.releases.results.find(
+    (r) => r.iso_3166_1 === discoverRegion
   )?.release_dates;
 
   // Release date types:
@@ -326,8 +325,7 @@ const MovieDetails = () => {
           { appearance: 'success', autoDismiss: true }
         );
       }
-    } catch (e) {
-      console.error('HERE', e);
+    } catch {
       addToast(intl.formatMessage(messages.watchlistError), {
         appearance: 'error',
         autoDismiss: true,
@@ -356,8 +354,7 @@ const MovieDetails = () => {
         </ThemedText>,
         { appearance: 'info', autoDismiss: true }
       );
-    } catch (e) {
-      console.error(e);
+    } catch {
       addToast(intl.formatMessage(messages.watchlistError), {
         appearance: 'error',
         autoDismiss: true,
@@ -789,7 +786,9 @@ const MovieDetails = () => {
                     >
                       <Pressable
                         className="flex flex-row items-center gap-1.5"
-                        onPress={() => Linking.openURL(ratingData.rt.url)}
+                        onPress={() =>
+                          ratingData.rt && Linking.openURL(ratingData.rt.url)
+                        }
                       >
                         {ratingData.rt.criticsRating === 'Rotten' ? (
                           <Image
@@ -815,7 +814,9 @@ const MovieDetails = () => {
                     >
                       <Pressable
                         className="flex flex-row items-center gap-1.5"
-                        onPress={() => Linking.openURL(ratingData.rt.url)}
+                        onPress={() =>
+                          ratingData.rt && Linking.openURL(ratingData.rt.url)
+                        }
                       >
                         {ratingData.rt.audienceRating === 'Spilled' ? (
                           <Image
@@ -849,7 +850,9 @@ const MovieDetails = () => {
                   >
                     <Pressable
                       className="flex flex-row items-center gap-1.5"
-                      onPress={() => Linking.openURL(ratingData.imdb.url)}
+                      onPress={() =>
+                        ratingData.imdb && Linking.openURL(ratingData.imdb.url)
+                      }
                     >
                       <Image
                         source={ImdbLogo}

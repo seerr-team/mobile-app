@@ -56,7 +56,7 @@ const LanguageSelector = ({
     });
 
     return sortBy(languages, 'name');
-  }, [intl, languages]);
+  }, [languages]);
 
   const languageName = (languageCode: string) =>
     sortedLanguages?.find((language) => language.iso_639_1 === languageCode)

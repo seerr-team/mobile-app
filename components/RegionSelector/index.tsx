@@ -7,7 +7,7 @@ import { ChevronDown } from '@nandorojo/heroicons/24/solid';
 import type { Region } from '@server/lib/settings';
 import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { sortBy } from 'lodash';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Pressable, View } from 'react-native';
 import { Dropdown, type IDropdownRef } from 'react-native-element-dropdown';
@@ -42,7 +42,6 @@ const RegionSelector = ({
       ? `${serverUrl}/api/v1/watchproviders/regions`
       : `${serverUrl}/api/v1/regions`
   );
-  const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const dropdownRef = useRef<IDropdownRef>(null);
 
@@ -67,7 +66,7 @@ const RegionSelector = ({
     });
 
     return sortBy(regions, 'name');
-  }, [intl, regions]);
+  }, [regions]);
 
   const regionName = (regionCode: string) =>
     sortedRegions?.find((region) => region.iso_3166_1 === regionCode)?.name ??
@@ -78,27 +77,9 @@ const RegionSelector = ({
       ? currentSettings.discoverRegion
       : currentSettings.streamingRegion;
 
-  useEffect(() => {
-    if (regions && value) {
-      if (value === 'all') {
-        setSelectedRegion(allRegion);
-      } else {
-        const matchedRegion = regions.find(
-          (region) => region.iso_3166_1 === value
-        );
-        setSelectedRegion(matchedRegion ?? null);
-      }
-    }
-  }, [value, regions, allRegion]);
-
-  useEffect(() => {
-    if (onChange && regions) {
-      const newValue = selectedRegion ? selectedRegion.iso_3166_1 : '';
-      if (newValue !== value) {
-        onChange(name, newValue);
-      }
-    }
-  }, [onChange, selectedRegion, name, regions]);
+  const handleRegionSelect = (region: Region | null) => {
+    onChange?.(name, region?.iso_3166_1 ?? '');
+  };
 
   return (
     <Pressable
@@ -149,14 +130,13 @@ const RegionSelector = ({
         }
         value={value}
         onChange={(item) => {
-          console.log('Selected item:', item);
           if (item.value === 'all') {
-            setSelectedRegion(allRegion);
+            handleRegionSelect(allRegion);
           } else {
             const matchedRegion = regions?.find(
               (region) => region.iso_3166_1 === item.value
             );
-            setSelectedRegion(matchedRegion ?? null);
+            handleRegionSelect(matchedRegion ?? null);
           }
         }}
         labelField="label"

@@ -7,7 +7,7 @@ type TooltipProps = {
   content: React.ReactNode;
   children: React.ReactElement;
   // tooltipConfig?: Partial<Config>;
-  tooltipConfig?: any;
+  tooltipConfig?: unknown;
   className?: string;
 };
 

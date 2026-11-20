@@ -125,7 +125,7 @@ const ButtonWithDropdown = ({
             }
             popoverStyle={{
               backgroundColor: 'transparent',
-              ...(popoverStyle as Object),
+              ...(popoverStyle as object),
             }}
             arrowSize={{ width: 0, height: 0 }}
             animationConfig={{ duration: 0 }}

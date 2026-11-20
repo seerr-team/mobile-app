@@ -7,7 +7,6 @@ import ImageFader from '@app/components/Common/ImageFader';
 import useServerUrl from '@app/hooks/useServerUrl';
 import getSeerrMessages from '@app/utils/getSeerrMessages';
 import SeerrIcon from '@seerr/public/android-chrome-512x512.png';
-import React from 'react';
 // import LanguagePicker from '@app/components/Layout/LanguagePicker';
 import ThemedText from '@app/components/Common/ThemedText';
 import JellyfinLogin from '@app/components/Login/JellyfinLogin';

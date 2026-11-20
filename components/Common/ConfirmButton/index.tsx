@@ -1,4 +1,5 @@
 import Button from '@app/components/Common/Button';
+import ThemedText from '@app/components/Common/ThemedText';
 import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -7,7 +8,6 @@ import {
   View,
   type ViewInstance,
 } from 'react-native';
-import ThemedText from '../ThemedText';
 
 interface ConfirmButtonProps {
   onClick: () => void;
@@ -59,7 +59,7 @@ export default function ConfirmButton({
         useNativeDriver: true,
       }),
     ]).start();
-  }, [isClicked]);
+  }, [isClicked, translateY, opacity, confirmTranslateY, confirmOpacity]);
 
   const handlePress = () => {
     if (!isClicked) {

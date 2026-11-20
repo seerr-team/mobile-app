@@ -237,7 +237,16 @@ const CollectionRequestModal = ({
     } finally {
       setIsUpdating(false);
     }
-  }, [requestOverrides, data, onComplete, addToast, intl, selectedParts, is4k]);
+  }, [
+    serverUrl,
+    requestOverrides,
+    data,
+    onComplete,
+    addToast,
+    intl,
+    selectedParts,
+    is4k,
+  ]);
 
   const hasAutoApprove = hasPermission(
     [
