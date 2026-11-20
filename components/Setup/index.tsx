@@ -40,6 +40,9 @@ export default function Setup() {
         if (url.endsWith('/')) {
           url = url.slice(0, -1);
         }
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          url = `https://${url}`;
+        }
         const serverSettings = await getServerSettings(url);
         await AsyncStorage.setItem('server-url', url);
         dispatch(setServerUrl(url));
@@ -118,9 +121,8 @@ export default function Setup() {
               value={inputUrl}
               onChangeText={setInputUrl}
               placeholder="https://example.com"
-              keyboardType="url"
               autoCapitalize="none"
-              autoComplete="url"
+              autoCorrect={false}
             />
             {error === ConnectionErrorType.SERVER_NOT_REACHABLE && (
               <ThemedText className="mt-1.5 text-red-500">
