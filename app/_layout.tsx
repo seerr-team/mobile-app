@@ -221,7 +221,8 @@ function RootLayout() {
         })}
       >
         <KeyboardAvoidingView
-          behavior={pathname === '/setup' ? 'padding' : 'height'}
+          behavior="padding"
+          enabled={pathname === '/setup' || pathname === '/login'}
           className="flex-1 bg-gray-900"
         >
           {appContent}

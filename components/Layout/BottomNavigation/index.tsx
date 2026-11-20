@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react';
 import { Pressable, TVFocusGuideView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+export const BOTTOM_NAVIGATION_HEIGHT = 56;
+
 const tintColor = '#6366f1';
 const inactiveColor = '#9ca3af';
 const focusColor = '#ffffff';
@@ -63,7 +65,10 @@ export default function BottomNavigation() {
     <TVFocusGuideView autoFocus>
       <View
         className="flex-row border-t border-gray-600 bg-gray-800"
-        style={{ paddingBottom: insets.bottom, height: 56 + insets.bottom }}
+        style={{
+          paddingBottom: insets.bottom,
+          height: BOTTOM_NAVIGATION_HEIGHT + insets.bottom,
+        }}
       >
         {navigationItems.map((item) => {
           const active = pathname === item.path;

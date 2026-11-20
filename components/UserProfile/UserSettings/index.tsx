@@ -3,6 +3,7 @@ import LoadingSpinner from '@app/components/Common/LoadingSpinner';
 import type { SettingsRoute } from '@app/components/Common/SettingsTabs';
 import SettingsTabs from '@app/components/Common/SettingsTabs';
 import ErrorPage from '@app/components/ErrorPage';
+import { BOTTOM_NAVIGATION_HEIGHT } from '@app/components/Layout/BottomNavigation';
 import ProfileHeader from '@app/components/UserProfile/ProfileHeader';
 import {
   useTopBarFadingEdge,
@@ -14,7 +15,9 @@ import getSeerrMessages from '@app/utils/getSeerrMessages';
 import { hasPermission, Permission } from '@server/lib/permissions';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import UserGeneralSettings from './UserGeneralSettings';
 import UserLinkedAccountsSettings from './UserLinkedAccountsSettings';
 import UserNotificationSettings from './UserNotificationSettings';
@@ -28,6 +31,7 @@ const UserSettings = () => {
   // const { user, error } = useUser({ id: Number(router.query.userId) });
   const { user, error } = useUser();
   const intl = useIntl();
+  const insets = useSafeAreaInsets();
   const topBarHeight = useTopBarHeight();
   const topBarFadingEdge = useTopBarFadingEdge();
   const [currentRoute, setCurrentRoute] = useState<string>();
@@ -96,9 +100,10 @@ const UserSettings = () => {
     settingsRoutes[0];
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       contentContainerStyle={{ paddingTop: topBarHeight }}
       fadingEdgeLength={topBarFadingEdge}
+      extraKeyboardSpace={-(BOTTOM_NAVIGATION_HEIGHT + insets.bottom)}
     >
       <ProfileHeader user={user} isSettingsPage />
       <View className="mt-6 px-4">
@@ -110,7 +115,7 @@ const UserSettings = () => {
       <View className="mt-10 text-white">
         {CurrentRoute.component && <CurrentRoute.component />}
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
