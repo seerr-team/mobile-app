@@ -42,3 +42,7 @@ yarn-error.*
 
 # ESLint
 .eslintcache
+
+# devenv Android integration
+/.android/
+/local.properties

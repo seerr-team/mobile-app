@@ -1,1 +1,5 @@
-seerr/devenv.yaml
+inputs:
+  nixpkgs:
+    url: github:cachix/devenv-nixpkgs/rolling
+# The Android SDK is unfree.
+allowUnfree: true
