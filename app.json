@@ -64,7 +64,9 @@
           }
         }
       ],
-      "expo-adi-registration"
+      "expo-adi-registration",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "extra": {
       "router": {
